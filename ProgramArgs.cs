@@ -16,6 +16,8 @@ namespace AlsTools
         public bool ListPlugins { get; set; }
 
         public string[] PluginsToLocate { get; set; }
+
+        public bool InteractiveMode { get; set; }
     }
 }
 

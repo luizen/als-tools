@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 using AlsTools;
@@ -10,7 +11,9 @@ namespace AlsTools
 {
     public class AlsToolsManager
     {
-        public void Run(ProgramArgs arguments)
+        IList<LiveProject> projects = new List<LiveProject>();
+
+        public void Initialize(ProgramArgs arguments)
         {
             var d = new DirectoryInfo(arguments.Folder);
             var files = d.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true });
@@ -18,29 +21,38 @@ namespace AlsTools
             foreach (var f in files)
             {
                 var project = ExtractLiveProjectInfoFromFile(f);
-                PrintProjectAndPlugins(project);
+                projects.Add(project);
             }
-
         }
-        
-        public void PrintProjectAndPlugins(LiveProject project)
+
+        public async Task Execute(ProgramArgs arguments)
         {
-            Console.WriteLine("------------------------------------------------------------------------------");
-            Console.WriteLine("Project name: {0}", project.Name);
-            Console.WriteLine("Full path: {0}", project.Path);
-            Console.WriteLine("\tPlugins:");
+            foreach (var project in projects)
+            {
+                await PrintProjectAndPlugins(project);
+            }
+        }
+
+        private async Task<bool> PrintProjectAndPlugins(LiveProject project)
+        {
+            await Console.Out.WriteLineAsync("------------------------------------------------------------------------------");
+            await Console.Out.WriteLineAsync($"Project name: {project.Name}");
+            await Console.Out.WriteLineAsync($"Full path: {project.Path}");
+            await Console.Out.WriteLineAsync("\tPlugins:");
 
             if (project.Plugins.Count == 0)
             {
-                Console.WriteLine("\t\tNo plugins found!");
-                return;
+                await Console.Out.WriteLineAsync("\t\tNo plugins found!");
+                return false;
             }
 
             foreach (var plugin in project.Plugins)
-                Console.WriteLine("\t\tName = {0} | Type = {1}", plugin.Value.Name, plugin.Value.Type);
+                await Console.Out.WriteLineAsync($"\t\tName = {plugin.Value.Name} | Type = {plugin.Value.Type}");
+
+            return true;
         }
 
-        public LiveProject ExtractLiveProjectInfoFromFile(FileInfo fileToDecompress)
+        private LiveProject ExtractLiveProjectInfoFromFile(FileInfo fileToDecompress)
         {
             var project = new LiveProject() { Name = fileToDecompress.Name, Path = fileToDecompress.FullName };
             var plugins = new SortedSet<string>();
@@ -70,7 +82,7 @@ namespace AlsTools
             return project;
         }
 
-        public void GetPluginsByExpression(LiveProject project, XPathNavigator nav, string expression, PluginType type)
+        private void GetPluginsByExpression(LiveProject project, XPathNavigator nav, string expression, PluginType type)
         {
             var nodeIter = nav.Select(expression);
 
