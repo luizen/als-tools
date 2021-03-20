@@ -17,7 +17,7 @@ namespace AlsTools
 
             foreach (var f in files)
             {
-                var project = Decompress(f);
+                var project = ExtractLiveProjectInfoFromFile(f);
                 PrintProjectAndPlugins(project);
             }
 
@@ -40,7 +40,7 @@ namespace AlsTools
                 Console.WriteLine("\t\tName = {0} | Type = {1}", plugin.Value.Name, plugin.Value.Type);
         }
 
-        public LiveProject Decompress(FileInfo fileToDecompress)
+        public LiveProject ExtractLiveProjectInfoFromFile(FileInfo fileToDecompress)
         {
             var project = new LiveProject() { Name = fileToDecompress.Name, Path = fileToDecompress.FullName };
             var plugins = new SortedSet<string>();

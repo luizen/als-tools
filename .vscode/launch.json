@@ -11,7 +11,7 @@
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/als-tools.dll",
-            "args": [],
+            "args": ["--locate=HG2;bx_tunner", "--folder=/Users/zenluiz/Desktop/Testes ALS"],
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",

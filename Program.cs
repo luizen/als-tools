@@ -10,6 +10,8 @@ namespace AlsTools
 {
     class Program
     {
+        static AlsToolsManager manager = new AlsToolsManager();
+
         static int Main(string[] args)
         {
             var arguments = GetArguments(args);
@@ -18,6 +20,7 @@ namespace AlsTools
 
             PrintArguments(arguments);
 
+            manager.Run(arguments);
 
             Console.WriteLine("------------------------------------------------------------------------------");
             Console.WriteLine("DONE");
