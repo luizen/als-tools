@@ -1,4 +1,4 @@
-namespace AlsTools
+namespace AlsTools.Core.Entities
 {
     public class PluginInfo
     {

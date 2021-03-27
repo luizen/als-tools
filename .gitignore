@@ -10,3 +10,5 @@ obj/Debug/netcoreapp3.1/als-tools.csproj.FileListAbsolute.txt
 obj/Debug/netcoreapp3.1/als-tools.csprojAssemblyReference.cache
 obj/Debug/netcoreapp3.1/als-tools.dll
 obj/Debug/netcoreapp3.1/als-tools.pdb
+*.dll
+obj/*.*

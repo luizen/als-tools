@@ -1,61 +1,136 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.XPath;
+using AlsTools.Core.Interfaces;
+using AlsTools.Core.Services;
+using AlsTools.Infrastructure;
+using AlsTools.Infrastructure.FileSystem;
+using AlsTools.Infrastructure.Repositories;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace AlsTools
 {
     class Program
     {
-        static AlsToolsManager manager = new AlsToolsManager();
+        // private static AlsToolsManager manager = new AlsToolsManager();
+        // private static IConfiguration config = null;
+        private static IConfigurationRoot configuration;
 
-        static async Task<int> Main(string[] args)
+        private static async Task<int> Main(string[] args)
+        {
+            // Initialize serilog logger
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console(Serilog.Events.LogEventLevel.Debug)
+                .MinimumLevel.Debug()
+                .Enrich.FromLogContext()
+                .CreateLogger();
+
+            Log.Debug("Creating service collection");
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+
+            Log.Debug("Building service provider");
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            try
+            {
+                Log.Debug("Parsing arguments");
+                var arguments = ParseArguments(args);
+
+                Log.Debug("Starting application");
+                var app = serviceProvider.GetService<App>();
+                await app.Run(arguments);
+
+                Log.Debug("Returning 0");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "An error occured. Returning code 1");
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+        }
+
+        private static void ConfigureServices(IServiceCollection serviceCollection)
+        {
+            // Add logging
+            // serviceCollection.AddSingleton(LoggerFactory.Create(builder =>
+            // {
+            //     builder
+            //         .AddSerilog(dispose: true);
+            // }));
+
+            serviceCollection.AddLogging();
+
+            // Build configuration
+            configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            // Add access to generic IConfigurationRoot
+            serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
+
+            // Add services
+            serviceCollection
+                .AddTransient<ILiveProjectService, LiveProjectService>()
+                .AddTransient<ILiveProjectRepository, LiveProjectRepository>()
+                .AddTransient<ILiveProjectExtractor, LiveProjectExtractor>()                
+                .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>();
+
+            // Add app
+            serviceCollection.AddTransient<App>();
+        }
+
+
+        private static ProgramArgs ParseArguments(string[] args)
         {
             var arguments = GetArguments(args);
-            if (!ValidateArguments(arguments))
-                return -1;
+            ValidateArguments(arguments);
 
-            await PrintArguments(arguments);
+            PrintArguments(arguments);
 
-            manager.Initialize(arguments);
+            return arguments;
 
-            if (arguments.InteractiveMode)
-            {
-                int? option = null;
-                while (option != 3)
-                {
-                    PrintMenu();
-                    option = GetOption();
-                    if (!option.HasValue)
-                        continue;
+            // manager.Initialize(arguments);
 
-                    if (option == 1)
-                        arguments.ListPlugins = true;
-                    else if (option == 2)
-                        arguments.LocatePlugins = true;
-                }
-            }
-            else
-            {
-                await manager.Execute(arguments);
-            }
+            // if (arguments.InteractiveMode)
+            // {
+            //     int? option = null;
+            //     while (option != 3)
+            //     {
+            //         PrintMenu();
+            //         option = GetOption();
+            //         if (!option.HasValue)
+            //             continue;
 
-            await Console.Out.WriteLineAsync("------------------------------------------------------------------------------");
-            await Console.Out.WriteLineAsync("DONE");
+            //         if (option == 1)
+            //             arguments.ListPlugins = true;
+            //         else if (option == 2)
+            //             arguments.LocatePlugins = true;
+            //     }
+            // }
+            // else
+            // {
+            //     await manager.Execute(arguments);
+            // }
 
-            return 0;
+
+            // return 0;
         }
 
         private static int? GetOption()
         {
             var opt = Console.Read();   //TODO: não está funcionando
-            var validOpts = new int[] {1, 2, 3};
-            
+            var validOpts = new int[] { 1, 2, 3 };
+
             if (!validOpts.Contains(opt))
             {
                 Console.Error.WriteLine("\tInvalid option. Try again.");
@@ -73,19 +148,9 @@ namespace AlsTools
             Console.WriteLine("\t3 - Quit");
         }
 
-        private static async Task PrintArguments(ProgramArgs args)
+        private static void PrintArguments(ProgramArgs args)
         {
-            var text = new StringBuilder();
-
-            text.AppendLine("ARGUMENTS: ");
-            text.AppendLine($"Interactive mode: {args.InteractiveMode}");
-            text.AppendLine($"Folder: {args.Folder}");
-            text.AppendLine($"File: {args.File}");
-            text.AppendLine($"List? {args.ListPlugins}");
-            text.AppendLine($"Locate? {args.LocatePlugins}");
-            text.AppendLine($"Plugins to locate: {string.Join("; ", args.PluginsToLocate)}");
-
-            await Console.Out.WriteLineAsync(text);
+            Log.Debug("Parameters: {@Args}", args);
         }
 
         private static ProgramArgs GetArguments(string[] arguments)
@@ -97,14 +162,15 @@ namespace AlsTools
             if (indexLocate >= 0)
             {
                 var parts = args[indexLocate].Split('=');
-                if (parts.Count() == 2)
-                {
-                    result.LocatePlugins = true;
-                    result.PluginsToLocate = parts[1].Split(';');
-                }
-                else
-                    Console.Error.WriteLine("Please specify a semicolon separated list of plugin names to locate!");
+                if (parts.Count() != 2)
+                    throw new ArgumentException("Please specify a semicolon separated list of plugin names to locate!");
+
+                result.LocatePlugins = true;
+                result.PluginsToLocate = parts[1].Split(';');
             }
+
+            if (args.IndexOf("--initdb") >= 0)
+                result.InitDb  = true;
 
             if (args.IndexOf("--list") >= 0)
                 result.ListPlugins = true;
@@ -112,60 +178,40 @@ namespace AlsTools
             if (args.IndexOf("--includebackups") >= 0)
                 result.IncludeBackups = true;
 
-            if (args.IndexOf("--interact") >= 0)
-                result.InteractiveMode = true;
-
             int indexFolder = args.FindIndex(x => x.StartsWith("--folder="));
             if (indexFolder >= 0)
             {
                 var parts = args[indexFolder].Split('=');
-                if (parts.Count() == 2)
-                    result.Folder = parts[1];
-                else
-                    Console.Error.WriteLine("Please specify a folder path!");
+                if (parts.Count() != 2)
+                    throw new ArgumentException("Please specify a folder path!");
+
+                result.Folder = parts[1];
             }
 
             int indexFile = args.FindIndex(x => x.StartsWith("--file="));
             if (indexFile >= 0)
             {
                 var parts = args[indexFile].Split('=');
-                if (parts.Count() == 2)
-                    result.File = parts[1];
-                else
-                    Console.Error.WriteLine("Please specify a file path!");
+                if (parts.Count() != 2)
+                    throw new ArgumentException("Please specify a file path!");
+
+                result.File = parts[1];
             }
 
             return result;
         }
 
-        private static bool ValidateArguments(ProgramArgs args)
+        private static void ValidateArguments(ProgramArgs args)
         {
             // Folder or file is always mandatory!
             if ((string.IsNullOrWhiteSpace(args.File) && string.IsNullOrWhiteSpace(args.Folder)) ||
                 (!string.IsNullOrWhiteSpace(args.File) && !string.IsNullOrWhiteSpace(args.Folder)))
             {
-                Console.Error.WriteLine("Please specify either a folder or file at least");
-                return false;
+                throw new ArgumentException("Please specify either a folder or file at least");
             }
 
-            if (args.InteractiveMode)
-            {
-                if (args.ListPlugins || args.LocatePlugins || args.PluginsToLocate.Any())
-                {
-                    Console.Error.WriteLine("In interactive mode, no other options can be used.");
-                    return false;
-                }
-            }
-            else // Non interactive mode
-            {
-                if ((args.ListPlugins && args.LocatePlugins) || (!args.ListPlugins && !args.LocatePlugins))
-                {
-                    Console.Error.WriteLine("Please specify either --list or --locate option");
-                    return false;
-                }
-            }
-
-            return true;
+            if ((args.ListPlugins && args.LocatePlugins && args.InitDb) || (!args.ListPlugins && !args.LocatePlugins && !args.InitDb))
+                throw new ArgumentException("Please specify either --initdb or --list or --locate option");
         }
     }
 }

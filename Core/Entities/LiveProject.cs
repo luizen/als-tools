@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-namespace AlsTools
+
+namespace AlsTools.Core.Entities
 {
     public class LiveProject
     {

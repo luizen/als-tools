@@ -17,9 +17,9 @@ namespace AlsTools
 
         public string[] PluginsToLocate { get; set; }
 
-        public bool InteractiveMode { get; set; }
-
         public bool IncludeBackups { get; set; }
+
+        public bool InitDb { get; set; }
     }
 }
 
