@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using LiteDB;
+using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Repositories
 {
     public class LiveProjectRepository : ILiveProjectRepository
     {
         private readonly LiteDatabase liteDb;
+        private readonly ILogger<LiveProjectRepository> logger;
+        private readonly ILiteDbContext dbContext;
 
-        public LiveProjectRepository(ILiteDbContext dbContext)
+        public LiveProjectRepository(ILogger<LiveProjectRepository> logger, ILiteDbContext dbContext)
         {
             this.liteDb = dbContext.Database;
+            this.logger = logger;
+            this.dbContext = dbContext;
         }
 
         public IEnumerable<LiveProject> GetAllProjects()
@@ -48,6 +53,8 @@ namespace AlsTools.Infrastructure.Repositories
             // Create an index over the Name property (if it doesn't exist)
             col.EnsureIndex(x => x.Name);
 
+            logger.LogDebug("Insert result {Result}", res);
+
             return res;
         }
 
@@ -58,6 +65,8 @@ namespace AlsTools.Infrastructure.Repositories
 
             // Create an index over the Name property (if it doesn't exist)
             col.EnsureIndex(x => x.Name);
+
+            logger.LogDebug("Inserted {InsertedProjects} projects", res);
 
             return res;
         }

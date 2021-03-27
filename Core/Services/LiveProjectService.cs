@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Core.Services
 {
     public class LiveProjectService : ILiveProjectService
     {
+        private readonly ILogger<LiveProjectService> logger;
         private readonly ILiveProjectRepository repository;
         private readonly ILiveProjectFileSystem fs;
         private readonly ILiveProjectExtractor extractor;
 
-        public LiveProjectService(ILiveProjectRepository repository, ILiveProjectFileSystem fs, ILiveProjectExtractor extractor)
+        public LiveProjectService(ILogger<LiveProjectService> logger, ILiveProjectRepository repository, ILiveProjectFileSystem fs, ILiveProjectExtractor extractor)
         {
+            this.logger = logger;
             this.repository = repository;
             this.fs = fs;
             this.extractor = extractor;

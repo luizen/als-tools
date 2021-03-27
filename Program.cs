@@ -10,7 +10,9 @@ using AlsTools.Infrastructure.FileSystem;
 using AlsTools.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Events;
 
 namespace AlsTools
 {
@@ -20,52 +22,54 @@ namespace AlsTools
 
         private static async Task<int> Main(string[] args)
         {
-            // Initialize serilog logger
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console(Serilog.Events.LogEventLevel.Debug)
                 .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
+                .WriteTo.Console()
                 .CreateLogger();
 
-            Log.Debug("Creating service collection");
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
+            Log.Debug("Building host");
+            var host = BuildHost(args);
 
-            Log.Debug("Building service provider");
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-
-            try
+            using (var serviceScope = host.Services.CreateScope())
             {
-                Log.Debug("Parsing arguments");
-                var arguments = ParseArguments(args);
+                var services = serviceScope.ServiceProvider;
 
-                Log.Debug("Starting application");
-                var app = serviceProvider.GetService<App>();
-                await app.Run(arguments);
+                try
+                {
+                    Log.Debug("Parsing arguments");
+                    var arguments = ParseArguments(args);
 
-                Log.Debug("Returning 0");
-                return 0;
+                    Log.Debug("Starting application");
+                    var app = services.GetRequiredService<App>();
+                    await app.Run(arguments);
+
+                    Log.Debug("Returning 0");
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    Log.Fatal(ex, "An error occured. Returning code 1");
+                    return 1;
+                }
+                finally
+                {
+                    Log.CloseAndFlush();
+                }
             }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "An error occured. Returning code 1");
-                return 1;
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+        }
+
+        public static IHost BuildHost(string[] args)
+        {
+            return new HostBuilder()
+                .ConfigureServices(ConfigureServices)
+                .UseSerilog()
+                .Build();
         }
 
         private static void ConfigureServices(IServiceCollection serviceCollection)
         {
-            // Add logging
-            // serviceCollection.AddSingleton(LoggerFactory.Create(builder =>
-            // {
-            //     builder
-            //         .AddSerilog(dispose: true);
-            // }));
-
             serviceCollection.AddLogging();
 
             // Build configuration

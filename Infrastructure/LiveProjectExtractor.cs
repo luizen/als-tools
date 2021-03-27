@@ -3,16 +3,25 @@ using System.IO;
 using System.IO.Compression;
 using System.Xml;
 using System.Xml.XPath;
-using AlsTools;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure
 {
     public class LiveProjectExtractor : ILiveProjectExtractor
     {
+        ILogger<LiveProjectExtractor> logger;
+
+        public LiveProjectExtractor(ILogger<LiveProjectExtractor> logger)
+        {
+            this.logger = logger;
+        }
+
         public LiveProject ExtractProjectFromFile(FileInfo file)
         {
+            logger.LogDebug("Extracting file {file}", file.Name);
+
             var project = new LiveProject() { Name = file.Name, Path = file.FullName };
             var plugins = new SortedSet<string>();
             var settings = new XmlReaderSettings() { IgnoreWhitespace = true };

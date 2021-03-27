@@ -1,29 +1,27 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.XPath;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace AlsTools
 {
     public class App
     {
+        private readonly ILogger<App> logger;
         private readonly ILiveProjectService liveProjectService;
         
-        public App(ILiveProjectService liveProjectService)
+        public App(ILogger<App> logger, ILiveProjectService liveProjectService)
         {
+            this.logger = logger;
             this.liveProjectService = liveProjectService;
         }
 
         public async Task Run(ProgramArgs args)
         {
+            logger.LogDebug("App start");
+
             if (args.InitDb)
             {
                 if (!string.IsNullOrEmpty(args.File))
