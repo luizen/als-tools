@@ -32,17 +32,19 @@ namespace AlsTools.Core.Services
         }
 
         public void InitializeDbFromFile(string filePath)
-        {
-            var project = LoadProjectFromSetFile(filePath);
+        {            
+            repository.DeleteAll();
+            var project = LoadProjectFromSetFile(filePath);            
             repository.Insert(project);
         }
 
         public void InitializeDbFromFolder(string folderPath, bool includeBackupFolder)
         {
+            repository.DeleteAll();
             var projects = LoadProjectsFromDirectory(folderPath, includeBackupFolder);
             repository.Insert(projects);
         }
-
+        
         private LiveProject LoadProjectFromSetFile(string setFilePath)
         {
             var file = fs.LoadProjectFileFromSetFile(setFilePath);            

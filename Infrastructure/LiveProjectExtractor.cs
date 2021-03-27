@@ -20,7 +20,7 @@ namespace AlsTools.Infrastructure
 
         public LiveProject ExtractProjectFromFile(FileInfo file)
         {
-            logger.LogDebug("Extracting file {file}", file.Name);
+            logger.LogDebug("Extracting file {file}", file.FullName);
 
             var project = new LiveProject() { Name = file.Name, Path = file.FullName };
             var plugins = new SortedSet<string>();

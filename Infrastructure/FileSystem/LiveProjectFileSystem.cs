@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace AlsTools.Infrastructure.FileSystem
             var files = d.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true }).AsEnumerable();
 
             if (!includeBackupFolder)
-                files = files.Where(x => !x.FullName.Contains(@"\backup\"));
+                files = files.Where(x => !x.FullName.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
 
             return files;
         }

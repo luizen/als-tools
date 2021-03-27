@@ -13,5 +13,7 @@ namespace AlsTools.Core.Interfaces
         IEnumerable<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate);
 
         IEnumerable<LiveProject> GetAllProjects();
+        
+        void DeleteAll();
     }
 }

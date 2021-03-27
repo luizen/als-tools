@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using LiteDB;
@@ -20,6 +21,12 @@ namespace AlsTools.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
+        public void DeleteAll()
+        {
+            var deletedCount = liteDb.GetCollection<LiveProject>("LiveProject").DeleteAll();
+            logger.LogDebug("Deleted {DeletedCount} projects", deletedCount);
+        }
+
         public IEnumerable<LiveProject> GetAllProjects()
         {
             return liteDb.GetCollection<LiveProject>("LiveProject").FindAll();
@@ -28,21 +35,45 @@ namespace AlsTools.Infrastructure.Repositories
         public IEnumerable<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate)
         {
             // var col = liteDb.GetCollection<LiveProject>("LiveProject");
+
             // var pluginsList = pluginsToLocate
 
-            // // var projects = col.Query()
-            // //     .Where(x => plu x.Plugins.("J"))
-            // //     .OrderBy(x => x.Name)
-            // //     .Select(x => new { x.Name, NameUpper = x.Name.ToUpper() })
-            // //     .Limit(10)
-            // //     .ToList();
+            // var projects = col
+            //     .Query()
+            //     .Where(proj => proj.Plugins != null && proj.Plugins.Any(k => pluginsToLocate.Any(x => k.Name.Contains(x, StringComparison.InvariantCultureIgnoreCase))))
+            //     .Select(p => p)
+            //     .ToEnumerable();
+
+            // var projects = col
+            //     .Query()
+            //     .Where(proj => proj.Plugins.Where(plugin => pluginsToLocate.Contains(plugin.Name)).Any())
+            //     .Select(p => p)
+            //     .ToEnumerable();
+
+            // var projects = col
+            //     .Query()
+            //     .Where(proj => 
+            //         proj.Plugins.Where(plugin => 
+            //             pluginsToLocate.Any(p => p.Contains(plugin.Name, StringComparison.InvariantCultureIgnoreCase))
+            //         ).Any()
+            //     )
+            //     .Select(p => p)
+            //     .ToEnumerable();
+
             // var projects = col
             //     .Include(x => x.Plugins)
-            //     .
+            //     .FindAll()
+            //     .Where(p => p.Plugins.Intersect(pluginsToLocate))
+                
+            var projects = GetAllProjects();
+            IList<LiveProject> res = new List<LiveProject>();
+            foreach (var p in projects)
+            {                
+                if (p.Plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
+                    res.Add(p);   
+            }
 
-            // return projects;
-
-            throw new NotImplementedException();
+            return res.AsEnumerable();
         }
 
         public bool Insert(LiveProject project)
