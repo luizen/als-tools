@@ -14,8 +14,8 @@
             //"args": ["--locate=HG2;bx_tunner", "--folder=/Users/zenluiz/Desktop/Testes ALS"],
             //"args": ["--interactive", "--folder=/Users/zenluiz/Desktop/Testes ALS"],
             // "args": ["--locate=bass mint", "--folder=/Users/zenluiz/Splice/"],
-            // "args": ["--list", "--folder=/Users/zenluiz/Splice/"],
-            "args": ["--initdb", "--folder=/Users/zenluiz/Splice/"],
+            "args": ["--list"],
+            // "args": ["--initdb", "--folder=/Users/zenluiz/Splice/"],
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",

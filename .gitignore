@@ -3,3 +3,4 @@
 *.dll
 *.pdb
 *.cache
+/LiteDb/

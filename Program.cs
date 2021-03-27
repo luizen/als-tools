@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AlsTools.Config;
 using AlsTools.Core.Interfaces;
 using AlsTools.Core.Services;
 using AlsTools.Infrastructure;
@@ -15,8 +16,6 @@ namespace AlsTools
 {
     class Program
     {
-        // private static AlsToolsManager manager = new AlsToolsManager();
-        // private static IConfiguration config = null;
         private static IConfigurationRoot configuration;
 
         private static async Task<int> Main(string[] args)
@@ -78,17 +77,21 @@ namespace AlsTools
             // Add access to generic IConfigurationRoot
             serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
 
+            // Add DbContext
+            serviceCollection.AddSingleton<ILiteDbContext, LiteDbContext>();
+
             // Add services
             serviceCollection
                 .AddTransient<ILiveProjectService, LiveProjectService>()
                 .AddTransient<ILiveProjectRepository, LiveProjectRepository>()
-                .AddTransient<ILiveProjectExtractor, LiveProjectExtractor>()                
+                .AddTransient<ILiveProjectExtractor, LiveProjectExtractor>()
                 .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>();
+
+            serviceCollection.Configure<LiteDbOptions>(configuration.GetSection("LiteDbOptions"));
 
             // Add app
             serviceCollection.AddTransient<App>();
         }
-
 
         private static ProgramArgs ParseArguments(string[] args)
         {
@@ -98,54 +101,6 @@ namespace AlsTools
             PrintArguments(arguments);
 
             return arguments;
-
-            // manager.Initialize(arguments);
-
-            // if (arguments.InteractiveMode)
-            // {
-            //     int? option = null;
-            //     while (option != 3)
-            //     {
-            //         PrintMenu();
-            //         option = GetOption();
-            //         if (!option.HasValue)
-            //             continue;
-
-            //         if (option == 1)
-            //             arguments.ListPlugins = true;
-            //         else if (option == 2)
-            //             arguments.LocatePlugins = true;
-            //     }
-            // }
-            // else
-            // {
-            //     await manager.Execute(arguments);
-            // }
-
-
-            // return 0;
-        }
-
-        private static int? GetOption()
-        {
-            var opt = Console.Read();   //TODO: não está funcionando
-            var validOpts = new int[] { 1, 2, 3 };
-
-            if (!validOpts.Contains(opt))
-            {
-                Console.Error.WriteLine("\tInvalid option. Try again.");
-                return null;
-            }
-
-            return opt;
-        }
-
-        private static void PrintMenu()
-        {
-            Console.WriteLine("\nSelect an option");
-            Console.WriteLine("\t1 - List plugins");
-            Console.WriteLine("\t2 - Locate plugins");
-            Console.WriteLine("\t3 - Quit");
         }
 
         private static void PrintArguments(ProgramArgs args)
@@ -170,7 +125,7 @@ namespace AlsTools
             }
 
             if (args.IndexOf("--initdb") >= 0)
-                result.InitDb  = true;
+                result.InitDb = true;
 
             if (args.IndexOf("--list") >= 0)
                 result.ListPlugins = true;
@@ -203,11 +158,14 @@ namespace AlsTools
 
         private static void ValidateArguments(ProgramArgs args)
         {
-            // Folder or file is always mandatory!
-            if ((string.IsNullOrWhiteSpace(args.File) && string.IsNullOrWhiteSpace(args.Folder)) ||
-                (!string.IsNullOrWhiteSpace(args.File) && !string.IsNullOrWhiteSpace(args.Folder)))
+            if (args.InitDb)
             {
-                throw new ArgumentException("Please specify either a folder or file at least");
+                // Folder or file is always mandatory for initializing the DB!
+                if ((string.IsNullOrWhiteSpace(args.File) && string.IsNullOrWhiteSpace(args.Folder)) ||
+                    (!string.IsNullOrWhiteSpace(args.File) && !string.IsNullOrWhiteSpace(args.Folder)))
+                {
+                    throw new ArgumentException("Please specify either a folder or file at least");
+                }
             }
 
             if ((args.ListPlugins && args.LocatePlugins && args.InitDb) || (!args.ListPlugins && !args.LocatePlugins && !args.InitDb))

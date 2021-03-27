@@ -7,8 +7,11 @@ namespace AlsTools.Core.Entities
         public LiveProject()
         {
             Plugins = new SortedDictionary<string, PluginInfo>();
+            //Plugins = new PluginInfo[0];
         }
 
+        public long Id { get; set; }
+        
         public string Name { get; set; }
 
         public string Path { get; set; }
@@ -16,5 +19,7 @@ namespace AlsTools.Core.Entities
         public string LiveVersion { get; set; }
 
         public SortedDictionary<string, PluginInfo> Plugins { get; set; }
+        // public PluginInfo[] Plugins { get; set; }
+
     }
 }

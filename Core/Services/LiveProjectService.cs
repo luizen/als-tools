@@ -18,12 +18,12 @@ namespace AlsTools.Core.Services
             this.extractor = extractor;
         }
 
-        public IList<LiveProject> GetAllProjects()
+        public IEnumerable<LiveProject> GetAllProjects()
         {
             return repository.GetAllProjects();
         }
 
-        public IList<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate)
+        public IEnumerable<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate)
         {
             return repository.GetProjectsContainingPlugins(pluginsToLocate);
         }

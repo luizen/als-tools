@@ -15,8 +15,6 @@ namespace AlsTools
 {
     public class App
     {
-        // private readonly ILogger<App> _logger;
-        // private readonly AppSettings _appSettings;
         private readonly ILiveProjectService liveProjectService;
         
         public App(ILiveProjectService liveProjectService)
@@ -49,7 +47,7 @@ namespace AlsTools
             }
         }
 
-        private async Task PrintProjectsAndPlugins(IList<LiveProject> projects)
+        private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
         {
             foreach (var p in projects)
                 await PrintProjectAndPlugins(p);

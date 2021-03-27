@@ -10,8 +10,8 @@ namespace AlsTools.Core.Interfaces
 
         void InitializeDbFromFolder(string folderPath, bool includeBackupFolder);
         
-        IList<LiveProject> GetAllProjects();
+        IEnumerable<LiveProject> GetAllProjects();
         
-        IList<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate);
+        IEnumerable<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate);
     }
 }
