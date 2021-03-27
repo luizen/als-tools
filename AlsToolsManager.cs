@@ -1,11 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
-using AlsTools;
 
 namespace AlsTools
 {
@@ -16,7 +18,10 @@ namespace AlsTools
         public void Initialize(ProgramArgs arguments)
         {
             var d = new DirectoryInfo(arguments.Folder);
-            var files = d.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true });
+            var files = d.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true }).AsEnumerable();
+
+            if (!arguments.IncludeBackups)
+                files = files.Where(x => !x.FullName.Contains(@"\backup\"));
 
             foreach (var f in files)
             {
@@ -27,10 +32,18 @@ namespace AlsTools
 
         public async Task Execute(ProgramArgs arguments)
         {
-            foreach (var project in projects)
-            {
-                await PrintProjectAndPlugins(project);
-            }
+            var projetsToDisplay = projects;
+
+            if (arguments.LocatePlugins)
+                projetsToDisplay = LocateProjectsByPlugins(arguments.PluginsToLocate);
+            
+            foreach (var project in projetsToDisplay)
+                    await PrintProjectAndPlugins(project);
+        }
+
+        private IList<LiveProject> LocateProjectsByPlugins(string[] pluginsToLocate)
+        {
+            return projects.Where(x => x.Plugins.Keys.Intersect(pluginsToLocate, new PluginNameComparer()).Any()).ToList();
         }
 
         private async Task<bool> PrintProjectAndPlugins(LiveProject project)
@@ -95,6 +108,25 @@ namespace AlsTools
                     project.Plugins.Add(p.Name, p);
                 }
             }
+        }
+    }
+
+    public class PluginNameComparer : IEqualityComparer<string>
+    {
+        public bool Equals([AllowNull] string x, [AllowNull] string y)
+        {
+            if ((x == null && x != null) || (x != null && x == null))
+                return false;
+
+            if (string.IsNullOrEmpty(x) && string.IsNullOrEmpty(y))
+                return true;
+
+            return x.Contains(y, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public int GetHashCode([DisallowNull] string obj)
+        {
+            return obj.GetHashCode();
         }
     }
 }

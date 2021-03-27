@@ -16,8 +16,8 @@ namespace AlsTools
 
         static async Task<int> Main(string[] args)
         {
-            var arguments = await GetArguments(args);
-            if (!(await ValidateArguments(arguments)))
+            var arguments = GetArguments(args);
+            if (!ValidateArguments(arguments))
                 return -1;
 
             await PrintArguments(arguments);
@@ -26,17 +26,17 @@ namespace AlsTools
 
             if (arguments.InteractiveMode)
             {
-                string option = string.Empty;
-                while (option != "3")
+                int? option = null;
+                while (option != 3)
                 {
-                    await PrintMenu();
-                    option = await GetOption();
-                    if (string.IsNullOrEmpty(option))
+                    PrintMenu();
+                    option = GetOption();
+                    if (!option.HasValue)
                         continue;
 
-                    if (option == "1")
+                    if (option == 1)
                         arguments.ListPlugins = true;
-                    else if (option == "2")
+                    else if (option == 2)
                         arguments.LocatePlugins = true;
                 }
             }
@@ -51,26 +51,26 @@ namespace AlsTools
             return 0;
         }
 
-        private static async Task<string> GetOption()
+        private static int? GetOption()
         {
-            var opt = await Console.In.ReadLineAsync();   //TODO: não está funcionando
-            var validOpts = new string[] {"1", "2", "3"};
+            var opt = Console.Read();   //TODO: não está funcionando
+            var validOpts = new int[] {1, 2, 3};
             
             if (!validOpts.Contains(opt))
             {
-                await Console.Error.WriteLineAsync("\tInvalid option. Try again.");
-                return string.Empty;
+                Console.Error.WriteLine("\tInvalid option. Try again.");
+                return null;
             }
 
             return opt;
         }
 
-        private static async Task PrintMenu()
+        private static void PrintMenu()
         {
-            await Console.Out.WriteLineAsync("\nSelect an option");
-            await Console.Out.WriteLineAsync("\t1 - List plugins");
-            await Console.Out.WriteLineAsync("\t2 - Locate plugins");
-            await Console.Out.WriteLineAsync("\t3 - Quit");
+            Console.WriteLine("\nSelect an option");
+            Console.WriteLine("\t1 - List plugins");
+            Console.WriteLine("\t2 - Locate plugins");
+            Console.WriteLine("\t3 - Quit");
         }
 
         private static async Task PrintArguments(ProgramArgs args)
@@ -85,11 +85,10 @@ namespace AlsTools
             text.AppendLine($"Locate? {args.LocatePlugins}");
             text.AppendLine($"Plugins to locate: {string.Join("; ", args.PluginsToLocate)}");
 
-
             await Console.Out.WriteLineAsync(text);
         }
 
-        private static async Task<ProgramArgs> GetArguments(string[] arguments)
+        private static ProgramArgs GetArguments(string[] arguments)
         {
             var result = new ProgramArgs();
             var args = arguments.ToList();
@@ -104,13 +103,16 @@ namespace AlsTools
                     result.PluginsToLocate = parts[1].Split(';');
                 }
                 else
-                    await Console.Error.WriteLineAsync("Please specify a semicolon separated list of plugin names to locate!");
+                    Console.Error.WriteLine("Please specify a semicolon separated list of plugin names to locate!");
             }
 
             if (args.IndexOf("--list") >= 0)
                 result.ListPlugins = true;
 
-            if (args.IndexOf("--interactive") >= 0)
+            if (args.IndexOf("--includebackups") >= 0)
+                result.IncludeBackups = true;
+
+            if (args.IndexOf("--interact") >= 0)
                 result.InteractiveMode = true;
 
             int indexFolder = args.FindIndex(x => x.StartsWith("--folder="));
@@ -120,7 +122,7 @@ namespace AlsTools
                 if (parts.Count() == 2)
                     result.Folder = parts[1];
                 else
-                    await Console.Error.WriteLineAsync("Please specify a folder path!");
+                    Console.Error.WriteLine("Please specify a folder path!");
             }
 
             int indexFile = args.FindIndex(x => x.StartsWith("--file="));
@@ -130,19 +132,19 @@ namespace AlsTools
                 if (parts.Count() == 2)
                     result.File = parts[1];
                 else
-                    await Console.Error.WriteLineAsync("Please specify a file path!");
+                    Console.Error.WriteLine("Please specify a file path!");
             }
 
             return result;
         }
 
-        private static async Task<bool> ValidateArguments(ProgramArgs args)
+        private static bool ValidateArguments(ProgramArgs args)
         {
             // Folder or file is always mandatory!
             if ((string.IsNullOrWhiteSpace(args.File) && string.IsNullOrWhiteSpace(args.Folder)) ||
                 (!string.IsNullOrWhiteSpace(args.File) && !string.IsNullOrWhiteSpace(args.Folder)))
             {
-                await Console.Error.WriteLineAsync("Please specify either a folder or file at least");
+                Console.Error.WriteLine("Please specify either a folder or file at least");
                 return false;
             }
 
@@ -150,7 +152,7 @@ namespace AlsTools
             {
                 if (args.ListPlugins || args.LocatePlugins || args.PluginsToLocate.Any())
                 {
-                    await Console.Error.WriteLineAsync("In interactive mode, no other options can be used.");
+                    Console.Error.WriteLine("In interactive mode, no other options can be used.");
                     return false;
                 }
             }
@@ -158,13 +160,12 @@ namespace AlsTools
             {
                 if ((args.ListPlugins && args.LocatePlugins) || (!args.ListPlugins && !args.LocatePlugins))
                 {
-                    await Console.Error.WriteLineAsync("Please specify either --list or --locate option");
+                    Console.Error.WriteLine("Please specify either --list or --locate option");
                     return false;
                 }
             }
 
             return true;
         }
-
     }
 }
