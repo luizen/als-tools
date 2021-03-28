@@ -21,6 +21,11 @@ namespace AlsTools.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
+        public int CountProjects()
+        {
+            return liteDb.GetCollection<LiveProject>("LiveProject").Count();
+        }
+
         public void DeleteAll()
         {
             var deletedCount = liteDb.GetCollection<LiveProject>("LiveProject").DeleteAll();
@@ -64,7 +69,9 @@ namespace AlsTools.Infrastructure.Repositories
             //     .Include(x => x.Plugins)
             //     .FindAll()
             //     .Where(p => p.Plugins.Intersect(pluginsToLocate))
-                
+
+            //TODO: implement it correctly
+            
             var projects = GetAllProjects();
             IList<LiveProject> res = new List<LiveProject>();
             foreach (var p in projects)

@@ -15,5 +15,7 @@ namespace AlsTools.Core.Interfaces
         IEnumerable<LiveProject> GetAllProjects();
         
         void DeleteAll();
+        
+        int CountProjects();
     }
 }

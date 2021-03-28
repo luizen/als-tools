@@ -131,6 +131,9 @@ namespace AlsTools
             if (args.IndexOf("--initdb") >= 0)
                 result.InitDb = true;
 
+            if (args.IndexOf("--count") >= 0)
+                result.CountProjects = true;
+
             if (args.IndexOf("--list") >= 0)
                 result.ListPlugins = true;
 
@@ -172,8 +175,10 @@ namespace AlsTools
                 }
             }
 
-            if ((args.ListPlugins && args.LocatePlugins && args.InitDb) || (!args.ListPlugins && !args.LocatePlugins && !args.InitDb))
-                throw new ArgumentException("Please specify either --initdb or --list or --locate option");
+            if ((args.ListPlugins && args.LocatePlugins && args.InitDb && args.CountProjects) || (!args.ListPlugins && !args.LocatePlugins && !args.InitDb && !args.CountProjects))
+                throw new ArgumentException("Please specify either --initdb or --count or --list or --locate option");
+
+            //TODO: implement validation of all other possibilities            
         }
     }
 }

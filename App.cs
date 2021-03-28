@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
@@ -24,20 +25,31 @@ namespace AlsTools
 
             if (args.InitDb)
             {
+                int count = 0;
                 if (!string.IsNullOrEmpty(args.File))
-                    liveProjectService.InitializeDbFromFile(args.File);
+                    count = liveProjectService.InitializeDbFromFile(args.File);
                 else
-                    liveProjectService.InitializeDbFromFolder(args.Folder, args.IncludeBackups);
+                    count = liveProjectService.InitializeDbFromFolder(args.Folder, args.IncludeBackups);
+
+                await Console.Out.WriteLineAsync($"\nTotal of projects loaded into DB: {count}");
+            }
+            else if (args.CountProjects)
+            {
+                int count = liveProjectService.CountProjects();
+
+                await Console.Out.WriteLineAsync($"\nTotal of projects in the DB: {count}");
             }
             else if (args.ListPlugins)
             {
-                var projects = liveProjectService.GetAllProjects();
+                var projects = liveProjectService.GetAllProjects().ToList();
                 await PrintProjectsAndPlugins(projects);
+                await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count}");
             }
             else if (args.LocatePlugins)
             {
-                var projects = liveProjectService.GetProjectsContainingPlugins(args.PluginsToLocate);
+                var projects = liveProjectService.GetProjectsContainingPlugins(args.PluginsToLocate).ToList();
                 await PrintProjectsAndPlugins(projects);
+                await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count}");   
             }
             else
             {
@@ -57,7 +69,7 @@ namespace AlsTools
             await Console.Out.WriteLineAsync($"Project name: {project.Name}");
             await Console.Out.WriteLineAsync($"Full path: {project.Path}");
             await Console.Out.WriteLineAsync("\tPlugins:");
-
+            
             if (project.Plugins.Count == 0)
                 await Console.Out.WriteLineAsync("\t\tNo plugins found!");
 

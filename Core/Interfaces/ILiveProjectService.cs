@@ -6,12 +6,14 @@ namespace AlsTools.Core.Interfaces
 {
     public interface ILiveProjectService
     {
-        void InitializeDbFromFile(string filePath);
+        int InitializeDbFromFile(string filePath);
 
-        void InitializeDbFromFolder(string folderPath, bool includeBackupFolder);
+        int InitializeDbFromFolder(string folderPath, bool includeBackupFolder);
         
         IEnumerable<LiveProject> GetAllProjects();
         
         IEnumerable<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate);
+        
+        int CountProjects();
     }
 }

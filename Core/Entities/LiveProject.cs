@@ -10,7 +10,7 @@ namespace AlsTools.Core.Entities
             //Plugins = new PluginInfo[0];
         }
 
-        public long Id { get; set; }
+        public int Id { get; set; }
         
         public string Name { get; set; }
 

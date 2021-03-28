@@ -20,6 +20,8 @@ namespace AlsTools
         public bool IncludeBackups { get; set; }
 
         public bool InitDb { get; set; }
+
+        public bool CountProjects { get; set; }
     }
 }
 

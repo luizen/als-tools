@@ -21,6 +21,11 @@ namespace AlsTools.Core.Services
             this.extractor = extractor;
         }
 
+        public int CountProjects()
+        {
+            return repository.CountProjects();
+        }
+
         public IEnumerable<LiveProject> GetAllProjects()
         {
             return repository.GetAllProjects();
@@ -31,18 +36,18 @@ namespace AlsTools.Core.Services
             return repository.GetProjectsContainingPlugins(pluginsToLocate);
         }
 
-        public void InitializeDbFromFile(string filePath)
+        public int InitializeDbFromFile(string filePath)
         {            
             repository.DeleteAll();
-            var project = LoadProjectFromSetFile(filePath);            
-            repository.Insert(project);
+            var project = LoadProjectFromSetFile(filePath);
+            return repository.Insert(project) ? 1 : 0;
         }
 
-        public void InitializeDbFromFolder(string folderPath, bool includeBackupFolder)
+        public int InitializeDbFromFolder(string folderPath, bool includeBackupFolder)
         {
             repository.DeleteAll();
             var projects = LoadProjectsFromDirectory(folderPath, includeBackupFolder);
-            repository.Insert(projects);
+            return repository.Insert(projects);
         }
         
         private LiveProject LoadProjectFromSetFile(string setFilePath)
