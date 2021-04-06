@@ -81,6 +81,20 @@ namespace AlsTools.Infrastructure.Repositories
             }
 
             return res.AsEnumerable();
+
+            // var pluginToLocate = pluginsToLocate[0];
+            // var col = liteDb.GetCollection<LiveProject>("LiveProject");
+            
+            // var query = @"SELECT { $.*, $.Plugins[*] FROM LiveProject } WHERE $.Plugins[*].Title LIKE '%" + pluginToLocate + "%'";
+            // var s = liteDb.Execute(query).ToList();
+
+            // var res = col.Query()
+            //     .Where(proj => proj.Plugins.Any(p => p.Key.Contains(pluginToLocate, StringComparison.InvariantCultureIgnoreCase)).Any())
+            //     .Select(x => x);
+
+            // return res.ToEnumerable();
+
+            // return null;
         }
 
         public bool Insert(LiveProject project)
