@@ -160,6 +160,16 @@ namespace AlsTools
                 result.File = parts[1];
             }
 
+            int indexExport = args.FindIndex(x => x.StartsWith("--export="));
+            if (indexExport >= 0)
+            {
+                var parts = args[indexFolder].Split('=');
+                if (parts.Count() != 2)
+                    throw new ArgumentException("Please specify a file path!");
+
+                result.ExportFile = parts[1];
+            }
+
             return result;
         }
 
@@ -175,8 +185,9 @@ namespace AlsTools
                 }
             }
 
-            if ((args.ListPlugins && args.LocatePlugins && args.InitDb && args.CountProjects) || (!args.ListPlugins && !args.LocatePlugins && !args.InitDb && !args.CountProjects))
-                throw new ArgumentException("Please specify either --initdb or --count or --list or --locate option");
+            if ((args.ListPlugins && args.LocatePlugins && args.InitDb && args.CountProjects && args.Export) || 
+               (!args.ListPlugins && !args.LocatePlugins && !args.InitDb && !args.CountProjects && !args.Export))
+                throw new ArgumentException("Please specify either --initdb or --count or --list or --locate or --export option");
 
             //TODO: implement validation of all other possibilities            
         }

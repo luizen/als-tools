@@ -22,6 +22,10 @@ namespace AlsTools
         public bool InitDb { get; set; }
 
         public bool CountProjects { get; set; }
+
+        public bool Export { get; set; }
+
+        public string ExportFile { get; set; }
     }
 }
 

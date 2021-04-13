@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Xml;
 using System.Xml.XPath;
 using AlsTools.Core.Entities;
+using AlsTools.Core.Entities.Devices;
+using AlsTools.Core.Factories;
 using AlsTools.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -23,8 +23,6 @@ namespace AlsTools.Infrastructure
             logger.LogDebug("Extracting file {file}", file.FullName);
 
             var project = new LiveProject() { Name = file.Name, Path = file.FullName };
-            var plugins = new SortedSet<string>();
-            var settings = new XmlReaderSettings() { IgnoreWhitespace = true };
 
             using (FileStream originalFileStream = file.OpenRead())
             {
@@ -33,16 +31,11 @@ namespace AlsTools.Infrastructure
                     using (StreamReader unzip = new StreamReader(decompressionStream))
                     {
                         var xPathDoc = new XPathDocument(unzip);
-                        var nav = xPathDoc.CreateNavigator();
 
-                        var expression = @"//PluginDevice/PluginDesc/Vst3PluginInfo/Name/@Value";
-                        GetPluginsByExpression(project, nav, expression, PluginType.VST3);
+                        GetTracks(project, xPathDoc);
 
-                        expression = @"//PluginDevice/PluginDesc/VstPluginInfo/PlugName/@Value";
-                        GetPluginsByExpression(project, nav, expression, PluginType.VST);
-
-                        expression = @"//AuPluginDevice/PluginDesc/AuPluginInfo/Name/@Value";
-                        GetPluginsByExpression(project, nav, expression, PluginType.AU);
+                        //TODO: get master track devices and plugins
+                        //GetMasterTrackAndContents(project, xPathDoc);
                     }
                 }
             }
@@ -50,19 +43,137 @@ namespace AlsTools.Infrastructure
             return project;
         }
 
-        private void GetPluginsByExpression(LiveProject project, XPathNavigator nav, string expression, PluginType type)
+        private void GetMasterTrackAndContents(LiveProject project, XPathDocument xPathDoc)
         {
-            var nodeIter = nav.Select(expression);
+            // var nav = xPathDoc.CreateNavigator();
+            // nav.MoveToRoot();
 
-            while (nodeIter.MoveNext())
+            // var expression = @"//MasterTrack/DeviceChain/DeviceChain/Devices";
+            // GetDevices(project, nav, expression);
+
+            // expression = @"//PluginDevice/PluginDesc/Vst3PluginInfo/Name/@Value";
+            // GetPluginsByExpression(project, nav, expression, PluginType.VST3);
+
+            // expression = @"//PluginDevice/PluginDesc/VstPluginInfo/PlugName/@Value";
+            // GetPluginsByExpression(project, nav, expression, PluginType.VST);
+
+            // expression = @"//AuPluginDevice/PluginDesc/AuPluginInfo/Name/@Value";
+            // GetPluginsByExpression(project, nav, expression, PluginType.AU);
+        }
+
+        private void GetTracks(LiveProject project, XPathDocument xPathDoc)
+        {
+            var nav = xPathDoc.CreateNavigator();
+
+            var expression = @"//LiveSet/Tracks/AudioTrack";
+            GetTrackByExpression(project, nav, expression, TrackType.Audio);
+
+            expression = @"//LiveSet/Tracks/MidiTrack";
+            GetTrackByExpression(project, nav, expression, TrackType.Midi);
+
+            expression = @"//LiveSet/Tracks/ReturnTrack";
+            GetTrackByExpression(project, nav, expression, TrackType.Return);
+        }
+
+        private void GetTrackByExpression(LiveProject project, XPathNavigator nav, string expression, TrackType trackType)
+        {
+            var tracksIterator = nav.Select(expression);
+
+            // Iterate through the tracks of the same type (audio, midi, return, master)
+            while (tracksIterator.MoveNext())
             {
-                var name = nodeIter.Current.Value;
-                if (!project.Plugins.ContainsKey(name))
+                // Get track name
+                var nameNode = tracksIterator.Current.Select(@"Name/EffectiveName/@Value");
+                nameNode.MoveNext();
+
+                // Create the track
+                var track = TrackFactory.CreateTrack(trackType, nameNode.Current.Value);
+
+                // Get all children devices
+                var devicesIterator = tracksIterator.Current.Select(@"DeviceChain/DeviceChain/Devices");
+                devicesIterator.MoveNext();
+                if (devicesIterator.Current.HasChildren)
                 {
-                    var p = new PluginInfo() { Name = name, Type = type };
-                    project.Plugins.Add(p.Name, p);
+                    if (devicesIterator.Current.MoveToFirstChild())
+                    {
+                        // Get first device
+                        var deviceNode = devicesIterator.Current;
+                        var device = DeviceFactory.CreateDeviceByNodeName(deviceNode.Name);
+
+                        GetDeviceInformation(deviceNode, device);
+
+                        // Add to devices list
+                        track.AddDevice(device);
+
+                        // Iterate through all other devices
+                        while (devicesIterator.Current.MoveToNext())
+                        {
+                            deviceNode = devicesIterator.Current;
+                            device = DeviceFactory.CreateDeviceByNodeName(deviceNode.Name);
+                            GetDeviceInformation(deviceNode, device);
+                            track.AddDevice(device);
+                        }
+                    }
+                }
+
+                project.Tracks.Add(track);
+            }
+        }
+
+        private void GetDeviceInformation(XPathNavigator deviceNode, IDevice device)
+        {
+            if (device.Type == DeviceType.LiveDevice)
+            {
+                device.Name = deviceNode.Name;
+                return;
+            }
+                
+
+            var pluginDescNode = deviceNode.Select(@"PluginDesc");
+            pluginDescNode.MoveNext();
+            if (pluginDescNode.Current.HasChildren)
+            {
+                if (pluginDescNode.Current.MoveToFirstChild())
+                {
+                    var pluginInfo = GetPluginNameAndType(pluginDescNode.Current);
+                    device.Name = pluginInfo.Item1;
+                    (device as PluginDevice).PluginType = pluginInfo.Item2;
                 }
             }
+        }
+
+        private (string, PluginType) GetPluginNameAndType(XPathNavigator pluginDescNode)
+        {
+            var pluginDescNodeName = pluginDescNode.Name.ToUpperInvariant();
+            string pluginName = string.Empty;
+            PluginType pluginType = PluginType.AU;
+            XPathNodeIterator nodeIterator = null;
+
+            switch (pluginDescNodeName)
+            {
+                case "VSTPLUGININFO":
+                    nodeIterator = pluginDescNode.Select(@"PlugName/@Value");
+                    nodeIterator.MoveNext();
+                    pluginName = nodeIterator.Current.Value;
+                    pluginType = PluginType.VST;
+                    break;
+
+                case "VST3PLUGININFO":
+                    nodeIterator = pluginDescNode.Select(@"Name/@Value");
+                    nodeIterator.MoveNext();
+                    pluginName = nodeIterator.Current.Value;
+                    pluginType = PluginType.VST3;
+                    break;
+
+                default:
+                    nodeIterator = pluginDescNode.Select(@"Name/@Value");
+                    nodeIterator.MoveNext();
+                    pluginName = nodeIterator.Current.Value;
+                    pluginType = PluginType.AU;
+                    break;
+            }
+
+            return (pluginName, pluginType);
         }
     }
 }

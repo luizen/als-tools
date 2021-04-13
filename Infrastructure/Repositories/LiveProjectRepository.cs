@@ -70,14 +70,16 @@ namespace AlsTools.Infrastructure.Repositories
             //     .FindAll()
             //     .Where(p => p.Plugins.Intersect(pluginsToLocate))
 
-            //TODO: implement it correctly
-            
+            //TODO: implement it correctly, using DB query            
             var projects = GetAllProjects();
             IList<LiveProject> res = new List<LiveProject>();
             foreach (var p in projects)
-            {                
-                if (p.Plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
-                    res.Add(p);   
+            {
+                var plugins = p.Tracks.Select(x => x.Plugins).Single();
+                if (plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
+                    res.Add(p);
+                // if (p.Plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
+                //     res.Add(p);   
             }
 
             return res.AsEnumerable();

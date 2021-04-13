@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AlsTools.Core.Entities.Tracks;
 
 namespace AlsTools.Core.Entities
 {
@@ -6,8 +7,7 @@ namespace AlsTools.Core.Entities
     {
         public LiveProject()
         {
-            Plugins = new SortedDictionary<string, PluginInfo>();
-            //Plugins = new PluginInfo[0];
+            Tracks = new List<ITrack>();
         }
 
         public int Id { get; set; }
@@ -18,8 +18,6 @@ namespace AlsTools.Core.Entities
 
         public string LiveVersion { get; set; }
 
-        public SortedDictionary<string, PluginInfo> Plugins { get; set; }
-        // public PluginInfo[] Plugins { get; set; }
-
+        public IList<ITrack> Tracks { get; set; } 
     }
 }
