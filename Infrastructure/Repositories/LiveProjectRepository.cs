@@ -75,7 +75,7 @@ namespace AlsTools.Infrastructure.Repositories
             IList<LiveProject> res = new List<LiveProject>();
             foreach (var p in projects)
             {
-                var plugins = p.Tracks.Select(x => x.Plugins).Single();
+                var plugins = p.Tracks.Select(x => x.Plugins).SelectMany(x => x);
                 if (plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
                     res.Add(p);
                 // if (p.Plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
