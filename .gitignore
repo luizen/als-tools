@@ -4,3 +4,4 @@
 *.pdb
 *.cache
 /LiteDb/
+.DS_Store

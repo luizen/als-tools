@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/als-tools.dll",
+            "program": "${workspaceFolder}/bin/Debug/net6.0/als-tools.dll",
             //"args": ["--locate=HG2;bx_tunner", "--folder=/Users/zenluiz/Desktop/Testes ALS"],
             "args": ["--locate=radiator"],
             // "args": ["--list"],
