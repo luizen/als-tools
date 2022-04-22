@@ -32,6 +32,8 @@ namespace AlsTools.Infrastructure
                     {
                         var xPathDoc = new XPathDocument(unzip);
 
+                        GetProjectDetails(project, xPathDoc);
+
                         GetTracks(project, xPathDoc);
                     }
                 }
@@ -40,6 +42,17 @@ namespace AlsTools.Infrastructure
             return project;
         }
 
+        private void GetProjectDetails(LiveProject project, XPathDocument xPathDoc)
+        {
+            var nav = xPathDoc.CreateNavigator();
+            var expression = @"/Ableton/@Creator";
+            var creatorNode = nav.Select(expression);
+            
+            if (!creatorNode.MoveNext())
+                return;
+
+            project.LiveVersion = creatorNode.Current.Value;
+        }
 
         private void GetTracks(LiveProject project, XPathDocument xPathDoc)
         {

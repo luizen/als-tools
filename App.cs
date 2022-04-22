@@ -78,6 +78,7 @@ namespace AlsTools
         {
             await Console.Out.WriteLineAsync("------------------------------------------------------------------------------");
             await Console.Out.WriteLineAsync($"Project name: {project.Name}");
+            await Console.Out.WriteLineAsync($"Live version (creator): {project.LiveVersion}");
             await Console.Out.WriteLineAsync($"Full path: {project.Path}");
             await Console.Out.WriteLineAsync("\tTracks and plugins:");
             

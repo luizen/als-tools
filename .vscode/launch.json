@@ -12,9 +12,9 @@
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/net6.0/als-tools.dll",
             //"args": ["--locate=HG2;bx_tunner", "--folder=/Users/zenluiz/Desktop/Testes ALS"],
-            "args": ["--locate=radiator"],
+            //"args": ["--locate=radiator"],
             // "args": ["--list"],
-            // "args": ["--initdb", "--folder=/Users/zenluiz/Desktop/Testes ALS"],
+            "args": ["--initdb", "--folder=/Users/zenluiz/Desktop/Testes ALS"],
             // "args": ["--initdb", "--folder=/Users/zenluiz/Splice"],
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
