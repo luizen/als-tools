@@ -33,9 +33,6 @@ namespace AlsTools.Infrastructure
                         var xPathDoc = new XPathDocument(unzip);
 
                         GetTracks(project, xPathDoc);
-
-                        //TODO: get master track devices and plugins
-                        //GetMasterTrackAndContents(project, xPathDoc);
                     }
                 }
             }
@@ -43,23 +40,6 @@ namespace AlsTools.Infrastructure
             return project;
         }
 
-        private void GetMasterTrackAndContents(LiveProject project, XPathDocument xPathDoc)
-        {
-            // var nav = xPathDoc.CreateNavigator();
-            // nav.MoveToRoot();
-
-            // var expression = @"//MasterTrack/DeviceChain/DeviceChain/Devices";
-            // GetDevices(project, nav, expression);
-
-            // expression = @"//PluginDevice/PluginDesc/Vst3PluginInfo/Name/@Value";
-            // GetPluginsByExpression(project, nav, expression, PluginType.VST3);
-
-            // expression = @"//PluginDevice/PluginDesc/VstPluginInfo/PlugName/@Value";
-            // GetPluginsByExpression(project, nav, expression, PluginType.VST);
-
-            // expression = @"//AuPluginDevice/PluginDesc/AuPluginInfo/Name/@Value";
-            // GetPluginsByExpression(project, nav, expression, PluginType.AU);
-        }
 
         private void GetTracks(LiveProject project, XPathDocument xPathDoc)
         {
@@ -73,6 +53,9 @@ namespace AlsTools.Infrastructure
 
             expression = @"//LiveSet/Tracks/ReturnTrack";
             GetTrackByExpression(project, nav, expression, TrackType.Return);
+
+            expression = @"//LiveSet/MasterTrack";
+            GetTrackByExpression(project, nav, expression, TrackType.Master);
         }
 
         private void GetTrackByExpression(LiveProject project, XPathNavigator nav, string expression, TrackType trackType)
@@ -155,7 +138,7 @@ namespace AlsTools.Infrastructure
                     nodeIterator = pluginDescNode.Select(@"PlugName/@Value");
                     nodeIterator.MoveNext();
                     pluginName = nodeIterator.Current.Value;
-                    pluginType = PluginType.VST;
+                    pluginType = PluginType.VST2;
                     break;
 
                 case "VST3PLUGININFO":

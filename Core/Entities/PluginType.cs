@@ -2,7 +2,7 @@ namespace AlsTools
 {
     public enum PluginType
     {
-        VST,
+        VST2,
 
         VST3,
         
