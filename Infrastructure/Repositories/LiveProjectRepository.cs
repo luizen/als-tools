@@ -39,64 +39,16 @@ namespace AlsTools.Infrastructure.Repositories
 
         public IEnumerable<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate)
         {
-            // var col = liteDb.GetCollection<LiveProject>("LiveProject");
-
-            // var pluginsList = pluginsToLocate
-
-            // var projects = col
-            //     .Query()
-            //     .Where(proj => proj.Plugins != null && proj.Plugins.Any(k => pluginsToLocate.Any(x => k.Name.Contains(x, StringComparison.InvariantCultureIgnoreCase))))
-            //     .Select(p => p)
-            //     .ToEnumerable();
-
-            // var projects = col
-            //     .Query()
-            //     .Where(proj => proj.Plugins.Where(plugin => pluginsToLocate.Contains(plugin.Name)).Any())
-            //     .Select(p => p)
-            //     .ToEnumerable();
-
-            // var projects = col
-            //     .Query()
-            //     .Where(proj => 
-            //         proj.Plugins.Where(plugin => 
-            //             pluginsToLocate.Any(p => p.Contains(plugin.Name, StringComparison.InvariantCultureIgnoreCase))
-            //         ).Any()
-            //     )
-            //     .Select(p => p)
-            //     .ToEnumerable();
-
-            // var projects = col
-            //     .Include(x => x.Plugins)
-            //     .FindAll()
-            //     .Where(p => p.Plugins.Intersect(pluginsToLocate))
-
-            //TODO: implement it correctly, using DB query            
+            //TODO: implement it correctly, using DB query
             var projects = GetAllProjects();
             IList<LiveProject> res = new List<LiveProject>();
-            foreach (var p in projects)
+            foreach (var proj in projects)
             {
-                var plugins = p.Tracks.Select(x => x.Plugins).SelectMany(x => x);
-                if (plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
-                    res.Add(p);
-                // if (p.Plugins.Any(x => pluginsToLocate.Any(y => x.Key.Contains(y, StringComparison.InvariantCultureIgnoreCase))))
-                //     res.Add(p);   
+                if (proj.Tracks.Any(track => track.Plugins.Any(plugin => pluginsToLocate.Any(plugToLocate => plugin.Key.Contains(plugToLocate, StringComparison.InvariantCultureIgnoreCase)))))
+                    res.Add(proj);
             }
 
             return res.AsEnumerable();
-
-            // var pluginToLocate = pluginsToLocate[0];
-            // var col = liteDb.GetCollection<LiveProject>("LiveProject");
-            
-            // var query = @"SELECT { $.*, $.Plugins[*] FROM LiveProject } WHERE $.Plugins[*].Title LIKE '%" + pluginToLocate + "%'";
-            // var s = liteDb.Execute(query).ToList();
-
-            // var res = col.Query()
-            //     .Where(proj => proj.Plugins.Any(p => p.Key.Contains(pluginToLocate, StringComparison.InvariantCultureIgnoreCase)).Any())
-            //     .Select(x => x);
-
-            // return res.ToEnumerable();
-
-            // return null;
         }
 
         public bool Insert(LiveProject project)
