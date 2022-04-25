@@ -11,6 +11,8 @@ using AlsTools.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Raven.Embedded;
 using Serilog;
 using Serilog.Events;
 
@@ -41,8 +43,12 @@ namespace AlsTools
                     Log.Debug("Parsing arguments");
                     var arguments = ParseArguments(args);
 
+                    Log.Debug("Starting RavenDB server");
+                    var embeddedDbContext = services.GetRequiredService<IEmbeddedDatabaseContext>();
+                    embeddedDbContext.Initialize();
+
                     Log.Debug("Starting application");
-                    var app = services.GetRequiredService<App>();
+                    var app = services.GetRequiredService<AppRavenDb>();
                     await app.Run(arguments);
 
                     Log.Debug("Returning 0");
@@ -83,18 +89,23 @@ namespace AlsTools
 
             // Add DbContext
             serviceCollection.AddSingleton<ILiteDbContext, LiteDbContext>();
+            serviceCollection.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
 
             // Add services
             serviceCollection
                 .AddTransient<ILiveProjectService, LiveProjectService>()
                 .AddTransient<ILiveProjectRepository, LiveProjectRepository>()
+                .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
+                .AddTransient<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
                 .AddTransient<ILiveProjectExtractor, LiveProjectExtractor>()
                 .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>();
 
             serviceCollection.Configure<LiteDbOptions>(configuration.GetSection("LiteDbOptions"));
+            serviceCollection.Configure<RavenDbOptions>(configuration.GetSection("RavenDbOptions"));
 
             // Add app
             serviceCollection.AddTransient<App>();
+            serviceCollection.AddTransient<AppRavenDb>();
         }
 
         private static ProgramArgs ParseArguments(string[] args)
@@ -185,7 +196,7 @@ namespace AlsTools
                 }
             }
 
-            if ((args.ListPlugins && args.LocatePlugins && args.InitDb && args.CountProjects && args.Export) || 
+            if ((args.ListPlugins && args.LocatePlugins && args.InitDb && args.CountProjects && args.Export) ||
                (!args.ListPlugins && !args.LocatePlugins && !args.InitDb && !args.CountProjects && !args.Export))
                 throw new ArgumentException("Please specify either --initdb or --count or --list or --locate or --export option");
 

@@ -35,5 +35,9 @@ After the database is initialized, you can execute further commands.
     > Example: dotnet run --no-build --locate="Abbey Road Vinyl";HG-2;bx_solo
 
 ## Next steps
+- Implement interactive command line
+    https://github.com/spectreconsole/spectre.console
+    https://github.com/shibayan/Sharprompt
+    https://github.com/commandlineparser/commandline
 - Export to Text, CSV, HTML, etc.
 - Find a way to locate plugins using LiteDb own API. 

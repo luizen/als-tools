@@ -1,19 +1,20 @@
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Core.Services
 {
-    public class LiveProjectService : ILiveProjectService
+    public class LiveProjectAsyncService : ILiveProjectAsyncService
     {
-        private readonly ILogger<LiveProjectService> logger;
-        private readonly ILiveProjectRepository repository;
+        private readonly ILogger<LiveProjectAsyncService> logger;
+        private readonly ILiveProjectAsyncRepository repository;
         private readonly ILiveProjectFileSystem fs;
         private readonly ILiveProjectExtractor extractor;
 
-        public LiveProjectService(ILogger<LiveProjectService> logger, ILiveProjectRepository repository, ILiveProjectFileSystem fs, ILiveProjectExtractor extractor)
+        public LiveProjectAsyncService(ILogger<LiveProjectAsyncService> logger, ILiveProjectAsyncRepository repository, ILiveProjectFileSystem fs, ILiveProjectExtractor extractor)
         {
             this.logger = logger;
             this.repository = repository;
@@ -21,33 +22,36 @@ namespace AlsTools.Core.Services
             this.extractor = extractor;
         }
 
-        public int CountProjects()
+        public async Task<int> CountProjectsAsync()
         {
-            return repository.CountProjects();
+            return await repository.CountProjectsAsync();
         }
 
-        public IEnumerable<LiveProject> GetAllProjects()
+        public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync()
         {
-            return repository.GetAllProjects();
+            return await repository.GetAllProjectsAsync();
         }
 
-        public IEnumerable<LiveProject> GetProjectsContainingPlugins(string[] pluginsToLocate)
+        public async Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(string[] pluginsToLocate)
         {
-            return repository.GetProjectsContainingPlugins(pluginsToLocate);
+            return await repository.GetProjectsContainingPluginsAsync(pluginsToLocate);
         }
 
-        public int InitializeDbFromFile(string filePath)
+        public async Task<int> InitializeDbFromFileAsync(string filePath)
         {
-            repository.DeleteAll();
+            await repository.DeleteAllAsync();
             var project = LoadProjectFromSetFile(filePath);
-            return repository.Insert(project) ? 1 : 0;
+            await repository.InsertAsync(project);
+
+            return 1;
         }
 
-        public int InitializeDbFromFolder(string folderPath, bool includeBackupFolder)
+        public async Task<int> InitializeDbFromFolderAsync(string folderPath, bool includeBackupFolder)
         {
-            repository.DeleteAll();
+            await repository.DeleteAllAsync();
             var projects = LoadProjectsFromDirectory(folderPath, includeBackupFolder);
-            return repository.Insert(projects);
+            await repository.InsertAsync(projects);
+            return projects.Count;
         }
 
         private LiveProject LoadProjectFromSetFile(string setFilePath)

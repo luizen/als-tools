@@ -1,3 +1,10 @@
+---> IndexCompilationException: Failed to compile index name = Tracks/ByPlugins, IndexDefinitionProperty='', ProblematicText='' ---> IndexCompilationException: Failed to create index Tracks/ByPlugins, IndexDefinitionProperty='', 
+ProblematicText='' ---> System.InvalidOperationException: Cannot find collection name for interface AlsTools.Core.Entities.Tracks.ITrack, only concrete classes are supported. Did you forget to customize Conventions.FindCollectionName?
+
+
+
+
+
             // var col = liteDb.GetCollection<LiveProject>("LiveProject");
 
             // var colall = liteDb.GetCollection<LiveProject>("LiveProject");

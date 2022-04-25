@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AlsTools.Core.Entities.Tracks;
 
@@ -10,7 +11,7 @@ namespace AlsTools.Core.Entities
             Tracks = new List<ITrack>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         
         public string Name { get; set; }
 
