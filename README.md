@@ -38,6 +38,7 @@ After the database is initialized, you can execute further commands.
 - Implement interactive command line
     https://github.com/spectreconsole/spectre.console
     https://github.com/shibayan/Sharprompt
+- Replace my own custom command parser by existing one
     https://github.com/commandlineparser/commandline
 - Make it possible to use config by file
 - Make it possible to scan multiple folders
