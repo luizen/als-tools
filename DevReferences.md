@@ -9,11 +9,6 @@ https://blog.bitscry.com/2017/05/30/appsettings-json-in-net-core-console-app
 ## Serilog
 https://github.com/serilog/serilog-extensions-hosting
 
-## LiteDB
-https://www.litedb.org
-https://social.technet.microsoft.com/wiki/contents/articles/53416.using-litedb-in-an-asp-net-core-api.aspx
-https://blog.georgekosmidis.net/2019/11/02/using-litedb-in-an-asp-net-core-api
-
 ## RavenDB
 https://ravendb.net
 https://ravendb.net/docs/article-page/5.3/csharp/indexes/what-are-indexes

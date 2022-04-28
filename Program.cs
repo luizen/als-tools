@@ -11,8 +11,6 @@ using AlsTools.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Raven.Embedded;
 using Serilog;
 using Serilog.Events;
 
@@ -88,23 +86,18 @@ namespace AlsTools
             serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
 
             // Add DbContext
-            serviceCollection.AddSingleton<ILiteDbContext, LiteDbContext>();
             serviceCollection.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
 
             // Add services
             serviceCollection
-                .AddTransient<ILiveProjectService, LiveProjectService>()
-                .AddTransient<ILiveProjectRepository, LiveProjectRepository>()
                 .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
                 .AddTransient<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
                 .AddTransient<ILiveProjectExtractor, LiveProjectExtractor>()
                 .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>();
 
-            serviceCollection.Configure<LiteDbOptions>(configuration.GetSection("LiteDbOptions"));
             serviceCollection.Configure<RavenDbOptions>(configuration.GetSection("RavenDbOptions"));
 
             // Add app
-            serviceCollection.AddTransient<App>();
             serviceCollection.AddTransient<AppRavenDb>();
         }
 
