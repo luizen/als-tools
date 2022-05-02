@@ -41,5 +41,9 @@ After the database is initialized, you can execute further commands.
 - Replace my own custom command parser by existing one
     https://github.com/commandlineparser/commandline
 - Make it possible to use config by file
+- Make it possible to use it via
+       - standard command line
+       - interactive command line
+       - web: run a webserver and create a Vue(?) application for that
 - Make it possible to scan multiple folders
 - Export to Text, CSV, HTML, etc.
