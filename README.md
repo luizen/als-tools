@@ -8,6 +8,8 @@ Use this tool to list all Ableton Live sets and their plugins or locate projects
 dotnet build *.sln --configuration Release
 ```
 
+TODO: update README.md with new CLI commands
+
 ## Running
 Supposing your Live sets are under `/Users/myuser/Music/Projects`, the following command **must be executed first** so that it reads all Live sets plus its plugins and loads them into the application database for further analysis.
 
