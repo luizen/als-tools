@@ -1,6 +1,6 @@
 namespace AlsTools.Config
 {
-    public class RavenDbOptions
+    public class DbOptions
     {
         public string DataLocation { get; set; }
 

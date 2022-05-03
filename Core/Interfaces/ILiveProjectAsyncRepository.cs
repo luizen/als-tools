@@ -10,7 +10,7 @@ namespace AlsTools.Core.Interfaces
 
         Task InsertAsync(IEnumerable<LiveProject> projects);
         
-        Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(string[] pluginsToLocate);
+        Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
 
         Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
         

@@ -13,7 +13,7 @@ namespace AlsTools.Infrastructure
     public class EmbeddedDatabaseContext : IEmbeddedDatabaseContext
     {
         private readonly ILogger<EmbeddedDatabaseContext> logger;
-        private readonly IOptions<RavenDbOptions> options;
+        private readonly IOptions<DbOptions> options;
         private bool isInitialized = false;
         private IDocumentStore documentStore = null;
 
@@ -28,7 +28,7 @@ namespace AlsTools.Infrastructure
             }
         }
 
-        public EmbeddedDatabaseContext(ILogger<EmbeddedDatabaseContext> logger, IOptions<RavenDbOptions> options)
+        public EmbeddedDatabaseContext(ILogger<EmbeddedDatabaseContext> logger, IOptions<DbOptions> options)
         {
             this.logger = logger;
             this.options = options;

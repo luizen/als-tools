@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using AlsTools.CliOptions;
 using AlsTools.Config;
 using AlsTools.Core.Interfaces;
 using AlsTools.Core.Services;
 using AlsTools.Infrastructure;
 using AlsTools.Infrastructure.FileSystem;
 using AlsTools.Infrastructure.Repositories;
+using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,6 +23,11 @@ namespace AlsTools
 
         private static async Task<int> Main(string[] args)
         {
+            Log.Debug("Parsing arguments");
+            var parserResult = Parser.Default.ParseArguments<InitDbOptions, CountOptions, ListOptions, LocateOptions>(args);
+            if (parserResult.Tag == ParserResultType.NotParsed)
+                return ProgramReturnCodes.CommandParseError;
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -38,24 +44,21 @@ namespace AlsTools
 
                 try
                 {
-                    Log.Debug("Parsing arguments");
-                    var arguments = ParseArguments(args);
-
-                    Log.Debug("Starting RavenDB server");
+                    Log.Debug("Starting database server");
                     var embeddedDbContext = services.GetRequiredService<IEmbeddedDatabaseContext>();
                     embeddedDbContext.Initialize();
 
                     Log.Debug("Starting application");
-                    var app = services.GetRequiredService<AppRavenDb>();
-                    await app.Run(arguments);
+                    var app = services.GetRequiredService<App>();
+                    await app.Run(parserResult);
 
-                    Log.Debug("Returning 0");
-                    return 0;
+                    Log.Debug("Returning {ReturnCode}", ProgramReturnCodes.Ok);
+                    return ProgramReturnCodes.Ok;
                 }
                 catch (Exception ex)
                 {
-                    Log.Fatal(ex, "An error occured. Returning code 1");
-                    return 1;
+                    Log.Fatal(ex, "An error occurred. Returning code {ErrorCode}", ProgramReturnCodes.UnhandledError);
+                    return ProgramReturnCodes.UnhandledError;
                 }
                 finally
                 {
@@ -95,105 +98,10 @@ namespace AlsTools
                 .AddTransient<ILiveProjectExtractor, LiveProjectExtractor>()
                 .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>();
 
-            serviceCollection.Configure<RavenDbOptions>(configuration.GetSection("RavenDbOptions"));
+            serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
 
             // Add app
-            serviceCollection.AddTransient<AppRavenDb>();
-        }
-
-        private static ProgramArgs ParseArguments(string[] args)
-        {
-            var arguments = GetArguments(args);
-            ValidateArguments(arguments);
-
-            PrintArguments(arguments);
-
-            return arguments;
-        }
-
-        private static void PrintArguments(ProgramArgs args)
-        {
-            Log.Debug("Parameters: {@Args}", args);
-        }
-
-        private static ProgramArgs GetArguments(string[] arguments)
-        {
-            var result = new ProgramArgs();
-            var args = arguments.ToList();
-
-            int indexLocate = args.FindIndex(x => x.StartsWith("--locate="));
-            if (indexLocate >= 0)
-            {
-                var parts = args[indexLocate].Split('=');
-                if (parts.Count() != 2)
-                    throw new ArgumentException("Please specify a semicolon separated list of plugin names to locate!");
-
-                result.LocatePlugins = true;
-                result.PluginsToLocate = parts[1].Split(';');
-            }
-
-            if (args.IndexOf("--initdb") >= 0)
-                result.InitDb = true;
-
-            if (args.IndexOf("--count") >= 0)
-                result.CountProjects = true;
-
-            if (args.IndexOf("--list") >= 0)
-                result.ListPlugins = true;
-
-            if (args.IndexOf("--includebackups") >= 0)
-                result.IncludeBackups = true;
-
-            int indexFolder = args.FindIndex(x => x.StartsWith("--folder="));
-            if (indexFolder >= 0)
-            {
-                var parts = args[indexFolder].Split('=');
-                if (parts.Count() != 2)
-                    throw new ArgumentException("Please specify a folder path!");
-
-                result.Folder = parts[1];
-            }
-
-            int indexFile = args.FindIndex(x => x.StartsWith("--file="));
-            if (indexFile >= 0)
-            {
-                var parts = args[indexFile].Split('=');
-                if (parts.Count() != 2)
-                    throw new ArgumentException("Please specify a file path!");
-
-                result.File = parts[1];
-            }
-
-            int indexExport = args.FindIndex(x => x.StartsWith("--export="));
-            if (indexExport >= 0)
-            {
-                var parts = args[indexFolder].Split('=');
-                if (parts.Count() != 2)
-                    throw new ArgumentException("Please specify a file path!");
-
-                result.ExportFile = parts[1];
-            }
-
-            return result;
-        }
-
-        private static void ValidateArguments(ProgramArgs args)
-        {
-            if (args.InitDb)
-            {
-                // Folder or file is always mandatory for initializing the DB!
-                if ((string.IsNullOrWhiteSpace(args.File) && string.IsNullOrWhiteSpace(args.Folder)) ||
-                    (!string.IsNullOrWhiteSpace(args.File) && !string.IsNullOrWhiteSpace(args.Folder)))
-                {
-                    throw new ArgumentException("Please specify either a folder or file at least");
-                }
-            }
-
-            if ((args.ListPlugins && args.LocatePlugins && args.InitDb && args.CountProjects && args.Export) ||
-               (!args.ListPlugins && !args.LocatePlugins && !args.InitDb && !args.CountProjects && !args.Export))
-                throw new ArgumentException("Please specify either --initdb or --count or --list or --locate or --export option");
-
-            //TODO: implement validation of all other possibilities            
+            serviceCollection.AddTransient<App>();
         }
     }
 }

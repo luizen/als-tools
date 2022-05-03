@@ -5,8 +5,8 @@ namespace AlsTools.Core.Interfaces
 {
     public interface ILiveProjectFileSystem
     {
-        IEnumerable<FileInfo> LoadProjectFilesFromDirectory(string folderPath, bool includeBackupFolder);
+        IEnumerable<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder);
 
-        FileInfo LoadProjectFileFromSetFile(string setFilePath);
+        IEnumerable<FileInfo> LoadProjectFilesFromSetFiles(IEnumerable<string> setFilePaths);
     }
 }

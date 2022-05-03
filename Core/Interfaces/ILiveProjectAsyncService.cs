@@ -6,13 +6,13 @@ namespace AlsTools.Core.Interfaces
 {
     public interface ILiveProjectAsyncService
     {
-        Task<int> InitializeDbFromFileAsync(string filePath);
+        Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths);
 
-        Task<int> InitializeDbFromFolderAsync(string folderPath, bool includeBackupFolder);
+        Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder);
         
         Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
         
-        Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(string[] pluginsToLocate);
+        Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
         
         Task<int> CountProjectsAsync();
     }

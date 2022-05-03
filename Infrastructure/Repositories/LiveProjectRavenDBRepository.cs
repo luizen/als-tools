@@ -63,7 +63,7 @@ namespace AlsTools.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(string[] pluginsToLocate)
+        public async Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
         {
             using (var session = store.OpenAsyncSession())
             {
