@@ -35,22 +35,3 @@ After the database is initialized, you can execute further commands.
     ```
     > Where *plugin1* and *plugin2*, etc, should be the names of the plugins to locate projects using them.
     > Example: dotnet run --no-build --locate="Abbey Road Vinyl";HG-2;bx_solo
-
-## Next steps
-- Replace my own custom command parser by existing one
-    https://github.com/commandlineparser/commandline
-- Implement interactive command line
-    https://github.com/spectreconsole/spectre.console
-    https://github.com/shibayan/Sharprompt
-- Make it possible to use config by file
-- Make it possible to use it via
-       - standard command line
-       - interactive command line
-       - web: run a webserver and create a Vue(?) application for that
-- Merge list and locate functionalities, simplifying.
-- Locate by plugin and devices, by name (equals and contains), by track type (midi, audio, return, master), etc
-- Make it possible to scan multiple folders
-- Find a replacement for Serilog (used here for convenience) to write results to console (formatted as JSON)
-- Extract more information from the ALS files
-- Export to Text, CSV, HTML, etc.
-- Add Unit Tests
