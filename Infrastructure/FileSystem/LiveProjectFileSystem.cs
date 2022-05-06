@@ -8,6 +8,13 @@ namespace AlsTools.Infrastructure.FileSystem
 {
     public class LiveProjectFileSystem : ILiveProjectFileSystem
     {
+        private readonly UserFolderHandler userFolderHandler;
+
+        public LiveProjectFileSystem(UserFolderHandler userFolderHandler)
+        {
+            this.userFolderHandler = userFolderHandler;
+        }
+        
         public IEnumerable<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
         {
             var result = new List<FileInfo>();
@@ -31,29 +38,30 @@ namespace AlsTools.Infrastructure.FileSystem
                 result.Add(file);
             }
 
-            return result;            
+            return result;
         }
 
         private IEnumerable<FileInfo> GetProjectFilesFromSingleDirectory(string folderPath, bool includeBackupFolder)
         {
-            var d = new DirectoryInfo(folderPath);
-            var files = d.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true }).AsEnumerable();
+            var path = userFolderHandler.GetFullPath(folderPath);
+            var dirInfo = new DirectoryInfo(path);
+            var files = dirInfo.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true }).AsEnumerable();
 
             if (!includeBackupFolder)
                 files = files.Where(x => !x.FullName.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
 
             return files;
         }
-        
+
         private FileInfo GetProjectFileFromSetFile(string setFilePath)
         {
-            FileInfo f = new FileInfo(setFilePath);
+            var path = userFolderHandler.GetFullPath(setFilePath);
+            FileInfo file = new FileInfo(path);
 
-            if (!f.Exists)
-                throw new FileNotFoundException($"The specified file does not exist ({setFilePath})");
+            if (!file.Exists)
+                throw new FileNotFoundException($"The specified file does not exist ({path})");
 
-            return f;
+            return file;
         }
-
     }
 }

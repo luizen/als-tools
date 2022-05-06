@@ -91,6 +91,10 @@ namespace AlsTools
             // Add DbContext
             serviceCollection.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
 
+            // Add some helpers
+            serviceCollection.AddSingleton<UserFolderHandler>(svcProvider => 
+                new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
+
             // Add services
             serviceCollection
                 .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
@@ -103,5 +107,6 @@ namespace AlsTools
             // Add app
             serviceCollection.AddTransient<App>();
         }
+
     }
 }
