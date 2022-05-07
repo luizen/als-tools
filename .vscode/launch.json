@@ -16,9 +16,10 @@
             //"args": ["locate", "--plugin-names", "kickbox", "replika"],
             //"args": ["locate", "--plugin-names", "A1StereoControl"],
             //"args": ["list"],
+            //"args": ["count"],
             //"args": ["initdb", "--folders", "/Users\/zenluiz/Desktop/Testes ALS/Projects folder 1", "/Users/zenluiz/Desktop/Testes ALS/Projects folder 2"],
             "args": ["initdb", "--folders", "~/Desktop/Testes ALS/Projects folder 1"],
-            // "args": ["initdb", "--folders", "/Users/zenluiz/Splice"],
+            //"args": ["initdb", "--folders", "/Users/zenluiz/Splice"],
 
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
