@@ -2,9 +2,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Xml.XPath;
 using AlsTools.Core.Entities;
-using AlsTools.Core.Entities.Devices;
 using AlsTools.Core.Factories;
 using AlsTools.Core.Interfaces;
+using AlsTools.Core.ValueObjects;
+using AlsTools.Core.ValueObjects.Devices;
 using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure
@@ -51,7 +52,7 @@ namespace AlsTools.Infrastructure
             if (!creatorNode.MoveNext())
                 return;
 
-            project.LiveVersion = creatorNode.Current.Value;
+            project.Creator = creatorNode.Current.Value;
         }
 
         private void GetTracks(LiveProject project, XPathDocument xPathDoc)

@@ -1,5 +1,5 @@
-using AlsTools.Core.Entities;
-using AlsTools.Core.Entities.Tracks;
+using AlsTools.Core.ValueObjects;
+using AlsTools.Core.ValueObjects.Tracks;
 
 namespace AlsTools.Core.Factories
 {
@@ -10,16 +10,19 @@ namespace AlsTools.Core.Factories
             switch (type)
             {
                 case TrackType.Audio:
-                    return new AudioTrack() { Name = name };
-                
+                    return new AudioTrack() { EffectiveName = name };
+
                 case TrackType.Midi:
-                    return new MidiTrack() { Name = name };
+                    return new MidiTrack() { EffectiveName = name };
 
                 case TrackType.Return:
-                    return new ReturnTrack() { Name = name };
-                
+                    return new ReturnTrack() { EffectiveName = name };
+
+                case TrackType.Group:
+                    return new GroupTrack() { EffectiveName = name };
+
                 default:
-                    return new MasterTrack() { Name = name };
+                    return new MasterTrack() { EffectiveName = name };
             }
         }
     }

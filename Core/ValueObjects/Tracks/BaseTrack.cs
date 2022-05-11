@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using AlsTools.Core.Entities.Devices;
+using AlsTools.Core.ValueObjects.Devices;
 
-namespace AlsTools.Core.Entities.Tracks
+namespace AlsTools.Core.ValueObjects.Tracks
 {
     public abstract class BaseTrack : ITrack
     {
@@ -9,34 +9,36 @@ namespace AlsTools.Core.Entities.Tracks
         {
             Devices = new SortedDictionary<string, LiveDevice>();
             Plugins = new SortedDictionary<string, PluginDevice>();
+            TrackDelay = new TrackDelay();
             Type = type;
         }
 
-        /// <summary>
-        /// Track name
-        /// </summary>
-        public string Name { get; set; }
+        // /// <summary>
+        // /// The track internal Id (from Id attribute).
+        // /// TODO: is it really needed?
+        // /// </summary>
+        // public int Id { get; set; }
 
-        /// <summary>
-        /// Whether the track is an audio, midi or return track
-        /// </summary>
+        public string UserName { get; set; }
+
+        public string EffectiveName { get; set; }
+
         public TrackType Type { get; set; }
 
-        /// <summary>
-        /// All Live devices used in this track
-        /// </summary>
         public SortedDictionary<string, LiveDevice> Devices { get; protected set; }
-        
-        /// <summary>
-        /// All plugins used in this track
-        /// </summary>
+
         public SortedDictionary<string, PluginDevice> Plugins { get; protected set; }
 
-        /// <summary>
-        /// Adds a device to either the <see href="Devices" /> or <see href="Plugins" />
-        /// list, only if it does not exist yet.
-        /// </summary>
-        /// <param name="device">The device object</param>
+        public string Annotation { get; set; }
+
+        public GroupTrack ParentGroupTrack { get; set; }
+
+        public bool IsPartOfGroup => ParentGroupTrack != null;
+
+        public TrackDelay TrackDelay { get; set; }
+       
+        public bool IsFrozen { get; set; }
+
         public void AddDevice(IDevice device)
         {
             if (device.Type == DeviceType.Plugin)

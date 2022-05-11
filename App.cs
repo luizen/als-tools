@@ -75,7 +75,7 @@ namespace AlsTools
         {
             await Console.Out.WriteLineAsync("------------------------------------------------------------------------------");
             await Console.Out.WriteLineAsync($"Project name: {project.Name}");
-            await Console.Out.WriteLineAsync($"Live version (creator): {project.LiveVersion}");
+            await Console.Out.WriteLineAsync($"Live version (creator): {project.Creator}");
             await Console.Out.WriteLineAsync($"Full path: {project.Path}");
             await Console.Out.WriteLineAsync("\tTracks and plugins:");
 
@@ -84,7 +84,7 @@ namespace AlsTools
 
             foreach (var tr in project.Tracks)
             {
-                await Console.Out.WriteLineAsync($"\t\tName = {tr.Name} | Type = {tr.Type}");
+                await Console.Out.WriteLineAsync($"\t\tName = {tr.EffectiveName} | Type = {tr.Type}");
 
                 await Console.Out.WriteLineAsync("\t\t\tLive Devices:");
                 foreach (var ld in tr.Devices)

@@ -1,4 +1,4 @@
-namespace AlsTools.Core.Entities.Tracks
+namespace AlsTools.Core.ValueObjects.Tracks
 {
     public class AudioTrack : BaseTrack, ITrack
     {

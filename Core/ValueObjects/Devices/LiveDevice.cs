@@ -1,5 +1,4 @@
-
-namespace AlsTools.Core.Entities.Devices
+namespace AlsTools.Core.ValueObjects.Devices
 {
     public class LiveDevice : BaseDevice, IDevice
     {
