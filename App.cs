@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AlsTools.CliOptions;
 using AlsTools.Core.Entities;
@@ -53,47 +54,24 @@ namespace AlsTools
 
         private async Task RunList(ListOptions options)
         {
-            var projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
+            var projects = (await liveProjectService.GetAllProjectsAsync()).AsEnumerable();
             await PrintProjectsAndPlugins(projects);
-            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count}");
+
+            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count()}");
         }
 
         private async Task RunLocate(LocateOptions options)
         {
-            var projects = (await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginsToLocate)).ToList();
+            var projects = (await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginsToLocate)).AsEnumerable();
             await PrintProjectsAndPlugins(projects);
-            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count}");
+
+            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count()}");
         }
-    
+
         private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
         {
-            foreach (var p in projects)
-                await PrintProjectAndPlugins(p);
-        }
-
-        private async Task PrintProjectAndPlugins(LiveProject project)
-        {
-            await Console.Out.WriteLineAsync("------------------------------------------------------------------------------");
-            await Console.Out.WriteLineAsync($"Project name: {project.Name}");
-            await Console.Out.WriteLineAsync($"Live version (creator): {project.LiveVersion}");
-            await Console.Out.WriteLineAsync($"Full path: {project.Path}");
-            await Console.Out.WriteLineAsync("\tTracks and plugins:");
-
-            if (project.Tracks.Count == 0)
-                await Console.Out.WriteLineAsync("\t\tNo tracks found!");
-
-            foreach (var tr in project.Tracks)
-            {
-                await Console.Out.WriteLineAsync($"\t\tName = {tr.Name} | Type = {tr.Type}");
-
-                await Console.Out.WriteLineAsync("\t\t\tLive Devices:");
-                foreach (var ld in tr.Devices)
-                    await Console.Out.WriteLineAsync($"\t\t\t\tName = {ld.Key}");
-
-                await Console.Out.WriteLineAsync("\t\t\tPlugins:");
-                foreach (var p in tr.Plugins)
-                    await Console.Out.WriteLineAsync($"\t\t\t\tName = {p.Key} | Type = {p.Value.PluginType}");
-            }
+            var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
+            await Console.Out.WriteLineAsync(fullJsonData);
         }
     }
 }

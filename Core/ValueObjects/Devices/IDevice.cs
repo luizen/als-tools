@@ -1,4 +1,4 @@
-namespace AlsTools.Core.Entities.Devices
+namespace AlsTools.Core.ValueObjects.Devices
 {
     public interface IDevice
     {

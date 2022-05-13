@@ -1,4 +1,4 @@
-namespace AlsTools
+namespace AlsTools.Core.ValueObjects
 {
     public enum PluginType
     {

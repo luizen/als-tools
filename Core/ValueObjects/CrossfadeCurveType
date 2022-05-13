@@ -1,0 +1,20 @@
+// namespace AlsTools.Core.ValueObjects
+// {
+//     //TODO: figure out what value which enum value represents
+//     public enum CrossfadeCurveType
+//     {
+//         Dipped,
+
+//         Intermediate,
+        
+//         ConstantPower,
+
+//         SlowFade,
+
+//         SlowCut,
+
+//         FastCut,
+
+//         Transition
+//     }
+// }

@@ -1,4 +1,4 @@
-using AlsTools.Core.Entities.Devices;
+using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.Factories
 {
