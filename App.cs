@@ -54,42 +54,24 @@ namespace AlsTools
 
         private async Task RunList(ListOptions options)
         {
-            var projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
-            await PrintProjectsAndPlugins(projects, options.JsonOnly);
-            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count}");
+            var projects = (await liveProjectService.GetAllProjectsAsync()).AsEnumerable();
+            await PrintProjectsAndPlugins(projects);
+
+            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count()}");
         }
 
         private async Task RunLocate(LocateOptions options)
         {
-            var projects = (await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginsToLocate)).ToList();
-            await PrintProjectsAndPlugins(projects, options.JsonOnly);
-            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count}");
+            var projects = (await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginsToLocate)).AsEnumerable();
+            await PrintProjectsAndPlugins(projects);
+
+            await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count()}");
         }
 
-        private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects, bool jsonOnly)
+        private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
         {
-            foreach (var p in projects)
-                await PrintProjectAndPlugins(p, jsonOnly);
-        }
-
-        private async Task PrintProjectAndPlugins(LiveProject project, bool jsonOnly)
-        {
-            if (!jsonOnly)
-            {
-                await Console.Out.WriteLineAsync("------------------------------------------------------------------------------");
-                await Console.Out.WriteLineAsync($"Project name: {project.Name}");
-                await Console.Out.WriteLineAsync($"Live version (creator): {project.Creator}");
-                await Console.Out.WriteLineAsync($"Full path: {project.Path}");
-                await Console.Out.WriteLineAsync($"JSON data: {Console.Out.NewLine}");
-            }
-            
-            var fullJsonData = GetJsonPrettify(project);
+            var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
             await Console.Out.WriteLineAsync(fullJsonData);
-        }
-
-        private string GetJsonPrettify(LiveProject p)
-        {
-            return JsonSerializer.Serialize<LiveProject>(p, new JsonSerializerOptions { WriteIndented = true });
         }
     }
 }
