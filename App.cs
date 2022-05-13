@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AlsTools.CliOptions;
 using AlsTools.Core.Entities;
@@ -64,7 +65,7 @@ namespace AlsTools
             await PrintProjectsAndPlugins(projects);
             await Console.Out.WriteLineAsync($"\nTotal of projects: {projects.Count}");
         }
-    
+
         private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
         {
             foreach (var p in projects)
@@ -77,23 +78,14 @@ namespace AlsTools
             await Console.Out.WriteLineAsync($"Project name: {project.Name}");
             await Console.Out.WriteLineAsync($"Live version (creator): {project.Creator}");
             await Console.Out.WriteLineAsync($"Full path: {project.Path}");
-            await Console.Out.WriteLineAsync("\tTracks and plugins:");
+            await Console.Out.WriteLineAsync($"JSON data: {Console.Out.NewLine}");
+            var fullJsonData = GetJsonPrettify(project);
+            await Console.Out.WriteLineAsync(fullJsonData);
+        }
 
-            if (project.Tracks.Count == 0)
-                await Console.Out.WriteLineAsync("\t\tNo tracks found!");
-
-            foreach (var tr in project.Tracks)
-            {
-                await Console.Out.WriteLineAsync($"\t\tName = {tr.EffectiveName} | Type = {tr.Type}");
-
-                await Console.Out.WriteLineAsync("\t\t\tLive Devices:");
-                foreach (var ld in tr.Devices)
-                    await Console.Out.WriteLineAsync($"\t\t\t\tName = {ld.Key}");
-
-                await Console.Out.WriteLineAsync("\t\t\tPlugins:");
-                foreach (var p in tr.Plugins)
-                    await Console.Out.WriteLineAsync($"\t\t\t\tName = {p.Key} | Type = {p.Value.PluginType}");
-            }
+        private string GetJsonPrettify(LiveProject p)
+        {
+            return JsonSerializer.Serialize<LiveProject>(p, new JsonSerializerOptions { WriteIndented = true });
         }
     }
 }

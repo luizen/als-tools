@@ -5,25 +5,30 @@ namespace AlsTools.Core.Factories
 {
     public static class TrackFactory
     {
-        public static ITrack CreateTrack(TrackType type, string name)
+        public static ITrack CreateTrack(TrackType type, string effectiveName, string userName, string annotation, bool? isFrozen, TrackDelay trackDelay, int? parentGroupId = null)
         {
-            switch (type)
+            ITrack track = type switch
             {
-                case TrackType.Audio:
-                    return new AudioTrack() { EffectiveName = name };
+                TrackType.Audio => track = new AudioTrack(),
+                TrackType.Midi => track = new MidiTrack(),
+                TrackType.Return => track = new ReturnTrack(),
+                TrackType.Group => track = new GroupTrack(),
+                _ => track = new MasterTrack()
+            };
 
-                case TrackType.Midi:
-                    return new MidiTrack() { EffectiveName = name };
+            return SetDefaultProperties(track, effectiveName, userName, annotation, isFrozen, trackDelay, parentGroupId);
+        }
 
-                case TrackType.Return:
-                    return new ReturnTrack() { EffectiveName = name };
-
-                case TrackType.Group:
-                    return new GroupTrack() { EffectiveName = name };
-
-                default:
-                    return new MasterTrack() { EffectiveName = name };
-            }
+        private static ITrack SetDefaultProperties(ITrack track, string effectiveName, string userName, string annotation, bool? isFrozen, TrackDelay trackDelay, int? parentGroupId = null)
+        {
+            track.EffectiveName = effectiveName;
+            track.UserName = userName;
+            track.Annotation = annotation;
+            track.IsFrozen = isFrozen;
+            track.TrackDelay = trackDelay;
+            track.TrackGroupId = parentGroupId;
+        
+            return track;
         }
     }
 }

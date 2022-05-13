@@ -9,6 +9,8 @@ namespace AlsTools.Core.Entities
         public LiveProject()
         {
             Tracks = new List<ITrack>();
+            Scenes = new List<Scene>();
+            Locators = new List<Locator>();
         }
 
         /// <summary>

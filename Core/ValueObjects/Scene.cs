@@ -5,7 +5,7 @@ namespace AlsTools.Core.ValueObjects
         /// <summary>
         /// Scene number (Id attribute)
         /// </summary>
-        public int Number { get; set; }
+        public int? Number { get; set; }
 
         /// <summary>
         /// Scene name
@@ -20,21 +20,21 @@ namespace AlsTools.Core.ValueObjects
         /// <summary>
         /// The scene BPM/Tempo
         /// </summary>
-        public int Tempo { get; set; }
+        public int? Tempo { get; set; }
 
         /// <summary>
         /// Whether a tempo/BPM is set
         /// </summary>
-        public bool IsTempoEnabled { get; set; }
+        public bool? IsTempoEnabled { get; set; }
 
         /// <summary>
         /// The scene time signature Id. This is probably a bit mask value.
         /// </summary>
-        public int TimeSignatureId { get; set; }
+        public int? TimeSignatureId { get; set; }
 
         /// <summary>
         /// Whether a time signature is set
         /// </summary>
-        public bool IsTimeSignatureEnabled { get; set; }
+        public bool? IsTimeSignatureEnabled { get; set; }
     }
 }

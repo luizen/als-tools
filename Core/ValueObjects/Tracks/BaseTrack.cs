@@ -37,7 +37,9 @@ namespace AlsTools.Core.ValueObjects.Tracks
 
         public TrackDelay TrackDelay { get; set; }
        
-        public bool IsFrozen { get; set; }
+        public int? TrackGroupId  { get; set; }
+        
+        public bool? IsFrozen  { get; set; }
 
         public void AddDevice(IDevice device)
         {

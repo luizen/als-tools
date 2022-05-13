@@ -31,14 +31,22 @@ namespace AlsTools.Core.ValueObjects.Tracks
         /// <summary>
         /// Whether the track is frozen (Freeze attribute)
         /// </summary>
-        bool IsFrozen { get; set; } //TODO: this shouldn't be here, since Master and Return tracks can't be frozen.
+        bool? IsFrozen { get; set; } //TODO: this shouldn't be here, since Master and Return tracks can't be frozen.
+
+        // /// <summary>
+        // /// The group track which this track belongs to, if any.
+        // /// Can be null. TrackGroupId property.
+        // /// TODO: this shouldn't be here, since Master and Return tracks can't be grouped.
+        // /// </summary>
+        // GroupTrack ParentGroupTrack { get; set; } //TODO: is it really necessary? 
 
         /// <summary>
-        /// The group track which this track belongs to, if any.
+        /// The group track Id which this track belongs to, if any.
         /// Can be null. TrackGroupId property.
         /// TODO: this shouldn't be here, since Master and Return tracks can't be grouped.
         /// </summary>
-        GroupTrack ParentGroupTrack { get; set; } //TODO: is it really necessary? 
+        int? TrackGroupId { get; set; } //TODO: is it really necessary? 
+
 
         /// <summary>
         /// Whether or not this track is part of a group track

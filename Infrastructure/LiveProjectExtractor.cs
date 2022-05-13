@@ -32,10 +32,12 @@ namespace AlsTools.Infrastructure
                     using (StreamReader unzip = new StreamReader(decompressionStream))
                     {
                         var xPathDoc = new XPathDocument(unzip);
+                        var nav = xPathDoc.CreateNavigator();
 
-                        GetProjectDetails(project, xPathDoc);
-
-                        GetTracks(project, xPathDoc);
+                        GetProjectDetails(project, nav);
+                        GetTracks(project, nav);
+                        GetScenes(project, nav);
+                        GetLocators(project, nav);
                     }
                 }
             }
@@ -43,32 +45,103 @@ namespace AlsTools.Infrastructure
             return project;
         }
 
-        private void GetProjectDetails(LiveProject project, XPathDocument xPathDoc)
-        {
-            var nav = xPathDoc.CreateNavigator();
-            var expression = @"/Ableton/@Creator";
-            var creatorNode = nav.Select(expression);
-            
-            if (!creatorNode.MoveNext())
-                return;
 
-            project.Creator = creatorNode.Current.Value;
+        //REFACTOR: refactor to a Locator Extractor
+        private void GetLocators(LiveProject project, XPathNavigator nav)
+        {
+            var expression = $"/Ableton/LiveSet/Locators/Locators/Locator";
+            var locatorsIterator = nav.Select(expression);
+
+            foreach (XPathNavigator locatorNode in locatorsIterator)
+            {
+                var locator = new Locator()
+                {
+                    Number = locatorNode.SelectSingleNode(@"@Id")?.ValueAsInt,
+                    Name = locatorNode.SelectSingleNode(@"Name/@Value")?.Value,
+                    Annotation = locatorNode.SelectSingleNode(@"Annotation/@Value")?.Value,
+                    Time = locatorNode.SelectSingleNode(@"Time/@Value")?.ValueAsInt,
+                    IsSongStart = locatorNode.SelectSingleNode(@"IsSongStart/@Value")?.ValueAsBoolean
+                };
+
+                project.Locators.Add(locator);
+            }
         }
 
-        private void GetTracks(LiveProject project, XPathDocument xPathDoc)
+        private void GetProjectDetails(LiveProject project, XPathNavigator nav)
         {
-            var nav = xPathDoc.CreateNavigator();
+            project.Creator = GetProjectAttribute<string>(nav, "Creator");
+            project.MajorVersion = GetProjectAttribute<string>(nav, "MajorVersion");
+            project.MinorVersion = GetProjectAttribute<string>(nav, "MinorVersion");
+            project.SchemaChangeCount = GetProjectAttribute<int>(nav, "SchemaChangeCount");
+            project.Tempo = GetMasterTrackMixerAttribute<int>(nav, "Tempo");
+            project.TimeSignature = GetMasterTrackMixerAttribute<int>(nav, "TimeSignature");
+            project.GlobalGrooveAmount = GetMasterTrackMixerAttribute<int>(nav, "GlobalGrooveAmount");
 
-            var expression = @"//LiveSet/Tracks/AudioTrack";
+        }
+
+        private T GetMasterTrackMixerAttribute<T>(XPathNavigator nav, string attribute)
+        {
+            var expression = $"/Ableton/LiveSet/MasterTrack/DeviceChain/Mixer/{attribute}/Manual/@Value";
+            return GetXpathValue<T>(nav, expression);
+        }
+
+        private T GetProjectAttribute<T>(XPathNavigator nav, string attribute)
+        {
+            var expression = $"/Ableton/@{attribute}";
+            return GetXpathValue<T>(nav, expression);
+        }
+
+        private T GetXpathValue<T>(XPathNavigator nav, string expression)
+        {
+            var node = nav.Select(expression);
+
+            if (!node.MoveNext())
+                return default(T);
+
+            var result = (T)node.Current.ValueAs(typeof(T));
+
+            return result;
+        }
+
+        //REFACTOR: refactor to a Scene Extractor
+        private void GetScenes(LiveProject project, XPathNavigator nav)
+        {
+            var expression = @"/Ableton/LiveSet/Scenes/Scene";
+            var scenesIterator = nav.Select(expression);
+
+            foreach (XPathNavigator sceneNode in scenesIterator)
+            {
+                var scene = new Scene()
+                {
+                    Number = sceneNode.SelectSingleNode(@"@Id")?.ValueAsInt,
+                    Name = sceneNode.SelectSingleNode(@"Name/@Value")?.Value,
+                    Annotation = sceneNode.SelectSingleNode(@"Annotation/@Value")?.Value,
+                    Tempo = sceneNode.SelectSingleNode(@"Tempo/@Value")?.ValueAsInt,
+                    IsTempoEnabled = sceneNode.SelectSingleNode(@"IsTempoEnabled/@Value")?.ValueAsBoolean,
+                    TimeSignatureId = sceneNode.SelectSingleNode(@"TimeSignatureId/@Value")?.ValueAsInt,
+                    IsTimeSignatureEnabled = sceneNode.SelectSingleNode(@"IsTimeSignatureEnabled/@Value")?.ValueAsBoolean
+                };
+
+                project.Scenes.Add(scene);
+            }
+        }
+
+        //REFACTOR: refactor to a Track Extractor
+        private void GetTracks(LiveProject project, XPathNavigator nav)
+        {
+            var expression = @"/Ableton/LiveSet/Tracks/AudioTrack";
             GetTrackByExpression(project, nav, expression, TrackType.Audio);
 
-            expression = @"//LiveSet/Tracks/MidiTrack";
+            expression = @"/Ableton/LiveSet/Tracks/MidiTrack";
             GetTrackByExpression(project, nav, expression, TrackType.Midi);
 
-            expression = @"//LiveSet/Tracks/ReturnTrack";
+            expression = @"/Ableton/LiveSet/Tracks/ReturnTrack";
             GetTrackByExpression(project, nav, expression, TrackType.Return);
 
-            expression = @"//LiveSet/MasterTrack";
+            expression = @"/Ableton/LiveSet/Tracks/GroupTrack";
+            GetTrackByExpression(project, nav, expression, TrackType.Group);
+
+            expression = @"/Ableton/LiveSet/MasterTrack";
             GetTrackByExpression(project, nav, expression, TrackType.Master);
         }
 
@@ -77,17 +150,24 @@ namespace AlsTools.Infrastructure
             var tracksIterator = nav.Select(expression);
 
             // Iterate through the tracks of the same type (audio, midi, return, master)
-            while (tracksIterator.MoveNext())
+            foreach (XPathNavigator trackNode in tracksIterator)
             {
-                // Get track name
-                var nameNode = tracksIterator.Current.Select(@"Name/EffectiveName/@Value");
-                nameNode.MoveNext();
+                var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")?.Value;
+                var userName = trackNode.SelectSingleNode(@"Name/UserName/@Value")?.Value;
+                var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")?.Value;
+                var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
+                var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")?.ValueAsInt;
+                var trackDelay = new TrackDelay()
+                {
+                    Value = trackNode.SelectSingleNode(@"TrackDelay/Value/@Value")?.ValueAsInt,
+                    IsValueSampleBased = trackNode.SelectSingleNode(@"TrackDelay/IsValueSampleBased/@Value")?.ValueAsBoolean
+                };
 
                 // Create the track
-                var track = TrackFactory.CreateTrack(trackType, nameNode.Current.Value);
+                var track = TrackFactory.CreateTrack(trackType, effectiveName, userName, annotation, isFrozen, trackDelay, groupId);
 
                 // Get all children devices
-                var devicesIterator = tracksIterator.Current.Select(@"DeviceChain/DeviceChain/Devices");
+                var devicesIterator = trackNode.Select(@"DeviceChain/DeviceChain/Devices");
                 devicesIterator.MoveNext();
                 if (devicesIterator.Current.HasChildren)
                 {
@@ -117,6 +197,7 @@ namespace AlsTools.Infrastructure
             }
         }
 
+        //REFACTOR: refactor to a Device Extractor
         private void GetDeviceInformation(XPathNavigator deviceNode, IDevice device)
         {
             if (device.Type == DeviceType.LiveDevice)
@@ -124,7 +205,6 @@ namespace AlsTools.Infrastructure
                 device.Name = deviceNode.Name;
                 return;
             }
-                
 
             var pluginDescNode = deviceNode.Select(@"PluginDesc");
             pluginDescNode.MoveNext();
@@ -139,6 +219,8 @@ namespace AlsTools.Infrastructure
             }
         }
 
+
+        //REFACTOR: refactor to a Plugin Extractor
         private (string, PluginType) GetPluginNameAndType(XPathNavigator pluginDescNode)
         {
             var pluginDescNodeName = pluginDescNode.Name.ToUpperInvariant();
