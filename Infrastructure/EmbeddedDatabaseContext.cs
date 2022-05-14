@@ -36,6 +36,7 @@ namespace AlsTools.Infrastructure
 
         public void Initialize()
         {
+            logger.LogDebug("Starting database server");
             EmbeddedServer.Instance.StartServer(new ServerOptions
             {
                 ServerUrl = options.Value.ServerUrl,

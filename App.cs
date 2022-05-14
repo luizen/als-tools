@@ -25,7 +25,7 @@ namespace AlsTools
 
         public async Task Run(ParserResult<object> parserResult)
         {
-            logger.LogDebug("App start");
+            logger.LogDebug("Starting application");
 
             await parserResult.WithParsedAsync<InitDbOptions>(options => RunInitDb(options));
             await parserResult.WithParsedAsync<CountOptions>(options => RunCount(options));
@@ -36,6 +36,8 @@ namespace AlsTools
 
         private async Task RunInitDb(InitDbOptions options)
         {
+            logger.LogDebug("Initializing database...");
+
             int count = 0;
             if (options.Files.Any())
                 count = await liveProjectService.InitializeDbFromFilesAsync(options.Files);
@@ -47,6 +49,8 @@ namespace AlsTools
 
         private async Task RunCount(CountOptions options)
         {
+            logger.LogDebug("Counting projects...");
+
             int count = await liveProjectService.CountProjectsAsync();
 
             await Console.Out.WriteLineAsync($"\nTotal of projects in the DB: {count}");
@@ -54,6 +58,8 @@ namespace AlsTools
 
         private async Task RunList(ListOptions options)
         {
+            logger.LogDebug("Listing projects...");
+
             var projects = (await liveProjectService.GetAllProjectsAsync()).AsEnumerable();
             await PrintProjectsAndPlugins(projects);
 
@@ -62,6 +68,8 @@ namespace AlsTools
 
         private async Task RunLocate(LocateOptions options)
         {
+            logger.LogDebug("Locating projects...");
+
             var projects = (await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginsToLocate)).AsEnumerable();
             await PrintProjectsAndPlugins(projects);
 
@@ -70,6 +78,8 @@ namespace AlsTools
 
         private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
         {
+            logger.LogDebug("Printing projects and their details...");
+
             var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
             await Console.Out.WriteLineAsync(fullJsonData);
         }

@@ -4,9 +4,8 @@ using CommandLine;
 
 namespace AlsTools.CliOptions
 {
-    [Verb("initdb", 
-        HelpText = @"Initialize the als-tools database with information extracted from Live sets, either from files or folders.")]
-    public class InitDbOptions
+    [Verb("initdb", HelpText = @"Initialize the als-tools database with information extracted from Live sets, either from files or folders.")]
+    public class InitDbOptions : CommonOptions
     {
         [Option("folders", Required = true, SetName = "folders", Min = 1, HelpText = "The root folders to look for Live Sets, recursively including children folders. This option is mutually exclusive with the --files option.")]
         public IEnumerable<string> Folders { get; set; }

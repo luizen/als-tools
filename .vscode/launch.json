@@ -12,13 +12,16 @@
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/net6.0/als-tools.dll",
 
+            // "args": ["--verbosity", "d", "list"],
+            //"args": ["--help"],
             //"args": ["locate", "--plugin-names", "HG2", "bx_tunner"],
             //"args": ["locate", "--plugin-names", "kickbox", "replika"],
             //"args": ["locate", "--plugin-names", "A1StereoControl"],
-            // "args": ["list"],
+            //"args": ["list"],
+            "args": ["list", "log-level", "verbose"],
             //"args": ["count"],
-            // "args": ["initdb", "--folders", "/Users\/zenluiz/Desktop/Testes ALS/Projects folder 1", "/Users/zenluiz/Desktop/Testes ALS/Projects folder 2"],
-            "args": ["initdb", "--folders", "~/Desktop/Testes ALS/Projects folder 1"],
+            //"args": ["initdb", "--folders", "/Users\/zenluiz/Desktop/Testes ALS/Projects folder 1", "/Users/zenluiz/Desktop/Testes ALS/Projects folder 2"],
+            //"args": ["initdb", "--folders", "~/Desktop/Testes ALS/Projects folder 1"],
             //"args": ["initdb", "--folders", "/Users/zenluiz/Splice"],
 
             "cwd": "${workspaceFolder}",
