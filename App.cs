@@ -25,7 +25,7 @@ namespace AlsTools
 
         public async Task Run(ParserResult<object> parserResult)
         {
-            logger.LogDebug("Starting application");
+            logger.LogDebug("Starting application...");
 
             await parserResult.WithParsedAsync<InitDbOptions>(options => RunInitDb(options));
             await parserResult.WithParsedAsync<CountOptions>(options => RunCount(options));

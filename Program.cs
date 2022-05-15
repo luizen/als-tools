@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AlsTools.CliOptions;
 using AlsTools.Core.Interfaces;
+using AlsTools.Exceptions;
 using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,9 +18,18 @@ namespace AlsTools
 
         public static async Task<int> Main(string[] args)
         {
-            var parserResult = new Parser(config => { config.CaseInsensitiveEnumValues = true; }).ParseArguments<InitDbOptions, CountOptions, ListOptions, LocateOptions>(args);
+            var parserResult = new Parser(config =>
+            {
+                config.CaseInsensitiveEnumValues = true;
+                config.HelpWriter = Console.Error;
+            }).ParseArguments<InitDbOptions, CountOptions, ListOptions, LocateOptions>(args);
+
             if (parserResult.Tag == ParserResultType.NotParsed)
+            {
+                await Console.Out.WriteLineAsync($"Command parsing error");
+                Log.Debug("Returning {ReturnCode}", ProgramReturnCodes.Ok);
                 return ProgramReturnCodes.CommandParseError;
+            }
 
             SetupLogging(parserResult);
 
