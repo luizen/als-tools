@@ -62,12 +62,14 @@ namespace AlsTools.Core.ValueObjects.Tracks
         /// <summary>
         /// The Ableton Live stock devices this track contains
         /// </summary>
-        SortedDictionary<string, LiveDevice> Devices { get; } //TODO: change to another type
+        // SortedDictionary<string, LiveDevice> Devices { get; } //TODO: change to another type
+        IList<LiveDevice> Devices { get; }
+
 
         /// <summary>
         /// The third party plugins this track contains
         /// </summary>
-        SortedDictionary<string, PluginDevice> Plugins { get; } //TODO: change to another type
+        IList<PluginDevice> Plugins { get; }
 
         /// <summary>
         /// Adds a device to either the <see cref="Devices" /> or <see cref="Plugins" />
