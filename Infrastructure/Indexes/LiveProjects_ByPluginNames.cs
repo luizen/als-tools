@@ -1,5 +1,3 @@
-
-
 using System.Linq;
 using AlsTools.Core.Entities;
 using Raven.Client.Documents.Indexes;
@@ -16,7 +14,7 @@ namespace AlsTools.Infrastructure.Indexes
                         from plugin in track.Plugins
                             select new
                             {
-                                plugin.Value.Name
+                                plugin.Name
                             };
         }
     }

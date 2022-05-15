@@ -7,8 +7,8 @@ namespace AlsTools.Core.ValueObjects.Tracks
     {
         public BaseTrack(TrackType type)
         {
-            Devices = new SortedDictionary<string, LiveDevice>();
-            Plugins = new SortedDictionary<string, PluginDevice>();
+            Devices = new List<LiveDevice>();
+            Plugins = new List<PluginDevice>();
             TrackDelay = new TrackDelay();
             Type = type;
         }
@@ -25,9 +25,9 @@ namespace AlsTools.Core.ValueObjects.Tracks
 
         public TrackType Type { get; set; }
 
-        public SortedDictionary<string, LiveDevice> Devices { get; protected set; }
+        public IList<LiveDevice> Devices { get; protected set; }
 
-        public SortedDictionary<string, PluginDevice> Plugins { get; protected set; }
+        public IList<PluginDevice> Plugins { get; protected set; }
 
         public string Annotation { get; set; }
 
@@ -44,15 +44,9 @@ namespace AlsTools.Core.ValueObjects.Tracks
         public void AddDevice(IDevice device)
         {
             if (device.Type == DeviceType.Plugin)
-            {
-                if (!Plugins.ContainsKey(device.Name))
-                    Plugins.Add(device.Name, device as PluginDevice);
-            }
+                Plugins.Add(device as PluginDevice);
             else
-            {
-                if (!Devices.ContainsKey(device.Name))
-                    Devices.Add(device.Name, device as LiveDevice);
-            }
+                Devices.Add(device as LiveDevice);
         }
     }
 }
