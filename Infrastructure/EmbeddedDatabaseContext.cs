@@ -36,6 +36,8 @@ namespace AlsTools.Infrastructure
 
         public void Initialize()
         {
+            logger.LogDebug("Starting database server...");
+            
             EmbeddedServer.Instance.StartServer(new ServerOptions
             {
                 ServerUrl = options.Value.ServerUrl,
@@ -49,6 +51,8 @@ namespace AlsTools.Infrastructure
 
         private void DeployAllIndexes()
         {
+            logger.LogDebug("Deploying database indexes...");
+
             // If an index already exists, it is ignored
             IndexCreation.CreateIndexes(typeof(EmbeddedDatabaseContext).Assembly, DocumentStore);
         }
