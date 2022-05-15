@@ -7,7 +7,7 @@ namespace AlsTools.CliOptions
     /// </summary>
     public abstract class CommonOptions
     {
-        [Option("log-level", HelpText = "The logging level. Default is Information", Default = LoggingLevels.Information)]
+        [Option("log-level", HelpText = "The logging level (Verbose, Debug, Information, Warning, Error or Fatal)", Default = LoggingLevels.Information)]
         public LoggingLevels LoggingLevel { get; set; }
     }
 }
