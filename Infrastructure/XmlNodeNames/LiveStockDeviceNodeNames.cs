@@ -1,7 +1,51 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Reflection;
+using Humanizer;
+
 namespace AlsTools.Infrastructure.XmlNodeNames;
 
-public static class LiveStockDeviceNodeName
+public static class LiveStockDeviceNodeNames
 {
+    /// <summary>
+    /// A dictionary associating a stock device XML Node internal name to its readable name, which sometimes is different 
+    /// </summary>
+    private static readonly IReadOnlyDictionary<string, string> stockDeviceNamesByNodeInternalName;
+
+    static LiveStockDeviceNodeNames()
+    {
+        var dic = new Dictionary<string, string>();
+
+        var nestedClassTypes = typeof(LiveStockDeviceNodeNames).GetNestedTypes(BindingFlags.Static | BindingFlags.Public);
+
+        foreach (var classType in nestedClassTypes)
+        {
+            var fields = classType.GetFields(BindingFlags.Static | BindingFlags.Public);
+
+            foreach (var field in fields)
+            {
+                var key = field.GetValue(null).ToString().ToUpperInvariant();
+                var value = field.Name.Humanize(LetterCasing.Title);
+
+                dic.Add(key, value);
+            }
+        }
+
+        stockDeviceNamesByNodeInternalName = new ReadOnlyDictionary<string, string>(dic);
+    }
+
+    public static string GetDeviceNameByNodeName(string nodeName)
+    {
+        var key = nodeName.ToUpperInvariant();
+        string value = null;
+
+        if (stockDeviceNamesByNodeInternalName.TryGetValue(key, out value))
+            return value;
+
+        return nodeName;
+    }
+
     public static class MidiEffects
     {
         public const string Arpegiator = "MidiArpeggiator";

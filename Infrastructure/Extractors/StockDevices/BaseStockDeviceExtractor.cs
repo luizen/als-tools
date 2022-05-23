@@ -1,5 +1,6 @@
 using System.Xml.XPath;
 using AlsTools.Core.ValueObjects.Devices;
+using AlsTools.Infrastructure.XmlNodeNames;
 using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Extractors.StockDevices;
@@ -22,7 +23,9 @@ public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor
 
         var device = new LiveDevice(DeviceSort);
 
-        device.Name = deviceNode.Name;
+        var readableName = LiveStockDeviceNodeNames.GetDeviceNameByNodeName(deviceNode.Name);
+
+        device.Name = readableName;
 
         logger.LogDebug("Device name: {DeviceName}", device.Name);
 

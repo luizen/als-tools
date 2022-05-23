@@ -144,9 +144,9 @@ public partial class Program
     {
         var dic = new Dictionary<string, IStockDeviceExtractor>();
 
-        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeName.AudioEffects), svcProvider.GetRequiredService<IBaseStockAudioEffect>());
-        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeName.MidiEffects), svcProvider.GetRequiredService<IBaseStockMidiEffect>());
-        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeName.MidiInstruments), svcProvider.GetRequiredService<IBaseStockInstrument>());
+        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeNames.AudioEffects), svcProvider.GetRequiredService<IBaseStockAudioEffect>());
+        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeNames.MidiEffects), svcProvider.GetRequiredService<IBaseStockMidiEffect>());
+        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeNames.MidiInstruments), svcProvider.GetRequiredService<IBaseStockInstrument>());
 
         return dic;
     }
