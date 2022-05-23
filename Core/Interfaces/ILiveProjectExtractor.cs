@@ -1,10 +1,9 @@
 using System.IO;
 using AlsTools.Core.Entities;
 
-namespace AlsTools.Core.Interfaces
+namespace AlsTools.Core.Interfaces;
+
+public interface ILiveProjectExtractor
 {
-    public interface ILiveProjectExtractor
-    {
-        LiveProject ExtractProjectFromFile(FileInfo file);
-    }
+    LiveProject ExtractProjectFromFile(FileInfo file);
 }

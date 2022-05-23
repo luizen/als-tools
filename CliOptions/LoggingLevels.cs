@@ -1,20 +1,19 @@
-namespace AlsTools.CliOptions
+namespace AlsTools.CliOptions;
+
+/// <summary>
+/// Logging levels, same as Serilog.
+/// </summary>
+public enum LoggingLevels
 {
-    /// <summary>
-    /// Logging levels, same as Serilog.
-    /// </summary>
-    public enum LoggingLevels
-    {
-        Verbose = 0,
+    Verbose = 0,
 
-        Debug = 1,
+    Debug = 1,
 
-        Information = 2,
+    Information = 2,
 
-        Warning = 3,
+    Warning = 3,
 
-        Error = 4,
+    Error = 4,
 
-        Fatal = 5
-    }
+    Fatal = 5
 }

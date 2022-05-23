@@ -4,64 +4,63 @@ using System.IO;
 using System.Linq;
 using AlsTools.Core.Interfaces;
 
-namespace AlsTools.Infrastructure.FileSystem
+namespace AlsTools.Infrastructure.FileSystem;
+
+public class LiveProjectFileSystem : ILiveProjectFileSystem
 {
-    public class LiveProjectFileSystem : ILiveProjectFileSystem
+    private readonly UserFolderHandler userFolderHandler;
+
+    public LiveProjectFileSystem(UserFolderHandler userFolderHandler)
     {
-        private readonly UserFolderHandler userFolderHandler;
+        this.userFolderHandler = userFolderHandler;
+    }
+    
+    public IEnumerable<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
+    {
+        var result = new List<FileInfo>();
 
-        public LiveProjectFileSystem(UserFolderHandler userFolderHandler)
+        foreach (var folderPath in folderPaths)
         {
-            this.userFolderHandler = userFolderHandler;
-        }
-        
-        public IEnumerable<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
-        {
-            var result = new List<FileInfo>();
-
-            foreach (var folderPath in folderPaths)
-            {
-                var files = GetProjectFilesFromSingleDirectory(folderPath, includeBackupFolder);
-                result.AddRange(files);
-            }
-
-            return result;
+            var files = GetProjectFilesFromSingleDirectory(folderPath, includeBackupFolder);
+            result.AddRange(files);
         }
 
-        public IEnumerable<FileInfo> LoadProjectFilesFromSetFiles(IEnumerable<string> setFilePaths)
+        return result;
+    }
+
+    public IEnumerable<FileInfo> LoadProjectFilesFromSetFiles(IEnumerable<string> setFilePaths)
+    {
+        var result = new List<FileInfo>();
+
+        foreach (var filePath in setFilePaths)
         {
-            var result = new List<FileInfo>();
-
-            foreach (var filePath in setFilePaths)
-            {
-                var file = GetProjectFileFromSetFile(filePath);
-                result.Add(file);
-            }
-
-            return result;
+            var file = GetProjectFileFromSetFile(filePath);
+            result.Add(file);
         }
 
-        private IEnumerable<FileInfo> GetProjectFilesFromSingleDirectory(string folderPath, bool includeBackupFolder)
-        {
-            var path = userFolderHandler.GetFullPath(folderPath);
-            var dirInfo = new DirectoryInfo(path);
-            var files = dirInfo.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true }).AsEnumerable();
+        return result;
+    }
 
-            if (!includeBackupFolder)
-                files = files.Where(x => !x.FullName.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
+    private IEnumerable<FileInfo> GetProjectFilesFromSingleDirectory(string folderPath, bool includeBackupFolder)
+    {
+        var path = userFolderHandler.GetFullPath(folderPath);
+        var dirInfo = new DirectoryInfo(path);
+        var files = dirInfo.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true }).AsEnumerable();
 
-            return files;
-        }
+        if (!includeBackupFolder)
+            files = files.Where(x => !x.FullName.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
 
-        private FileInfo GetProjectFileFromSetFile(string setFilePath)
-        {
-            var path = userFolderHandler.GetFullPath(setFilePath);
-            FileInfo file = new FileInfo(path);
+        return files;
+    }
 
-            if (!file.Exists)
-                throw new FileNotFoundException($"The specified file does not exist ({path})");
+    private FileInfo GetProjectFileFromSetFile(string setFilePath)
+    {
+        var path = userFolderHandler.GetFullPath(setFilePath);
+        FileInfo file = new FileInfo(path);
 
-            return file;
-        }
+        if (!file.Exists)
+            throw new FileNotFoundException($"The specified file does not exist ({path})");
+
+        return file;
     }
 }
