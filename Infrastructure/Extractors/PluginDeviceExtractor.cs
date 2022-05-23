@@ -26,20 +26,17 @@ public class PluginDeviceExtractor : IDeviceExtractor
     {
         logger.LogDebug("Extracting Plugin device from XML...");
 
-        // IDevice device = null;
+        IDevice device = null;
 
-        // var pluginDescNode = deviceNode.Select(@"PluginDesc");
-        // pluginDescNode.MoveNext();
-        // if (pluginDescNode.Current.HasChildren)
-        // {
-        //     if (pluginDescNode.Current.MoveToFirstChild())
-        //     {
-        //         device = GetPluginDevice(pluginDescNode.Current);
-        //     }
-        // }
-
-        var pluginDescNode = deviceNode.SelectSingleNode(@"PluginDesc");
-        var device = GetPluginDevice(pluginDescNode);
+        var pluginDescNode = deviceNode.Select(@"PluginDesc");
+        pluginDescNode.MoveNext();
+        if (pluginDescNode.Current.HasChildren)
+        {
+            if (pluginDescNode.Current.MoveToFirstChild())
+            {
+                device = GetPluginDevice(pluginDescNode.Current);
+            }
+        }
 
         return device;
     }

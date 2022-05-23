@@ -19,11 +19,11 @@
             //"args": ["list"],
             // "args": ["list", "--log-level"],
             
-            "args": ["list", "--log-level", "verbose"],
+            // "args": ["list", "--log-level", "verbose"],
 
             //"args": ["count"],
             //"args": ["initdb", "--folders", "~/Desktop/Testes ALS/Projects folder 1", "~/Desktop/Testes ALS/Projects folder 2"],
-            // "args": ["initdb", "--folders", "~/Desktop/Testes ALS/"],
+            "args": ["initdb", "--folders", "~/Desktop/Testes ALS/", "--log-level", "verbose"],
             
             // "args": ["initdb", "--files", "~/Desktop/Testes ALS/Projects folder 1/AllLiveStockDevices Project/AllLiveStockDevices.als", "--log-level", "debug"],
 
