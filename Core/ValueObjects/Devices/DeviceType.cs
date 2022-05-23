@@ -5,9 +5,9 @@ namespace AlsTools.Core.ValueObjects.Devices;
 /// </summary>
 public enum DeviceType
 {
-    Stock,
+    Stock = 1,
 
-    Plugin,
+    Plugin = 2,
 
-    MaxForLive
+    MaxForLive = 3
 }

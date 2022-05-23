@@ -14,21 +14,21 @@ namespace AlsTools.Core.ValueObjects.Devices;
 /// <seealso href="https://www.ableton.com/en/manual/working-with-instruments-and-effects/">Working with Instruments and Effects</seealso>
 public enum DeviceSort
 {
-    MidiInstrument,
+    MidiInstrument = 1,
 
-    AudioEffect,
+    AudioEffect = 2,
 
-    MidiEffect,
+    MidiEffect = 3,
 
     /// <summary>
     /// In Vst2 and Vst3, it is impossible to differentiate Midi Instrument and Midi Effect.
     /// </summary>
-    MidiInstrumentOrEffect,
+    MidiInstrumentOrEffect = 4,
 
     /// <summary>
     /// AU plugins are difficult (or even impossible) to get the sort from
     /// </summary>
-    Unknown
+    Unknown = 5
 }
 
 

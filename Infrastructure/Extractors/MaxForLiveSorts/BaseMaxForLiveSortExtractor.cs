@@ -43,7 +43,7 @@ public abstract class BaseMaxForLiveSortExtractor : IMaxForLiveSortExtractor
             return string.Empty;
 
         var fileName = Path.GetFileName(nodePathValue);
-        if (string.IsNullOrWhiteSpace(fileName))
+        if (!string.IsNullOrWhiteSpace(fileName))
             return fileName.Replace(".amxd", "");
 
         return string.Empty;

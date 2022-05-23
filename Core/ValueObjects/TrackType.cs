@@ -5,27 +5,27 @@ public enum TrackType
     /// <summary>
     /// Audio track
     /// </summary>
-    Audio,
+    Audio = 1,
 
     /// <summary>
     /// MIDI track
     /// </summary>
-    Midi,
-    
-    /// <summary>
-    /// Return track
-    /// </summary>
-    Return,
+    Midi = 2,
 
     /// <summary>
     /// Group track (groups other tracks)
     /// </summary>
-    Group,
-    
+    Group = 3,
+
+    /// <summary>
+    /// Return track
+    /// </summary>
+    Return = 4,
+
     /// <summary>
     /// Master track
     /// </summary>
-    Master
+    Master = 5
 
     //PreHear -> this is a track type I don't get yet what it means...
 }
