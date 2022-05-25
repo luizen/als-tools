@@ -9,7 +9,7 @@ public static class PluginFormatNodeName
 
     public const string VST3 = "VST3PLUGININFO";
 
-    public const string AU = "AUPLUGINDEVICE";
+    public const string AU = "AUPLUGININFO";
 
     private static readonly IReadOnlyDictionary<PluginFormat, string> nodeNamesByPluginFormat = new ReadOnlyDictionary<PluginFormat, string>
     (
