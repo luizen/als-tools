@@ -57,7 +57,7 @@ public class App
         var projects = await liveProjectService.GetAllProjectsAsync();
         await PrintProjectsAndPlugins(projects);
 
-        logger.LogDebug(@"\nTotal of projects: {@TotalOfProjects}", projects.Count);
+        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
     }
 
     private async Task RunLocate(LocateOptions options)
@@ -67,7 +67,7 @@ public class App
         var projects = await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginsToLocate);
         await PrintProjectsAndPlugins(projects);
 
-        logger.LogDebug(@"\nTotal of projects: {@TotalOfProjects}", projects.Count);
+        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
     }
 
     private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
