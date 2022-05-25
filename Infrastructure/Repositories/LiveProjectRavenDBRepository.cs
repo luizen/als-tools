@@ -1,104 +1,97 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using AlsTools.Infrastructure.Indexes;
-using Microsoft.Extensions.Logging;
 using Raven.Client.Documents;
 using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Queries;
 
-namespace AlsTools.Infrastructure.Repositories
+namespace AlsTools.Infrastructure.Repositories;
+
+public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
 {
-    public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
+    private readonly ILogger<LiveProjectRavenRepository> logger;
+    private readonly IEmbeddedDatabaseContext dbContext;
+    private readonly IDocumentStore store;
+    private readonly string collectionName;
+
+    public LiveProjectRavenRepository(ILogger<LiveProjectRavenRepository> logger, IEmbeddedDatabaseContext dbContext)
     {
-        private readonly ILogger<LiveProjectRavenRepository> logger;
-        private readonly IEmbeddedDatabaseContext dbContext;
-        private readonly IDocumentStore store;
-        private readonly string collectionName;
+        this.logger = logger;
+        this.dbContext = dbContext;
+        this.store = dbContext.DocumentStore;
+        this.collectionName = store.Conventions.GetCollectionName(typeof(LiveProject));
+    }
 
-        public LiveProjectRavenRepository(ILogger<LiveProjectRavenRepository> logger, IEmbeddedDatabaseContext dbContext)
+    public async Task InsertAsync(LiveProject project)
+    {
+        using (var session = store.OpenAsyncSession())
         {
-            this.logger = logger;
-            this.dbContext = dbContext;
-            this.store = dbContext.DocumentStore;
-            this.collectionName = store.Conventions.GetCollectionName(typeof(LiveProject));
+            await session.StoreAsync(project);
+            await session.SaveChangesAsync();
         }
 
-        public async Task InsertAsync(LiveProject project)
+        logger.LogDebug("Inserted project {ProjectName}", project.Name);
+    }
+
+    public async Task InsertAsync(IEnumerable<LiveProject> projects)
+    {
+        BulkInsertOperation bulkInsert = null;
+
+        try
         {
-            using (var session = store.OpenAsyncSession())
+            bulkInsert = store.BulkInsert();
+            int count = 0;
+            foreach (var project in projects)
             {
-                await session.StoreAsync(project);
-                await session.SaveChangesAsync();
+                await bulkInsert.StoreAsync(project);
+                count++;
             }
 
-            logger.LogDebug("Inserted project {ProjectName}", project.Name);
+            logger.LogDebug("Inserted {InsertedProjects} projects", count);
         }
-
-        public async Task InsertAsync(IEnumerable<LiveProject> projects)
+        finally
         {
-            BulkInsertOperation bulkInsert = null;
-
-            try
-            {
-                bulkInsert = store.BulkInsert();
-                int count = 0;
-                foreach (var project in projects)
-                {
-                    await bulkInsert.StoreAsync(project);
-                    count++;
-                }
-
-                logger.LogDebug("Inserted {InsertedProjects} projects", count);
-            }
-            finally
-            {
-                if (bulkInsert != null)
-                    await bulkInsert.DisposeAsync().ConfigureAwait(false);
-            }
+            if (bulkInsert != null)
+                await bulkInsert.DisposeAsync().ConfigureAwait(false);
         }
+    }
 
-        public async Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
+    public async Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
+    {
+        using (var session = store.OpenAsyncSession())
         {
-            using (var session = store.OpenAsyncSession())
-            {
-                var results = await session
-                    .Query<LiveProject, LiveProjects_ByPluginNames>()
-                    .Where(plugin => plugin.Name.In(pluginsToLocate))
-                    .ToListAsync();
+            var results = await session
+                .Query<LiveProject, LiveProjects_ByPluginNames>()
+                .Where(plugin => plugin.Name.In(pluginsToLocate))
+                .ToListAsync();
 
-                return results;
-            }
+            return results;
         }
+    }
 
-        public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync()
+    public async Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync()
+    {
+        using (var session = store.OpenAsyncSession())
         {
-            using (var session = store.OpenAsyncSession())
-            {
-                return await session.Query<LiveProject>().ToListAsync();
-            }
+            return await session.Query<LiveProject>().ToListAsync();
         }
+    }
 
-        public async Task DeleteAllAsync()
+    public async Task DeleteAllAsync()
+    {
+        var operation = await store
+            .Operations
+            .SendAsync(new DeleteByQueryOperation($"from {collectionName}"));
+
+        operation.WaitForCompletion(TimeSpan.FromSeconds(5));
+    }
+
+    public async Task<int> CountProjectsAsync()
+    {
+        using (var session = store.OpenAsyncSession())
         {
-            var operation = await store
-                .Operations
-                .SendAsync(new DeleteByQueryOperation($"from {collectionName}"));
-
-            operation.WaitForCompletion(TimeSpan.FromSeconds(5));
-        }
-
-        public async Task<int> CountProjectsAsync()
-        {
-            using (var session = store.OpenAsyncSession())
-            {
-                return await session.Query<LiveProject>().CountAsync();
-            }
+            return await session.Query<LiveProject>().CountAsync();
         }
     }
 }

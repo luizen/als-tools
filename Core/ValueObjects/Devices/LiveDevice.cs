@@ -1,9 +1,8 @@
-namespace AlsTools.Core.ValueObjects.Devices
+namespace AlsTools.Core.ValueObjects.Devices;
+
+public class LiveDevice : BaseDevice, IDevice
 {
-    public class LiveDevice : BaseDevice, IDevice
+    public LiveDevice(DeviceSort sort) : base(sort, DeviceType.Stock)
     {
-        public LiveDevice() : base(DeviceType.LiveDevice)
-        {
-        }
     }
 }

@@ -1,9 +1,8 @@
-namespace AlsTools.Core.ValueObjects.Tracks
+namespace AlsTools.Core.ValueObjects.Tracks;
+
+public class ReturnTrack : BaseTrack, ITrack
 {
-    public class ReturnTrack : BaseTrack, ITrack
+    public ReturnTrack() : base(TrackType.Return)
     {
-        public ReturnTrack() : base(TrackType.Return)
-        {
-        }
-    }    
-}
+    }
+}    

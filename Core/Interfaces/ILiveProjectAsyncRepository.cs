@@ -1,21 +1,18 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AlsTools.Core.Entities;
 
-namespace AlsTools.Core.Interfaces
+namespace AlsTools.Core.Interfaces;
+
+public interface ILiveProjectAsyncRepository
 {
-    public interface ILiveProjectAsyncRepository
-    {
-        Task InsertAsync(LiveProject project);
+    Task InsertAsync(LiveProject project);
 
-        Task InsertAsync(IEnumerable<LiveProject> projects);
-        
-        Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
+    Task InsertAsync(IEnumerable<LiveProject> projects);
+    
+    Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
 
-        Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
-        
-        Task DeleteAllAsync();
-        
-        Task<int> CountProjectsAsync();
-    }
+    Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
+    
+    Task DeleteAllAsync();
+    
+    Task<int> CountProjectsAsync();
 }

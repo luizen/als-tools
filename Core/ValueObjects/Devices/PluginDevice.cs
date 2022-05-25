@@ -1,11 +1,11 @@
-namespace AlsTools.Core.ValueObjects.Devices
-{
-    public class PluginDevice : BaseDevice, IDevice
-    {
-        public PluginDevice() : base(DeviceType.Plugin)
-        {
-        }
+namespace AlsTools.Core.ValueObjects.Devices;
 
-        public PluginType PluginType { get; set; }
+public class PluginDevice : BaseDevice, IDevice
+{
+    public PluginDevice(DeviceSort sort, PluginFormat format) : base(sort, DeviceType.Plugin)
+    {
+        Format = format;
     }
+
+    public PluginFormat Format { get; protected set; }
 }

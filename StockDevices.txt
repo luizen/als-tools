@@ -1,0 +1,202 @@
+ALL
+===========================
+
+public const string Arpegiator = "Arpegiator";
+public const string Chord = "Chord";
+public const string EnvelopeMidi = "EnvelopeMidi";
+public const string ExpressionControl = "ExpressionControl";
+public const string Microtuner = "Microtuner";
+public const string MidiEffectRack = "MidiEffectRack";
+public const string MidiMonitor = "MidiMonitor";
+public const string MpeControl = "MpeControl";
+public const string NoteEcho = "NoteEcho";
+public const string NoteLength = "NoteLength";
+public const string Pitch = "Pitch";
+public const string Random = "Random";
+public const string RotatingRhythmGenerator = "RotatingRhythmGenerator";
+public const string Scale = "Scale";
+public const string ShaperMidi = "ShaperMidi";
+public const string Velocity = "Velocity";
+
+public const string Analog = "Analog";
+public const string Collision = "Collision";
+public const string CvInstrument = "CvInstrument";
+public const string CvTriggers = "CvTriggers";
+public const string DrumRack = "DrumRack";
+public const string Electric = "Electric";
+public const string ExternalInstrument = "ExternalInstrument";
+public const string Impulse = "Impulse";
+public const string InstrumentRack = "InstrumentRack";
+public const string Operator = "Operator";
+public const string Sampler = "Sampler";
+public const string Simpler = "Simpler";
+public const string Tension = "Tension";
+public const string Wavetable = "Wavetable";
+
+public const string DsClang = "DsClang";
+public const string DsClap = "DsClap";
+public const string DsCymbal = "DsCymbal";
+public const string DsFm = "DsFm";
+public const string DsHh = "DsHh";
+public const string DsKick = "DsKick";
+public const string DsSampler = "DsSampler";
+public const string DsSnare = "DsSnare";
+public const string DsTom = "DsTom";
+
+public const string AlignDelay = "AlignDelay";
+public const string Amp = "Amp";
+public const string AudioEffectRack = "AudioEffectRack";
+public const string AutoFilter = "AutoFilter";
+public const string AutoPan = "AutoPan";
+public const string Cabinet = "Cabinet";
+public const string ChannelEQ = "ChannelEQ";
+public const string ChorusEnsemble = "ChorusEnsemble";
+public const string Compressor = "Compressor";
+public const string Corpus = "Corpus";
+public const string CvClockIn = "CvClockIn";
+public const string CvClockOut = "CvClockOut";
+public const string CvEnvelopeFollower = "CvEnvelopeFollower";
+public const string CvIn = "CvIn";
+public const string CvLfo = "CvLfo";
+public const string CvShaper = "CvShaper";
+public const string CvUtility = "CvUtility";
+public const string Delay = "Delay";
+public const string DrumBuss = "DrumBuss";
+public const string DynamicTube = "DynamicTube";
+public const string Echo = "Echo";
+public const string EnvelopeFollower = "EnvelopeFollower";
+public const string EqEight = "EqEight";
+public const string EqThree = "EqThree";
+public const string Erosion = "Erosion";
+public const string ExternalAudioEffect = "ExternalAudioEffect";
+public const string FilterDelay = "FilterDelay";
+public const string Gate = "Gate";
+public const string GlueCompressor = "GlueCompressor";
+public const string GrainDelay = "GrainDelay";
+public const string HybridReverb = "HybridReverb";
+public const string Lfo = "Lfo";
+public const string Limiter = "Limiter";
+public const string Looper = "Looper";
+public const string MultibandDynamics = "MultibandDynamics";
+public const string Overdrive = "Overdrive";
+public const string Pedal = "Pedal";
+public const string PhaserFlanger = "PhaserFlanger";
+public const string Redux = "Redux";
+public const string Resonators = "Resonators";
+public const string Reverb = "Reverb";
+public const string Saturator = "Saturator";
+public const string Shaper = "Shaper";
+public const string Shifter = "Shifter";
+public const string SpectralResonator = "SpectralResonator";
+public const string SpectralTime = "SpectralTime";
+public const string Spectrum = "Spectrum";
+public const string Tuner = "Tuner";
+public const string Utility = "Utility";
+public const string VinylDistortion = "VinylDistortion";
+public const string Vocoder = "Vocoder";
+
+
+
+
+BY DEVICE SORT
+===========================
+
+StockMidiEffects
+    Arpegiator
+    Chord
+    EnvelopeMidi
+    ExpressionControl
+    Microtuner
+    MidiEffectRack
+    MidiMonitor
+    MpeControl
+    NoteEcho
+    NoteLength
+    Pitch
+    Random
+    RotatingRhythmGenerator
+    Scale
+    ShaperMidi
+    Velocity
+
+
+StockIntruments
+    Analog
+    Collision
+    CvInstrument
+    CvTriggers
+    DrumRack
+    Electric
+    ExternalInstrument
+    Impulse
+    InstrumentRack
+    Operator
+    Sampler
+    Simpler
+    Tension
+    Wavetable
+
+    DrumSynth
+        DsClang
+        DsClap
+        DsCymbal
+        DsFm
+        DsHh
+        DsKick
+        DsSampler
+        DsSnare
+        DsTom
+
+
+StockAudioEffects
+    AlignDelay
+    Amp
+    AudioEffectRack
+    AutoFilter
+    AutoPan
+    Cabinet
+    ChannelEQ
+    ChorusEnsemble
+    Compressor
+    Corpus
+    CvClockIn
+    CvClockOut
+    CvEnvelopeFollower
+    CvIn
+    CvLfo
+    CvShaper
+    CvUtility
+    Delay
+    DrumBuss
+    DynamicTube
+    Echo
+    EnvelopeFollower
+    EqEight
+    EqThree
+    Erosion
+    ExternalAudioEffect
+    FilterDelay
+    Gate
+    GlueCompressor
+    GrainDelay
+    HybridReverb
+    Lfo
+    Limiter
+    Looper
+    MultibandDynamics
+    Overdrive
+    Pedal
+    PhaserFlanger
+    Redux
+    Resonators
+    Reverb
+    Saturator
+    Shaper
+    Shifter
+    SpectralResonator
+    SpectralTime
+    Spectrum
+    Tuner
+    Utility
+    VinylDistortion
+    Vocoder
