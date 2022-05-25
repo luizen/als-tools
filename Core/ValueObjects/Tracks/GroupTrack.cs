@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AlsTools.Core.ValueObjects.Tracks;
 
 public class GroupTrack : BaseTrack, ITrack

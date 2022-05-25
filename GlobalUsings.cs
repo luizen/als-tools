@@ -14,3 +14,4 @@ global using System.Linq;
 global using System.Reflection;
 global using System.Threading.Tasks;
 global using System.Text.Json;
+global using Microsoft.Extensions.Options;
