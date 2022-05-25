@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Xml.XPath;
 using AlsTools.Core.Factories;
 using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Tracks;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Handlers;
 
@@ -20,7 +17,8 @@ public class TrackExtractionHandler : ITrackExtractionHandler
 
     public IReadOnlyList<ITrack> ExtractFromXml(XPathNavigator nav)
     {
-        logger.LogDebug("Extracting Track from XML...");
+        logger.LogDebug("----");
+        logger.LogDebug("Extracting Tracks from XML...");
 
         var tracks = new List<ITrack>();
 
@@ -44,6 +42,8 @@ public class TrackExtractionHandler : ITrackExtractionHandler
 
     private void GetTrackByExpression(IList<ITrack> tracks, XPathNavigator nav, string expression, TrackType trackType)
     {
+        logger.LogDebug("Extracting tracks of type: {@TrackType}", trackType);
+
         var tracksIterator = nav.Select(expression);
 
         // Iterate through the tracks of the same type (audio, midi, return, master)

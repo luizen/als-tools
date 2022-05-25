@@ -1,8 +1,5 @@
-using System;
-using System.IO;
 using AlsTools.Config;
 using AlsTools.Core.Interfaces;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;

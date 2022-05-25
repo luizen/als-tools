@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using AlsTools.Core.Interfaces;
 
 namespace AlsTools.Infrastructure.FileSystem;
@@ -15,7 +11,7 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
         this.userFolderHandler = userFolderHandler;
     }
     
-    public IEnumerable<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
+    public IReadOnlyList<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
     {
         var result = new List<FileInfo>();
 
@@ -28,7 +24,7 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
         return result;
     }
 
-    public IEnumerable<FileInfo> LoadProjectFilesFromSetFiles(IEnumerable<string> setFilePaths)
+    public IReadOnlyList<FileInfo> LoadProjectFilesFromSetFiles(IEnumerable<string> setFilePaths)
     {
         var result = new List<FileInfo>();
 
@@ -41,7 +37,7 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
         return result;
     }
 
-    private IEnumerable<FileInfo> GetProjectFilesFromSingleDirectory(string folderPath, bool includeBackupFolder)
+    private IReadOnlyCollection<FileInfo> GetProjectFilesFromSingleDirectory(string folderPath, bool includeBackupFolder)
     {
         var path = userFolderHandler.GetFullPath(folderPath);
         var dirInfo = new DirectoryInfo(path);
@@ -50,7 +46,7 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
         if (!includeBackupFolder)
             files = files.Where(x => !x.FullName.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
 
-        return files;
+        return files.ToList();
     }
 
     private FileInfo GetProjectFileFromSetFile(string setFilePath)

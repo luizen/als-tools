@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.ValueObjects.Tracks;
@@ -86,5 +85,5 @@ public interface ITrack
     /// list. Duplicated entries are allowed.
     /// </summary>
     /// <param name="devices">The list of device objects</param>
-    void AddDevices(IReadOnlyList<IDevice> devices);
+    void AddDevices(IEnumerable<IDevice> devices);
 }

@@ -1,7 +1,4 @@
-using System.IO;
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects.Devices;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Extractors.MaxForLiveSorts;
 
@@ -19,6 +16,7 @@ public abstract class BaseMaxForLiveSortExtractor : IMaxForLiveSortExtractor
 
     public IDevice ExtractFromXml(XPathNavigator pluginDescNode)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Extracting MaxForLive {@DeviceSort} device...", deviceSort);
 
         var device = new MaxForLiveDevice(deviceSort)

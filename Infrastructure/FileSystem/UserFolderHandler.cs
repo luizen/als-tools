@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace AlsTools.Infrastructure.FileSystem;
 
 public class UserFolderHandler

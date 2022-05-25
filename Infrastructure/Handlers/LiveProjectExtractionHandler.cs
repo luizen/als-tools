@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Xml.XPath;
 using AlsTools.Core.Entities;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Handlers;
 
@@ -16,6 +13,7 @@ public class LiveProjectExtractionHandler : ILiveProjectExtractionHandler
 
     public IReadOnlyList<LiveProject> ExtractFromXml(XPathNavigator nav)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Extracting Live Project from XML...");
 
         var project = new LiveProject()

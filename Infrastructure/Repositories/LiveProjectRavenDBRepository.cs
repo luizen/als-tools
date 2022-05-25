@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using AlsTools.Infrastructure.Indexes;
-using Microsoft.Extensions.Logging;
 using Raven.Client.Documents;
 using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Queries;
 
 namespace AlsTools.Infrastructure.Repositories;
 
@@ -63,7 +57,7 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
-    public async Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
+    public async Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
     {
         using (var session = store.OpenAsyncSession())
         {
@@ -76,7 +70,7 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
-    public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync()
+    public async Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync()
     {
         using (var session = store.OpenAsyncSession())
         {

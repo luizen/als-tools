@@ -1,5 +1,4 @@
 using AlsTools.Core.ValueObjects.Devices;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Extractors.MaxForLiveSorts;
 

@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure.Extractors.StockDevices;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Extractors;
 
@@ -19,11 +16,18 @@ public class StockDeviceExtractor : IDeviceExtractor
 
     public IDevice ExtractFromXml(XPathNavigator deviceNode)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Extracting Live Stock device from XML...");
 
         var stockDeviceNodeName = deviceNode.Name.ToUpperInvariant();
-        var device = stockDeviceExtractors[stockDeviceNodeName].ExtractFromXml(deviceNode);
 
+        if (!stockDeviceExtractors.ContainsKey(stockDeviceNodeName))
+        {
+            logger.LogWarning(@"A stock device with node named '{@DeviceNodeName}' does not have a valid extractor for it.", deviceNode.Name);
+            return new UnknownLiveDevice(deviceNode.Name);            
+        }
+
+        var device = stockDeviceExtractors[stockDeviceNodeName].ExtractFromXml(deviceNode);
         return device;
     }
 }

@@ -1,13 +1,11 @@
 using CommandLine;
-using System;
-using System.Collections.Generic;
 
 namespace AlsTools.Exceptions;
 
 [System.Serializable]
 public class CommandLineParseException : Exception
 {
-    IEnumerable<Error> Errors { get; set; }
+    public IEnumerable<Error> Errors { get; private set; }
 
     public CommandLineParseException() { }
 

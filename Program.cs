@@ -1,12 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using AlsTools.CliOptions;
+﻿using AlsTools.CliOptions;
 using AlsTools.Core.Interfaces;
 using CommandLine;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Serilog;
-using Serilog.Core;
 
 namespace AlsTools;
 

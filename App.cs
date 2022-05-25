@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using AlsTools.CliOptions;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using AlsTools.Exceptions;
 using CommandLine;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools;
 

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CommandLine;
 
 namespace AlsTools.CliOptions;
@@ -7,5 +6,5 @@ namespace AlsTools.CliOptions;
 public class LocateOptions : CommonOptions
 {
     [Option("plugin-names", Required = true, Min = 1, HelpText = "The plugin names to locate projects by.")]
-    public IEnumerable<string> PluginsToLocate { get; set; }
+    public IReadOnlyCollection<string> PluginsToLocate { get; set; }
 }

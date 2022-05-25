@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects.Devices;
-using AlsTools.Infrastructure.Extractors.PluginTypes;
-using Microsoft.Extensions.Logging;
+using AlsTools.Infrastructure.Extractors.PluginFormats;
+using AlsTools.Core.ValueObjects;
+using AlsTools.Infrastructure.XmlNodeNames;
 
 namespace AlsTools.Infrastructure.Extractors;
 
@@ -11,42 +9,44 @@ public class PluginDeviceExtractor : IDeviceExtractor
 {
     private readonly ILogger<PluginDeviceExtractor> logger;
 
-    private readonly IDictionary<string, IPluginTypeExtractor> pluginTypeExtractors;
+    private readonly IDictionary<PluginFormat, IPluginFormatExtractor> pluginFormatExtractors;
 
-    public PluginDeviceExtractor(ILogger<PluginDeviceExtractor> logger, IDictionary<string, IPluginTypeExtractor> extractors)
+    public PluginDeviceExtractor(ILogger<PluginDeviceExtractor> logger, IDictionary<PluginFormat, IPluginFormatExtractor> extractors)
     {
         if (extractors == null || extractors.Count == 0)
             throw new ArgumentNullException(nameof(extractors));
 
         this.logger = logger;
-        this.pluginTypeExtractors = extractors;
+        this.pluginFormatExtractors = extractors;
     }
 
     public IDevice ExtractFromXml(XPathNavigator deviceNode)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Extracting Plugin device from XML...");
 
-        IDevice device = null;
+        var formatExtractor = GetPluginFormatExtractor(deviceNode);
 
+        var device = formatExtractor.ExtractFromXml(deviceNode);
+
+        return device;
+    }
+
+    private IPluginFormatExtractor GetPluginFormatExtractor(XPathNavigator deviceNode)
+    {
         var pluginDescNode = deviceNode.Select(@"PluginDesc");
         pluginDescNode.MoveNext();
         if (pluginDescNode.Current.HasChildren)
         {
             if (pluginDescNode.Current.MoveToFirstChild())
             {
-                device = GetPluginDevice(pluginDescNode.Current);
+                var pluginInfoNodeName = pluginDescNode.Current.Name.ToUpperInvariant();
+                var format = PluginFormatNodeName.GetPluginFormatFromNodeName(pluginInfoNodeName);
+
+                return pluginFormatExtractors[format];
             }
         }
 
-        return device;
-    }
-
-    private IDevice GetPluginDevice(XPathNavigator pluginDescNode)
-    {
-        var pluginDescNodeName = pluginDescNode.Name.ToUpperInvariant();
-        logger.LogDebug("Extracting plugin details. Plugin description node name: {PluginDescNodeName}", pluginDescNodeName);
-
-        var pluginDevice = pluginTypeExtractors[pluginDescNodeName].ExtractFromXml(pluginDescNode);
-        return pluginDevice;
+        throw new InvalidOperationException("Plugin format extractor not found");
     }
 }

@@ -1,4 +1,3 @@
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Infrastructure.Extractors;

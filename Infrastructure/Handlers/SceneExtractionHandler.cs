@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Handlers;
 
@@ -16,6 +13,7 @@ public class SceneExtractionHandler : ISceneExtractionHandler
 
     public IReadOnlyList<Scene> ExtractFromXml(XPathNavigator nav)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Extracting Scenes from XML...");
         
         var expression = @"/Ableton/LiveSet/Scenes/Scene";

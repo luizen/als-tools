@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Handlers;
 
@@ -16,6 +13,7 @@ public class LocatorExtractionHandler : ILocatorExtractionHandler
 
     public IReadOnlyList<Locator> ExtractFromXml(XPathNavigator nav)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Extracting Locators from XML...");
 
         var expression = $"/Ableton/LiveSet/Locators/Locators/Locator";

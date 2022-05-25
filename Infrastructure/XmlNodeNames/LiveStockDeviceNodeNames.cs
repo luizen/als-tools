@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Reflection;
 using Humanizer;
 
 namespace AlsTools.Infrastructure.XmlNodeNames;
@@ -32,7 +28,7 @@ public static class LiveStockDeviceNodeNames
             }
         }
 
-        stockDeviceNamesByNodeInternalName = new ReadOnlyDictionary<string, string>(dic);
+        stockDeviceNamesByNodeInternalName = new Dictionary<string, string>(dic);
     }
 
     public static string GetDeviceNameByNodeName(string nodeName)

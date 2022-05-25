@@ -1,4 +1,3 @@
-using System.Linq;
 using AlsTools.Core.Entities;
 using Raven.Client.Documents.Indexes;
 

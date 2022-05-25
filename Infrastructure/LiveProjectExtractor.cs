@@ -1,11 +1,6 @@
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Xml.XPath;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using AlsTools.Infrastructure.Handlers;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure;
 
@@ -32,17 +27,23 @@ public class LiveProjectExtractor : ILiveProjectExtractor
 
     public LiveProject ExtractProjectFromFile(FileInfo file)
     {
-        logger.LogDebug("Extracting project from file {file}", file.FullName);
+        logger.LogDebug("=========================================================================");
+        logger.LogTrace("Start: ExtractProjectFromFile. File: {@File}", file.FullName);
 
+        logger.LogTrace("Opening project file as read-only...");
         using (FileStream originalFileStream = file.OpenRead())
         {
+            logger.LogTrace("Unzipping file into memory...");
             using (GZipStream decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
             {
+                logger.LogTrace("Creating stream reader...");
                 using (StreamReader unzip = new StreamReader(decompressionStream))
                 {
+                    logger.LogTrace("Creating XPathDocument...");
                     var xPathDoc = new XPathDocument(unzip);
                     var nav = xPathDoc.CreateNavigator();
 
+                    logger.LogTrace("Calling the entry point: ExtractProject()...");
                     var project = ExtractProject(file.Name, file.FullName, nav);
                     return project;
                 }
@@ -52,6 +53,10 @@ public class LiveProjectExtractor : ILiveProjectExtractor
 
     private LiveProject ExtractProject(string fileName, string fullPath, XPathNavigator nav)
     {
+        logger.LogDebug("About to start extracting project data...");
+        logger.LogDebug("Project file: {@ProjectFile}", fileName);
+        logger.LogDebug("Project path: {@ProjectFullPath}", fullPath);
+
         var project = liveProjectExtractionHandler.ExtractFromXml(nav).Single();
         project.Name = fileName;
         project.Path = fullPath;

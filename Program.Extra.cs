@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using AlsTools.CliOptions;
+﻿using AlsTools.CliOptions;
 using AlsTools.Config;
 using AlsTools.Core.Interfaces;
 using AlsTools.Core.Services;
+using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure;
 using AlsTools.Infrastructure.Extractors;
 using AlsTools.Infrastructure.Extractors.MaxForLiveSorts;
-using AlsTools.Infrastructure.Extractors.PluginTypes;
+using AlsTools.Infrastructure.Extractors.PluginFormats;
 using AlsTools.Infrastructure.Extractors.StockDevices;
 using AlsTools.Infrastructure.FileSystem;
 using AlsTools.Infrastructure.FileSystem.Extractors.StockDevices.StockAudioEffects;
@@ -18,12 +15,7 @@ using AlsTools.Infrastructure.Handlers;
 using AlsTools.Infrastructure.Repositories;
 using AlsTools.Infrastructure.XmlNodeNames;
 using CommandLine;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace AlsTools;
 
@@ -97,13 +89,13 @@ public partial class Program
                      }
                 );
 
-        // Plugin Extractors
-        serviceCollection.AddSingleton<IDictionary<string, IPluginTypeExtractor>>(svcProvider =>
-                     new Dictionary<string, IPluginTypeExtractor>()
+        // Plugin Format Extractors
+        serviceCollection.AddSingleton<IDictionary<PluginFormat, IPluginFormatExtractor>>(svcProvider =>
+                     new Dictionary<PluginFormat, IPluginFormatExtractor>()
                      {
-                         [PluginTypeNodeName.VST2] = new Vst2PluginTypeExtractor(svcProvider.GetRequiredService<ILogger<Vst2PluginTypeExtractor>>()),
-                         [PluginTypeNodeName.VST3] = new Vst3PluginTypeExtractor(svcProvider.GetRequiredService<ILogger<Vst3PluginTypeExtractor>>()),
-                         [PluginTypeNodeName.AU] = new AuPluginTypeExtractor(svcProvider.GetRequiredService<ILogger<AuPluginTypeExtractor>>())
+                         [PluginFormat.VST2] = new Vst2PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst2PluginFormatExtractor>>()),
+                         [PluginFormat.VST3] = new Vst3PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst3PluginFormatExtractor>>()),
+                         [PluginFormat.AU] = new AuPluginFormatExtractor(svcProvider.GetRequiredService<ILogger<AuPluginFormatExtractor>>())
                      }
                 );
 
@@ -118,7 +110,7 @@ public partial class Program
                      new Dictionary<DeviceType, IDeviceExtractor>()
                      {
                          [DeviceType.Stock] = new StockDeviceExtractor(svcProvider.GetRequiredService<ILogger<StockDeviceExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IStockDeviceExtractor>>()),
-                         [DeviceType.Plugin] = new PluginDeviceExtractor(svcProvider.GetRequiredService<ILogger<PluginDeviceExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IPluginTypeExtractor>>()),
+                         [DeviceType.Plugin] = new PluginDeviceExtractor(svcProvider.GetRequiredService<ILogger<PluginDeviceExtractor>>(), svcProvider.GetRequiredService<IDictionary<PluginFormat, IPluginFormatExtractor>>()),
                          [DeviceType.MaxForLive] = new MaxForLiveDeviceExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveDeviceExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IMaxForLiveSortExtractor>>()),
                      }
                 );

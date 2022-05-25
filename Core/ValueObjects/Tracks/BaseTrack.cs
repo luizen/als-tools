@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.ValueObjects.Tracks;
@@ -49,6 +48,8 @@ public abstract class BaseTrack : ITrack
     {
         //TODO: should I get rid of the specific collections (stock, plugins, max4live) and put all devices in a single collection?
 
+        List<string> l = new List<string>();
+
         if (device.Family.Type == DeviceType.Plugin)
             Plugins.Add(device as PluginDevice);
         if (device.Family.Type == DeviceType.Stock)
@@ -57,7 +58,7 @@ public abstract class BaseTrack : ITrack
             MaxForLiveDevices.Add(device as MaxForLiveDevice);
     }
 
-    public void AddDevices(IReadOnlyList<IDevice> devices)
+    public void AddDevices(IEnumerable<IDevice> devices)
     {
         foreach (var device in devices)
             AddDevice(device);

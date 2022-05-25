@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure.Extractors;
 using AlsTools.Infrastructure.XmlNodeNames;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Handlers;
 
@@ -33,6 +29,7 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
 
     public IReadOnlyList<IDevice> ExtractFromXml(XPathNavigator nav)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Exctracting devices from XML...");
 
         var devices = new List<IDevice>();

@@ -1,7 +1,5 @@
-using System.Xml.XPath;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure.XmlNodeNames;
-using Microsoft.Extensions.Logging;
 
 namespace AlsTools.Infrastructure.Extractors.StockDevices;
 
@@ -19,6 +17,7 @@ public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor
 
     public virtual IDevice ExtractFromXml(XPathNavigator deviceNode)
     {
+        logger.LogDebug("----");
         logger.LogDebug("Extracting Live Stock {DeviceSort} device from XML...", DeviceSort);
 
         var device = new LiveDevice(DeviceSort);
