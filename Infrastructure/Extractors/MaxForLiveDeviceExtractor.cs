@@ -23,6 +23,8 @@ public class MaxForLiveDeviceExtractor : IDeviceExtractor
         var max4LiveDeviceDescNode = deviceNode.Name.ToUpperInvariant();
         var device = maxForLiveExtractors[max4LiveDeviceDescNode].ExtractFromXml(deviceNode);
 
+        logger.LogDebug(@"Extracted MaxForLive device: {@DeviceName}", device.Name);
+
         return device;
     }
 }

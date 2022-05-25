@@ -63,6 +63,8 @@ public class TrackExtractionHandler : ITrackExtractionHandler
             // Create the track
             var track = TrackFactory.CreateTrack(trackType, effectiveName, userName, annotation, isFrozen, trackDelay, groupId);
 
+            logger.LogDebug(@"Extracted Track name: {@TrackName}", track.EffectiveName);
+
             // Get all devices in this track
             var devices = deviceExtractionHandler.ExtractFromXml(trackNode);
             track.AddDevices(devices);
