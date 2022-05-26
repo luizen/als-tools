@@ -5,3 +5,10 @@
 *.pdb
 *.cache
 output/*
+src/als-tools.core/bin/*
+src/als-tools.core/obj/*
+src/als-tools.infrastructure/obj/*
+src/als-tools.infrastructure/bin/*
+src/als-tools.ui.cli/bin/*
+src/als-tools.ui.cli/obj/*
+src/als-tools.ui.cli/output/*
