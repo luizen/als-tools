@@ -7,23 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/als-tools.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "clean",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "clean",
-                "${workspaceFolder}/als-tools.csproj",
+                "${workspaceFolder}/src/als-tools.ui.cli/als-tools.ui.cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -35,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/als-tools.csproj",
+                "${workspaceFolder}/src/als-tools.ui.cli/als-tools.ui.cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -48,9 +32,8 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/als-tools.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--project",
+                "${workspaceFolder}/src/als-tools.ui.cli/als-tools.ui.cli.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

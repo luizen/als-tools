@@ -10,27 +10,38 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net6.0/als-tools.dll",
-
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
             //"args": ["--help"],
+            //"args": ["count"],
             //"args": ["locate", "--plugin-names", "HG2", "bx_tunner"],
             //"args": ["locate", "--plugin-names", "kickbox", "replika"],
             //"args": ["locate", "--plugin-names", "A1StereoControl"],
             //"args": ["list"],
-            // "args": ["list", "--log-level"],
             
-            // "args": ["list", "--log-level", "verbose"],
+            "args": [
+                "list",
+                "--log-level",
+                "verbose"
+            ],
 
-            //"args": ["count"],
-            //"args": ["initdb", "--folders", "~/Desktop/Testes ALS/Projects folder 1", "~/Desktop/Testes ALS/Projects folder 2"],
-            "args": ["initdb", "--folders", "~/Desktop/Testes ALS/", "--log-level", "verbose"],
-            
-            // "args": ["initdb", "--files", "~/Desktop/Testes ALS/Projects folder 1/AllLiveStockDevices Project/AllLiveStockDevices.als", "--log-level", "debug"],
+            // "args": [
+            //     "initdb",
+            //     "--folders",
+            //     "~/Desktop/Testes ALS/",
+            //     "--log-level",
+            //     "verbose"
+            // ],
 
-            // "args": ["initdb", "--folders", "~/Documents/Desenvolvimento/repos/als-tools/sample-live-sets"],
+            // "args": [
+            //     "initdb",
+            //     "--folders",
+            //     "~/Desktop/Testes ALS/Projects folder 1",
+            //     "~/Desktop/Testes ALS/Projects folder 2"
+            // ],
+            //"args": ["initdb", "--files", "~/Desktop/Testes ALS/Projects folder 1/AllLiveStockDevices Project/AllLiveStockDevices.als", "--log-level", "debug"],
+            //"args": ["initdb", "--folders", "~/Documents/Desenvolvimento/repos/als-tools/sample-live-sets"],
             //"args": ["initdb", "--folders", "~/Splice"],
-
-            "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false
@@ -38,8 +49,7 @@
         {
             "name": ".NET Core Attach",
             "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
+            "request": "attach"
         }
     ]
 }
