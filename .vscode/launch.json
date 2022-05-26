@@ -15,7 +15,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -33,7 +33,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -50,7 +50,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -67,7 +67,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -84,7 +84,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -99,7 +99,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -114,7 +114,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -132,7 +132,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -150,7 +150,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         },
         {
@@ -167,7 +167,7 @@
                 "--log-level",
                 "verbose"
             ],
-            "console": "externalTerminal",
+            "console": "internalConsole",
             "stopAtEntry": false
         }
     ]
