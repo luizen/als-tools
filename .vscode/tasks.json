@@ -5,6 +5,7 @@
             "label": "build",
             "command": "dotnet",
             "type": "process",
+            "isBuildCommand": true,
             "args": [
                 "build",
                 "${workspaceFolder}/src/als-tools.ui.cli/als-tools.ui.cli.csproj",
@@ -36,6 +37,54 @@
                 "${workspaceFolder}/src/als-tools.ui.cli/als-tools.ui.cli.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "als-tools initdb",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "initdb",
+                "--folders",
+                "~/Desktop/Testes ALS/",
+                "--log-level",
+                "verbose",
+                "--project",
+                "${workspaceFolder}/src/als-tools.ui.cli/als-tools.ui.cli.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true,
+                "revealProblems": "onProblem"
+            }
+        },
+        {
+            "label": "als-tools list",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "list",
+                "--log-level",
+                "verbose",
+                "--project",
+                "${workspaceFolder}/src/als-tools.ui.cli/als-tools.ui.cli.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true,
+                "revealProblems": "onProblem"
+            }
         }
     ]
 }
