@@ -25,10 +25,10 @@ public class LocatorExtractionHandler : ILocatorExtractionHandler
             var locator = new Locator()
             {
                 Number = locatorNode.SelectSingleNode(@"@Id")?.ValueAsInt,
-                Name = locatorNode.SelectSingleNode(@"Name/@Value")?.Value,
-                Annotation = locatorNode.SelectSingleNode(@"Annotation/@Value")?.Value,
-                Time = locatorNode.SelectSingleNode(@"Time/@Value")?.ValueAsInt,
-                IsSongStart = locatorNode.SelectSingleNode(@"IsSongStart/@Value")?.ValueAsBoolean
+                Name = locatorNode.SelectSingleNode(@"Name/@Value")!.Value,
+                Annotation = locatorNode.SelectSingleNode(@"Annotation/@Value")!.Value,
+                Time = locatorNode.SelectSingleNode(@"Time/@Value")!.ValueAsInt,
+                IsSongStart = locatorNode.SelectSingleNode(@"IsSongStart/@Value")!.ValueAsBoolean
             };
 
             locators.Add(locator);

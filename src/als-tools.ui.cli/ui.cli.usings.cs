@@ -8,3 +8,4 @@ global using Serilog.Events;
 global using System.Reflection;
 global using System.Text.Json;
 global using CommandLine;
+global using System.Runtime.Serialization;

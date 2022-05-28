@@ -36,11 +36,8 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
 
     public async Task InsertAsync(IEnumerable<LiveProject> projects)
     {
-        BulkInsertOperation bulkInsert = null;
-
-        try
+        await using (var bulkInsert = store.BulkInsert())
         {
-            bulkInsert = store.BulkInsert();
             int count = 0;
             foreach (var project in projects)
             {
@@ -49,11 +46,6 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             }
 
             logger.LogDebug("Inserted {InsertedProjects} projects", count);
-        }
-        finally
-        {
-            if (bulkInsert != null)
-                await bulkInsert.DisposeAsync().ConfigureAwait(false);
         }
     }
 

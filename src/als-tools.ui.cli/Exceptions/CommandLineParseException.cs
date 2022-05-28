@@ -3,7 +3,7 @@ namespace AlsTools.Ui.Cli.Exceptions;
 [System.Serializable]
 public class CommandLineParseException : Exception
 {
-    public IEnumerable<Error> Errors { get; private set; }
+    public IEnumerable<Error>? Errors { get; private set; }
 
     public CommandLineParseException() { }
 
@@ -27,6 +27,6 @@ public class CommandLineParseException : Exception
     }
 
     protected CommandLineParseException(
-        System.Runtime.Serialization.SerializationInfo info,
-        System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        SerializationInfo info,
+        StreamingContext context) : base(info, context) { }
 }

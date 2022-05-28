@@ -28,7 +28,7 @@ public class Vst2PluginFormatExtractor : BasePluginFormatExtractor, IPluginForma
 
     protected override DeviceSort GetPluginSort(XPathNavigator pluginDescNode, string pluginName)
     {
-        var category = pluginDescNode.SelectSingleNode(@"PluginDesc/VstPluginInfo/Category/@Value")?.Value;
+        var category = pluginDescNode.SelectSingleNode(@"PluginDesc/VstPluginInfo/Category/@Value")!.Value;
 
         // Voxengo SPAN, for instance (and I have no idea why), has <Category Value="3" />
         if (!deviceSortsByCategory.ContainsKey(category))

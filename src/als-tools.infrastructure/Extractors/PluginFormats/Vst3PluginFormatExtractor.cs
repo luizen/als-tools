@@ -28,7 +28,7 @@ public class Vst3PluginFormatExtractor : BasePluginFormatExtractor, IPluginForma
 
     protected override DeviceSort GetPluginSort(XPathNavigator pluginDescNode, string pluginName)
     {
-        var deviceType = pluginDescNode.SelectSingleNode(@"PluginDesc/Vst3PluginInfo/DeviceType/@Value")?.Value;
+        var deviceType = pluginDescNode.SelectSingleNode(@"PluginDesc/Vst3PluginInfo/DeviceType/@Value")!.Value;
 
         if (!deviceSortsByDeviceType.ContainsKey(deviceType))
         {

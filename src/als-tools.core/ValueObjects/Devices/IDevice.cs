@@ -11,7 +11,7 @@ public interface IDevice
     /// The device original, factory name
     /// </summary>
     string Name { get; set; }
-    
+
     /// <summary>
     /// The name the user has given to the device
     /// </summary>

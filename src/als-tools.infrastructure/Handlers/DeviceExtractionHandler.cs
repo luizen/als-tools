@@ -8,7 +8,7 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
 {
     private readonly ILogger<DeviceExtractionHandler> logger;
     private readonly IDictionary<DeviceType, IDeviceExtractor> deviceExtractors;
-    
+
     private static readonly IDictionary<string, DeviceType> deviceTypesByNodeDesc = new Dictionary<string, DeviceType>()
     {
         [DeviceTypeNodeName.Plugin] = DeviceType.Plugin,
@@ -35,7 +35,7 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
         var devices = new List<IDevice>();
         var devicesIterator = nav.Select(@"DeviceChain/DeviceChain/Devices");
         devicesIterator.MoveNext();
-        if (devicesIterator.Current.HasChildren)
+        if (devicesIterator.Current?.HasChildren ?? false)
         {
             if (devicesIterator.Current.MoveToFirstChild())
             {
@@ -68,7 +68,7 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
     private IDeviceExtractor GetDeviceExtractorByDeviceType(DeviceType type)
     {
         logger.LogDebug("Getting device extractor by device type ({@DeviceType})...", type);
-        
+
         var extractor = deviceExtractors[type];
 
         logger.LogDebug("Found device extractor: {@DeviceExtractor})", extractor);
@@ -82,7 +82,7 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
 
         var deviceNodeNameUpper = deviceNodeName.ToUpperInvariant();
         DeviceType type;
-        
+
         if (deviceTypesByNodeDesc.TryGetValue(deviceNodeNameUpper, out type))
             return type;
 

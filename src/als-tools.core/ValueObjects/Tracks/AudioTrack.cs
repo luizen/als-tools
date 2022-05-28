@@ -5,4 +5,4 @@ public class AudioTrack : BaseTrack, ITrack
     public AudioTrack() : base(TrackType.Audio)
     {
     }
-}    
+}

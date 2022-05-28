@@ -28,9 +28,9 @@ public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor
 
         logger.LogDebug("Device name: {DeviceName}", device.Name);
 
-        device.UserName = deviceNode.SelectSingleNode(@"UserName/@Value")?.Value;
-        device.Annotation = deviceNode.SelectSingleNode(@"Annotation/@Value")?.Value;
-        device.Id = deviceNode.SelectSingleNode(@"@Id").ValueAsInt;
+        device.UserName = deviceNode.SelectSingleNode(@"UserName/@Value")!.Value;
+        device.Annotation = deviceNode.SelectSingleNode(@"Annotation/@Value")!.Value;
+        device.Id = deviceNode.SelectSingleNode(@"@Id")!.ValueAsInt;
 
         return device;
     }

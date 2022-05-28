@@ -18,15 +18,15 @@ public abstract class BasePluginFormatExtractor : IPluginFormatExtractor
     {
         logger.LogDebug("----");
         logger.LogDebug("Extracting {@PluginFormat} plugin device...", pluginFormat);
-        var pluginName = pluginDeviceNode.SelectSingleNode(PluginNameXpath)?.Value;
+        var pluginName = pluginDeviceNode.SelectSingleNode(PluginNameXpath)!.Value;
         logger.LogDebug("Plugin found: {@PluginName} ", pluginName);
 
         var sort = GetPluginSort(pluginDeviceNode, pluginName);
         var pluginDevice = new PluginDevice(sort, pluginFormat);
         pluginDevice.Name = pluginName;
-        pluginDevice.UserName = pluginDeviceNode.SelectSingleNode(@"UserName/@Value")?.Value;
-        pluginDevice.Annotation = pluginDeviceNode.SelectSingleNode(@"Annotation/@Value")?.Value;
-        pluginDevice.Id = pluginDeviceNode.SelectSingleNode(@"@Id").ValueAsInt;
+        pluginDevice.UserName = pluginDeviceNode.SelectSingleNode(@"UserName/@Value")!.Value;
+        pluginDevice.Annotation = pluginDeviceNode.SelectSingleNode(@"Annotation/@Value")!.Value;
+        pluginDevice.Id = pluginDeviceNode.SelectSingleNode(@"@Id")!.ValueAsInt;
 
         return pluginDevice;
     }
