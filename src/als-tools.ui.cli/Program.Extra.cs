@@ -21,6 +21,8 @@ namespace AlsTools.Ui.Cli;
 
 public partial class Program
 {
+    // private static IConfigurationRoot configuration;
+
     private static void SetupLogging(ParserResult<object> parserResult)
     {
         Log.Debug("Setting up logging settings...");
@@ -64,8 +66,8 @@ public partial class Program
         serviceCollection.AddLogging();
 
         // Build configuration
-        configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
 
@@ -148,7 +150,13 @@ public partial class Program
 
         foreach (var field in fields)
         {
-            var key = field.GetValue(null).ToString().ToUpperInvariant();
+            var key = field.GetValue(null)?.ToString()?.ToUpperInvariant();
+            if (key == null)
+            {
+                Log.Warning("There was an issue getting the value for the field {@Field}", field);
+                continue;
+            }
+
             dic.Add(key, extractor);
         }
     }

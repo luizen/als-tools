@@ -36,7 +36,7 @@ public class PluginDeviceExtractor : IDeviceExtractor
     {
         var pluginDescNode = deviceNode.Select(@"PluginDesc");
         pluginDescNode.MoveNext();
-        if (pluginDescNode.Current.HasChildren)
+        if (pluginDescNode.Current?.HasChildren ?? false)
         {
             if (pluginDescNode.Current.MoveToFirstChild())
             {

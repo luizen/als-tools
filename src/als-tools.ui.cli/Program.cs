@@ -5,7 +5,6 @@ namespace AlsTools.Ui.Cli;
 
 public partial class Program
 {
-    private static IConfigurationRoot configuration;
     private static readonly LoggingLevelSwitch levelSwitch = new LoggingLevelSwitch();
 
     public static async Task<int> Main(string[] args)

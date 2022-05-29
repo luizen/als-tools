@@ -15,4 +15,4 @@ public class GroupTrack : BaseTrack, ITrack
     /// The children tracks that this group track groups under it.
     /// </summary>
     public IList<ITrack> ChildrenTracks { get; set; } //TODO: this shouldn`t be allowed to be set from external...
-}    
+}
