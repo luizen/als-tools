@@ -3,7 +3,7 @@ namespace AlsTools.Infrastructure.XmlNodeNames;
 public static class LiveStockDeviceNodeNames
 {
     /// <summary>
-    /// A dictionary associating a stock device XML Node internal name to its readable name, which sometimes is different 
+    /// A dictionary associating a stock device XML Node internal name to its readable name, which sometimes is different
     /// </summary>
     private static readonly IReadOnlyDictionary<string, string> stockDeviceNamesByNodeInternalName;
 
@@ -19,7 +19,7 @@ public static class LiveStockDeviceNodeNames
 
             foreach (var field in fields)
             {
-                var key = field.GetValue(null).ToString().ToUpperInvariant();
+                var key = field.GetValue(null)!.ToString()!.ToUpperInvariant();
                 var value = field.Name.Humanize(LetterCasing.Title);
 
                 dic.Add(key, value);
@@ -32,7 +32,7 @@ public static class LiveStockDeviceNodeNames
     public static string GetDeviceNameByNodeName(string nodeName)
     {
         var key = nodeName.ToUpperInvariant();
-        string value = null;
+        string? value;
 
         if (stockDeviceNamesByNodeInternalName.TryGetValue(key, out value))
             return value;

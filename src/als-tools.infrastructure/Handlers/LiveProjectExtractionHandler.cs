@@ -18,9 +18,9 @@ public class LiveProjectExtractionHandler : ILiveProjectExtractionHandler
 
         var project = new LiveProject()
         {
-            Creator = GetProjectAttribute<string>(nav, "Creator"),
-            MajorVersion = GetProjectAttribute<string>(nav, "MajorVersion"),
-            MinorVersion = GetProjectAttribute<string>(nav, "MinorVersion"),
+            Creator = GetProjectAttribute<string>(nav, "Creator")!,
+            MajorVersion = GetProjectAttribute<string>(nav, "MajorVersion")!,
+            MinorVersion = GetProjectAttribute<string>(nav, "MinorVersion")!,
             SchemaChangeCount = GetProjectAttribute<int>(nav, "SchemaChangeCount"),
             Tempo = GetMasterTrackMixerAttribute<int>(nav, "Tempo"),
             TimeSignature = GetMasterTrackMixerAttribute<int>(nav, "TimeSignature"),
@@ -47,7 +47,7 @@ public class LiveProjectExtractionHandler : ILiveProjectExtractionHandler
     {
         var node = nav.SelectSingleNode(expression);
         if (node == null)
-            return default(T);
+            return default(T)!;
 
         var result = (T)node.ValueAs(typeof(T));
         return result;

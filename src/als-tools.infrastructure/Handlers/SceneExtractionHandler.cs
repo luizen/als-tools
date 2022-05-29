@@ -15,7 +15,7 @@ public class SceneExtractionHandler : ISceneExtractionHandler
     {
         logger.LogDebug("----");
         logger.LogDebug("Extracting Scenes from XML...");
-        
+
         var expression = @"/Ableton/LiveSet/Scenes/Scene";
         var scenesIterator = nav.Select(expression);
         var scenes = new List<Scene>();
@@ -24,13 +24,13 @@ public class SceneExtractionHandler : ISceneExtractionHandler
         {
             var scene = new Scene()
             {
-                Number = sceneNode.SelectSingleNode(@"@Id")?.ValueAsInt,
-                Name = sceneNode.SelectSingleNode(@"Name/@Value")?.Value,
-                Annotation = sceneNode.SelectSingleNode(@"Annotation/@Value")?.Value,
-                Tempo = sceneNode.SelectSingleNode(@"Tempo/@Value")?.ValueAsInt,
-                IsTempoEnabled = sceneNode.SelectSingleNode(@"IsTempoEnabled/@Value")?.ValueAsBoolean,
-                TimeSignatureId = sceneNode.SelectSingleNode(@"TimeSignatureId/@Value")?.ValueAsInt,
-                IsTimeSignatureEnabled = sceneNode.SelectSingleNode(@"IsTimeSignatureEnabled/@Value")?.ValueAsBoolean
+                Number = sceneNode.SelectSingleNode(@"@Id")!.ValueAsInt,
+                Name = sceneNode.SelectSingleNode(@"Name/@Value")!.Value,
+                Annotation = sceneNode.SelectSingleNode(@"Annotation/@Value")!.Value,
+                Tempo = sceneNode.SelectSingleNode(@"Tempo/@Value")!.ValueAsInt,
+                IsTempoEnabled = sceneNode.SelectSingleNode(@"IsTempoEnabled/@Value")!.ValueAsBoolean,
+                TimeSignatureId = sceneNode.SelectSingleNode(@"TimeSignatureId/@Value")!.ValueAsInt,
+                IsTimeSignatureEnabled = sceneNode.SelectSingleNode(@"IsTimeSignatureEnabled/@Value")!.ValueAsBoolean
             };
 
             scenes.Add(scene);

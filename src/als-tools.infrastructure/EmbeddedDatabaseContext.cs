@@ -11,9 +11,9 @@ public class EmbeddedDatabaseContext : IEmbeddedDatabaseContext
     private readonly ILogger<EmbeddedDatabaseContext> logger;
     private readonly IOptions<DbOptions> options;
     private bool isInitialized = false;
-    private IDocumentStore documentStore = null;
+    private IDocumentStore? documentStore;
 
-    public IDocumentStore DocumentStore 
+    public IDocumentStore DocumentStore
     {
         get
         {
@@ -33,7 +33,7 @@ public class EmbeddedDatabaseContext : IEmbeddedDatabaseContext
     public void Initialize()
     {
         logger.LogDebug("Starting database server...");
-        
+
         EmbeddedServer.Instance.StartServer(new ServerOptions
         {
             ServerUrl = options.Value.ServerUrl,

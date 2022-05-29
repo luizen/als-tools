@@ -49,11 +49,11 @@ public class TrackExtractionHandler : ITrackExtractionHandler
         // Iterate through the tracks of the same type (audio, midi, return, master)
         foreach (XPathNavigator trackNode in tracksIterator)
         {
-            var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")?.Value;
-            var userName = trackNode.SelectSingleNode(@"Name/UserName/@Value")?.Value;
-            var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")?.Value;
+            var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")!.Value;
+            var userName = trackNode.SelectSingleNode(@"Name/UserName/@Value")!.Value;
+            var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
             var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
-            var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")?.ValueAsInt;
+            var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")!.ValueAsInt;
             var trackDelay = new TrackDelay()
             {
                 Value = trackNode.SelectSingleNode(@"TrackDelay/Value/@Value")?.ValueAsInt,

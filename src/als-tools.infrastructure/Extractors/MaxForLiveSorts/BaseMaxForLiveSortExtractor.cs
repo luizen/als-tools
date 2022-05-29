@@ -21,10 +21,10 @@ public abstract class BaseMaxForLiveSortExtractor : IMaxForLiveSortExtractor
 
         var device = new MaxForLiveDevice(deviceSort)
         {
-            Id = pluginDescNode.SelectSingleNode(@"@Id").ValueAsInt,
-            Name = GetMaxForLiveDeviceNameFromXmlNodePath(pluginDescNode.SelectSingleNode(@"SourceContext/Value/BranchSourceContext/OriginalFileRef/FileRef/Path/@Value")?.Value),
-            UserName = pluginDescNode.SelectSingleNode(@"UserName/@Value")?.Value,
-            Annotation = pluginDescNode.SelectSingleNode(@"Annotation/@Value")?.Value
+            Id = pluginDescNode.SelectSingleNode(@"@Id")!.ValueAsInt,
+            Name = GetMaxForLiveDeviceNameFromXmlNodePath(pluginDescNode.SelectSingleNode(@"SourceContext/Value/BranchSourceContext/OriginalFileRef/FileRef/Path/@Value")!.Value),
+            UserName = pluginDescNode.SelectSingleNode(@"UserName/@Value")!.Value,
+            Annotation = pluginDescNode.SelectSingleNode(@"Annotation/@Value")!.Value
         };
 
         return device;

@@ -17,7 +17,7 @@ public interface ITrack
     string EffectiveName { get; set; }
 
     /// <summary>
-    /// The track type. 
+    /// The track type.
     /// <seealso cref="TrackType"/>
     /// </summary>
     TrackType Type { get; set; }
@@ -37,14 +37,14 @@ public interface ITrack
     // /// Can be null. TrackGroupId property.
     // /// TODO: this shouldn't be here, since Master and Return tracks can't be grouped.
     // /// </summary>
-    // GroupTrack ParentGroupTrack { get; set; } //TODO: is it really necessary? 
+    // GroupTrack ParentGroupTrack { get; set; } //TODO: is it really necessary?
 
     /// <summary>
     /// The group track Id which this track belongs to, if any.
-    /// Can be null. TrackGroupId property.
+    /// Can be null? TrackGroupId property.
     /// TODO: this shouldn't be here, since Master and Return tracks can't be grouped.
     /// </summary>
-    int? TrackGroupId { get; set; } //TODO: is it really necessary? 
+    int TrackGroupId { get; set; } //TODO: is it really necessary?
 
     /// <summary>
     /// Whether or not this track is part of a group track

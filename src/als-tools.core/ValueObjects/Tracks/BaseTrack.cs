@@ -4,6 +4,8 @@ namespace AlsTools.Core.ValueObjects.Tracks;
 
 public abstract class BaseTrack : ITrack
 {
+    public const int DefaultGroupId = -1;
+
     public BaseTrack(TrackType type)
     {
         StockDevices = new List<LiveDevice>();
@@ -20,9 +22,9 @@ public abstract class BaseTrack : ITrack
     // /// </summary>
     // public int Id { get; set; }
 
-    public string UserName { get; set; }
+    public string UserName { get; set; } = string.Empty;
 
-    public string EffectiveName { get; set; }
+    public string EffectiveName { get; set; } = string.Empty;
 
     public TrackType Type { get; set; }
 
@@ -32,30 +34,30 @@ public abstract class BaseTrack : ITrack
 
     public IList<MaxForLiveDevice> MaxForLiveDevices { get; protected set; }
 
-    public string Annotation { get; set; }
+    public string Annotation { get; set; } = string.Empty;
 
-    public GroupTrack ParentGroupTrack { get; set; }
+    public GroupTrack? ParentGroupTrack { get; set; }
 
     public bool IsPartOfGroup => ParentGroupTrack != null;
 
     public TrackDelay TrackDelay { get; set; }
-   
-    public int? TrackGroupId  { get; set; }
-    
+
+    public int TrackGroupId  { get; set; }
+
     public bool? IsFrozen  { get; set; }
 
     public void AddDevice(IDevice device)
     {
+        if (device == null)
+            throw new ArgumentNullException(nameof(device));
+
         //TODO: should I get rid of the specific collections (stock, plugins, max4live) and put all devices in a single collection?
-
-        List<string> l = new List<string>();
-
         if (device.Family.Type == DeviceType.Plugin)
-            Plugins.Add(device as PluginDevice);
-        if (device.Family.Type == DeviceType.Stock)
-            StockDevices.Add(device as LiveDevice);
+            Plugins.Add((PluginDevice)device);
+        else if (device.Family.Type == DeviceType.Stock)
+            StockDevices.Add((LiveDevice)device);
         else
-            MaxForLiveDevices.Add(device as MaxForLiveDevice);
+            MaxForLiveDevices.Add((MaxForLiveDevice)device);
     }
 
     public void AddDevices(IEnumerable<IDevice> devices)
