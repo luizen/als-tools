@@ -49,6 +49,7 @@ public class TrackExtractionHandler : ITrackExtractionHandler
         // Iterate through the tracks of the same type (audio, midi, return, master)
         foreach (XPathNavigator trackNode in tracksIterator)
         {
+            var id = trackNode.SelectSingleNode(@"@Id")!.ValueAsInt;
             var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")!.Value;
             var userName = trackNode.SelectSingleNode(@"Name/UserName/@Value")!.Value;
             var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
@@ -61,7 +62,7 @@ public class TrackExtractionHandler : ITrackExtractionHandler
             };
 
             // Create the track
-            var track = TrackFactory.CreateTrack(trackType, effectiveName, userName, annotation, isFrozen, trackDelay, groupId);
+            var track = TrackFactory.CreateTrack(trackType, id, effectiveName, userName, annotation, isFrozen, trackDelay, groupId);
 
             logger.LogDebug(@"Extracted Track name: {@TrackName}", track.EffectiveName);
 

@@ -16,11 +16,7 @@ public abstract class BaseTrack : ITrack
         Type = type;
     }
 
-    // /// <summary>
-    // /// The track internal Id (from Id attribute).
-    // /// TODO: is it really needed?
-    // /// </summary>
-    // public int Id { get; set; }
+    public int Id { get; set; }
 
     public string UserName { get; set; } = string.Empty;
 

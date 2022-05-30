@@ -5,6 +5,11 @@ namespace AlsTools.Core.ValueObjects.Tracks;
 public interface ITrack
 {
     /// <summary>
+    /// The track intenal Id attribute
+    /// </summary>
+    int Id { get; set; }
+
+    /// <summary>
     /// The name the user specified. It can contain special values like # or ##.
     /// Ex.: ## Kick
     /// </summary>
@@ -60,7 +65,6 @@ public interface ITrack
     /// <summary>
     /// The Ableton Live stock devices this track contains
     /// </summary>
-    // SortedDictionary<string, LiveDevice> Devices { get; } //TODO: change to another type
     IList<LiveDevice> StockDevices { get; }
 
     /// <summary>
