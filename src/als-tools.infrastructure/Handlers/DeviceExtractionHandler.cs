@@ -1,4 +1,5 @@
 using AlsTools.Core.ValueObjects.Devices;
+using AlsTools.Core.ValueObjects.Devices.Racks;
 using AlsTools.Infrastructure.Extractors;
 using AlsTools.Infrastructure.XmlNodeNames;
 
@@ -44,12 +45,24 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
                 var device = ExtractDeviceFromNode(deviceNode);
                 devices.Add(device);
 
+                if (device is BaseRackDevice rackDevice)
+                {
+                    var childen = rackDevice.ChildrenDevices;
+                    devices.AddRange(childen.AsEnumerable());
+                }
+
                 // Iterate through all other devices
                 while (devicesIterator.Current.MoveToNext())
                 {
                     deviceNode = devicesIterator.Current;
                     device = ExtractDeviceFromNode(deviceNode);
                     devices.Add(device);
+
+                    if (device is BaseRackDevice rackDevice2)
+                    {
+                        var childen = rackDevice2.ChildrenDevices;
+                        devices.AddRange(childen.AsEnumerable());
+                    }
                 }
             }
         }
@@ -65,17 +78,6 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
         return extractor.ExtractFromXml(deviceNode);
     }
 
-    private IDeviceExtractor GetDeviceExtractorByDeviceType(DeviceType type)
-    {
-        logger.LogDebug("Getting device extractor by device type ({@DeviceType})...", type);
-
-        var extractor = deviceExtractors[type];
-
-        logger.LogDebug("Found device extractor: {@DeviceExtractor})", extractor);
-
-        return extractor;
-    }
-
     private DeviceType GetDeviceTypeByDeviceNodeName(string deviceNodeName)
     {
         logger.LogDebug("Getting device type by device node name ({DeviceNodeName})...", deviceNodeName);
@@ -87,5 +89,16 @@ public class DeviceExtractionHandler : IDeviceExtractionHandler
             return type;
 
         return DeviceType.Stock;
+    }
+
+    private IDeviceExtractor GetDeviceExtractorByDeviceType(DeviceType type)
+    {
+        logger.LogDebug("Getting device extractor by device type ({@DeviceType})...", type);
+
+        var extractor = deviceExtractors[type];
+
+        logger.LogDebug("Found device extractor: {@DeviceExtractor})", extractor);
+
+        return extractor;
     }
 }

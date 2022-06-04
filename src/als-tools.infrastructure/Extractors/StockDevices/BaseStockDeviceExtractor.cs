@@ -7,20 +7,19 @@ public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor
 {
     private readonly ILogger<BaseStockDeviceExtractor> logger;
 
-    public DeviceSort DeviceSort { get; protected set; }
+    protected abstract IDevice CreateDevice();
 
-    public BaseStockDeviceExtractor(ILogger<BaseStockDeviceExtractor> logger, DeviceSort sort)
+    public BaseStockDeviceExtractor(ILogger<BaseStockDeviceExtractor> logger)
     {
         this.logger = logger;
-        this.DeviceSort = sort;
     }
 
     public virtual IDevice ExtractFromXml(XPathNavigator deviceNode)
     {
-        logger.LogDebug("----");
-        logger.LogDebug("Extracting Live Stock {DeviceSort} device from XML...", DeviceSort);
+        var device = CreateDevice();
 
-        var device = new LiveDevice(DeviceSort);
+        logger.LogDebug("----");
+        logger.LogDebug("Extracting Live Stock {DeviceSort} device from XML...", device.Family.Sort);
 
         var readableName = LiveStockDeviceNodeNames.GetDeviceNameByNodeName(deviceNode.Name);
 

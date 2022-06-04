@@ -8,7 +8,7 @@ public abstract class BaseTrack : ITrack
 
     public BaseTrack(TrackType type)
     {
-        StockDevices = new List<LiveDevice>();
+        StockDevices = new List<StockDevice>();
         Plugins = new List<PluginDevice>();
         MaxForLiveDevices = new List<MaxForLiveDevice>();
 
@@ -16,7 +16,7 @@ public abstract class BaseTrack : ITrack
         Type = type;
     }
 
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     public string UserName { get; set; } = string.Empty;
 
@@ -24,7 +24,7 @@ public abstract class BaseTrack : ITrack
 
     public TrackType Type { get; set; }
 
-    public IList<LiveDevice> StockDevices { get; protected set; }
+    public IList<StockDevice> StockDevices { get; protected set; }
 
     public IList<PluginDevice> Plugins { get; protected set; }
 
@@ -51,7 +51,7 @@ public abstract class BaseTrack : ITrack
         if (device.Family.Type == DeviceType.Plugin)
             Plugins.Add((PluginDevice)device);
         else if (device.Family.Type == DeviceType.Stock)
-            StockDevices.Add((LiveDevice)device);
+            StockDevices.Add((StockDevice)device);
         else
             MaxForLiveDevices.Add((MaxForLiveDevice)device);
     }

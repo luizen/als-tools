@@ -1,5 +1,5 @@
 namespace AlsTools.Infrastructure.Extractors.StockDevices.StockAudioEffects;
 
-public interface IBaseStockAudioEffect : IStockDeviceExtractor
+public interface ICommonStockAudioEffectExtractor : IStockDeviceExtractor
 {
 }

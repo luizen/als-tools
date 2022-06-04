@@ -1,5 +1,5 @@
 namespace AlsTools.Infrastructure.Extractors.StockDevices.StockInstruments;
 
-public interface IBaseStockInstrument : IStockDeviceExtractor
+public interface ICommonStockInstrumentExtractor : IStockDeviceExtractor
 {
 }

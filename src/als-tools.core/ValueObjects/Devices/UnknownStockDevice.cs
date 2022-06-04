@@ -1,11 +1,11 @@
 namespace AlsTools.Core.ValueObjects.Devices;
 
 /// <summary>
-/// An unknown live device that could not be reckognized. This could be because an older version of device is being used in the Live project.
+/// An unknown stock Live device that could not be reckognized. This could be because an older version of device is being used in the Live project.
 /// </summary>
-public class UnknownLiveDevice : LiveDevice, IDevice
+public class UnknownStockDevice : StockDevice
 {
-    public UnknownLiveDevice(string xmlNodeName) : base(DeviceSort.Unknown)
+    public UnknownStockDevice(string xmlNodeName) : base(DeviceSort.Unknown)
     {
         XmlNodeName = xmlNodeName;
     }

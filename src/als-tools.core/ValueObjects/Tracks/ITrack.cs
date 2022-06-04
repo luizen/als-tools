@@ -5,9 +5,9 @@ namespace AlsTools.Core.ValueObjects.Tracks;
 public interface ITrack
 {
     /// <summary>
-    /// The track intenal Id attribute
+    /// The track intenal Id attribute. Might be not available (eg.: Master Track)
     /// </summary>
-    int Id { get; set; }
+    int? Id { get; set; }
 
     /// <summary>
     /// The name the user specified. It can contain special values like # or ##.
@@ -65,7 +65,7 @@ public interface ITrack
     /// <summary>
     /// The Ableton Live stock devices this track contains
     /// </summary>
-    IList<LiveDevice> StockDevices { get; }
+    IList<StockDevice> StockDevices { get; }
 
     /// <summary>
     /// The third party plugins this track contains

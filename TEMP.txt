@@ -1,0 +1,70 @@
+Audio Effect Rack -> AudioEffectGroupDevice
+Chain - Branches/AudioEffectBranch
+
+/Ableton/LiveSet/Tracks/AudioTrack[4]/DeviceChain/DeviceChain/Devices/AudioEffectGroupDevice[2]/Branches/AudioEffectBranch[1]
+
+Chain 1 - devices
+/Ableton/LiveSet/Tracks/AudioTrack[4]/DeviceChain/DeviceChain/Devices/AudioEffectGroupDevice[2]/Branches/AudioEffectBranch[1]/DeviceChain/AudioToAudioDeviceChain/Devices/Amp
+
+Chain 2 - devices
+/Ableton/LiveSet/Tracks/AudioTrack[4]/DeviceChain/DeviceChain/Devices/AudioEffectGroupDevice[2]/Branches/AudioEffectBranch[2]/DeviceChain/AudioToAudioDeviceChain/Devices/Overdrive
+/Ableton/LiveSet/Tracks/AudioTrack[4]/DeviceChain/DeviceChain/Devices/AudioEffectGroupDevice[2]/Branches/AudioEffectBranch[2]/DeviceChain/AudioToAudioDeviceChain/Devices/PluginDevice
+
+Chain 3 - devices
+	Empty
+
+
+Audio effect rack with sub fx racks
+
+/Ableton/LiveSet/Tracks/AudioTrack[4]/DeviceChain/DeviceChain/Devices/AudioEffectGroupDevice[3]/Branches/AudioEffectBranch[1]/DeviceChain/
+	AudioToAudioDeviceChain/Devices/AudioEffectGroupDevice/Branches/AudioEffectBranch[1]/DeviceChain/AudioToAudioDeviceChain/Devices/AutoFilter
+
+
+
+
+
+
+
+MIDI Instrument Rack - InstrumentGroupDevice
+Chain - Branches/InstrumentBranch
+
+/Ableton/LiveSet/Tracks/MidiTrack[5]/DeviceChain/DeviceChain/Devices/InstrumentGroupDevice/Branches/InstrumentBranch[1]
+
+MidiToAudioDeviceChain
+
+
+/Ableton/LiveSet/Tracks/MidiTrack[5]/DeviceChain/DeviceChain/Devices/InstrumentGroupDevice/Branches/InstrumentBranch[1]/
+	DeviceChain/MidiToAudioDeviceChain/Devices/InstrumentGroupDevice/Branches/InstrumentBranch[1]/DeviceChain/MidiToAudioDeviceChain/Devices/UltraAnalog
+
+
+
+
+
+
+
+
+Drum Rack - DrumGroupDevice
+Cells - Branches/DrumBranch[1]
+
+
+/Ableton/LiveSet/Tracks/MidiTrack[6]/DeviceChain/DeviceChain/Devices/DrumGroupDevice/Branches/DrumBranch[1]
+MidiToAudioDeviceChain
+
+Chain 1 - Kick
+/Ableton/LiveSet/Tracks/MidiTrack[6]/DeviceChain/DeviceChain/Devices/DrumGroupDevice/Branches/DrumBranch[1]/DeviceChain/MidiToAudioDeviceChain/Devices/OriginalSimpler
+/Ableton/LiveSet/Tracks/MidiTrack[6]/DeviceChain/DeviceChain/Devices/DrumGroupDevice/Branches/DrumBranch[4]/DeviceChain/MidiToAudioDeviceChain/Devices/InstrumentVector
+/Ableton/LiveSet/Tracks/MidiTrack[6]/DeviceChain/DeviceChain/Devices/DrumGroupDevice/Branches/DrumBranch[5]/DeviceChain/MidiToAudioDeviceChain/Devices/ChannelEq
+
+
+
+
+
+
+MIDI Effect Rack - MidiEffectGroupDevice
+Branches - Branches/MidiEffectBranch
+
+/Ableton/LiveSet/Tracks/MidiTrack[7]/DeviceChain/DeviceChain/Devices/MidiEffectGroupDevice/Branches/MidiEffectBranch[1]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiVelocity
+
+Midi Effect rack inside another Midi Effect rack -> 
+/Ableton/LiveSet/Tracks/MidiTrack[7]/DeviceChain/DeviceChain/Devices/MidiEffectGroupDevice/Branches/MidiEffectBranch[2]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiEffectGroupDevice/
+	Branches/MidiEffectBranch[1]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiPitcher

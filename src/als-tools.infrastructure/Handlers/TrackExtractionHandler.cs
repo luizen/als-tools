@@ -7,6 +7,7 @@ namespace AlsTools.Infrastructure.Handlers;
 public class TrackExtractionHandler : ITrackExtractionHandler
 {
     private readonly ILogger<TrackExtractionHandler> logger;
+
     private readonly IDeviceExtractionHandler deviceExtractionHandler;
 
     public TrackExtractionHandler(ILogger<TrackExtractionHandler> logger, IDeviceExtractionHandler deviceExtractionHandler)
@@ -49,7 +50,7 @@ public class TrackExtractionHandler : ITrackExtractionHandler
         // Iterate through the tracks of the same type (audio, midi, return, master)
         foreach (XPathNavigator trackNode in tracksIterator)
         {
-            var id = trackNode.SelectSingleNode(@"@Id")!.ValueAsInt;
+            var id = trackNode.SelectSingleNode(@"@Id")?.ValueAsInt;
             var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")!.Value;
             var userName = trackNode.SelectSingleNode(@"Name/UserName/@Value")!.Value;
             var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
@@ -66,8 +67,9 @@ public class TrackExtractionHandler : ITrackExtractionHandler
 
             logger.LogDebug(@"Extracted Track name: {@TrackName}", track.EffectiveName);
 
-            // Get all devices in this track
+            // Now let's get all devices in this track
             var devices = deviceExtractionHandler.ExtractFromXml(trackNode);
+
             track.AddDevices(devices);
 
             tracks.Add(track);

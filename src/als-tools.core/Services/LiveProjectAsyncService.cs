@@ -8,9 +8,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     private readonly ILogger<LiveProjectAsyncService> logger;
     private readonly ILiveProjectAsyncRepository repository;
     private readonly ILiveProjectFileSystem fs;
-    private readonly ILiveProjectExtractor extractor;
+    private readonly ILiveProjectFileExtractionHandler extractor;
 
-    public LiveProjectAsyncService(ILogger<LiveProjectAsyncService> logger, ILiveProjectAsyncRepository repository, ILiveProjectFileSystem fs, ILiveProjectExtractor extractor)
+    public LiveProjectAsyncService(ILogger<LiveProjectAsyncService> logger, ILiveProjectAsyncRepository repository, ILiveProjectFileSystem fs, ILiveProjectFileExtractionHandler extractor)
     {
         this.logger = logger;
         this.repository = repository;

@@ -1,18 +1,20 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
-using AlsTools.Infrastructure.Handlers;
 
-namespace AlsTools.Infrastructure;
+namespace AlsTools.Infrastructure.Handlers;
 
-public class LiveProjectExtractor : ILiveProjectExtractor
+/// <summary>
+/// The entry point, where basically everything begins...
+/// </summary>
+public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandler
 {
-    ILogger<LiveProjectExtractor> logger;
+    ILogger<LiveProjectFileExtractionHandler> logger;
     private readonly ILiveProjectExtractionHandler liveProjectExtractionHandler;
     private readonly ITrackExtractionHandler trackExtractionHandler;
     private readonly ISceneExtractionHandler sceneExtractionHandler;
     private readonly ILocatorExtractionHandler locatorExtractionHandler;
 
-    public LiveProjectExtractor(ILogger<LiveProjectExtractor> logger,
+    public LiveProjectFileExtractionHandler(ILogger<LiveProjectFileExtractionHandler> logger,
         ILiveProjectExtractionHandler liveProjectExtractionHandler,
         ITrackExtractionHandler trackExtractionHandler,
         ISceneExtractionHandler sceneExtractionHandler,
@@ -57,11 +59,18 @@ public class LiveProjectExtractor : ILiveProjectExtractor
         logger.LogDebug("Project file: {@ProjectFile}", fileName);
         logger.LogDebug("Project path: {@ProjectFullPath}", fullPath);
 
+        // Extract project basic stuff from the project XML
         var project = liveProjectExtractionHandler.ExtractFromXml(nav).Single();
         project.Name = fileName;
         project.Path = fullPath;
+
+        // Extract the scenes
         project.Scenes = sceneExtractionHandler.ExtractFromXml(nav);
+
+        // Extract the locators
         project.Locators = locatorExtractionHandler.ExtractFromXml(nav);
+
+        // Extract all tracks
         project.Tracks = trackExtractionHandler.ExtractFromXml(nav);
 
         return project;

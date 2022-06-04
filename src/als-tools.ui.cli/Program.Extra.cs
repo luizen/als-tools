@@ -4,6 +4,7 @@ using AlsTools.Core.Services;
 using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure;
+using AlsTools.Infrastructure.Attributes;
 using AlsTools.Infrastructure.Extractors;
 using AlsTools.Infrastructure.Extractors.MaxForLiveSorts;
 using AlsTools.Infrastructure.Extractors.PluginFormats;
@@ -11,6 +12,7 @@ using AlsTools.Infrastructure.Extractors.StockDevices;
 using AlsTools.Infrastructure.Extractors.StockDevices.StockAudioEffects;
 using AlsTools.Infrastructure.Extractors.StockDevices.StockInstruments;
 using AlsTools.Infrastructure.Extractors.StockDevices.StockMidiEffects;
+using AlsTools.Infrastructure.Extractors.StockDevices.StockRacks;
 using AlsTools.Infrastructure.FileSystem;
 using AlsTools.Infrastructure.Handlers;
 using AlsTools.Infrastructure.Repositories;
@@ -21,8 +23,6 @@ namespace AlsTools.Ui.Cli;
 
 public partial class Program
 {
-    // private static IConfigurationRoot configuration;
-
     private static void SetupLogging(ParserResult<object> parserResult)
     {
         Log.Debug("Setting up logging settings...");
@@ -102,9 +102,16 @@ public partial class Program
                 );
 
         // Live Stock devices extractors
-        serviceCollection.AddSingleton<IBaseStockAudioEffect, BaseStockAudioEffect>();
-        serviceCollection.AddSingleton<IBaseStockMidiEffect, BaseStockMidiEffect>();
-        serviceCollection.AddSingleton<IBaseStockInstrument, BaseStockInstrument>();
+        serviceCollection.AddSingleton<ICommonStockAudioEffectExtractor, CommonStockAudioEffectExtractor>();
+        serviceCollection.AddSingleton<ICommonStockMidiEffectExtractor, CommonStockMidiEffectExtractor>();
+        serviceCollection.AddSingleton<ICommonStockInstrumentExtractor, CommonStockInstrumentExtractor>();
+
+        // Live Stock Racks extractors
+        serviceCollection.AddSingleton<AudioEffectRackExtractor>();
+        serviceCollection.AddSingleton<MidiEffectRackExtractor>();
+        serviceCollection.AddSingleton<MidiInstrumentRackExtractor>();
+        serviceCollection.AddSingleton<DrumRackExtractor>();
+
         serviceCollection.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
 
         // Device Extractors
@@ -121,7 +128,7 @@ public partial class Program
         serviceCollection
             .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
                 .AddTransient<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
-                .AddTransient<ILiveProjectExtractor, LiveProjectExtractor>()
+                .AddTransient<ILiveProjectFileExtractionHandler, LiveProjectFileExtractionHandler>()
                 .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>()
                 .AddTransient<ILiveProjectExtractionHandler, LiveProjectExtractionHandler>()
                 .AddTransient<IDeviceExtractionHandler, DeviceExtractionHandler>()
@@ -134,30 +141,50 @@ public partial class Program
         // Add app
         serviceCollection.AddTransient<App>();
     }
+
     private static IDictionary<string, IStockDeviceExtractor> BuildStockDeviceExtractors(IServiceProvider svcProvider)
     {
         var dic = new Dictionary<string, IStockDeviceExtractor>();
 
-        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeNames.AudioEffects), svcProvider.GetRequiredService<IBaseStockAudioEffect>());
-        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeNames.MidiEffects), svcProvider.GetRequiredService<IBaseStockMidiEffect>());
-        AddStockDeviceExtractorsFromNodeNamesType(dic, typeof(LiveStockDeviceNodeNames.MidiInstruments), svcProvider.GetRequiredService<IBaseStockInstrument>());
+        // MidiEffects, MidiInstruments and AudioEffects classes
+        var nestedClassTypes = typeof(LiveStockDeviceNodeNames).GetNestedTypes(BindingFlags.Static | BindingFlags.Public);
+
+        foreach (var classType in nestedClassTypes)
+        {
+            // Let's check if the class has an extractor attribute already
+            ExtractingStockDeviceAttribute? classExtractorAttr = classType.GetCustomAttribute<ExtractingStockDeviceAttribute>();
+
+            // Get all public const/static fields for that class
+            var fields = classType.GetFields(BindingFlags.Static | BindingFlags.Public);
+
+            foreach (var field in fields)
+            {
+                // Get field value
+                var key = field.GetValue(null)?.ToString()?.ToUpperInvariant();
+                if (key == null)
+                {
+                    Log.Warning("There was an issue getting the value for the field {@Field}", field);
+                    continue;
+                }
+
+                // Let's check if this field has an specific extractor attribute. Otherwise we use the one from the class...
+                var fieldExtractorAttr = field.GetCustomAttribute<ExtractingStockDeviceAttribute>();
+
+                // Now select which one to use...
+                var extractorAttr = fieldExtractorAttr ?? classExtractorAttr;
+
+                // If none of them are available, we have a problem...
+                if (extractorAttr == null)
+                {
+                    Log.Warning("This device ({@DeviceName}) has no extractor defined", key);
+                    continue;
+                }
+
+                var extractor = (IStockDeviceExtractor)svcProvider.GetRequiredService(extractorAttr.DeviceExtractorType);
+                dic.Add(key, extractor);
+            }
+        }
 
         return dic;
-    }
-    private static void AddStockDeviceExtractorsFromNodeNamesType(IDictionary<string, IStockDeviceExtractor> dic, Type nodeNamesType, IStockDeviceExtractor extractor)
-    {
-        var fields = nodeNamesType.GetFields(BindingFlags.Static | BindingFlags.Public);
-
-        foreach (var field in fields)
-        {
-            var key = field.GetValue(null)?.ToString()?.ToUpperInvariant();
-            if (key == null)
-            {
-                Log.Warning("There was an issue getting the value for the field {@Field}", field);
-                continue;
-            }
-
-            dic.Add(key, extractor);
-        }
     }
 }

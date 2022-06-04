@@ -1,0 +1,1 @@
+// namespace AlsTools.Core.ValueObjects.Devices.Chains;
