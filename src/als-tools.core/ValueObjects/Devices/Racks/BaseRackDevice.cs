@@ -17,12 +17,6 @@ public abstract class BaseRackDevice : StockDevice
     /// </summary>
     public IReadOnlyList<IDevice> ChildrenDevices => childrenDevices.Value.AsReadOnly();
 
-    // public IList<LiveDevice> StockDevices { get; protected set; }
-
-    // public IList<PluginDevice> Plugins { get; protected set; }
-
-    // public IList<MaxForLiveDevice> MaxForLiveDevices { get; protected set; }
-
     public void AddDevice(IDevice device)
     {
         if (device == null)
@@ -36,23 +30,4 @@ public abstract class BaseRackDevice : StockDevice
         foreach (var device in devices)
             AddDevice(device);
     }
-
-    // /// <summary>
-    // /// The chains (branches) a rack contains
-    // /// </summary>
-    // public IList<IChain> Chains { get; protected set; }
-
-    // public void AddChain(IChain chain)
-    // {
-    //     if (chain == null)
-    //         throw new ArgumentNullException(nameof(chain));
-
-    //     Chains.Add(chain);
-    // }
-
-    // public void AddChains(IEnumerable<IChain> chains)
-    // {
-    //     foreach (var chain in chains)
-    //         AddChain(chain);
-    // }
 }
