@@ -30,7 +30,7 @@ public abstract class BaseTrack : ITrack
 
     public TrackType Type { get; set; }
 
-    public IReadOnlyList<StockDevice> StockDevices
+    public IReadOnlyCollection<StockDevice> StockDevices
     {
         get
         {
@@ -38,7 +38,7 @@ public abstract class BaseTrack : ITrack
         }
     }
 
-    public IReadOnlyList<PluginDevice> Plugins
+    public IReadOnlyCollection<PluginDevice> Plugins
     {
         get
         {
@@ -46,7 +46,7 @@ public abstract class BaseTrack : ITrack
         }
     }
 
-    public IReadOnlyList<MaxForLiveDevice> MaxForLiveDevices
+    public IReadOnlyCollection<MaxForLiveDevice> MaxForLiveDevices
     {
         get
         {

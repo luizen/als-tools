@@ -65,17 +65,17 @@ public interface ITrack
     /// <summary>
     /// The Ableton Live stock devices this track contains
     /// </summary>
-    IReadOnlyList<StockDevice> StockDevices { get; }
+    IReadOnlyCollection<StockDevice> StockDevices { get; }
 
     /// <summary>
     /// The third party plugins this track contains
     /// </summary>
-    IReadOnlyList<PluginDevice> Plugins { get; }
+    IReadOnlyCollection<PluginDevice> Plugins { get; }
 
     /// <summary>
     /// The MaxForLive devices this track contains
     /// </summary>
-    IReadOnlyList<MaxForLiveDevice> MaxForLiveDevices { get; }
+    IReadOnlyCollection<MaxForLiveDevice> MaxForLiveDevices { get; }
 
     /// <summary>
     /// Adds a device to either the <see cref="StockDevices" />, <see cref="Plugins" /> or <see cref="MaxForLiveDevices" />
