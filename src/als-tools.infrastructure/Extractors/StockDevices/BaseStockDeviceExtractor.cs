@@ -5,7 +5,7 @@ namespace AlsTools.Infrastructure.Extractors.StockDevices;
 
 public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor
 {
-    private readonly ILogger<BaseStockDeviceExtractor> logger;
+    protected readonly ILogger<BaseStockDeviceExtractor> logger;
 
     protected abstract IDevice CreateDevice();
 
