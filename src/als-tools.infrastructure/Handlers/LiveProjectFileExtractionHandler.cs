@@ -1,5 +1,6 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
+using AlsTools.Infrastructure.Extractors;
 
 namespace AlsTools.Infrastructure.Handlers;
 
@@ -9,16 +10,16 @@ namespace AlsTools.Infrastructure.Handlers;
 public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandler
 {
     ILogger<LiveProjectFileExtractionHandler> logger;
-    private readonly ILiveProjectExtractionHandler liveProjectExtractionHandler;
-    private readonly ITrackExtractionHandler trackExtractionHandler;
-    private readonly ISceneExtractionHandler sceneExtractionHandler;
-    private readonly ILocatorExtractionHandler locatorExtractionHandler;
+    private readonly ILiveProjectsCollectionExtractor liveProjectExtractionHandler;
+    private readonly ITracksCollectionExtractor trackExtractionHandler;
+    private readonly IScenesCollectionExtractor sceneExtractionHandler;
+    private readonly ILocatorsCollectionExtractor locatorExtractionHandler;
 
     public LiveProjectFileExtractionHandler(ILogger<LiveProjectFileExtractionHandler> logger,
-        ILiveProjectExtractionHandler liveProjectExtractionHandler,
-        ITrackExtractionHandler trackExtractionHandler,
-        ISceneExtractionHandler sceneExtractionHandler,
-        ILocatorExtractionHandler locatorExtractionHandler)
+        ILiveProjectsCollectionExtractor liveProjectExtractionHandler,
+        ITracksCollectionExtractor trackExtractionHandler,
+        IScenesCollectionExtractor sceneExtractionHandler,
+        ILocatorsCollectionExtractor locatorExtractionHandler)
     {
         this.logger = logger;
         this.liveProjectExtractionHandler = liveProjectExtractionHandler;

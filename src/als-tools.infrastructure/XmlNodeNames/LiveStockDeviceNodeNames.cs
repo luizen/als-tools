@@ -1,8 +1,8 @@
 using AlsTools.Infrastructure.Attributes;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockAudioEffects;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockInstruments;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockMidiEffects;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockRacks;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockAudioEffects;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockInstruments;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockMidiEffects;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockRacks;
 
 namespace AlsTools.Infrastructure.XmlNodeNames;
 
@@ -51,26 +51,10 @@ public static class LiveStockDeviceNodeNames
         return nodeName;
     }
 
-    // //QUESTION: put into a separate class or leave them where there were, in their original groups?
-    // public static class Racks
-    // {
-    //     [StockDeviceExtractor(typeof(AudioEffectRackExtractor))]
-    //     public const string AudioEffectRack = "AudioEffectGroupDevice";
-
-    //     [StockDeviceExtractor(typeof(MidiInstrumentRackExtractor))]
-    //     public const string InstrumentRack = "InstrumentGroupDevice";
-
-    //     [StockDeviceExtractor(typeof(DrumRackExtractor))]
-    //     public const string DrumRack = "DrumGroupDevice";
-
-    //     [StockDeviceExtractor(typeof(MidiEffectRackExtractor))]
-    //     public const string MidiEffectRack = "MidiEffectGroupDevice";
-    // }
-
-    [ExtractingStockDevice(typeof(ICommonStockMidiEffectExtractor))]
+    [ExtractingStockDevice(typeof(ICommonStockMidiEffectDeviceExtractor))]
     public static class MidiEffects
     {
-        [ExtractingStockDevice(typeof(MidiEffectRackExtractor))]
+        [ExtractingStockDevice(typeof(MidiEffectRackDeviceExtractor))]
         public const string MidiEffectRack = "MidiEffectGroupDevice";
 
         public const string Arpegiator = "MidiArpeggiator";
@@ -88,13 +72,13 @@ public static class LiveStockDeviceNodeNames
         public const string Velocity = "MidiVelocity";
     }
 
-    [ExtractingStockDevice(typeof(ICommonStockInstrumentExtractor))]
+    [ExtractingStockDevice(typeof(ICommonStockInstrumentDeviceExtractor))]
     public static class MidiInstruments
     {
-        [ExtractingStockDevice(typeof(DrumRackExtractor))]
+        [ExtractingStockDevice(typeof(DrumRackDeviceExtractor))]
         public const string DrumRack = "DrumGroupDevice";
 
-        [ExtractingStockDevice(typeof(MidiInstrumentRackExtractor))]
+        [ExtractingStockDevice(typeof(MidiInstrumentRackDeviceExtractor))]
         public const string InstrumentRack = "InstrumentGroupDevice";
 
         public const string Analog = "UltraAnalog";
@@ -118,10 +102,10 @@ public static class LiveStockDeviceNodeNames
         public const string Wavetable = "InstrumentVector";
     }
 
-    [ExtractingStockDevice(typeof(ICommonStockAudioEffectExtractor))]
+    [ExtractingStockDevice(typeof(ICommonStockAudioEffectDeviceExtractor))]
     public static class AudioEffects
     {
-        [ExtractingStockDevice(typeof(AudioEffectRackExtractor))]
+        [ExtractingStockDevice(typeof(AudioEffectRackDeviceExtractor))]
         public const string AudioEffectRack = "AudioEffectGroupDevice";
 
         public const string Amp = "Amp";

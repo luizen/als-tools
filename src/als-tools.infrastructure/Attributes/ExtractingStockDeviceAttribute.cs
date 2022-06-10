@@ -1,4 +1,4 @@
-using AlsTools.Infrastructure.Extractors.StockDevices;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices;
 
 namespace AlsTools.Infrastructure.Attributes;
 

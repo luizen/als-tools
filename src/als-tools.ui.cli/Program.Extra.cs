@@ -6,13 +6,14 @@ using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure;
 using AlsTools.Infrastructure.Attributes;
 using AlsTools.Infrastructure.Extractors;
-using AlsTools.Infrastructure.Extractors.MaxForLiveSorts;
-using AlsTools.Infrastructure.Extractors.PluginFormats;
-using AlsTools.Infrastructure.Extractors.StockDevices;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockAudioEffects;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockInstruments;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockMidiEffects;
-using AlsTools.Infrastructure.Extractors.StockDevices.StockRacks;
+using AlsTools.Infrastructure.Extractors.DeviceTypes;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.MaxForLive;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockAudioEffects;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockInstruments;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockMidiEffects;
+using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockRacks;
 using AlsTools.Infrastructure.FileSystem;
 using AlsTools.Infrastructure.Handlers;
 using AlsTools.Infrastructure.Repositories;
@@ -81,13 +82,13 @@ public partial class Program
         serviceCollection.AddSingleton<UserFolderHandler>(svcProvider =>
             new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
 
-        // MaxForLive Extractors
-        serviceCollection.AddSingleton<IDictionary<string, IMaxForLiveSortExtractor>>(svcProvider =>
-                     new Dictionary<string, IMaxForLiveSortExtractor>()
+        // MaxForLive Sort Extractors
+        serviceCollection.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
+                     new Dictionary<string, IMaxForLiveDeviceSortExtractor>()
                      {
-                         [DeviceTypeNodeName.MaxForLiveAudioEffect] = new MaxForLiveAudioEffectExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveAudioEffectExtractor>>()),
-                         [DeviceTypeNodeName.MaxForLiveInstrument] = new MaxForLiveMidiInstrumentExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveMidiInstrumentExtractor>>()),
-                         [DeviceTypeNodeName.MaxForLiveMidiEffect] = new MaxForLiveMidiEffectExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveMidiEffectExtractor>>())
+                         [DeviceTypeNodeName.MaxForLiveAudioEffect] = new MaxForLiveAudioEffectDeviceSortExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveAudioEffectDeviceSortExtractor>>()),
+                         [DeviceTypeNodeName.MaxForLiveInstrument] = new MaxForLiveMidiInstrumentDeviceSortExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveMidiInstrumentDeviceSortExtractor>>()),
+                         [DeviceTypeNodeName.MaxForLiveMidiEffect] = new MaxForLiveMidiEffectDeviceSortExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveMidiEffectDeviceSortExtractor>>())
                      }
                 );
 
@@ -101,26 +102,27 @@ public partial class Program
                      }
                 );
 
-        // Live Stock devices extractors
-        serviceCollection.AddSingleton<ICommonStockAudioEffectExtractor, CommonStockAudioEffectExtractor>();
-        serviceCollection.AddSingleton<ICommonStockMidiEffectExtractor, CommonStockMidiEffectExtractor>();
-        serviceCollection.AddSingleton<ICommonStockInstrumentExtractor, CommonStockInstrumentExtractor>();
+        // Common Live stock devices extractors
+        serviceCollection.AddSingleton<ICommonStockAudioEffectDeviceExtractor, CommonStockAudioEffectDeviceExtractor>();
+        serviceCollection.AddSingleton<ICommonStockMidiEffectDeviceExtractor, CommonStockMidiEffectDeviceExtractor>();
+        serviceCollection.AddSingleton<ICommonStockInstrumentDeviceExtractor, CommonStockInstrumentDeviceExtractor>();
 
         // Live Stock Racks extractors
-        serviceCollection.AddSingleton<AudioEffectRackExtractor>();
-        serviceCollection.AddSingleton<MidiEffectRackExtractor>();
-        serviceCollection.AddSingleton<MidiInstrumentRackExtractor>();
-        serviceCollection.AddSingleton<DrumRackExtractor>();
+        serviceCollection.AddSingleton<AudioEffectRackDeviceExtractor>();
+        serviceCollection.AddSingleton<MidiEffectRackDeviceExtractor>();
+        serviceCollection.AddSingleton<MidiInstrumentRackDeviceExtractor>();
+        serviceCollection.AddSingleton<DrumRackDeviceExtractor>();
 
+        // All Live Stock device extractors by their XML node names
         serviceCollection.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
 
-        // Device Extractors
+        // Device type extractors
         serviceCollection.AddSingleton<IDictionary<DeviceType, IDeviceExtractor>>(svcProvider =>
                      new Dictionary<DeviceType, IDeviceExtractor>()
                      {
-                         [DeviceType.Stock] = new StockDeviceExtractor(svcProvider.GetRequiredService<ILogger<StockDeviceExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IStockDeviceExtractor>>()),
-                         [DeviceType.Plugin] = new PluginDeviceExtractor(svcProvider.GetRequiredService<ILogger<PluginDeviceExtractor>>(), svcProvider.GetRequiredService<IDictionary<PluginFormat, IPluginFormatExtractor>>()),
-                         [DeviceType.MaxForLive] = new MaxForLiveDeviceExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveDeviceExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IMaxForLiveSortExtractor>>()),
+                         [DeviceType.Stock] = new StockDeviceDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<StockDeviceDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IStockDeviceExtractor>>()),
+                         [DeviceType.Plugin] = new PluginDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<PluginDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<PluginFormat, IPluginFormatExtractor>>()),
+                         [DeviceType.MaxForLive] = new MaxForLiveDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IMaxForLiveDeviceSortExtractor>>()),
                      }
                 );
 
@@ -130,12 +132,13 @@ public partial class Program
                 .AddTransient<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
                 .AddTransient<ILiveProjectFileExtractionHandler, LiveProjectFileExtractionHandler>()
                 .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>()
-                .AddTransient<ILiveProjectExtractionHandler, LiveProjectExtractionHandler>()
-                .AddTransient<IDeviceExtractionHandler, DeviceExtractionHandler>()
-                .AddTransient<ILocatorExtractionHandler, LocatorExtractionHandler>()
-                .AddTransient<ISceneExtractionHandler, SceneExtractionHandler>()
-                .AddTransient<ITrackExtractionHandler, TrackExtractionHandler>();
+                .AddTransient<ILiveProjectsCollectionExtractor, LiveProjectsCollectionExtractor>()
+                .AddTransient<IDevicesCollectionExtractor, DevicesCollectionExtractor>()
+                .AddTransient<ILocatorsCollectionExtractor, LocatorsCollectionExtractor>()
+                .AddTransient<IScenesCollectionExtractor, ScenesCollectionExtractor>()
+                .AddTransient<ITracksCollectionExtractor, TracksCollectionExtractor>();
 
+        // DB options
         serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
 
         // Add app
@@ -144,21 +147,29 @@ public partial class Program
 
     private static IDictionary<string, IStockDeviceExtractor> BuildStockDeviceExtractors(IServiceProvider svcProvider)
     {
+        Log.Debug("Starting BuildStockDeviceExtractors()...");
+
         var dic = new Dictionary<string, IStockDeviceExtractor>();
 
         // MidiEffects, MidiInstruments and AudioEffects classes
         var nestedClassTypes = typeof(LiveStockDeviceNodeNames).GetNestedTypes(BindingFlags.Static | BindingFlags.Public);
 
+        Log.Debug("Starting foreach in nestedClassTypes...");
         foreach (var classType in nestedClassTypes)
         {
+            Log.Debug(@"ClassType: {@ClassType}", classType.FullName);
+
             // Let's check if the class has an extractor attribute already
             ExtractingStockDeviceAttribute? classExtractorAttr = classType.GetCustomAttribute<ExtractingStockDeviceAttribute>();
 
             // Get all public const/static fields for that class
             var fields = classType.GetFields(BindingFlags.Static | BindingFlags.Public);
 
+            Log.Debug("Starting foreach in fields...");
             foreach (var field in fields)
             {
+                Log.Debug(@"Field: {@Field}", field.Name);
+
                 // Get field value
                 var key = field.GetValue(null)?.ToString()?.ToUpperInvariant();
                 if (key == null)
@@ -180,7 +191,12 @@ public partial class Program
                     continue;
                 }
 
+                Log.Debug(@"Getting extractor by DeviceExtractorType: {@DeviceExtractorType}", extractorAttr.DeviceExtractorType.FullName);
+
                 var extractor = (IStockDeviceExtractor)svcProvider.GetRequiredService(extractorAttr.DeviceExtractorType);
+
+                Log.Debug(@"Got extractor: {@Extractor}", extractor.GetType().FullName);
+
                 dic.Add(key, extractor);
             }
         }
