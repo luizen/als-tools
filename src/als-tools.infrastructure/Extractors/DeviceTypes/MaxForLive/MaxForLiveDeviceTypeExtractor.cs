@@ -6,12 +6,12 @@ public class MaxForLiveDeviceTypeExtractor : IDeviceExtractor
 {
     private readonly ILogger<MaxForLiveDeviceTypeExtractor> logger;
 
-    private readonly IDictionary<string, IMaxForLiveDeviceSortExtractor> maxForLiveExtractors;
+    private readonly IDictionary<string, IMaxForLiveDeviceSortExtractor> maxForLiveDeviceSortExtractors;
 
-    public MaxForLiveDeviceTypeExtractor(ILogger<MaxForLiveDeviceTypeExtractor> logger, IDictionary<string, IMaxForLiveDeviceSortExtractor> extractors)
+    public MaxForLiveDeviceTypeExtractor(ILogger<MaxForLiveDeviceTypeExtractor> logger, IDictionary<string, IMaxForLiveDeviceSortExtractor> maxForLiveDeviceSortExtractors)
     {
         this.logger = logger;
-        this.maxForLiveExtractors = extractors;
+        this.maxForLiveDeviceSortExtractors = maxForLiveDeviceSortExtractors;
     }
 
     public IDevice ExtractFromXml(XPathNavigator deviceNode)
@@ -20,7 +20,7 @@ public class MaxForLiveDeviceTypeExtractor : IDeviceExtractor
         logger.LogDebug("Extracting MaxForLive device from XML...");
 
         var max4LiveDeviceDescNode = deviceNode.Name.ToUpperInvariant();
-        var device = maxForLiveExtractors[max4LiveDeviceDescNode].ExtractFromXml(deviceNode);
+        var device = maxForLiveDeviceSortExtractors[max4LiveDeviceDescNode].ExtractFromXml(deviceNode);
 
         logger.LogDebug(@"Extracted MaxForLive device: {@DeviceName}", device.Name);
 
