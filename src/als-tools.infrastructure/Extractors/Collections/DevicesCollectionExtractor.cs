@@ -12,7 +12,7 @@ public interface IDevicesCollectionExtractor : ICollectionExtractor<IDevice>
 public class DevicesCollectionExtractor : IDevicesCollectionExtractor
 {
     private readonly ILogger<DevicesCollectionExtractor> logger;
-    private readonly IDictionary<DeviceType, IDeviceExtractor> deviceExtractors;
+    private readonly IDictionary<DeviceType, IDeviceTypeExtractor> deviceTypeExtractors;
 
     private static readonly IDictionary<string, DeviceType> deviceTypesByNodeDesc = new Dictionary<string, DeviceType>()
     {
@@ -23,13 +23,13 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         [DeviceTypeNodeName.MaxForLiveMidiEffect] = DeviceType.MaxForLive
     };
 
-    public DevicesCollectionExtractor(ILogger<DevicesCollectionExtractor> logger, IDictionary<DeviceType, IDeviceExtractor> deviceExtractors)
+    public DevicesCollectionExtractor(ILogger<DevicesCollectionExtractor> logger, IDictionary<DeviceType, IDeviceTypeExtractor> deviceTypeExtractors)
     {
-        if (deviceExtractors == null || deviceExtractors.Count == 0)
-            throw new ArgumentNullException(nameof(deviceExtractors));
+        if (deviceTypeExtractors == null || deviceTypeExtractors.Count == 0)
+            throw new ArgumentNullException(nameof(deviceTypeExtractors));
 
         this.logger = logger;
-        this.deviceExtractors = deviceExtractors;
+        this.deviceTypeExtractors = deviceTypeExtractors;
     }
 
     public IReadOnlyList<IDevice> ExtractFromXml(XPathNavigator nav)
@@ -74,7 +74,7 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
     private IDevice ExtractDeviceFromNode(XPathNavigator deviceNode)
     {
         var type = GetDeviceTypeByDeviceNodeName(deviceNode.Name);
-        var extractor = GetDeviceExtractorByDeviceType(type);
+        var extractor = GetDeviceTypeExtractorByDeviceType(type);
 
         return extractor.ExtractFromXml(deviceNode);
     }
@@ -92,11 +92,11 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         return DeviceType.Stock;
     }
 
-    private IDeviceExtractor GetDeviceExtractorByDeviceType(DeviceType type)
+    private IDeviceTypeExtractor GetDeviceTypeExtractorByDeviceType(DeviceType type)
     {
         logger.LogDebug("Getting device extractor by device type ({@DeviceType})...", type);
 
-        var extractor = deviceExtractors[type];
+        var extractor = deviceTypeExtractors[type];
 
         logger.LogDebug("Found device extractor: {@DeviceExtractor})", extractor);
 

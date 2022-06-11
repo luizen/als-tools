@@ -2,7 +2,7 @@ using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.MaxForLive;
 
-public class MaxForLiveDeviceTypeExtractor : IDeviceExtractor
+public class MaxForLiveDeviceTypeExtractor : IDeviceTypeExtractor
 {
     private readonly ILogger<MaxForLiveDeviceTypeExtractor> logger;
 

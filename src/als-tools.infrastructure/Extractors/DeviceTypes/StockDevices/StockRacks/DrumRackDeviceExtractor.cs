@@ -6,7 +6,7 @@ namespace AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockRacks
 
 public class DrumRackDeviceExtractor : BaseStockDeviceExtractor, IStockRackDeviceExtractor
 {
-    // private readonly IDictionary<DeviceType, IDeviceExtractor> deviceExtractors;
+    // private readonly IDictionary<DeviceType, IDeviceTypeExtractor> deviceExtractors;
 
     private static readonly IDictionary<string, DeviceType> deviceTypesByNodeDesc = new Dictionary<string, DeviceType>()
     {
@@ -17,7 +17,7 @@ public class DrumRackDeviceExtractor : BaseStockDeviceExtractor, IStockRackDevic
         [DeviceTypeNodeName.MaxForLiveMidiEffect] = DeviceType.MaxForLive
     };
 
-    // public DrumRackDeviceExtractor(ILogger<DrumRackDeviceExtractor> logger, IDictionary<DeviceType, IDeviceExtractor> deviceExtractors) : base(logger)
+    // public DrumRackDeviceExtractor(ILogger<DrumRackDeviceExtractor> logger, IDictionary<DeviceType, IDeviceTypeExtractor> deviceExtractors) : base(logger)
     public DrumRackDeviceExtractor(ILogger<DrumRackDeviceExtractor> logger) : base(logger)
     {
         // this.deviceExtractors = deviceExtractors;

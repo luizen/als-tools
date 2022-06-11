@@ -4,7 +4,7 @@ using AlsTools.Infrastructure.XmlNodeNames;
 
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;
 
-public class PluginDeviceTypeExtractor : IDeviceExtractor
+public class PluginDeviceTypeExtractor : IDeviceTypeExtractor
 {
     private readonly ILogger<PluginDeviceTypeExtractor> logger;
 

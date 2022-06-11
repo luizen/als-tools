@@ -117,8 +117,8 @@ public partial class Program
         serviceCollection.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
 
         // Device type extractors
-        serviceCollection.AddSingleton<IDictionary<DeviceType, IDeviceExtractor>>(svcProvider =>
-                     new Dictionary<DeviceType, IDeviceExtractor>()
+        serviceCollection.AddSingleton<IDictionary<DeviceType, IDeviceTypeExtractor>>(svcProvider =>
+                     new Dictionary<DeviceType, IDeviceTypeExtractor>()
                      {
                          [DeviceType.Stock] = new StockDeviceDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<StockDeviceDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IStockDeviceExtractor>>()),
                          [DeviceType.Plugin] = new PluginDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<PluginDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<PluginFormat, IPluginFormatExtractor>>()),

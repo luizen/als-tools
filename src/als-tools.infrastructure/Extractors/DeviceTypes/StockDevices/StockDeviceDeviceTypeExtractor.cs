@@ -2,7 +2,7 @@ using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices;
 
-public class StockDeviceDeviceTypeExtractor : IDeviceExtractor
+public class StockDeviceDeviceTypeExtractor : IDeviceTypeExtractor
 {
     private readonly ILogger<StockDeviceDeviceTypeExtractor> logger;
 
