@@ -5,7 +5,7 @@ using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure;
 using AlsTools.Infrastructure.Attributes;
-using AlsTools.Infrastructure.Extractors;
+using AlsTools.Infrastructure.Extractors.Collections;
 using AlsTools.Infrastructure.Extractors.DeviceTypes;
 using AlsTools.Infrastructure.Extractors.DeviceTypes.MaxForLive;
 using AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;

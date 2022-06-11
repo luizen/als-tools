@@ -3,7 +3,7 @@ using AlsTools.Core.ValueObjects.Devices.Racks;
 using AlsTools.Infrastructure.Extractors.DeviceTypes;
 using AlsTools.Infrastructure.XmlNodeNames;
 
-namespace AlsTools.Infrastructure.Extractors;
+namespace AlsTools.Infrastructure.Extractors.Collections;
 
 public interface IDevicesCollectionExtractor : ICollectionExtractor<IDevice>
 {

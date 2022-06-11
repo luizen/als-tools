@@ -1,4 +1,4 @@
-namespace AlsTools.Infrastructure.Extractors;
+namespace AlsTools.Infrastructure.Extractors.Collections;
 
 public interface ICollectionExtractor<T>
 {

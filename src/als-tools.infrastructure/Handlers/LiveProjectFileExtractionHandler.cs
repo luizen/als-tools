@@ -1,6 +1,6 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
-using AlsTools.Infrastructure.Extractors;
+using AlsTools.Infrastructure.Extractors.Collections;
 
 namespace AlsTools.Infrastructure.Handlers;
 
