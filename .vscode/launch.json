@@ -54,6 +54,23 @@
             "stopAtEntry": false
         },
         {
+            "name": "Debug - initdb file Techno KeepDown",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--files",
+                "~/Splice/Techno KeepDown 2021-02-08 Project/Techno KeepDown 2021-02-08.als",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - initdb file AllStock",
             "type": "coreclr",
             "request": "launch",

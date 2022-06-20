@@ -14,17 +14,17 @@ public abstract class BaseMaxForLiveDeviceSortExtractor : IMaxForLiveDeviceSortE
         this.deviceSort = deviceSort;
     }
 
-    public IDevice ExtractFromXml(XPathNavigator pluginDescNode)
+    public IDevice ExtractFromXml(XPathNavigator deviceNode)
     {
         logger.LogDebug("----");
         logger.LogDebug("Extracting MaxForLive {@DeviceSort} device...", deviceSort);
 
         var device = new MaxForLiveDevice(deviceSort)
         {
-            Id = pluginDescNode.SelectSingleNode(@"@Id")!.ValueAsInt,
-            Name = GetMaxForLiveDeviceNameFromXmlNodePath(pluginDescNode.SelectSingleNode(@"SourceContext/Value/BranchSourceContext/OriginalFileRef/FileRef/Path/@Value")!.Value),
-            UserName = pluginDescNode.SelectSingleNode(@"UserName/@Value")!.Value,
-            Annotation = pluginDescNode.SelectSingleNode(@"Annotation/@Value")!.Value
+            Id = deviceNode.SelectSingleNode(@"@Id")!.ValueAsInt,
+            Name = GetMaxForLiveDeviceNameFromXmlFileRefNode(deviceNode),
+            UserName = deviceNode.SelectSingleNode(@"UserName/@Value")!.Value,
+            Annotation = deviceNode.SelectSingleNode(@"Annotation/@Value")!.Value
         };
 
         return device;
@@ -33,18 +33,19 @@ public abstract class BaseMaxForLiveDeviceSortExtractor : IMaxForLiveDeviceSortE
     /// <summary>
     /// Gets the MaxForLive device name from its file path
     /// </summary>
-    /// <param name="nodePathValue">The path from the MaxForLive node. E.g.: "~/Documents/Production/Max4Live/Rozzer - Advanced Step Sequencer.amxd"</param>
+    /// <param name="deviceNode">The XPathNavigator instance pointing to the device node"</param>
     /// <returns>The file name from the device path</returns>
-    protected string GetMaxForLiveDeviceNameFromXmlNodePath(string nodePathValue)
+    protected string GetMaxForLiveDeviceNameFromXmlFileRefNode(XPathNavigator deviceNode)
     {
+        string? nodePathValue = deviceNode.SelectSingleNode(@"SourceContext/Value/BranchSourceContext/OriginalFileRef/FileRef/Path/@Value")?.Value ??
+                                deviceNode.SelectSingleNode(@"SourceContext/Value/BranchSourceContext/OriginalFileRef/FileRef/Name/@Value")?.Value;
+
         if (string.IsNullOrWhiteSpace(nodePathValue))
             return string.Empty;
 
         var fileName = Path.GetFileName(nodePathValue);
-        if (!string.IsNullOrWhiteSpace(fileName))
-            return fileName.Replace(".amxd", "");
 
-        return string.Empty;
+        return string.IsNullOrWhiteSpace(fileName) ? string.Empty : fileName.Replace(".amxd", "");
     }
 }
 
