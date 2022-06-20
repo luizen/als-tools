@@ -12,7 +12,7 @@ public interface IDevicesCollectionExtractor : ICollectionExtractor<IDevice>
 public class DevicesCollectionExtractor : IDevicesCollectionExtractor
 {
     private readonly ILogger<DevicesCollectionExtractor> logger;
-    private readonly IDictionary<DeviceType, IDeviceTypeExtractor> deviceTypeExtractors;
+    private readonly Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors;
 
     private static readonly IDictionary<string, DeviceType> deviceTypesByNodeDesc = new Dictionary<string, DeviceType>()
     {
@@ -23,9 +23,9 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         [DeviceTypeNodeName.MaxForLiveMidiEffect] = DeviceType.MaxForLive
     };
 
-    public DevicesCollectionExtractor(ILogger<DevicesCollectionExtractor> logger, IDictionary<DeviceType, IDeviceTypeExtractor> deviceTypeExtractors)
+    public DevicesCollectionExtractor(ILogger<DevicesCollectionExtractor> logger, Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors)
     {
-        if (deviceTypeExtractors == null || deviceTypeExtractors.Count == 0)
+        if (deviceTypeExtractors == null || deviceTypeExtractors.Value.Count == 0)
             throw new ArgumentNullException(nameof(deviceTypeExtractors));
 
         this.logger = logger;
@@ -96,7 +96,7 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
     {
         logger.LogDebug("Getting device extractor by device type ({@DeviceType})...", type);
 
-        var extractor = deviceTypeExtractors[type];
+        var extractor = deviceTypeExtractors.Value[type];
 
         logger.LogDebug("Found device extractor: {@DeviceExtractor})", extractor);
 

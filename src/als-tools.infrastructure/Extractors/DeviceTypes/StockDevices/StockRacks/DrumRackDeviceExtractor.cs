@@ -6,7 +6,7 @@ namespace AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockRacks
 
 public class DrumRackDeviceExtractor : BaseStockDeviceExtractor, IStockRackDeviceExtractor
 {
-    // private readonly IDictionary<DeviceType, IDeviceTypeExtractor> deviceExtractors;
+    private readonly Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors;
 
     private static readonly IDictionary<string, DeviceType> deviceTypesByNodeDesc = new Dictionary<string, DeviceType>()
     {
@@ -17,10 +17,9 @@ public class DrumRackDeviceExtractor : BaseStockDeviceExtractor, IStockRackDevic
         [DeviceTypeNodeName.MaxForLiveMidiEffect] = DeviceType.MaxForLive
     };
 
-    // public DrumRackDeviceExtractor(ILogger<DrumRackDeviceExtractor> logger, IDictionary<DeviceType, IDeviceTypeExtractor> deviceExtractors) : base(logger)
-    public DrumRackDeviceExtractor(ILogger<DrumRackDeviceExtractor> logger) : base(logger)
+    public DrumRackDeviceExtractor(ILogger<DrumRackDeviceExtractor> logger, Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors) : base(logger)
     {
-        // this.deviceExtractors = deviceExtractors;
+        this.deviceTypeExtractors = deviceTypeExtractors;
     }
 
     protected override IDevice CreateDevice()
@@ -32,101 +31,100 @@ public class DrumRackDeviceExtractor : BaseStockDeviceExtractor, IStockRackDevic
     {
         var device = (DrumRackDevice)base.ExtractFromXml(deviceNode);
 
-        //TODO: Implement the branches (chains)!
-        // Branches
-        // ReturnBranches
+        var devicesFromDrumBranches = GetDevicesFromDrumBranches(deviceNode);
+        var devicesFromReturnBranches = GetDevicesFromReturnBranches(deviceNode);
 
-        // var devicesFromDrumBranches = GetDevicesFromDrumBranches(deviceNode);
-        // var devicesFromReturnBranches = GetDevicesFromReturnBranches(deviceNode);
-
-        // device.AddDevices(devicesFromDrumBranches);
-        // device.AddDevices(devicesFromReturnBranches);
+        device.AddDevices(devicesFromDrumBranches);
+        device.AddDevices(devicesFromReturnBranches);
 
         return device;
     }
 
-    // private IList<IDevice> GetDevicesFromDrumBranches(XPathNavigator nav)
-    // {
+    private IList<IDevice> GetDevicesFromDrumBranches(XPathNavigator nav)
+    {
+        logger.LogDebug("----");
+        logger.LogDebug("Exctracting devices of DrumRack drum chains from XML...");
 
-    //     // /Branches/DrumBranch[1]/DeviceChain/MidiToAudioDeviceChain/Devices/OriginalSimpler
-    //     logger.LogDebug("----");
-    //     logger.LogDebug("Exctracting devices of DrumRack drum chains from XML...");
+        var devices = new List<IDevice>();
+        var devicesIterator = nav.Select(@".//Branches/DrumBranch/DeviceChain/MidiToAudioDeviceChain/Devices/*");
 
-    //     var devices = new List<IDevice>();
-    //     var devicesIterator = nav.Select(@"Branches/DrumBranch/DeviceChain/MidiToAudioDeviceChain/Devices");
-    //     devicesIterator.MoveNext();
+        // Iterate through all other devices
+        while (devicesIterator.MoveNext())
+        {
+            if (devicesIterator.Current == null)
+                continue;
 
-    //     //TODO: está muito similar à um DeviceExtractionHandler. Verificar como fazer pra reusar!
+            var deviceNode = devicesIterator.Current;
+            var device = ExtractDeviceFromNode(deviceNode);
+            devices.Add(device);
 
-    //     if (devicesIterator.Current?.HasChildren ?? false)
-    //     {
-    //         if (devicesIterator.Current.MoveToFirstChild())
-    //         {
-    //             // Get first device
-    //             var deviceNode = devicesIterator.Current;
-    //             var device = ExtractDeviceFromNode(deviceNode);
-    //             devices.Add(device);
+            if (device is BaseRackDevice rackDevice)
+            {
+                var childen = rackDevice.ChildrenDevices;
+                devices.AddRange(childen.AsEnumerable());
+            }
+        }
 
-    //             if (device is BaseRackDevice rackDevice)
-    //             {
-    //                 var childen = rackDevice.ChildrenDevices;
-    //                 devices.AddRange(childen.AsEnumerable());
-    //             }
+        return devices;
+    }
 
-    //             // Iterate through all other devices
-    //             while (devicesIterator.Current.MoveToNext())
-    //             {
-    //                 deviceNode = devicesIterator.Current;
-    //                 device = ExtractDeviceFromNode(deviceNode);
-    //                 devices.Add(device);
+    private IList<IDevice> GetDevicesFromReturnBranches(XPathNavigator nav)
+    {
+        logger.LogDebug("----");
+        logger.LogDebug("Exctracting devices of DrumRack return chains from XML...");
 
-    //                 if (device is BaseRackDevice rackDevice2)
-    //                 {
-    //                     var childen = rackDevice2.ChildrenDevices;
-    //                     devices.AddRange(childen.AsEnumerable());
-    //                 }
-    //             }
-    //         }
-    //     }
+        var devices = new List<IDevice>();
+        var devicesIterator = nav.Select(@".//ReturnBranches/ReturnBranch/DeviceChain/AudioToAudioDeviceChain/Devices/*");
 
-    //     return devices;
-    // }
+        // Iterate through all other devices
+        while (devicesIterator.MoveNext())
+        {
+            if (devicesIterator.Current == null)
+                continue;
 
-    // private IList<IDevice> GetDevicesFromReturnBranches(XPathNavigator deviceNode)
-    // {
-    //     // /ReturnBranches/ReturnBranch[1]/DeviceChain/AudioToAudioDeviceChain/Devices/Delay
-    //     throw new NotImplementedException();
-    // }
+            var deviceNode = devicesIterator.Current;
+            var device = ExtractDeviceFromNode(deviceNode);
+            devices.Add(device);
 
-    // private IDevice ExtractDeviceFromNode(XPathNavigator deviceNode)
-    // {
-    //     var type = GetDeviceTypeByDeviceNodeName(deviceNode.Name);
-    //     var extractor = GetDeviceExtractorByDeviceType(type);
+            if (device is BaseRackDevice rackDevice)
+            {
+                var childen = rackDevice.ChildrenDevices;
+                devices.AddRange(childen.AsEnumerable());
+            }
+        }
 
-    //     return extractor.ExtractFromXml(deviceNode);
-    // }
+        return devices;
+    }
 
-    // private DeviceType GetDeviceTypeByDeviceNodeName(string deviceNodeName)
-    // {
-    //     logger.LogDebug("Getting device type by device node name ({DeviceNodeName})...", deviceNodeName);
+    private IDevice ExtractDeviceFromNode(XPathNavigator deviceNode)
+    {
+        var type = GetDeviceTypeByDeviceNodeName(deviceNode.Name);
+        var extractor = GetDeviceExtractorByDeviceType(type);
 
-    //     var deviceNodeNameUpper = deviceNodeName.ToUpperInvariant();
-    //     DeviceType type;
+        return extractor.ExtractFromXml(deviceNode);
+    }
 
-    //     if (deviceTypesByNodeDesc.TryGetValue(deviceNodeNameUpper, out type))
-    //         return type;
+    private DeviceType GetDeviceTypeByDeviceNodeName(string deviceNodeName)
+    {
+        logger.LogDebug("Getting device type by device node name ({DeviceNodeName})...", deviceNodeName);
 
-    //     return DeviceType.Stock;
-    // }
+        var deviceNodeNameUpper = deviceNodeName.ToUpperInvariant();
+        DeviceType type;
 
-    // private IDeviceExtractor GetDeviceExtractorByDeviceType(DeviceType type)
-    // {
-    //     logger.LogDebug("Getting device extractor by device type ({@DeviceType})...", type);
+        if (deviceTypesByNodeDesc.TryGetValue(deviceNodeNameUpper, out type))
+            return type;
 
-    //     var extractor = deviceExtractors[type];
+        return DeviceType.Stock;
+    }
 
-    //     logger.LogDebug("Found device extractor: {@DeviceExtractor})", extractor);
+    private IDeviceTypeExtractor GetDeviceExtractorByDeviceType(DeviceType type)
+    {
+        logger.LogDebug("Getting device extractor by device type ({@DeviceType})...", type);
 
-    //     return extractor;
-    // }
+        var extractor = deviceTypeExtractors.Value[type];
+
+        logger.LogDebug("Found device extractor: {@DeviceExtractor})", extractor);
+
+        return extractor;
+    }
 }

@@ -117,26 +117,28 @@ public partial class Program
         serviceCollection.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
 
         // Device type extractors
-        serviceCollection.AddSingleton<IDictionary<DeviceType, IDeviceTypeExtractor>>(svcProvider =>
-                     new Dictionary<DeviceType, IDeviceTypeExtractor>()
-                     {
-                         [DeviceType.Stock] = new StockDeviceDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<StockDeviceDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IStockDeviceExtractor>>()),
-                         [DeviceType.Plugin] = new PluginDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<PluginDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<PluginFormat, IPluginFormatExtractor>>()),
-                         [DeviceType.MaxForLive] = new MaxForLiveDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IMaxForLiveDeviceSortExtractor>>()),
-                     }
+        serviceCollection.AddSingleton<Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>>(svcProvider =>
+                     new Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>(() =>
+                        new Dictionary<DeviceType, IDeviceTypeExtractor>()
+                        {
+                            [DeviceType.Stock] = new StockDeviceDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<StockDeviceDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IStockDeviceExtractor>>()),
+                            [DeviceType.Plugin] = new PluginDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<PluginDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<PluginFormat, IPluginFormatExtractor>>()),
+                            [DeviceType.MaxForLive] = new MaxForLiveDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IMaxForLiveDeviceSortExtractor>>()),
+                        }
+                     )
                 );
 
         // Add services
         serviceCollection
-            .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
-                .AddTransient<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
-                .AddTransient<ILiveProjectFileExtractionHandler, LiveProjectFileExtractionHandler>()
-                .AddTransient<ILiveProjectFileSystem, LiveProjectFileSystem>()
-                .AddTransient<ILiveProjectsCollectionExtractor, LiveProjectsCollectionExtractor>()
-                .AddTransient<IDevicesCollectionExtractor, DevicesCollectionExtractor>()
-                .AddTransient<ILocatorsCollectionExtractor, LocatorsCollectionExtractor>()
-                .AddTransient<IScenesCollectionExtractor, ScenesCollectionExtractor>()
-                .AddTransient<ITracksCollectionExtractor, TracksCollectionExtractor>();
+            .AddSingleton<ILiveProjectAsyncService, LiveProjectAsyncService>()
+            .AddSingleton<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
+            .AddSingleton<ILiveProjectFileExtractionHandler, LiveProjectFileExtractionHandler>()
+            .AddSingleton<ILiveProjectFileSystem, LiveProjectFileSystem>()
+            .AddSingleton<ILiveProjectsCollectionExtractor, LiveProjectsCollectionExtractor>()
+            .AddSingleton<IDevicesCollectionExtractor, DevicesCollectionExtractor>()
+            .AddSingleton<ILocatorsCollectionExtractor, LocatorsCollectionExtractor>()
+            .AddSingleton<IScenesCollectionExtractor, ScenesCollectionExtractor>()
+            .AddSingleton<ITracksCollectionExtractor, TracksCollectionExtractor>();
 
         // DB options
         serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));

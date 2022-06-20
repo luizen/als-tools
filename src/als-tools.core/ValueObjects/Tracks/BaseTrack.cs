@@ -8,19 +8,24 @@ public abstract class BaseTrack : ITrack
 
     public BaseTrack(TrackType type)
     {
-        stockDevices = new Lazy<List<StockDevice>>();
-        plugins = new Lazy<List<PluginDevice>>();
-        maxForLiveDevices = new Lazy<List<MaxForLiveDevice>>();
+        // stockDevices = new Lazy<List<StockDevice>>();
+        // plugins = new Lazy<List<PluginDevice>>();
+        // maxForLiveDevices = new Lazy<List<MaxForLiveDevice>>();
+
+        StockDevices = new List<StockDevice>();
+        Plugins = new List<PluginDevice>();
+        MaxForLiveDevices = new List<MaxForLiveDevice>();
 
         TrackDelay = new TrackDelay();
         Type = type;
     }
 
-    private Lazy<List<StockDevice>> stockDevices;
+    // private Lazy<List<StockDevice>> stockDevices;
 
-    private Lazy<List<PluginDevice>> plugins;
+    // private Lazy<List<PluginDevice>> plugins;
 
-    private Lazy<List<MaxForLiveDevice>> maxForLiveDevices;
+    // private Lazy<List<MaxForLiveDevice>> maxForLiveDevices;
+
 
     public int? Id { get; set; }
 
@@ -30,29 +35,11 @@ public abstract class BaseTrack : ITrack
 
     public TrackType Type { get; set; }
 
-    public IReadOnlyCollection<StockDevice> StockDevices
-    {
-        get
-        {
-            return stockDevices.Value.AsReadOnly();
-        }
-    }
+    public IList<StockDevice> StockDevices { get; set; }
 
-    public IReadOnlyCollection<PluginDevice> Plugins
-    {
-        get
-        {
-            return plugins.Value.AsReadOnly();
-        }
-    }
+    public IList<PluginDevice> Plugins { get; set; }
 
-    public IReadOnlyCollection<MaxForLiveDevice> MaxForLiveDevices
-    {
-        get
-        {
-            return maxForLiveDevices.Value.AsReadOnly();
-        }
-    }
+    public IList<MaxForLiveDevice> MaxForLiveDevices { get; set; }
 
     public string Annotation { get; set; } = string.Empty;
 
@@ -73,11 +60,14 @@ public abstract class BaseTrack : ITrack
 
         //TODO: should I get rid of the specific collections (stock, plugins, max4live) and put all devices in a single collection?
         if (device.Family.Type == DeviceType.Plugin)
-            plugins.Value.Add((PluginDevice)device);
+            // plugins.Value.Add((PluginDevice)device);
+            Plugins.Add((PluginDevice)device);
         else if (device.Family.Type == DeviceType.Stock)
-            stockDevices.Value.Add((StockDevice)device);
+            // stockDevices.Value.Add((StockDevice)device);
+            StockDevices.Add((StockDevice)device);
         else
-            maxForLiveDevices.Value.Add((MaxForLiveDevice)device);
+            // maxForLiveDevices.Value.Add((MaxForLiveDevice)device);
+            MaxForLiveDevices.Add((MaxForLiveDevice)device);
     }
 
     public void AddDevices(IEnumerable<IDevice> devices)
