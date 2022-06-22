@@ -11,7 +11,7 @@
             "args": [
                 "initdb",
                 "--files",
-                "/Users/zenluiz/Splice/Techno ArpMassive Project/Techno ArpMassive L11.als",
+                "/Users/zenluiz/Splice/Techno Bazille Modular 2020-12-31 Project/Techno Bazille Modular 2020-12-31.als",
                 "--log-level",
                 "verbose"
             ],

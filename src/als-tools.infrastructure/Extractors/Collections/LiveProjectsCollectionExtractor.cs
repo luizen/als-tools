@@ -26,7 +26,7 @@ public class LiveProjectsCollectionExtractor : ILiveProjectsCollectionExtractor
             MajorVersion = GetProjectAttribute<string>(nav, "MajorVersion")!,
             MinorVersion = GetProjectAttribute<string>(nav, "MinorVersion")!,
             SchemaChangeCount = GetProjectAttribute<int>(nav, "SchemaChangeCount"),
-            Tempo = GetMasterTrackMixerAttribute<int>(nav, "Tempo"),
+            Tempo = GetMasterTrackMixerAttribute<double>(nav, "Tempo"),
             TimeSignature = GetMasterTrackMixerAttribute<int>(nav, "TimeSignature"),
             GlobalGrooveAmount = GetMasterTrackMixerAttribute<int>(nav, "GlobalGrooveAmount")
         };
