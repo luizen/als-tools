@@ -31,7 +31,7 @@ public abstract class BaseTrack : ITrack
 
     public string UserName { get; set; } = string.Empty;
 
-    public string EffectiveName { get; set; } = string.Empty;
+    public string? EffectiveName { get; set; }
 
     public TrackType Type { get; set; }
 
