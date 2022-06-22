@@ -11,7 +11,7 @@
             "args": [
                 "initdb",
                 "--files",
-                "/Users/zenluiz/Documents/Producao/Criacoes/Techno 2 Project/Techno 2.als",
+                "/Users/zenluiz/Documents/Producao/Criacoes/Delano Smith - Trust In Something (Cheap Konduktor Rebuild) Project/Delano Smith - Trust In Something (Cheap Konduktor Rebuild).als",
                 "--log-level",
                 "verbose"
             ],
