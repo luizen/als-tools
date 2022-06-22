@@ -55,7 +55,7 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
         foreach (XPathNavigator trackNode in tracksIterator)
         {
             var id = trackNode.SelectSingleNode(@"@Id")?.ValueAsInt;
-            var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")!.Value;
+            var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")?.Value;
             var userName = trackNode.SelectSingleNode(@"Name/UserName/@Value")!.Value;
             var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
             var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
