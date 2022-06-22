@@ -11,7 +11,7 @@
             "args": [
                 "initdb",
                 "--files",
-                "/Users/zenluiz/Splice/Techno Bazille Modular 2020-12-31 Project/Techno Bazille Modular 2020-12-31.als",
+                "/Users/zenluiz/Documents/Producao/Criacoes/Techno 2 Project/Techno 2.als",
                 "--log-level",
                 "verbose"
             ],

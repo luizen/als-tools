@@ -19,7 +19,7 @@ public interface ITrack
     /// The track effective name, already expanded (if needed).
     /// Ex.: 01 Kick
     /// </summary>
-    string EffectiveName { get; set; }
+    string? EffectiveName { get; set; }
 
     /// <summary>
     /// The track type.
