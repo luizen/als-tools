@@ -62,7 +62,7 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")!.ValueAsInt;
             var trackDelay = new TrackDelay()
             {
-                Value = trackNode.SelectSingleNode(@"TrackDelay/Value/@Value")?.ValueAsInt,
+                Value = trackNode.SelectSingleNode(@"TrackDelay/Value/@Value")?.ValueAsDouble,
                 IsValueSampleBased = trackNode.SelectSingleNode(@"TrackDelay/IsValueSampleBased/@Value")?.ValueAsBoolean
             };
 

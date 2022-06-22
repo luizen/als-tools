@@ -31,7 +31,7 @@ public class LocatorsCollectionExtractor : ILocatorsCollectionExtractor
                 Number = locatorNode.SelectSingleNode(@"@Id")?.ValueAsInt,
                 Name = locatorNode.SelectSingleNode(@"Name/@Value")!.Value,
                 Annotation = locatorNode.SelectSingleNode(@"Annotation/@Value")!.Value,
-                Time = locatorNode.SelectSingleNode(@"Time/@Value")!.ValueAsInt,
+                Time = locatorNode.SelectSingleNode(@"Time/@Value")!.ValueAsDouble,
                 IsSongStart = locatorNode.SelectSingleNode(@"IsSongStart/@Value")!.ValueAsBoolean
             };
 
