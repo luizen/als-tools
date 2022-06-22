@@ -2,6 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug - initdb file <path>",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--files",
+                "/Users/zenluiz/Splice/Techno ArpMassive Project/Techno ArpMassive L11.als",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - initdb folder ALS",
             "type": "coreclr",
             "request": "launch",
@@ -47,23 +64,6 @@
                 "initdb",
                 "--files",
                 "~/Desktop/Testes ALS/Projects folder 1/LiveRacks Project/LiveRacks.als",
-                "--log-level",
-                "verbose"
-            ],
-            "console": "internalConsole",
-            "stopAtEntry": false
-        },
-        {
-            "name": "Debug - initdb file Techno KeepDown",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
-            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
-            "args": [
-                "initdb",
-                "--files",
-                "~/Splice/Techno KeepDown 2021-02-08 Project/Techno KeepDown 2021-02-08.als",
                 "--log-level",
                 "verbose"
             ],
@@ -179,7 +179,7 @@
             "args": [
                 "locate",
                 "--plugin-names",
-                "kickbox", 
+                "kickbox",
                 "replika",
                 "--log-level",
                 "verbose"
@@ -197,7 +197,7 @@
             "args": [
                 "locate",
                 "--plugin-names",
-                "A1StereoControl", 
+                "A1StereoControl",
                 "--log-level",
                 "verbose"
             ],
