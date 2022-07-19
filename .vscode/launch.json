@@ -132,7 +132,7 @@
                 "initdb",
                 "--folders",
                 "~/Splice",
-                "/Users/zenluiz/Documents/Producao/Criacoes",
+                "~/Documents/Producao/Criacoes",
                 "--log-level",
                 "verbose"
             ],

@@ -1,3 +1,64 @@
+dotnet run locate --plugin-names "SynthMasterCM" > output/SynthMasterCM.json
+dotnet run locate --plugin-names "SimpleSide" > output/SimpleSide.json
+dotnet run locate --plugin-names "ABL3" > output/ABL3.json
+dotnet run locate --plugin-names "FM8" > output/FM8.json
+dotnet run locate --plugin-names "Kore Player" > output/KorePlayer1.json
+dotnet run locate --plugin-names "KorePlayer" > output/KorePlayer2.json
+dotnet run locate --plugin-names "Synth1" > output/Synth1.json
+dotnet run locate --plugin-names "Reaktor5" > output/Reaktor5.json
+dotnet run locate --plugin-names "Maschine" > output/Maschine.json
+dotnet run locate --plugin-names "Sylenth1" > output/Sylenth1.json
+dotnet run locate --plugin-names "Pancake2" > output/Pancake2.json
+dotnet run locate --plugin-names "Luftikus" > output/Luftikus.json
+dotnet run locate --plugin-names "PTEq-X" > output/PTEq-X.json
+dotnet run locate --plugin-names "HY-SEQ16x3v2 free" > output/HY-SEQ16x3v2free.json
+dotnet run locate --plugin-names "CM-EQUA87" > output/CM-EQUA87.json
+dotnet run locate --plugin-names "KSHMR Essentials Kick" > output/KSHMREssentialsKick.json
+dotnet run locate --plugin-names "FuzzPlus3" > output/FuzzPlus3.json
+dotnet run locate --plugin-names "CamelCrusher" > output/CamelCrusher.json
+dotnet run locate --plugin-names "H-Comp Stereo" > output/H-CompStereo.json
+dotnet run locate --plugin-names "OTT" > output/OTT.json
+dotnet run locate --plugin-names "STA Enhancer" > output/STA_Enhancer.json
+dotnet run locate --plugin-names "STA Delay" "STA Chorus" "STA Flanger" "STA Phaser" "STA Preamp" > output/STA_stuff.json
+dotnet run locate --plugin-names "RG-Muted_CM" > output/RG_Muted_CM.json
+dotnet run locate --plugin-names "RP-Distort" > output/RP-Distort.json
+dotnet run locate --plugin-names "The Anvil" > output/The_Anvil.json
+dotnet run locate --plugin-names "CamelCrusher" > output/Camel_Crusher.json
+dotnet run locate --plugin-names "CM-EQUA87" > output/CM-EQUA87.json
+dotnet run locate --plugin-names "Dystroyed" > output/Dystroyed.json
+dotnet run locate --plugin-names "entropyEQ" > output/entropyEQ.json
+dotnet run locate --plugin-names "Expanse" > output/Expanse.json
+dotnet run locate --plugin-names "GateyWatey" > output/GateyWatey.json
+dotnet run locate --plugin-names "HY-ESG" "HY-MPS2 free" "HY-POLY free" "HY-SEQ16x3v2 free" "HY-SEQ32_free" "HY-SeqCollection2_free" "HY-Slicer free" > output/HY.json
+dotnet run locate --plugin-names "hypercyclic" > output/hypercyclic.json
+dotnet run locate --plugin-names "LaPetiteExcite" > output/LaPetiteExcite.json
+dotnet run locate --plugin-names "Neutron Elements" > output/Neutron_Elements.json
+dotnet run locate --plugin-names "PhoenixVerb" > output/PhoenixVerb.json
+dotnet run locate --plugin-names "Rare" > output/Rare.json
+dotnet run locate --plugin-names "Regressif" > output/Regressif.json
+dotnet run locate --plugin-names "Roth-AIR" > output/Roth-AIR.json
+dotnet run locate --plugin-names "SGA1566" > output/SGA1566.json
+dotnet run locate --plugin-names "Strata" > output/Strata.json
+dotnet run locate --plugin-names "Svep" > output/Svep.json
+dotnet run locate --plugin-names "ToTape6" > output/ToTape6.json
+dotnet run locate --plugin-names "Tricent" > output/Tricent.json
+dotnet run locate --plugin-names "WaveShaper" > output/WaveShaperCM.json
+dotnet run locate --plugin-names "XILS 3.2" > output/XILS_3.2.json
+dotnet run locate --plugin-names "Fresh Air" > output/FreshAir.json
+dotnet run locate --plugin-names "BarkOfDog2" "Bark Of Dog 2" > output/BarkOfDog2.json
+dotnet run locate --plugin-names "Frontier" > output/Frontier.json
+dotnet run locate --plugin-names "iZotope Trash 2" > output/iZotope_Trash_2.json
+dotnet run locate --plugin-names "Kickbox" > output/Kickbox.json
+dotnet run locate --plugin-names "Leveling Tool" > output/Leveling_Tool64.json
+dotnet run locate --plugin-names "Marvel GEQ" > output/Marvel_GEQ.json
+
+
+
+
+
+
+
+
 Audio Effect Rack -> AudioEffectGroupDevice
 Chain - Branches/AudioEffectBranch
 
