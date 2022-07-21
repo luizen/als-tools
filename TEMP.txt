@@ -1,3 +1,26 @@
+
+AudioFxRack With Childen AudioFxRack
+	Branches
+		Chain 1 with sub AudioFxRack
+			Child Audio Effect Rack
+				Branches
+					Sub Chain 1.1
+						AutoFilter
+						Eq8
+					Sub Chain 1.2
+						Shifter
+						AutoFilter
+			EQ Eight - Applied after the Child Audio Effect Rack
+		Chain 2
+			Vertigo VSM
+			Align Delay
+
+
+
+
+
+
+
 dotnet run locate --plugin-names "SynthMasterCM" > output/SynthMasterCM.json
 dotnet run locate --plugin-names "SimpleSide" > output/SimpleSide.json
 dotnet run locate --plugin-names "ABL3" > output/ABL3.json

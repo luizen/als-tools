@@ -11,7 +11,7 @@
             "args": [
                 "initdb",
                 "--files",
-                "/Users/zenluiz/Documents/Producao/Criacoes/Delano Smith - Trust In Something (Cheap Konduktor Rebuild) Project/Delano Smith - Trust In Something (Cheap Konduktor Rebuild).als",
+                "/Users/zenluiz/Desktop/Testes ALS/Projects folder 1/LiveRacks Project/LiveRacks.als",
                 "--log-level",
                 "verbose"
             ],
