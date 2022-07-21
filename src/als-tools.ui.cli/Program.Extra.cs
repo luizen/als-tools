@@ -102,6 +102,18 @@ public partial class Program
                      }
                 );
 
+        // Device Types by Node desc
+        serviceCollection.AddSingleton<IDictionary<string, DeviceType>>(svcProvider =>
+                     new Dictionary<string, DeviceType>()
+                     {
+                         [DeviceTypeNodeName.Plugin] = DeviceType.Plugin,
+                         [DeviceTypeNodeName.AuPlugin] = DeviceType.Plugin,
+                         [DeviceTypeNodeName.MaxForLiveAudioEffect] = DeviceType.MaxForLive,
+                         [DeviceTypeNodeName.MaxForLiveInstrument] = DeviceType.MaxForLive,
+                         [DeviceTypeNodeName.MaxForLiveMidiEffect] = DeviceType.MaxForLive
+                     }
+                );
+
         // Common Live stock devices extractors
         serviceCollection.AddSingleton<ICommonStockAudioEffectDeviceExtractor, CommonStockAudioEffectDeviceExtractor>();
         serviceCollection.AddSingleton<ICommonStockMidiEffectDeviceExtractor, CommonStockMidiEffectDeviceExtractor>();

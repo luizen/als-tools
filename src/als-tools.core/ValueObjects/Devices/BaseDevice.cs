@@ -2,6 +2,8 @@ namespace AlsTools.Core.ValueObjects.Devices;
 
 public abstract class BaseDevice : IDevice
 {
+    public static IList<IDevice> EmptyDevicesList = Enumerable.Empty<IDevice>().ToList();
+
     public BaseDevice(DeviceSort deviceSort, DeviceType type)
     {
         Family = new DeviceFamily(type, deviceSort);
