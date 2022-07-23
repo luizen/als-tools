@@ -2,6 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug - initdb file <path>",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--files",
+                "/Users/zenluiz/Desktop/Testes ALS/Projects folder 1/DrumRacks Project/DrumRacks.als",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - initdb folder ALS",
             "type": "coreclr",
             "request": "launch",
@@ -30,6 +47,23 @@
                 "--folders",
                 "~/Desktop/Testes ALS/Projects folder 1",
                 "~/Desktop/Testes ALS/Projects folder 2",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - initdb file AllRacks",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--files",
+                "~/Desktop/Testes ALS/Projects folder 1/LiveRacks Project/LiveRacks.als",
                 "--log-level",
                 "verbose"
             ],
@@ -81,6 +115,24 @@
                 "initdb",
                 "--folders",
                 "~/Splice",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - initdb folders Splice + Criacoes",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--folders",
+                "~/Splice",
+                "~/Documents/Producao/Criacoes",
                 "--log-level",
                 "verbose"
             ],
@@ -145,7 +197,7 @@
             "args": [
                 "locate",
                 "--plugin-names",
-                "kickbox", 
+                "kickbox",
                 "replika",
                 "--log-level",
                 "verbose"
@@ -163,7 +215,7 @@
             "args": [
                 "locate",
                 "--plugin-names",
-                "A1StereoControl", 
+                "A1StereoControl",
                 "--log-level",
                 "verbose"
             ],

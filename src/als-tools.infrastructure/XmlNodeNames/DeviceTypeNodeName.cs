@@ -9,6 +9,6 @@ public static class DeviceTypeNodeName
     public const string MaxForLiveMidiEffect = "MXDEVICEMIDIEFFECT";
 
     public const string MaxForLiveInstrument = "MXDEVICEINSTRUMENT";
-    
+
     public const string MaxForLiveAudioEffect = "MXDEVICEAUDIOEFFECT";
 }

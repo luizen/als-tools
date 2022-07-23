@@ -53,7 +53,7 @@ public class LiveProject
     /// <summary>
     /// The project tempo/BPM
     /// </summary>
-    public int Tempo { get; set; }
+    public double Tempo { get; set; }
 
     /// <summary>
     /// The project time signature. It is probably a bit mask.
@@ -63,7 +63,7 @@ public class LiveProject
     /// <summary>
     /// The project global groove amount
     /// </summary>
-    public int GlobalGrooveAmount { get; set; }
+    public double GlobalGrooveAmount { get; set; }
 
     /// <summary>
     /// The tracks this project contains

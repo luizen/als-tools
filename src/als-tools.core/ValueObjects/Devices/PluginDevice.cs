@@ -1,6 +1,6 @@
 namespace AlsTools.Core.ValueObjects.Devices;
 
-public class PluginDevice : BaseDevice, IDevice
+public class PluginDevice : BaseDevice
 {
     public PluginDevice(DeviceSort sort, PluginFormat format) : base(sort, DeviceType.Plugin)
     {

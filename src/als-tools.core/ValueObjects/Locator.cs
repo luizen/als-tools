@@ -10,7 +10,7 @@ public class Locator
     /// <summary>
     /// The time point where the location is set
     /// </summary>
-    public int Time { get; set; }
+    public double Time { get; set; }
 
     /// <summary>
     /// Locator name (displayed in arrangement window)

@@ -5,6 +5,11 @@ namespace AlsTools.Core.ValueObjects.Tracks;
 public interface ITrack
 {
     /// <summary>
+    /// The track intenal Id attribute. Might be not available (eg.: Master Track)
+    /// </summary>
+    int? Id { get; set; }
+
+    /// <summary>
     /// The name the user specified. It can contain special values like # or ##.
     /// Ex.: ## Kick
     /// </summary>
@@ -14,7 +19,7 @@ public interface ITrack
     /// The track effective name, already expanded (if needed).
     /// Ex.: 01 Kick
     /// </summary>
-    string EffectiveName { get; set; }
+    string? EffectiveName { get; set; }
 
     /// <summary>
     /// The track type.
@@ -60,18 +65,17 @@ public interface ITrack
     /// <summary>
     /// The Ableton Live stock devices this track contains
     /// </summary>
-    // SortedDictionary<string, LiveDevice> Devices { get; } //TODO: change to another type
-    IList<LiveDevice> StockDevices { get; }
+    IList<StockDevice> StockDevices { get; set; }
 
     /// <summary>
     /// The third party plugins this track contains
     /// </summary>
-    IList<PluginDevice> Plugins { get; }
+    IList<PluginDevice> Plugins { get; set; }
 
     /// <summary>
     /// The MaxForLive devices this track contains
     /// </summary>
-    IList<MaxForLiveDevice> MaxForLiveDevices { get; }
+    IList<MaxForLiveDevice> MaxForLiveDevices { get; set; }
 
     /// <summary>
     /// Adds a device to either the <see cref="StockDevices" />, <see cref="Plugins" /> or <see cref="MaxForLiveDevices" />

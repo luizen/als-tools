@@ -1,7 +1,8 @@
 namespace AlsTools.Core.ValueObjects.Devices;
 
 /// <summary>
-/// Whether the device is an Instrument, Audio effect, Midi Effect or Midi Generic (could be Instrument or effect)
+/// Whether the device is an Instrument, Audio effect, Midi Effect, Midi Generic (could be Instrument or effect) or
+/// one of the racks types (Instrument, Audio Effect, Midi Effect or Drum Rack)
 /// </summary>
 /// <remarks>
 /// From the Working with Instruments and Effects documentation:
@@ -25,13 +26,19 @@ public enum DeviceSort
     /// </summary>
     MidiInstrumentOrEffect = 4,
 
+    MidiInstrumentRack = 5,
+
+    AudioEffectRack = 6,
+
+    MidiEffectRack = 7,
+
+    DrumRack = 8,
+
     /// <summary>
     /// AU plugins are difficult (or even impossible) to get the sort from
     /// </summary>
-    Unknown = 5
+    Unknown = -1
 }
-
-
 
 // VST2 plugins
 //     MIDI effect     -> Category = 2

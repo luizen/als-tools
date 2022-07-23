@@ -8,7 +8,11 @@ public abstract class BaseTrack : ITrack
 
     public BaseTrack(TrackType type)
     {
-        StockDevices = new List<LiveDevice>();
+        // stockDevices = new Lazy<List<StockDevice>>();
+        // plugins = new Lazy<List<PluginDevice>>();
+        // maxForLiveDevices = new Lazy<List<MaxForLiveDevice>>();
+
+        StockDevices = new List<StockDevice>();
         Plugins = new List<PluginDevice>();
         MaxForLiveDevices = new List<MaxForLiveDevice>();
 
@@ -16,23 +20,26 @@ public abstract class BaseTrack : ITrack
         Type = type;
     }
 
-    // /// <summary>
-    // /// The track internal Id (from Id attribute).
-    // /// TODO: is it really needed?
-    // /// </summary>
-    // public int Id { get; set; }
+    // private Lazy<List<StockDevice>> stockDevices;
+
+    // private Lazy<List<PluginDevice>> plugins;
+
+    // private Lazy<List<MaxForLiveDevice>> maxForLiveDevices;
+
+
+    public int? Id { get; set; }
 
     public string UserName { get; set; } = string.Empty;
 
-    public string EffectiveName { get; set; } = string.Empty;
+    public string? EffectiveName { get; set; }
 
     public TrackType Type { get; set; }
 
-    public IList<LiveDevice> StockDevices { get; protected set; }
+    public IList<StockDevice> StockDevices { get; set; }
 
-    public IList<PluginDevice> Plugins { get; protected set; }
+    public IList<PluginDevice> Plugins { get; set; }
 
-    public IList<MaxForLiveDevice> MaxForLiveDevices { get; protected set; }
+    public IList<MaxForLiveDevice> MaxForLiveDevices { get; set; }
 
     public string Annotation { get; set; } = string.Empty;
 
@@ -42,9 +49,9 @@ public abstract class BaseTrack : ITrack
 
     public TrackDelay TrackDelay { get; set; }
 
-    public int TrackGroupId  { get; set; }
+    public int TrackGroupId { get; set; }
 
-    public bool? IsFrozen  { get; set; }
+    public bool? IsFrozen { get; set; }
 
     public void AddDevice(IDevice device)
     {
@@ -53,10 +60,13 @@ public abstract class BaseTrack : ITrack
 
         //TODO: should I get rid of the specific collections (stock, plugins, max4live) and put all devices in a single collection?
         if (device.Family.Type == DeviceType.Plugin)
+            // plugins.Value.Add((PluginDevice)device);
             Plugins.Add((PluginDevice)device);
         else if (device.Family.Type == DeviceType.Stock)
-            StockDevices.Add((LiveDevice)device);
+            // stockDevices.Value.Add((StockDevice)device);
+            StockDevices.Add((StockDevice)device);
         else
+            // maxForLiveDevices.Value.Add((MaxForLiveDevice)device);
             MaxForLiveDevices.Add((MaxForLiveDevice)device);
     }
 

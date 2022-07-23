@@ -63,7 +63,7 @@ public class App
     {
         logger.LogDebug("Locating projects...");
 
-        var projects = await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginsToLocate);
+        var projects = await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginNamesToLocate);
         await PrintProjectsAndPlugins(projects);
 
         logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
