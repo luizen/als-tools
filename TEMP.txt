@@ -46,8 +46,6 @@ dotnet run locate --plugin-names "STA Delay" "STA Chorus" "STA Flanger" "STA Pha
 dotnet run locate --plugin-names "RG-Muted_CM" > output/RG_Muted_CM.json
 dotnet run locate --plugin-names "RP-Distort" > output/RP-Distort.json
 dotnet run locate --plugin-names "The Anvil" > output/The_Anvil.json
-dotnet run locate --plugin-names "CamelCrusher" > output/Camel_Crusher.json
-dotnet run locate --plugin-names "CM-EQUA87" > output/CM-EQUA87.json
 dotnet run locate --plugin-names "Dystroyed" > output/Dystroyed.json
 dotnet run locate --plugin-names "entropyEQ" > output/entropyEQ.json
 dotnet run locate --plugin-names "Expanse" > output/Expanse.json
