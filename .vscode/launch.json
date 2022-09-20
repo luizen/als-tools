@@ -170,7 +170,24 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - locate <plugins>",
+            "name": "Debug - locate <plugin formats>",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "locate",
+                "--plugin-formats",
+                "AU",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - locate <plugin names>",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
