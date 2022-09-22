@@ -196,7 +196,8 @@
             "args": [
                 "locate",
                 "--plugin-names",
-                "TDR Nova",
+                "NEOLD BIG AL",
+                "Svep",
                 "--log-level",
                 "verbose"
             ],

@@ -1,5 +1,6 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
+using AlsTools.Core.Queries;
 
 namespace AlsTools.Core.Services;
 
@@ -30,7 +31,18 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 
     public async Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
     {
-        return await repository.GetProjectsContainingPluginsAsync(pluginsToLocate);
+        var specification = new QuerySpecification();
+        specification.PluginQuery = new();
+
+        foreach (var name in pluginsToLocate)
+        {
+            specification.PluginQuery.Names.Add(name);
+        }
+
+        return await repository.GetProjectsContainingPluginsAsync(specification);
+
+        // return await repository.GetProjectsContainingPluginsAsync(pluginsToLocate);
+
     }
 
     public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths)
