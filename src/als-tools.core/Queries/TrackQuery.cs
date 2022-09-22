@@ -6,24 +6,24 @@ public class TrackQuery
 {
     public TrackQuery()
     {
-        UserNames = Array.Empty<string>();
-        EffectiveNames = Array.Empty<string>();
-        Annotations = Array.Empty<string>();
-        Types = Array.Empty<TrackType>();
-        Delays = Array.Empty<TrackDelay>();
+        UserNames = new List<string>();
+        EffectiveNames = new List<string>();
+        Annotations = new List<string>();
+        Types = new List<TrackType>();
+        Delays = new List<TrackDelay>();
     }
 
-    public IReadOnlyCollection<string> UserNames { get; set; }
+    public List<string> UserNames { get; }
 
-    public IReadOnlyCollection<string> EffectiveNames { get; set; }
+    public List<string> EffectiveNames { get; }
 
-    public IReadOnlyCollection<TrackType> Types { get; set; }
+    public List<TrackType> Types { get; }
 
-    public IReadOnlyCollection<string> Annotations { get; set; }
+    public List<string> Annotations { get; }
 
     public bool? IsFrozen { get; set; }
 
     public bool? IsPartOfGroup { get; set; }
 
-    public IReadOnlyCollection<TrackDelay> Delays { get; set; }
+    public List<TrackDelay> Delays { get; }
 }

@@ -52,21 +52,7 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
-    public async Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
-    {
-        using (var session = store.OpenAsyncSession())
-        {
-            var results = await session
-                .Query<LiveProject, LiveProjects_ByPluginNames>()
-                .Where(plugin => plugin.Name.In(pluginsToLocate))      //TODO: ISSO ESTÁ ERRADO!
-                .ToListAsync();
-
-            return results;
-        }
-    }
-
-
-    public async Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(QuerySpecification specification)
+    public async Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification)
     {
         if (specification == null)
             throw new ArgumentNullException(nameof(specification));
@@ -83,7 +69,12 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             // GetPluginQueryFilters(query, specification.PluginQuery);
 
             // string name = specification.PluginQuery.Names.First();
-            var query2 = session.Query<LiveProject, LiveProjects_ByFullSearch>().Where(project => project.Tracks.Any(track => track.Plugins.Any(plugin => plugin.Name.In(specification.PluginQuery.Names))));
+            var query2 = session.Query<LiveProject, LiveProjects_ByFullSearch>()
+                .Where(project => project
+                    .Tracks.Any(track => track
+                        .Plugins.Any(plugin => plugin
+                            .Name.In(specification.PluginQuery.Names) && plugin
+                            .Format.In(specification.PluginQuery.Formats))));
 
             // var results = await query.ToListAsync();
             var results2 = await query2.ToListAsync();

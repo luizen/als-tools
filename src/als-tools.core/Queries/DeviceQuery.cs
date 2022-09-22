@@ -6,17 +6,17 @@ public class DeviceQuery
 {
     public DeviceQuery()
     {
-        Names = Array.Empty<string>();
-        UserNames = Array.Empty<string>();
-        Annotations = Array.Empty<string>();
-        Families = Array.Empty<DeviceFamily>();
+        Names = new List<string>();
+        UserNames = new List<string>();
+        Annotations = new List<string>();
+        Families = new List<DeviceFamily>();
     }
 
-    public IReadOnlyCollection<string> Names { get; set; }
+    public List<string> Names { get; }
 
-    public IReadOnlyCollection<string> UserNames { get; set; }
+    public List<string> UserNames { get; }
 
-    public IReadOnlyCollection<string> Annotations { get; set; }
+    public List<string> Annotations { get; }
 
-    public IReadOnlyCollection<DeviceFamily> Families { get; set; }
+    public List<DeviceFamily> Families { get; }
 }

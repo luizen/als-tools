@@ -7,26 +7,26 @@ public class LiveProjectQuery
 {
     public LiveProjectQuery()
     {
-        Names = Array.Empty<string>();
-        Formats = Array.Empty<PluginFormat>();
-        Sorts = Array.Empty<DeviceSort>();
-        Creators = Array.Empty<string>();
-        MinorVersions = Array.Empty<string>();
-        MajorVersions = Array.Empty<string>();
-        Tempos = Array.Empty<double>();
+        Names = new List<string>();
+        Formats = new List<PluginFormat>();
+        Sorts = new List<DeviceSort>();
+        Creators = new List<string>();
+        MinorVersions = new List<string>();
+        MajorVersions = new List<string>();
+        Tempos = new List<double>();
     }
 
-    public IReadOnlyCollection<string> Names { get; set; }
+    public List<string> Names { get; }
 
-    public IReadOnlyCollection<PluginFormat> Formats { get; set; }
+    public List<PluginFormat> Formats { get; }
 
-    public IReadOnlyCollection<DeviceSort> Sorts { get; set; }
+    public List<DeviceSort> Sorts { get; }
 
-    public IReadOnlyCollection<string> Creators { get; set; }
+    public List<string> Creators { get; }
 
-    public IReadOnlyCollection<string> MinorVersions { get; set; }
+    public List<string> MinorVersions { get; }
 
-    public IReadOnlyCollection<string> MajorVersions { get; set; }
+    public List<string> MajorVersions { get; }
 
-    public IReadOnlyCollection<double> Tempos { get; set; }
+    public List<double> Tempos { get; }
 }

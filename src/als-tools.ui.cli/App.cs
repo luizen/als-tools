@@ -1,6 +1,7 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using AlsTools.Ui.Cli.CliOptions;
+using AlsTools.Ui.Cli.CliOptions.Mappings;
 using AlsTools.Ui.Cli.Exceptions;
 
 namespace AlsTools.Ui.Cli;
@@ -63,7 +64,7 @@ public class App
     {
         logger.LogDebug("Locating projects...");
 
-        var projects = await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginNamesToLocate);
+        var projects = await liveProjectService.Search(options.MapToSpecification());
         await PrintProjectsAndPlugins(projects);
 
         logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);

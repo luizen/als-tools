@@ -8,14 +8,13 @@ public class PluginQuery
     public PluginQuery()
     {
         Names = new List<string>();
-        Formats = Array.Empty<PluginFormat>();
-        Sorts = Array.Empty<DeviceSort>();
-
+        Formats = new List<PluginFormat>();
+        Sorts = new List<DeviceSort>();
     }
 
-    public IList<string> Names { get; set; }
+    public List<string> Names { get; }
 
-    public IReadOnlyCollection<PluginFormat> Formats { get; set; }
+    public List<PluginFormat> Formats { get; }
 
-    public IReadOnlyCollection<DeviceSort> Sorts {get; set; }
+    public List<DeviceSort> Sorts {get; }
 }

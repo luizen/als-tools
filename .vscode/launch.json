@@ -198,6 +198,8 @@
                 "--plugin-names",
                 "NEOLD BIG AL",
                 "Svep",
+                "--plugin-formats",
+                "3",
                 "--log-level",
                 "verbose"
             ],

@@ -29,20 +29,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetAllProjectsAsync();
     }
 
-    public async Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
+    public async Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification)
     {
-        var specification = new QuerySpecification();
-        specification.PluginQuery = new();
-
-        foreach (var name in pluginsToLocate)
-        {
-            specification.PluginQuery.Names.Add(name);
-        }
-
-        return await repository.GetProjectsContainingPluginsAsync(specification);
-
-        // return await repository.GetProjectsContainingPluginsAsync(pluginsToLocate);
-
+        return await repository.Search(specification);
     }
 
     public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths)

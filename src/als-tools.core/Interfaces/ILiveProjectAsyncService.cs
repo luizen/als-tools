@@ -1,4 +1,5 @@
 using AlsTools.Core.Entities;
+using AlsTools.Core.Queries;
 
 namespace AlsTools.Core.Interfaces;
 
@@ -10,7 +11,7 @@ public interface ILiveProjectAsyncService
 
     Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
 
-    Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
+    Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification);
 
     Task<int> CountProjectsAsync();
 }
