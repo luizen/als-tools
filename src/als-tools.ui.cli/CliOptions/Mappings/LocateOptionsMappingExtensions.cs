@@ -6,7 +6,7 @@ public static class LocateOptionsMappingExtensions
 {
     public static QuerySpecification MapToSpecification(this LocateOptions instance)
     {
-        if (instance.PluginNamesToLocate == null || !instance.PluginNamesToLocate.Any())
+        if (instance.IsEmpty) 
             return QuerySpecification.Empty;
 
         var specification = new QuerySpecification()
@@ -14,8 +14,11 @@ public static class LocateOptionsMappingExtensions
             PluginQuery = new()
         };
 
-        specification.PluginQuery.Names.AddRange(instance.PluginNamesToLocate);
-        specification.PluginQuery.Formats.AddRange(instance.PluginFormatsToLocate);
+        if (instance.PluginNamesToLocate != null && instance.PluginNamesToLocate.Any())
+            specification.PluginQuery.Names.AddRange(instance.PluginNamesToLocate);
+
+        if (instance.PluginFormatsToLocate != null && instance.PluginFormatsToLocate.Any())
+            specification.PluginQuery.Formats.AddRange(instance.PluginFormatsToLocate);
 
         return specification;
     }

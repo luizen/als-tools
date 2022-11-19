@@ -7,4 +7,6 @@ public abstract class CommonOptions
 {
     [Option("log-level", HelpText = "The logging level (Verbose, Debug, Information, Warning, Error or Fatal)", Default = LoggingLevels.Information)]
     public LoggingLevels LoggingLevel { get; set; }
+
+    public abstract bool IsEmpty { get; }
 }

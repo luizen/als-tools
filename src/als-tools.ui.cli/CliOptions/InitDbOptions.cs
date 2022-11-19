@@ -13,4 +13,7 @@ public class InitDbOptions : CommonOptions
 
     [Option("files", Required = true, SetName = "files", Min = 1, HelpText = "The files to extract Live Set information from. This option is mutually exclusive with the --folders option.")]
     public IReadOnlyCollection<string> Files { get; set; } = new List<string>();
+
+    public override bool IsEmpty => (Folders == null || !Folders.Any()) &&
+                                    (Files == null || !Files.Any());
 }

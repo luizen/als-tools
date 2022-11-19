@@ -10,4 +10,7 @@ public class LocateOptions : CommonOptions
 
     [Option("plugin-formats", Group = "locate options", Min = 1, HelpText = "The plugin formats to locate projects by.")]
     public IReadOnlyCollection<PluginFormat>? PluginFormatsToLocate { get; set; }
+
+    public override bool IsEmpty => (PluginNamesToLocate == null || !PluginNamesToLocate.Any()) &&
+                                    (PluginFormatsToLocate == null || !PluginFormatsToLocate.Any());
 }
