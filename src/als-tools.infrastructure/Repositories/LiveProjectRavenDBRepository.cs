@@ -1,11 +1,9 @@
-using System.Linq.Expressions;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using AlsTools.Core.Queries;
-using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Infrastructure.Indexes;
+using AlsTools.Infrastructure.Specifications;
 using Raven.Client.Documents;
-using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Operations;
 
@@ -52,6 +50,9 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
+
+
+
     public async Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification)
     {
         if (specification == null)
@@ -60,7 +61,19 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         using (var session = store.OpenAsyncSession())
         {
 
-            // var query = session.Query<LiveProject, LiveProjects_ByFullSearch>();//.Where(project => project.Tracks.Any(track => track.Plugins.Any(plugin => plugin.Name == name)));
+            var projNameSpec = new ProjectNameSpecification("AllLiveStockDevices.als");
+            var expression = projNameSpec.ToExpression();
+            // var mv = "5";
+            // var projMajorVersionSpec = new ProjectMajorVersionSpecification(mv);
+            // var querySpec = new AndSpecification<LiveProject>(projNameSpec, projMajorVersionSpec);
+
+            var results7 = await session.Query<LiveProject, LiveProjects_ByFullSearch>()
+                            .Where(expression).ToListAsync();
+
+            return results7;
+
+
+// var query = session.Query<LiveProject, LiveProjects_ByFullSearch>();//.Where(project => project.Tracks.Any(track => track.Plugins.Any(plugin => plugin.Name == name)));
 
             // Expression<Func<LiveProject, bool>> predicate;
 
@@ -69,19 +82,70 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             // GetPluginQueryFilters(query, specification.PluginQuery);
 
             // string name = specification.PluginQuery.Names.First();
-            var query2 = session.Query<LiveProject, LiveProjects_ByFullSearch>()
-                .Where(project => project
-                    .Tracks.Any(track => track
-                        .Plugins.Any(plugin => plugin
-                            .Name.In(specification.PluginQuery.Names) && plugin
-                            .Format.In(specification.PluginQuery.Formats))));
+            // var query2 = session.Query<LiveProject, LiveProjects_ByFullSearch>()
+            //     .Where(project => project
+            //         .Tracks.Any(track => track
+            //             .Plugins.Any(plugin =>
+            //                 plugin.Name.In(specification.PluginQuery!.Names) &&
+            //                 plugin.Format.In(specification.PluginQuery.Formats)
+            //             )
+            //         )
+            //     );
+
+            // ==> FUNCIONA
+            // var projNameSpec = new ProjectNameSpecification("AllLiveStockDevices.als");
+            // var mv = "5";
+            // var projMajorVersionSpec = new ProjectMajorVersionSpecification(mv);
+            // var querySpec = new AndSpecification<LiveProject>(projNameSpec, projMajorVersionSpec);
+
+            // var query = querySpec.SatisfyingElementsFrom(session.Query<LiveProject>());
+            // var results6 = await query.ToListAsync();
+
+            // return results6!;
+            // ==> FUNCIONA
+
+            // var results3 = await session.Query<LiveProject, LiveProjects_ByFullSearch>().Where(spec.ToExpression()).ToListAsync();
+            // var results3 = await session.Query<LiveProject>().Where(spec.ToExpression()).ToListAsync();
+
+
+            // var results4 = await session.Query<LiveProject, LiveProjects_ByFullSearch>().Where(spec.ToExpression()).ToListAsync();
+
+            // await session.Advanced.AsyncDocumentQuery<LiveProjects_ByFullSearch.Result, LiveProjects_ByFullSearch>().Where(spec.ToExpression()).
+
+            // session.Query
+
+            // return results4;
+
+            // var results5 = await session.Query<LiveProjects_ByFullSearch.Result, LiveProjects_ByFullSearch>()
+            //          .Where(x => spec.IsSatisfiedBy(x))
+            //          .ToListAsync();
+
+            // return results5!;
+
+
+
+            // var query3 = session.Query<LiveProject, LiveProjects_ByFullSearch>()
+            //     .Where(((specification.IsSatisfiedBy).ToList();
+
+
+            //     using (var session = documentStore.OpenSession())
+            //     {
+            //         var spec1 = new UserSpecification("John Doe");
+            // var spec2 = new UserSpecification("Jane Doe");
+            // var compositeSpec = new CompositeSpecification<User>(spec1, spec2, Expression.And);
+            // var users = session.Query<User>().Where(compositeSpec.ToExpression()).ToList();
+            //     }
 
             // var results = await query.ToListAsync();
-            var results2 = await query2.ToListAsync();
+            // var results2 = await query2.ToListAsync();
 
-            return results2;
+            // return results2;
         }
     }
+
+    //  &&
+    //                             plugin.Family.Sort.In(specification.PluginQuery.Sorts)
+
 
     // private void GetPluginQueryPredicate(Expression<Func<LiveProject, bool>> predicate, PluginQuery? pluginQuery)
     // {

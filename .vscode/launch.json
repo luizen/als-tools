@@ -199,7 +199,27 @@
                 "NEOLD BIG AL",
                 "Svep",
                 "--plugin-formats",
-                "3",
+                "VST3",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - locate <plugin formats + names>",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net6.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "locate",
+                "--plugin-formats",
+                "AU",
+                "--plugin-names",
+                "NEOLD BIG AL",
+                "Svep",
                 "--log-level",
                 "verbose"
             ],
