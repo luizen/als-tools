@@ -43,8 +43,7 @@ public partial class Program
         Log.Debug("Setting logging level from args...");
 
         LoggingLevels level = LoggingLevels.Debug;
-        var commonResult = parserResult.WithParsed<CommonOptions>(x => level = x.LoggingLevel);
-
+        var commonResult = parserResult.WithParsed<CommonOptions>(x => level = x.LoggingLevel); 
         int levelAsNumber = ((int)level);
 
         levelSwitch.MinimumLevel = (LogEventLevel)levelAsNumber;
