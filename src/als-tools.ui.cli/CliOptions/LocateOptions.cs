@@ -1,20 +1,49 @@
-using AlsTools.Core.ValueObjects;
+using AlsTools.Core.Extensions;
 
 namespace AlsTools.Ui.Cli.CliOptions;
 
-[Verb("locate", HelpText = "Locates projects containing given plugins by their names or tracks by their names.")]
-public class LocateOptions : CommonOptions
+[Verb("locate", HelpText = "Locates projects containing any plugins (by their names and format) or any tracks (by their names) and other properties.")]
+public partial class LocateOptions : CommonOptions
 {
-    [Option("plugin-names", Group = "locate options", Min = 1, HelpText = "The plugin names to locate projects by.")]
-    public IReadOnlyCollection<string>? PluginNamesToLocate { get; set; }
+    public override bool IsEmpty => 
+        !PluginNamesToLocate.HasValues() &&
+        !PluginFormatsToLocate.HasValues() &&
 
-    [Option("plugin-formats", Group = "locate options", Min = 1, HelpText = "The plugin formats to locate projects by.")]
-    public IReadOnlyCollection<PluginFormat>? PluginFormatsToLocate { get; set; }
+        !TrackUserNamesToLocate.HasValues() &&
+        !TrackEffectiveNamesToLocate.HasValues() &&
+        !TrackAnnotationsToLocate.HasValues() &&
+        !TrackIsFrozen.HasValue &&
+        !TrackTypesToLocate.HasValues() &&
+        !TrackDelaysToLocate.HasValues() &&
+        !TrackContainsAnyMaxForLiveDevices.HasValue &&
+        !TrackContainsAnyPlugins.HasValue &&
+        !TrackContainsAnyStockDevices.HasValue &&
+        !TrackContainsNumberOfMaxForLiveDevices.HasValue &&
+        !TrackContainsNumberOfPlugins.HasValue &&
+        !TrackContainsNumberOfStockDevices.HasValue &&
 
-    [Option("track-names", Group = "locate options", Min = 1, HelpText = "The track names to locate projects by.")]
-    public IReadOnlyCollection<string>? TrackNamesToLocate { get; set; }
+        !MaxForLiveDeviceNamesToLocate.HasValues() &&
+        !MaxForLiveDeviceAnnotationsToLocate.HasValues() &&
+        !MaxForLiveDeviceSortsToLocate.HasValues() &&
+        !MaxForLiveDeviceUserNamesToLocate.HasValues() &&
 
-    public override bool IsEmpty => (PluginNamesToLocate == null || !PluginNamesToLocate.Any()) &&
-                                    (PluginFormatsToLocate == null || !PluginFormatsToLocate.Any()) &&
-                                    (TrackNamesToLocate == null || !TrackNamesToLocate.Any());
+        !SceneNamesToLocate.HasValues() &&
+        !SceneTemposToLocate.HasValues() &&
+        !SceneAnnotationsToLocate.HasValues() &&
+
+        !StockDeviceNamesToLocate.HasValues() &&
+        !StockDeviceUserNamesToLocate.HasValues() &&
+        !StockDeviceAnnotationsToLocate.HasValues() &&
+        !StockDeviceSortsToLocate.HasValues() &&
+
+        !ProjectCreatorsToLocate.HasValues() &&
+        !ProjectMajorVersionsToLocate.HasValues() &&
+        !ProjectMinorVersionsToLocate.HasValues() &&
+        !ProjectNamesToLocate.HasValues() &&
+        !ProjectPathsToLocate.HasValues() &&
+        !ProjectTemposToLocate.HasValues() &&
+        
+        !SceneNamesToLocate.HasValues() &&
+        !SceneAnnotationsToLocate.HasValues() &&
+        !SceneTemposToLocate.HasValues();
 }

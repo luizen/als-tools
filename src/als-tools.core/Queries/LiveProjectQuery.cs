@@ -14,6 +14,7 @@ public class LiveProjectQuery
         MinorVersions = new List<string>();
         MajorVersions = new List<string>();
         Tempos = new List<double>();
+        Paths = new List<string>();
     }
 
     public List<string> Names { get; }
@@ -29,4 +30,6 @@ public class LiveProjectQuery
     public List<string> MajorVersions { get; }
 
     public List<double> Tempos { get; }
+
+    public List<string> Paths { get; set; }
 }

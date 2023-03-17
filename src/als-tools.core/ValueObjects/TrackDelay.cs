@@ -9,7 +9,7 @@ public class TrackDelay
     public double? Value { get; set; }
 
     /// <summary>
-    /// Whether the delay is sample based of not (in this case, milliseconds)
+    /// Whether the delay is sample based or not (in this case, milliseconds)
     /// </summary>
     public bool? IsValueSampleBased { get; set; }
 }
