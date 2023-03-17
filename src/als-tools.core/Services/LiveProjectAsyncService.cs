@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using AlsTools.Core.Queries;
@@ -32,6 +33,11 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     public async Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification)
     {
         return await repository.Search(specification);
+    }
+
+    public async Task<IReadOnlyList<LiveProject>> Search(Expression<Func<LiveProject, bool>> filter)
+    {
+        return await repository.Search(filter);
     }
 
     public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths)
@@ -77,4 +83,6 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 
         return projects;
     }
+
+
 }

@@ -1,30 +1,30 @@
-using System.Linq.Expressions;
-using AlsTools.Core.Entities;
-// using Raven.Client.Documents.Linq;
+// using System.Linq.Expressions;
+// using AlsTools.Core.Entities;
+// // using Raven.Client.Documents.Linq;
 
-namespace AlsTools.Infrastructure.Specifications;
+// namespace AlsTools.Infrastructure.Specifications;
 
 
-public interface ISpecification<T>
-{
-    Expression<Func<T, bool>> ToExpression();
-}
+// public interface ISpecification<T>
+// {
+//     Expression<Func<T, bool>> ToExpression();
+// }
 
-public class ProjectNameSpecification : ISpecification<LiveProject>
-{
-    private readonly string name;
+// public class ProjectNameSpecification : ISpecification<LiveProject>
+// {
+//     private readonly string name;
 
-    public ProjectNameSpecification(string name)
-    {
-        this.name = name;
-    }
+//     public ProjectNameSpecification(string name)
+//     {
+//         this.name = name;
+//     }
 
-    public Expression<Func<LiveProject, bool>> ToExpression()
-    {
-        return x => x.Name == name;
-    }
+//     public Expression<Func<LiveProject, bool>> ToExpression()
+//     {
+//         return x => x.Name == name;
+//     }
 
-}
+// }
 
 
 
