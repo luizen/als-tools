@@ -26,8 +26,12 @@ public class TrackFilter
     public List<TrackDelay> Delays { get; }
     
     public bool? ContainsAnyMaxForLiveDevices { get; set; }
+
     public bool? ContainsAnyPlugins { get; set; }
+
     public bool? ContainsAnyStockDevices { get; set; }
-    public bool? ContainsNumberOfMaxForLiveDevices { get; set; }
+
+    public int? ContainsNumberOfMaxForLiveDevices { get; set; }
+    
     public int? ContainsNumberOfPlugins { get; set; }
 }

@@ -36,5 +36,5 @@ public partial class LocateOptions : CommonOptions
     public bool? TrackContainsAnyMaxForLiveDevices { get; set; }
 
     [Option("track-contains-num-maxforlive-devices", Group = "locate options", HelpText = "Whether to locate projects containing an exact number of Max For Live devices.")]
-    public bool? TrackContainsNumberOfMaxForLiveDevices { get; set; }
+    public int? TrackContainsNumberOfMaxForLiveDevices { get; set; }
 }
