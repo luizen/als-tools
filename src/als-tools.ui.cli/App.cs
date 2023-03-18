@@ -49,7 +49,7 @@ public class App
         logger.LogDebug("Listing projects...");
 
         var projects = await liveProjectService.GetAllProjectsAsync();
-        await PrintProjectsAndPlugins(projects);
+        await PrintProjectsAndPlugins(projects, false);
 
         logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
     }
@@ -59,16 +59,30 @@ public class App
         logger.LogDebug("Locating projects...");
 
         var projects = await liveProjectService.Search(options.MapToSpecification());
-        await PrintProjectsAndPlugins(projects);
+        await PrintProjectsAndPlugins(projects, options.CompactOutput);
 
         logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
     }
 
-    private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
+    private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects, bool compactOutput)
     {
-        logger.LogDebug("Printing projects and their details...");
+        logger.LogDebug("Printing projects and their details. CompactOutput: {@CompactOutput}", compactOutput);
 
-        var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
-        await Console.Out.WriteLineAsync(fullJsonData);
+        if (compactOutput)
+        {
+            var compactItems = projects.Select(p => new 
+            {
+                ProjectName = p.Name,
+                ProjectPath = p.Path
+            });
+
+            var compactJsonData = JsonSerializer.Serialize<IEnumerable<dynamic>>(compactItems, new JsonSerializerOptions { WriteIndented = true });
+            await Console.Out.WriteLineAsync(compactJsonData);
+        }
+        else
+        {
+            var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
+            await Console.Out.WriteLineAsync(fullJsonData);
+        }
     }
 }

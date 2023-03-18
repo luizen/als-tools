@@ -227,7 +227,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - locate <plugin formats + names> and <track names>",
+            "name": "Debug - compact locate <plugin formats + names> and <track names>",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -242,6 +242,10 @@
                 "Svep",
                 "--track-names",
                 "Kick",
+                "--logical-operator",
+                "or",
+                "--compact-output",
+                "true",
                 "--log-level",
                 "verbose"
             ],

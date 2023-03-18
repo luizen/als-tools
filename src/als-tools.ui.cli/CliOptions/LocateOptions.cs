@@ -6,6 +6,9 @@ public partial class LocateOptions : CommonOptions
     [Option("logical-operator", Group = "locate options", HelpText = "The logical operator, either OR or AND, to be used when combining all filters.", Default = LogicOperators.And)]
     public LogicOperators? LogicalOperator { get; set; }
 
+    [Option("compact-output", Group = "locate options", HelpText = "Whether to display compact output containing only Project Name and Path", Default = false)]
+    public bool CompactOutput { get; set; }
+
     public override bool IsEmpty => 
         !PluginNamesToLocate.HasValues() &&
         !PluginFormatsToLocate.HasValues() &&
