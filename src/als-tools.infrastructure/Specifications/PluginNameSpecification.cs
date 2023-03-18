@@ -19,10 +19,10 @@ public class PluginNameSpecification : ISpecification<LiveProject>
                 return lp => lp.Tracks.Any(t => t.Plugins.Any(p => p.Name.In(names)));
             
             case TextMatchingOptions.StartsWith:
-                return lp => lp.Tracks.Any(t => t.Plugins.Any(p => names.Any(name => p.Name.StartsWith(name))));; //TODO: fix this, it doesn't work (exception)
+                return lp => lp.Tracks.Any(t => t.Plugins.Any(p => names.Any(name => p.Name.StartsWith(name)))); //TODO: fix this, it doesn't work (exception)
             
             case TextMatchingOptions.EndsWith:
-                return lp => lp.Tracks.Any(t => t.Plugins.Any(p => names.Any(name => p.Name.EndsWith(name))));;
+                return lp => lp.Tracks.Any(t => t.Plugins.Any(p => names.Any(name => p.Name.EndsWith(name))));
 
             case TextMatchingOptions.Contains:
                 return lp => lp.Tracks.Any(t => names.Any(name => t.UserName.Contains(name)));

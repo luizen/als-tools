@@ -116,7 +116,7 @@ public partial class LiveProjectRavenRepository
 
         // Live projects
         if (filterContext.LiveProjectFilter.Names.Any())
-            specs.Add(new LiveProjectNamesSpecification(filterContext.LiveProjectFilter.Names));
+            specs.Add(new LiveProjectNamesSpecification(filterContext.LiveProjectFilter.Names, filterContext.FilterSettings.TextMatchingOption));
 
         if (filterContext.LiveProjectFilter.Paths.Any())
             specs.Add(new LiveProjectPathsSpecification(filterContext.LiveProjectFilter.Paths));

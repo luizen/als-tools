@@ -274,6 +274,48 @@
             "stopAtEntry": false
         },
         {
+            "name": "Debug - compact locate <track names> starting with something",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "locate",
+                "--track-names",
+                "Kic",
+                "--text-match-option",
+                "startsWith",
+                "--compact-output",
+                "true",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - compact locate <project names> starting with something",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "locate",
+                "--project-names",
+                "Techno",
+                "--text-match-option",
+                "startsWith",
+                "--compact-output",
+                "true",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - compact locate AU plugins",
             "type": "coreclr",
             "request": "launch",
