@@ -2,15 +2,15 @@ namespace AlsTools.Infrastructure.Specifications;
 
 public class TrackEffectiveNameSpecification : ISpecification<LiveProject>
 {
-    private readonly IEnumerable<string> _trackEffectiveNames;
+    private readonly IEnumerable<string> effectiveNames;
 
-    public TrackEffectiveNameSpecification(IEnumerable<string> trackEffectiveNames)
+    public TrackEffectiveNameSpecification(IEnumerable<string> effectiveNames)
     {
-        _trackEffectiveNames = trackEffectiveNames;
+        this.effectiveNames = effectiveNames;
     }
 
     public Expression<Func<LiveProject, bool>> ToExpression()
     {
-        return lp => lp.Tracks.Any(t => t.EffectiveName.In(_trackEffectiveNames));
+        return lp => lp.Tracks.Any(t => t.EffectiveName.In(effectiveNames));
     }
 }

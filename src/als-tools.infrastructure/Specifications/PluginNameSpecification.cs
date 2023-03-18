@@ -2,15 +2,15 @@ namespace AlsTools.Infrastructure.Specifications;
 
 public class PluginNameSpecification : ISpecification<LiveProject>
 {
-    private readonly IEnumerable<string> _pluginNames;
+    private readonly IEnumerable<string> names;
 
-    public PluginNameSpecification(IEnumerable<string> pluginNames)
+    public PluginNameSpecification(IEnumerable<string> names)
     {
-        _pluginNames = pluginNames;
+        this.names = names;
     }
 
     public Expression<Func<LiveProject, bool>> ToExpression()
     {
-        return lp => lp.Tracks.Any(t => t.Plugins.Any(p => p.Name.In(_pluginNames)));
+        return lp => lp.Tracks.Any(t => t.Plugins.Any(p => p.Name.In(names)));
     }
 }

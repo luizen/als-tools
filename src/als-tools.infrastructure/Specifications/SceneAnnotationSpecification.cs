@@ -2,15 +2,15 @@ namespace AlsTools.Infrastructure.Specifications;
 
 public class SceneAnnotationSpecification : ISpecification<LiveProject>
 {
-    private readonly IEnumerable<string> _sceneAnnotations;
+    private readonly IEnumerable<string> annotations;
 
-    public SceneAnnotationSpecification(IEnumerable<string> sceneAnnotations)
+    public SceneAnnotationSpecification(IEnumerable<string> annotations)
     {
-        _sceneAnnotations = sceneAnnotations;
+        this.annotations = annotations;
     }
 
     public Expression<Func<LiveProject, bool>> ToExpression()
     {
-        return lp => lp.Scenes.Any(s => s.Annotation.In(_sceneAnnotations));
+        return lp => lp.Scenes.Any(s => s.Annotation.In(annotations));
     }
 }

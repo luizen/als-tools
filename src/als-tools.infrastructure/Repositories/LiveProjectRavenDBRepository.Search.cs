@@ -17,7 +17,7 @@ public partial class LiveProjectRavenRepository
             ISpecification<LiveProject> rootSpecification;
 
             if (specifications.Count == 1)
-                rootSpecification = specifications[0];
+                rootSpecification = specifications.First();
             else if (useOrOperator)
                 rootSpecification = new OrSpecification<LiveProject>(specifications.ToArray());
             else
@@ -100,6 +100,39 @@ public partial class LiveProjectRavenRepository
 
         if (filterContext.StockDeviceFilter.Families.Any())
             specs.Add(new StockDeviceFamiliesSpecification(filterContext.StockDeviceFilter.Families));
+
+        // Max For Live devices
+        if (filterContext.MaxForLiveDeviceFilter.Names.Any())
+            specs.Add(new MaxForLiveDeviceNameSpecification(filterContext.MaxForLiveDeviceFilter.Names));
+
+        if (filterContext.MaxForLiveDeviceFilter.UserNames.Any())
+            specs.Add(new MaxForLiveDeviceUserNamesSpecification(filterContext.MaxForLiveDeviceFilter.UserNames));
+
+        if (filterContext.MaxForLiveDeviceFilter.Annotations.Any())
+            specs.Add(new MaxForLiveDeviceAnnotationSpecification(filterContext.MaxForLiveDeviceFilter.Annotations));
+
+        if (filterContext.MaxForLiveDeviceFilter.Families.Any())
+            specs.Add(new MaxForLiveDeviceFamiliesSpecification(filterContext.MaxForLiveDeviceFilter.Families));
+
+        // Live projects
+        if (filterContext.LiveProjectFilter.Names.Any())
+            specs.Add(new LiveProjectNamesSpecification(filterContext.LiveProjectFilter.Names));
+
+        if (filterContext.LiveProjectFilter.Paths.Any())
+            specs.Add(new LiveProjectPathsSpecification(filterContext.LiveProjectFilter.Paths));
+
+        if (filterContext.LiveProjectFilter.Tempos.Any())
+            specs.Add(new LiveProjectTemposSpecification(filterContext.LiveProjectFilter.Tempos));
+
+        if (filterContext.LiveProjectFilter.Creators.Any())
+            specs.Add(new LiveProjectCreatorsSpecification(filterContext.LiveProjectFilter.Creators));
+
+        if (filterContext.LiveProjectFilter.MajorVersions.Any())
+            specs.Add(new LiveProjectMajorVersionsSpecification(filterContext.LiveProjectFilter.MajorVersions));
+
+        if (filterContext.LiveProjectFilter.MinorVersions.Any())
+            specs.Add(new LiveProjectMinorVersionsSpecification(filterContext.LiveProjectFilter.MinorVersions));
+
 
         return specs;
     }

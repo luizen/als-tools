@@ -2,15 +2,15 @@ namespace AlsTools.Infrastructure.Specifications;
 
 public class StockDeviceUserNamesSpecification : ISpecification<LiveProject>
 {
-    private readonly IEnumerable<string> _stockDeviceNames;
+    private readonly IEnumerable<string> userNames;
 
-    public StockDeviceUserNamesSpecification(IEnumerable<string> stockDeviceNames)
+    public StockDeviceUserNamesSpecification(IEnumerable<string> userNames)
     {
-        _stockDeviceNames = stockDeviceNames;
+        this.userNames = userNames;
     }
 
     public Expression<Func<LiveProject, bool>> ToExpression()
     {
-        return lp => lp.Tracks.Any(t => t.StockDevices.Any(sd => sd.UserName.In(_stockDeviceNames)));
+        return lp => lp.Tracks.Any(t => t.StockDevices.Any(sd => sd.UserName.In(userNames)));
     }
 }

@@ -2,15 +2,15 @@ namespace AlsTools.Infrastructure.Specifications;
 
 public class SceneTemposSpecification : ISpecification<LiveProject>
 {
-    private readonly IEnumerable<int> _sceneTempos;
+    private readonly IEnumerable<int> tempos;
 
-    public SceneTemposSpecification(IEnumerable<int> sceneTempos)
+    public SceneTemposSpecification(IEnumerable<int> tempos)
     {
-        _sceneTempos = sceneTempos;
+        this.tempos = tempos;
     }
 
     public Expression<Func<LiveProject, bool>> ToExpression()
     {
-        return lp => lp.Scenes.Any(s => s.Tempo.In(_sceneTempos));
+        return lp => lp.Scenes.Any(s => s.Tempo.In(tempos));
     }
 }

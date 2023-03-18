@@ -2,17 +2,17 @@ namespace AlsTools.Infrastructure.Specifications;
 
 public class TrackDelaySpecification : ISpecification<LiveProject>
 {
-    private readonly IEnumerable<TrackDelay> _trackdelays;
-    private readonly IEnumerable<double> _trackdelaysValues;
+    private readonly IEnumerable<TrackDelay> delays;
+    private readonly IEnumerable<double> delaysValues;
 
-    public TrackDelaySpecification(IEnumerable<TrackDelay> trackDelays)
+    public TrackDelaySpecification(IEnumerable<TrackDelay> delays)
     {
-        _trackdelays = trackDelays;
-        _trackdelaysValues = trackDelays.Select(delay => delay.Value!.Value);
+        this.delays = delays;
+        delaysValues = delays.Select(delay => delay.Value!.Value);
     }
 
     public Expression<Func<LiveProject, bool>> ToExpression()
     {
-        return lp => lp.Tracks.Any(t => t.TrackDelay.Value!.Value.In(_trackdelaysValues));
+        return lp => lp.Tracks.Any(t => t.TrackDelay.Value!.Value.In(delaysValues));
     }
 }

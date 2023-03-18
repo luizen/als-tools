@@ -2,15 +2,15 @@ namespace AlsTools.Infrastructure.Specifications;
 
 public class TrackContainsNumberOfMaxForLiveDevicesSpecification : ISpecification<LiveProject>
 {
-    private readonly int _numberOfMaxForLiveDevices;
+    private readonly int numberOfDevices;
 
-    public TrackContainsNumberOfMaxForLiveDevicesSpecification(int numberOfMaxForLiveDevices)
+    public TrackContainsNumberOfMaxForLiveDevicesSpecification(int numberOfDevices)
     {
-        this._numberOfMaxForLiveDevices = numberOfMaxForLiveDevices;
+        this.numberOfDevices = numberOfDevices;
     }
 
     public Expression<Func<LiveProject, bool>> ToExpression()
     {
-        return lp => lp.Tracks.Any(t => t.MaxForLiveDevices.Count == _numberOfMaxForLiveDevices);
+        return lp => lp.Tracks.Any(t => t.MaxForLiveDevices.Count == numberOfDevices);
     }
 }
