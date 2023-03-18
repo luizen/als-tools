@@ -19,11 +19,8 @@ public class LiveProjectNamesSpecification : ISpecification<LiveProject>
                 return lp => lp.Name.In(names);
 
             case TextMatchingOptions.StartsWith:
-                return lp => names.Any(name => lp.Name.StartsWith(name));
-                // return lp => lp.Name.star
-                // return lp => lp.Name.StartsWith("Techno");
-                // return lp => lp.Name.StartsWith2(names);
-                // return lp => names.Any(name => lp.Name.StartsWith(name));
+                return lp => names.Any(name => lp.Name.StartsWith(name)); // this DOES NOT work
+                // return lp => lp.Name.StartsWith("Techno");  // this works!
 
             case TextMatchingOptions.EndsWith:
                 return lp => names.Any(name => lp.Name.EndsWith(name));
@@ -36,13 +33,3 @@ public class LiveProjectNamesSpecification : ISpecification<LiveProject>
         }
     }
 }
-
-
-
-// public static class MyOwnRavenQueryableExtensions
-// {
-//     public static bool StartsWith2(this string field, IEnumerable<string> values)
-//     {
-//         return values.Any(value => field!.StartsWith(value));
-//     }
-// }
