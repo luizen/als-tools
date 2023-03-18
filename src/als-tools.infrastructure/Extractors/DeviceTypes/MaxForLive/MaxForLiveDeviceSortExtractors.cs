@@ -1,5 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.MaxForLive;
 
 public interface IMaxForLiveDeviceSortExtractor : IDeviceExtractor

@@ -1,6 +1,3 @@
-using AlsTools.Core.ValueObjects;
-using AlsTools.Core.ValueObjects.Tracks;
-
 namespace AlsTools.Core.Entities;
 
 public class LiveProject

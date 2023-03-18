@@ -1,8 +1,3 @@
-using System.Linq.Expressions;
-using AlsTools.Core.Entities;
-using AlsTools.Core.Interfaces;
-using AlsTools.Core.Queries;
-
 namespace AlsTools.Core.Services;
 
 public class LiveProjectAsyncService : ILiveProjectAsyncService
@@ -30,9 +25,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetAllProjectsAsync();
     }
 
-    public async Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification)
+    public async Task<IReadOnlyList<LiveProject>> Search(FilterContext filterContext)
     {
-        return await repository.Search(specification);
+        return await repository.Search(filterContext);
     }
 
     public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths)

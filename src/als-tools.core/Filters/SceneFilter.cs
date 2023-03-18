@@ -1,8 +1,8 @@
-namespace AlsTools.Core.Queries;
+namespace AlsTools.Core.Filters;
 
-public class SceneQuery
+public class SceneFilter
 {
-    public SceneQuery()
+    public SceneFilter()
     {
         Names = new List<string>();
         Tempos = new List<int>();

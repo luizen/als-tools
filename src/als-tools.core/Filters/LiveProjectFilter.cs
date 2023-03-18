@@ -1,11 +1,8 @@
-using AlsTools.Core.ValueObjects;
-using AlsTools.Core.ValueObjects.Devices;
+namespace AlsTools.Core.Filters;
 
-namespace AlsTools.Core.Queries;
-
-public class LiveProjectQuery
+public class LiveProjectFilter
 {
-    public LiveProjectQuery()
+    public LiveProjectFilter()
     {
         Names = new List<string>();
         Formats = new List<PluginFormat>();

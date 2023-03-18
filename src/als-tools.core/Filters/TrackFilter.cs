@@ -1,10 +1,8 @@
-using AlsTools.Core.ValueObjects;
+namespace AlsTools.Core.Filters;
 
-namespace AlsTools.Core.Queries;
-
-public class TrackQuery
+public class TrackFilter
 {
-    public TrackQuery()
+    public TrackFilter()
     {
         UserNames = new List<string>();
         EffectiveNames = new List<string>();

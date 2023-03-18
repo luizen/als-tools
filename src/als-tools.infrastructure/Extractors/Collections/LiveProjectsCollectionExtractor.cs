@@ -1,5 +1,3 @@
-using AlsTools.Core.Entities;
-
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
 public interface ILiveProjectsCollectionExtractor : ICollectionExtractor<LiveProject>

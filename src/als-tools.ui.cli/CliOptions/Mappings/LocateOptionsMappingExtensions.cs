@@ -1,111 +1,111 @@
-using AlsTools.Core.Extensions;
-using AlsTools.Core.Queries;
-using AlsTools.Core.ValueObjects;
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Ui.Cli.CliOptions.Mappings;
 
 public static class LocateOptionsMappingExtensions
 {
-    public static QuerySpecification MapToSpecification(this LocateOptions instance)
+    public static FilterContext MapToSpecification(this LocateOptions instance)
     {
         if (instance.IsEmpty)
-            return QuerySpecification.Empty;
+            return FilterContext.Empty;
 
-        var specification = new QuerySpecification();
+        var specification = new FilterContext();
+
+        // General settings
+        if (instance.LogicalOperator.HasValue)
+            specification.FilterSettings.LogicalOperator = instance.LogicalOperator;        
+
 
         // Plugins
         if (instance.PluginNamesToLocate.HasValues())
-            specification.PluginQuery.Names.AddRange(instance.PluginNamesToLocate!);
+            specification.PluginFilter.Names.AddRange(instance.PluginNamesToLocate!);
 
         if (instance.PluginFormatsToLocate.HasValues())
-            specification.PluginQuery.Formats.AddRange(instance.PluginFormatsToLocate!);
+            specification.PluginFilter.Formats.AddRange(instance.PluginFormatsToLocate!);
 
         // Tracks
         if (instance.TrackUserNamesToLocate.HasValues())
-            specification.TrackQuery.UserNames.AddRange(instance.TrackUserNamesToLocate!);
+            specification.TrackFilter.UserNames.AddRange(instance.TrackUserNamesToLocate!);
 
         if (instance.TrackEffectiveNamesToLocate.HasValues())
-            specification.TrackQuery.EffectiveNames.AddRange(instance.TrackEffectiveNamesToLocate!);
+            specification.TrackFilter.EffectiveNames.AddRange(instance.TrackEffectiveNamesToLocate!);
 
         if (instance.TrackAnnotationsToLocate.HasValues())
-            specification.TrackQuery.Annotations.AddRange(instance.TrackAnnotationsToLocate!);
+            specification.TrackFilter.Annotations.AddRange(instance.TrackAnnotationsToLocate!);
 
         if (instance.TrackTypesToLocate.HasValues())
-            specification.TrackQuery.Types.AddRange(instance.TrackTypesToLocate!);
+            specification.TrackFilter.Types.AddRange(instance.TrackTypesToLocate!);
 
         if (instance.TrackDelaysToLocate.HasValues())
-            specification.TrackQuery.Delays.AddRange(instance.TrackDelaysToLocate!.Select(td => new TrackDelay() { Value = td }));
+            specification.TrackFilter.Delays.AddRange(instance.TrackDelaysToLocate!.Select(td => new TrackDelay() { Value = td }));
 
         if (instance.TrackContainsAnyMaxForLiveDevices.HasValue)
-            specification.TrackQuery.ContainsAnyMaxForLiveDevices = instance.TrackContainsAnyMaxForLiveDevices;
+            specification.TrackFilter.ContainsAnyMaxForLiveDevices = instance.TrackContainsAnyMaxForLiveDevices;
 
         if (instance.TrackContainsAnyPlugins.HasValue)
-            specification.TrackQuery.ContainsAnyPlugins = instance.TrackContainsAnyPlugins;
+            specification.TrackFilter.ContainsAnyPlugins = instance.TrackContainsAnyPlugins;
 
         if (instance.TrackContainsAnyStockDevices.HasValue)
-            specification.TrackQuery.ContainsAnyStockDevices = instance.TrackContainsAnyStockDevices;
+            specification.TrackFilter.ContainsAnyStockDevices = instance.TrackContainsAnyStockDevices;
 
         if (instance.TrackContainsNumberOfMaxForLiveDevices.HasValue)
-            specification.TrackQuery.ContainsNumberOfMaxForLiveDevices = instance.TrackContainsNumberOfMaxForLiveDevices;        
+            specification.TrackFilter.ContainsNumberOfMaxForLiveDevices = instance.TrackContainsNumberOfMaxForLiveDevices;        
 
         if (instance.TrackContainsNumberOfPlugins.HasValue)
-            specification.TrackQuery.ContainsNumberOfPlugins = instance.TrackContainsNumberOfPlugins;
+            specification.TrackFilter.ContainsNumberOfPlugins = instance.TrackContainsNumberOfPlugins;
 
         // Projects
         if (instance.ProjectNamesToLocate.HasValues())
-            specification.LiveProjectQuery.Names.AddRange(instance.ProjectNamesToLocate!);
+            specification.LiveProjectFilter.Names.AddRange(instance.ProjectNamesToLocate!);
 
         if (instance.ProjectCreatorsToLocate.HasValues())
-            specification.LiveProjectQuery.Creators.AddRange(instance.ProjectCreatorsToLocate!);
+            specification.LiveProjectFilter.Creators.AddRange(instance.ProjectCreatorsToLocate!);
 
         if (instance.ProjectPathsToLocate.HasValues())
-            specification.LiveProjectQuery.Paths.AddRange(instance.ProjectPathsToLocate!);
+            specification.LiveProjectFilter.Paths.AddRange(instance.ProjectPathsToLocate!);
 
         if (instance.ProjectMajorVersionsToLocate.HasValues())
-            specification.LiveProjectQuery.MajorVersions.AddRange(instance.ProjectMajorVersionsToLocate!);
+            specification.LiveProjectFilter.MajorVersions.AddRange(instance.ProjectMajorVersionsToLocate!);
 
         if (instance.ProjectMinorVersionsToLocate.HasValues())
-            specification.LiveProjectQuery.MinorVersions.AddRange(instance.ProjectMinorVersionsToLocate!);
+            specification.LiveProjectFilter.MinorVersions.AddRange(instance.ProjectMinorVersionsToLocate!);
 
         if (instance.ProjectTemposToLocate.HasValues())
-            specification.LiveProjectQuery.Tempos.AddRange(instance.ProjectTemposToLocate!);
+            specification.LiveProjectFilter.Tempos.AddRange(instance.ProjectTemposToLocate!);
 
         // Scenes
         if (instance.SceneNamesToLocate.HasValues())
-            specification.SceneQuery.Names.AddRange(instance.SceneNamesToLocate!);
+            specification.SceneFilter.Names.AddRange(instance.SceneNamesToLocate!);
 
         if (instance.SceneTemposToLocate.HasValues())
-            specification.SceneQuery.Tempos.AddRange(instance.SceneTemposToLocate!);
+            specification.SceneFilter.Tempos.AddRange(instance.SceneTemposToLocate!);
 
         if (instance.SceneAnnotationsToLocate.HasValues())
-            specification.SceneQuery.Annotations.AddRange(instance.SceneAnnotationsToLocate!);
+            specification.SceneFilter.Annotations.AddRange(instance.SceneAnnotationsToLocate!);
 
         // Stock devices
         if (instance.StockDeviceNamesToLocate.HasValues())
-            specification.StockDeviceQuery.Names.AddRange(instance.StockDeviceNamesToLocate!);
+            specification.StockDeviceFilter.Names.AddRange(instance.StockDeviceNamesToLocate!);
 
         if (instance.StockDeviceUserNamesToLocate.HasValues())
-            specification.StockDeviceQuery.UserNames.AddRange(instance.StockDeviceUserNamesToLocate!);
+            specification.StockDeviceFilter.UserNames.AddRange(instance.StockDeviceUserNamesToLocate!);
         
         if (instance.StockDeviceAnnotationsToLocate.HasValues())
-            specification.StockDeviceQuery.Annotations.AddRange(instance.StockDeviceAnnotationsToLocate!);
+            specification.StockDeviceFilter.Annotations.AddRange(instance.StockDeviceAnnotationsToLocate!);
 
         if (instance.StockDeviceSortsToLocate.HasValues())
-            specification.StockDeviceQuery.Families.AddRange(instance.StockDeviceSortsToLocate!.Select(ds => new DeviceFamily(DeviceType.Stock, ds)));
+            specification.StockDeviceFilter.Families.AddRange(instance.StockDeviceSortsToLocate!.Select(ds => new DeviceFamily(DeviceType.Stock, ds)));
 
         // Max For Live devices
         if (instance.MaxForLiveDeviceNamesToLocate.HasValues())
-            specification.MaxForLiveDeviceQuery.Names.AddRange(instance.MaxForLiveDeviceNamesToLocate!);
+            specification.MaxForLiveDeviceFilter.Names.AddRange(instance.MaxForLiveDeviceNamesToLocate!);
 
         if (instance.MaxForLiveDeviceUserNamesToLocate.HasValues())
-            specification.MaxForLiveDeviceQuery.UserNames.AddRange(instance.MaxForLiveDeviceUserNamesToLocate!);
+            specification.MaxForLiveDeviceFilter.UserNames.AddRange(instance.MaxForLiveDeviceUserNamesToLocate!);
         
         if (instance.MaxForLiveDeviceAnnotationsToLocate.HasValues())
-            specification.MaxForLiveDeviceQuery.Annotations.AddRange(instance.MaxForLiveDeviceAnnotationsToLocate!);
+            specification.MaxForLiveDeviceFilter.Annotations.AddRange(instance.MaxForLiveDeviceAnnotationsToLocate!);
 
         if (instance.MaxForLiveDeviceSortsToLocate.HasValues())
-            specification.MaxForLiveDeviceQuery.Families.AddRange(instance.MaxForLiveDeviceSortsToLocate!.Select(ds => new DeviceFamily(DeviceType.MaxForLive, ds)));
+            specification.MaxForLiveDeviceFilter.Families.AddRange(instance.MaxForLiveDeviceSortsToLocate!.Select(ds => new DeviceFamily(DeviceType.MaxForLive, ds)));
 
 
         return specification;

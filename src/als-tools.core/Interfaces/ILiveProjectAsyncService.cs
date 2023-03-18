@@ -1,7 +1,3 @@
-using System.Linq.Expressions;
-using AlsTools.Core.Entities;
-using AlsTools.Core.Queries;
-
 namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectAsyncService
@@ -12,7 +8,7 @@ public interface ILiveProjectAsyncService
 
     Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
 
-    Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification);
+    Task<IReadOnlyList<LiveProject>> Search(FilterContext filterContext);
 
     Task<int> CountProjectsAsync();
 }

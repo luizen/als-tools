@@ -1,5 +1,3 @@
-using AlsTools.Core.ValueObjects;
-
 namespace AlsTools.Ui.Cli.CliOptions;
 
 public partial class LocateOptions : CommonOptions

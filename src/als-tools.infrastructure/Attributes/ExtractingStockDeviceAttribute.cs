@@ -1,5 +1,3 @@
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices;
-
 namespace AlsTools.Infrastructure.Attributes;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field)]

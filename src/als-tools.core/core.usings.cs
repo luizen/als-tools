@@ -1,1 +1,10 @@
 global using Microsoft.Extensions.Logging;
+global using AlsTools.Core.ValueObjects.Devices;
+global using AlsTools.Core.ValueObjects;
+global using AlsTools.Core.ValueObjects.Tracks;
+global using System.Linq.Expressions;
+global using Raven.Client.Documents;
+global using AlsTools.Core.Entities;
+global using AlsTools.Core.Filters;
+global using AlsTools.Core.Extensions;
+global using AlsTools.Core.Interfaces;

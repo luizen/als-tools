@@ -1,5 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockAudioEffects;
 
 public interface ICommonStockAudioEffectDeviceExtractor : IStockDeviceExtractor

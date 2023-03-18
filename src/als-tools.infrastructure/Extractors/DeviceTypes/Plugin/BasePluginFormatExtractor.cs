@@ -1,6 +1,3 @@
-using AlsTools.Core.ValueObjects;
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;
 
 public abstract class BasePluginFormatExtractor : IPluginFormatExtractor

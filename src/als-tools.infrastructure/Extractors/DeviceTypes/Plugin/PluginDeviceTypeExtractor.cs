@@ -1,7 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-using AlsTools.Core.ValueObjects;
-using AlsTools.Infrastructure.XmlNodeNames;
-
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;
 
 public class PluginDeviceTypeExtractor : IDeviceTypeExtractor

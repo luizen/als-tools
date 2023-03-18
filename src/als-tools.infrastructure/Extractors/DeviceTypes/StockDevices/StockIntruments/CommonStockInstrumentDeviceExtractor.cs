@@ -1,5 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockInstruments;
 
 public interface ICommonStockInstrumentDeviceExtractor : IStockDeviceExtractor

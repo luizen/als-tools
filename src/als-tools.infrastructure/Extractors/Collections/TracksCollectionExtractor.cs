@@ -1,7 +1,3 @@
-using AlsTools.Core.Factories;
-using AlsTools.Core.ValueObjects;
-using AlsTools.Core.ValueObjects.Tracks;
-
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
 public interface ITracksCollectionExtractor : ICollectionExtractor<ITrack>

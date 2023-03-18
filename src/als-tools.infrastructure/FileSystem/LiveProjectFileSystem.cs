@@ -1,5 +1,3 @@
-using AlsTools.Core.Interfaces;
-
 namespace AlsTools.Infrastructure.FileSystem;
 
 public class LiveProjectFileSystem : ILiveProjectFileSystem

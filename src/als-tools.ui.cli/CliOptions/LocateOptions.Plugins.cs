@@ -1,6 +1,5 @@
-using AlsTools.Core.ValueObjects;
-
 namespace AlsTools.Ui.Cli.CliOptions;
+
 public partial class LocateOptions : CommonOptions
 {
     [Option("plugin-names", Group = "locate options", Min = 1, HelpText = "The plugin names to locate projects by.")]

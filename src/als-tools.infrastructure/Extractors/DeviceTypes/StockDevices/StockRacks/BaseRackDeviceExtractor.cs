@@ -1,6 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-using AlsTools.Core.ValueObjects.Devices.Racks;
-
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockRacks;
 
 public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStockRackDeviceExtractor

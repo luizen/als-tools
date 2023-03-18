@@ -1,6 +1,5 @@
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Ui.Cli.CliOptions;
+
 public partial class LocateOptions : CommonOptions
 {
     [Option("stockdevice-names", Group = "locate options", Min = 1, HelpText = "The stock device names to locate projects by.")]

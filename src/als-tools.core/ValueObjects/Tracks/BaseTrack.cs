@@ -1,5 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Core.ValueObjects.Tracks;
 
 public abstract class BaseTrack : ITrack

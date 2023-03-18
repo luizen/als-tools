@@ -1,5 +1,3 @@
-using AlsTools.Core.ValueObjects;
-
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
 public interface IScenesCollectionExtractor : ICollectionExtractor<Scene>

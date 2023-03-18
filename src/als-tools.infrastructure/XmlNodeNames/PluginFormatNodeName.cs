@@ -1,6 +1,3 @@
-using System.Collections.ObjectModel;
-using AlsTools.Core.ValueObjects;
-
 namespace AlsTools.Infrastructure.XmlNodeNames;
 
 public static class PluginFormatNodeName

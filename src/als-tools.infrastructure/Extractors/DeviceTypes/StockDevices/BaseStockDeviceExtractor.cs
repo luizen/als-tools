@@ -1,6 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-using AlsTools.Infrastructure.XmlNodeNames;
-
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices;
 
 public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor

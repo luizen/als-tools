@@ -1,51 +1,47 @@
-using AlsTools.Core.Entities;
-using AlsTools.Core.Queries;
-using Raven.Client.Documents;
-using Raven.Client.Documents.Linq;
-using Linq.PredicateBuilder;
-using AlsTools.Core.Specifications;
-using AlsTools.Infrastructure.Specifications;
-
 namespace AlsTools.Infrastructure.Repositories;
 
 public partial class LiveProjectRavenRepository
 {
-    public async Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification)
+    public async Task<IReadOnlyList<LiveProject>> Search(FilterContext filterContext)
     {
         using (var session = store.OpenAsyncSession())
         {
-
-            // string[] trackNames = specification.TrackQuery.UserNames.ToArray();
-            // string[] pluginFormats = specification.PluginQuery.Formats.Select(f => f.ToString()).ToArray();
-
-            bool useOrOperator = true; // Set this value based on user input
-            var specs = new List<ISpecification<LiveProject>>();
+            bool useOrOperator = filterContext.FilterSettings.LogicalOperator == LogicOperators.Or;
             var query = session.Query<LiveProject>();
 
-            if (specification.TrackQuery.UserNames.Any())
-                specs.Add(new TrackNameSpecification(specification.TrackQuery.UserNames));
+            var specifications = BuildSpecificationsFromFilterContext(filterContext);
 
-            if (specification.PluginQuery.Formats.Any())
-                specs.Add(new PluginFormatSpecification(specification.PluginQuery.Formats.Select(f => f.ToString())));
+            if (!specifications.Any())
+                return Enumerable.Empty<LiveProject>().ToList();
 
-            if (specs.Count > 0)
-            {
-                ISpecification<LiveProject> spec;
+            ISpecification<LiveProject> rootSpecification;
 
-                if (specs.Count == 1)
-                    spec = specs[0];
-                else if (useOrOperator)
-                    spec = new OrSpecification<LiveProject>(specs.ToArray());
-                else
-                    spec = new AndSpecification<LiveProject>(specs.ToArray());
+            if (specifications.Count == 1)
+                rootSpecification = specifications[0];
+            else if (useOrOperator)
+                rootSpecification = new OrSpecification<LiveProject>(specifications.ToArray());
+            else
+                rootSpecification = new AndSpecification<LiveProject>(specifications.ToArray());
 
-                List<LiveProject> results = await session.Query<LiveProject>().Where(spec.ToExpression()).ToListAsync();
+            List<LiveProject> results = await session.Query<LiveProject>().Where(rootSpecification.ToExpression()).ToListAsync();
 
-                return results;
-            }
-
-            return Enumerable.Empty<LiveProject>().ToList();
+            return results;
         }
     }
 
+    private IList<ISpecification<LiveProject>> BuildSpecificationsFromFilterContext(FilterContext filterContext)
+    {
+        var specs = new List<ISpecification<LiveProject>>();
+
+        if (filterContext.TrackFilter.UserNames.Any())
+            specs.Add(new TrackNameSpecification(filterContext.TrackFilter.UserNames));
+
+        if (filterContext.TrackFilter.EffectiveNames.Any())
+            specs.Add(new TrackNameSpecification(filterContext.TrackFilter.EffectiveNames));
+
+        if (filterContext.PluginFilter.Formats.Any())
+            specs.Add(new PluginFormatSpecification(filterContext.PluginFilter.Formats.Select(f => f.ToString())));
+
+        return specs;
+    }
 }

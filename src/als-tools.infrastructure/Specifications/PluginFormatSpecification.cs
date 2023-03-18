@@ -1,8 +1,3 @@
-using System.Linq.Expressions;
-using AlsTools.Core.Entities;
-using AlsTools.Core.Specifications;
-using Raven.Client.Documents.Linq;
-
 namespace AlsTools.Infrastructure.Specifications;
 
 public class PluginFormatSpecification : ISpecification<LiveProject>

@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace AlsTools.Core.Specifications;
 
 public abstract class CompositeSpecification<T> : ISpecification<T>

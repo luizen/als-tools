@@ -1,10 +1,8 @@
-using AlsTools.Core.ValueObjects.Devices;
+namespace AlsTools.Core.Filters;
 
-namespace AlsTools.Core.Queries;
-
-public class DeviceQuery
+public class DeviceFilter
 {
-    public DeviceQuery()
+    public DeviceFilter()
     {
         Names = new List<string>();
         UserNames = new List<string>();
