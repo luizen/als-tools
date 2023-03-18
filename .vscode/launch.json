@@ -295,7 +295,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - compact locate <project names> starting with something",
+            "name": "Debug - compact locate <project names> containing something",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -306,7 +306,7 @@
                 "--project-names",
                 "Techno",
                 "--text-match-option",
-                "startsWith",
+                "contains",
                 "--compact-output",
                 "true",
                 "--log-level",
