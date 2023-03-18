@@ -12,8 +12,6 @@ public interface ILiveProjectAsyncRepository
 
     Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification);
 
-    Task<IReadOnlyList<LiveProject>> Search(Expression<Func<LiveProject, bool>> filter);
-
     Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
 
     Task DeleteAllAsync();

@@ -14,7 +14,5 @@ public interface ILiveProjectAsyncService
 
     Task<IReadOnlyList<LiveProject>> Search(QuerySpecification specification);
 
-    Task<IReadOnlyList<LiveProject>> Search(Expression<Func<LiveProject, bool>> filterExpression);
-
     Task<int> CountProjectsAsync();
 }

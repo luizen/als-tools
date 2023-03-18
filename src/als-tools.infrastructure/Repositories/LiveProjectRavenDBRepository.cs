@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 using Raven.Client.Documents;
@@ -70,10 +69,5 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         {
             return await session.Query<LiveProject>().CountAsync();
         }
-    }
-
-    public Task<IReadOnlyList<LiveProject>> Search(Expression<Func<LiveProject, bool>> filter)
-    {
-        throw new NotImplementedException();
     }
 }

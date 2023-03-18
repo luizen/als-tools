@@ -19,24 +19,24 @@ public partial class LocateOptions : CommonOptions
     [Option("track-delays", Group = "locate options", Min = 1, HelpText = "The track delays to locate projects by.")]
     public IReadOnlyCollection<double>? TrackDelaysToLocate { get; set; }
 
-    [Option("track-is-frozen", Group = "locate options", Min = 1, HelpText = "Whether to locate projects containing any frozen tracks.")]
+    [Option("track-is-frozen", Group = "locate options", HelpText = "Whether to locate projects containing any frozen tracks.")]
     public bool? TrackIsFrozen { get; set; }
 
-    [Option("track-contains-any-plugins", Group = "locate options", Min = 1, HelpText = "Whether to locate projects containing at least 1 plugin.")]
+    [Option("track-contains-any-plugins", Group = "locate options", HelpText = "Whether to locate projects containing at least 1 plugin.")]
     public bool? TrackContainsAnyPlugins { get; set; }
 
-    [Option("track-contains-num-plugins", Group = "locate options", Min = 1, HelpText = "Whether to locate projects containing an exact number of plugins.")]
+    [Option("track-contains-num-plugins", Group = "locate options", HelpText = "Whether to locate projects containing an exact number of plugins.")]
     public int? TrackContainsNumberOfPlugins { get; set; }
     
-    [Option("track-contains-any-stock-devices", Group = "locate options", Min = 1, HelpText = "Whether to locate projects containing at least 1 stock device.")]
+    [Option("track-contains-any-stock-devices", Group = "locate options", HelpText = "Whether to locate projects containing at least 1 stock device.")]
     public bool? TrackContainsAnyStockDevices { get; set; }
 
-    [Option("track-contains-num-stock-devices", Group = "locate options", Min = 1, HelpText = "Whether to locate projects containing an exact number of stock devices.")]
+    [Option("track-contains-num-stock-devices", Group = "locate options", HelpText = "Whether to locate projects containing an exact number of stock devices.")]
     public int? TrackContainsNumberOfStockDevices { get; set; }
 
-    [Option("track-contains-any-maxforlive-devices", Group = "locate options", Min = 1, HelpText = "Whether to locate projects containing at least 1 Max For Live device.")]
+    [Option("track-contains-any-maxforlive-devices", Group = "locate options", HelpText = "Whether to locate projects containing at least 1 Max For Live device.")]
     public bool? TrackContainsAnyMaxForLiveDevices { get; set; }
 
-    [Option("track-contains-num-maxforlive-devices", Group = "locate options", Min = 1, HelpText = "Whether to locate projects containing an exact number of Max For Live devices.")]
+    [Option("track-contains-num-maxforlive-devices", Group = "locate options", HelpText = "Whether to locate projects containing an exact number of Max For Live devices.")]
     public bool? TrackContainsNumberOfMaxForLiveDevices { get; set; }
 }

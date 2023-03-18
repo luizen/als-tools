@@ -35,11 +35,6 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.Search(specification);
     }
 
-    public async Task<IReadOnlyList<LiveProject>> Search(Expression<Func<LiveProject, bool>> filter)
-    {
-        return await repository.Search(filter);
-    }
-
     public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths)
     {
         await repository.DeleteAllAsync();
