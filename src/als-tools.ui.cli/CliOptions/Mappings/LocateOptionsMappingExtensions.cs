@@ -10,8 +10,8 @@ public static class LocateOptionsMappingExtensions
         var specification = new FilterContext();
 
         // General settings
-        if (instance.LogicalOperator.HasValue)
-            specification.FilterSettings.LogicalOperator = instance.LogicalOperator;        
+        specification.FilterSettings.LogicalOperator = instance.LogicalOperator;
+        specification.FilterSettings.TextMatchingOption = instance.TextMatchingOption;
 
 
         // Plugins

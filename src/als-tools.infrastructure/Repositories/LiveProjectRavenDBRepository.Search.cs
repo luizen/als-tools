@@ -35,7 +35,7 @@ public partial class LiveProjectRavenRepository
 
         // Track filters
         if (filterContext.TrackFilter.UserNames.Any())
-            specs.Add(new TrackNameSpecification(filterContext.TrackFilter.UserNames));
+            specs.Add(new TrackNameSpecification(filterContext.TrackFilter.UserNames, filterContext.FilterSettings.TextMatchingOption));
 
         if (filterContext.TrackFilter.EffectiveNames.Any())
             specs.Add(new TrackEffectiveNameSpecification(filterContext.TrackFilter.EffectiveNames));
@@ -72,7 +72,7 @@ public partial class LiveProjectRavenRepository
             specs.Add(new PluginFormatSpecification(filterContext.PluginFilter.Formats.Select(f => f.ToString())));
 
         if (filterContext.PluginFilter.Names.Any())
-            specs.Add(new PluginNameSpecification(filterContext.PluginFilter.Names));
+            specs.Add(new PluginNameSpecification(filterContext.PluginFilter.Names, filterContext.FilterSettings.TextMatchingOption));
 
         if (filterContext.PluginFilter.Sorts.Any())
             specs.Add(new PluginSortSpecification(filterContext.PluginFilter.Sorts));

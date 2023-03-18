@@ -227,7 +227,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - compact locate <plugin formats + names> and <track names>",
+            "name": "Debug - compact locate <plugin formats + names> OR <track names>",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -244,6 +244,27 @@
                 "Kick",
                 "--logical-operator",
                 "or",
+                "--compact-output",
+                "true",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - compact locate <plugin names> starting with something",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "locate",
+                "--plugin-names",
+                "NEOLD",
+                "--text-match-option",
+                "startsWith",
                 "--compact-output",
                 "true",
                 "--log-level",
