@@ -1,3 +1,5 @@
+using AlsTools.Infrastructure.Indexes;
+
 namespace AlsTools.Infrastructure.Repositories;
 
 public partial class LiveProjectRavenRepository
@@ -28,6 +30,126 @@ public partial class LiveProjectRavenRepository
             return results;
         }
     }
+
+    // public async Task<IReadOnlyList<LiveProject>> Search(FilterContext filterContext)
+    // {
+    //     string[] pluginNames = filterContext.PluginFilter.Names.ToArray();
+    //     string query = $"{pluginNames[0]}*";
+
+    //     using var session = store.OpenAsyncSession();
+    //     List<LiveProject> lps = await session
+    //             .Query<LiveProjects_ByPluginNames.PluginNameResult, LiveProjects_ByPluginNames>()
+    //             .Search(p => p.PluginName, query)
+    //             .As<LiveProject>()
+    //             .ToListAsync();
+
+    //     return lps;
+    // }
+
+    // FUNCIONA!
+    // public async Task<IReadOnlyList<LiveProject>> Search_PluginName_StartsWith(FilterContext filterContext)
+    // {
+    //     string[] pluginNames = filterContext.PluginFilter.Names.ToArray();
+    //     string query = $"{pluginNames[0]}*";
+
+    //     using var session = store.OpenAsyncSession();
+    //     List<LiveProject> lps = await session
+    //             .Query<LiveProjects_ByPluginNames.PluginNameResult, LiveProjects_ByPluginNames>()
+    //             .Search(p => p.Name, query)
+    //             .As<LiveProject>()
+    //             .ToListAsync();
+
+    //     return lps;
+    // }
+
+
+    // FUNCIONA (Like)
+    // public async Task<IReadOnlyList<LiveProject>> Search_EndsWith(FilterContext filterContext)
+    // {
+    //     string[] projectNames = filterContext.LiveProjectFilter.Names.ToArray();
+    //     string query = $"*{projectNames[0]}";
+
+    //     using var session = store.OpenAsyncSession();
+    //     List<LiveProject> lps = await session
+    //             .Query<LiveProject>()
+    //             .Search(proj => proj.Name, query)
+    //             .ToListAsync();
+
+    //     return lps;
+    // }
+
+
+    // FUNCIONA (WhereStartsWith)
+    // public async Task<IReadOnlyList<LiveProject>> Search(FilterContext filterContext)
+    // {
+    //     using var session = store.OpenAsyncSession();
+    //     var query = session.Advanced.AsyncDocumentQuery<LiveProject>();
+
+    //     string[] projectNames = filterContext.LiveProjectFilter.Names.ToArray();
+    //     if (projectNames.Length > 0)
+    //         query = query.WhereStartsWith<string>(lp => lp.Name, projectNames[0]);
+
+    //     List<LiveProject> results = await query.ToListAsync();
+
+    //     return results;
+    // }
+
+        
+    // public async Task<IReadOnlyList<LiveProject>> Search(FilterContext filterContext)
+    // {
+    //     using var session = store.OpenAsyncSession();
+
+    //     // IList<LiveProject> allProjects = await session.Query<LiveProject>().ToListAsync();
+
+    //     // IList<LiveProject> projects = session
+    //     //     .Query<LiveProject>()
+    //     //     .Search(lp => lp.Name, "John Steve")
+    //     //     .ToList();
+
+    //     var lp = await session
+    //     .Query<LiveProjects_FullTextSearch.Result, LiveProjects_FullTextSearch>()
+    //     .Search(x => x.Query, "NEOLD")
+    //     .As<LiveProject>()
+    //     .ToListAsync();
+    
+    //     return null;
+    // }
+
+
+
+    // FUNCIONA!
+    // public async Task<IReadOnlyList<LiveProject>> FullTextSearch(FilterContext filterContext)
+    // {
+    //     using var session = store.OpenAsyncSession();
+
+    //     // IList<LiveProject> allProjects = await session.Query<LiveProject>().ToListAsync();
+
+    //     // IList<LiveProject> projects = session
+    //     //     .Query<LiveProject>()
+    //     //     .Search(lp => lp.Name, "John Steve")
+    //     //     .ToList();
+
+    //     var lp = await session
+    //     .Query<LiveProjects_FullTextSearch.Result, LiveProjects_FullTextSearch>()
+    //     .Search(x => x.Query, "NEOLD")
+    //     .As<LiveProject>()
+    //     .ToListAsync();
+    
+    //     return null;
+    // }
+    
+    // FUNCIONA!
+    // public async Task<IReadOnlyList<LiveProject>> SearchWhereStartsWith(FilterContext filterContext)
+    // {
+    //     using var session = store.OpenAsyncSession();
+    //     var query = session.Advanced.AsyncDocumentQuery<LiveProject>();
+
+    //     query = query.WhereStartsWith("Tracks.Plugins.Name", "NEOLD");
+
+    //     List<LiveProject> results = await query.ToListAsync();
+
+    //     return results;
+    // }
 
     private IList<ISpecification<LiveProject>> BuildSpecificationsFromFilterContext(FilterContext filterContext)
     {
