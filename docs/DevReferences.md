@@ -25,7 +25,7 @@
 <https://ravendb.net/docs/article-page/5.3/csharp/studio/overview>
 <https://demo.ravendb.net>
 <https://ravendb.net/docs/article-page/5.4/csharp/indexes/querying/filtering#where---startswith>
-<https://stackoverflow.com/questions/26990706/cant-extract-value-from-expression-of-type-parameter>
+<https://stackoverflow.com/questions/26990706/cant-extract-value-from-expression-of-type-parameter> (try AsProjection!)
 
 ## Command line parser - commandline
 

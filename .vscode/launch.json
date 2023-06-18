@@ -155,6 +155,22 @@
             "stopAtEntry": false
         },
         {
+            "name": "Debug - list plugin names only",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "list",
+                "--plugin-names-only",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - count",
             "type": "coreclr",
             "request": "launch",
@@ -179,7 +195,7 @@
             "args": [
                 "locate",
                 "--plugin-formats",
-                "AU",
+                "VST2",
                 "--log-level",
                 "verbose"
             ],
@@ -304,7 +320,7 @@
             "args": [
                 "locate",
                 "--project-names",
-                "Techno",
+                "2020-03-07.als",
                 "--text-match-option",
                 "contains",
                 "--compact-output",
@@ -328,6 +344,27 @@
                 "Techno",
                 "--text-match-option",
                 "startsWith",
+                "--compact-output",
+                "true",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - compact locate <project names> ending with something",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "locate",
+                "--project-names",
+                "2020-03-07.als",
+                "--text-match-option",
+                "endsWith",
                 "--compact-output",
                 "true",
                 "--log-level",
