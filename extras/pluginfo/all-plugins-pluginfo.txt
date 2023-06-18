@@ -1,0 +1,507 @@
+/Users/zenluiz/Library/Audio/Plug-Ins/Components/ChopSuey.component
+/Library/Audio/Plug-Ins/Components/PunchBox.component
+/Library/Audio/Plug-Ins/Components/Synth1.component
+/Library/Audio/Plug-Ins/CLAP/PeakEater.clap
+/Library/Audio/Plug-Ins/CLAP/Surge XT.clap
+/Library/Audio/Plug-Ins/CLAP/Surge XT Effects.clap
+/Library/Audio/Plug-Ins/CLAP/TAL-Chorus-LX.clap
+/Library/Audio/Plug-Ins/CLAP/TAL-Filter-2.clap
+/Library/Audio/Plug-Ins/CLAP/TAL-NoiseMaker.clap
+/Library/Audio/Plug-Ins/CLAP/TAL-Reverb-4.clap
+/Library/Audio/Plug-Ins/CLAP/TAL-U-NO-LX-V2.clap
+/Library/Audio/Plug-Ins/CLAP/TAL-Vocoder-2.clap
+/Library/Audio/Plug-Ins/VST/A1StereoControl.vst
+/Library/Audio/Plug-Ins/VST/A1TriggerGate.vst
+/Library/Audio/Plug-Ins/VST/Aalto.vst
+/Library/Audio/Plug-Ins/VST/ABL3x.vst
+/Library/Audio/Plug-Ins/VST/BarkOfDog2.vst
+/Library/Audio/Plug-Ins/VST/u-he/BazilleCM.vst
+/Library/Audio/Plug-Ins/VST/Flux/BitterSweetV3-x64.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/Decapitator.vst
+/Library/Audio/Plug-Ins/VST/DLYM.vst
+/Library/Audio/Plug-Ins/VST/Driver.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/EchoBoy.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/EchoBoyJr.vst
+/Library/Audio/Plug-Ins/VST/FB3100.vst
+/Library/Audio/Plug-Ins/VST/Filterjam.vst
+/Library/Audio/Plug-Ins/VST/Frontier.vst
+/Library/Audio/Plug-Ins/VST/Audio Damage/FuzzPlus3.vst
+/Library/Audio/Plug-Ins/VST/Overloud/Gem EQ550.vst
+/Library/Audio/Plug-Ins/VST/Guitar Rig 5.vst
+/Library/Audio/Plug-Ins/VST/Guitar Rig 6.vst
+/Library/Audio/Plug-Ins/VST/Horror Box 2 Lite.vst
+/Library/Audio/Plug-Ins/VST/hypercyclic.vst
+/Library/Audio/Plug-Ins/VST/Kickbox.vst
+/Library/Audio/Plug-Ins/VST/Plugin Alliance/Knif Audio Knifonium.vst
+/Library/Audio/Plug-Ins/VST/Komplete Kontrol.vst
+/Library/Audio/Plug-Ins/VST/Kontakt.vst
+/Library/Audio/Plug-Ins/VST/LaPetiteExcite.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/LittleMicroShift.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/LittlePlate.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/LittleRadiator.vst
+/Library/Audio/Plug-Ins/VST/lkjb_Luftikus.vst
+/Library/Audio/Plug-Ins/VST/Loopcloud.vst
+/Library/Audio/Plug-Ins/VST/Maschine 2.vst
+/Library/Audio/Plug-Ins/VST/Maschine 2 FX.vst
+/Library/Audio/Plug-Ins/VST/Massive.vst
+/Library/Audio/Plug-Ins/VST/minimoog V Original.vst
+/Library/Audio/Plug-Ins/VST/minimoog V Original Efx.vst
+/Library/Audio/Plug-Ins/VST/MJUCjr.vst
+/Library/Audio/Plug-Ins/VST/Acon Digital/Multiply.vst
+/Library/Audio/Plug-Ins/VST/Nebula.vst
+/Library/Audio/Plug-Ins/VST/Neutron 3 Equalizer.vst
+/Library/Audio/Plug-Ins/VST/Newfangled Audio/Newfangled EQuivocate.vst
+/Library/Audio/Plug-Ins/VST/Ozone 9 Dynamic EQ.vst
+/Library/Audio/Plug-Ins/VST/PanCake2.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/PanMan.vst
+/Library/Audio/Plug-Ins/VST/u-he/Protoverb.vst
+/Library/Audio/Plug-Ins/VST/PSPaudioware/PSP cmDelay.vst
+/Library/Audio/Plug-Ins/VST/PunchBox.vst
+/Library/Audio/Plug-Ins/VST/Eventide/Quadravox.vst
+/Library/Audio/Plug-Ins/VST/Soundtoys/Radiator.vst
+/Library/Audio/Plug-Ins/VST/Raum.vst
+/Library/Audio/Plug-Ins/VST/Reaktor 6.vst
+/Library/Audio/Plug-Ins/VST/Reaktor 6 FX.vst
+/Library/Audio/Plug-Ins/VST/Replika.vst
+/Library/Audio/Plug-Ins/VST/RX 7 Breath Control.vst
+/Library/Audio/Plug-Ins/VST/RX 7 De-click.vst
+/Library/Audio/Plug-Ins/VST/RX 7 De-clip.vst
+/Library/Audio/Plug-Ins/VST/RX 7 De-hum.vst
+/Library/Audio/Plug-Ins/VST/RX 7 Voice De-noise.vst
+/Library/Audio/Plug-Ins/VST/Softube/Saturation Knob.vst
+/Library/Audio/Plug-Ins/VST/SGA1566.vst
+/Library/Audio/Plug-Ins/VST/SimpleSide.vst
+/Library/Audio/Plug-Ins/VST/Sinnah.vst
+/Library/Audio/Plug-Ins/VST/Solid Bus Comp.vst
+/Library/Audio/Plug-Ins/VST/Sonalksis FreeG Stereo.vst
+/Library/Audio/Plug-Ins/VST/Audified/STA Chorus.vst
+/Library/Audio/Plug-Ins/VST/Audified/STA Delay.vst
+/Library/Audio/Plug-Ins/VST/Audified/STA Enhancer.vst
+/Library/Audio/Plug-Ins/VST/Audified/STA Flanger.vst
+/Library/Audio/Plug-Ins/VST/Audified/STA Phaser.vst
+/Library/Audio/Plug-Ins/VST/Audified/STA Preamp.vst
+/Library/Audio/Plug-Ins/VST/Flux/StereoToolV3-x64.vst
+/Library/Audio/Plug-Ins/VST/Supercharger.vst
+/Library/Audio/Plug-Ins/VST/Synth1.vst
+/Library/Audio/Plug-Ins/VST/TDR Nova.vst
+/Library/Audio/Plug-Ins/VST/TDR VOS SlickEQ.vst
+/Library/Audio/Plug-Ins/VST/TR5 Black 76.vst
+/Library/Audio/Plug-Ins/VST/TR5 Classic Clipper.vst
+/Library/Audio/Plug-Ins/VST/TR5 EQual.vst
+/Library/Audio/Plug-Ins/VST/TR5 One.vst
+/Library/Audio/Plug-Ins/VST/TR5 VC-670.vst
+/Library/Audio/Plug-Ins/VST/u-he/TripleCheese.vst
+/Library/Audio/Plug-Ins/VST/TubeSaturatorVintage.vst
+/Library/Audio/Plug-Ins/VST/VacuumPro.vst
+/Library/Audio/Plug-Ins/VST/Vocal Doubler.vst
+/Library/Audio/Plug-Ins/VST/WaveShell1-VST 13.0.vst
+/Library/Audio/Plug-Ins/VST/WaveShell1-VST 14.0.vst
+/Library/Audio/Plug-Ins/VST/WaveShell1-VST 14.1.vst
+/Library/Audio/Plug-Ins/VST/WaveShell1-VST 14.12.vst
+/Library/Audio/Plug-Ins/VST/WaveShell3-VST 13.0.vst
+/Library/Audio/Plug-Ins/VST/Wider.vst
+/Library/Audio/Plug-Ins/VST/X8 Lite.vst
+/Library/Audio/Plug-Ins/VST/XILS 3.2.vst
+/Library/Audio/Plug-Ins/VST/u-he/Zebralette.vst
+/Library/Audio/Plug-Ins/VST3/A1StereoControl.vst3
+/Library/Audio/Plug-Ins/VST3/A1TriggerGate.vst3
+/Library/Audio/Plug-Ins/VST3/ABL3x.vst3
+/Library/Audio/Plug-Ins/VST3/Acme Opticom XLA-3.vst3
+/Library/Audio/Plug-Ins/VST3/ADPTR MetricAB.vst3
+/Library/Audio/Plug-Ins/VST3/ADPTR Sculpt.vst3
+/Library/Audio/Plug-Ins/VST3/ADPTR StreamLiner.vst3
+/Library/Audio/Plug-Ins/VST3/AirMusic.vst3
+/Library/Audio/Plug-Ins/VST3/AMEK EQ 200.vst3
+/Library/Audio/Plug-Ins/VST3/AMEK Mastering Compressor.vst3
+/Library/Audio/Plug-Ins/VST3/Ampeg SVTVR Classic.vst3
+/Library/Audio/Plug-Ins/VST3/ANIMATE.vst3
+/Library/Audio/Plug-Ins/VST3/Backmask.vst3
+/Library/Audio/Plug-Ins/VST3/BarkOfDog2.vst3
+/Library/Audio/Plug-Ins/VST3/BASSROOM.vst3
+/Library/Audio/Plug-Ins/VST3/Bazille.vst3
+/Library/Audio/Plug-Ins/VST3/BazilleCM.vst3
+/Library/Audio/Plug-Ins/VST3/BBC Symphony Orchestra.vst3
+/Library/Audio/Plug-Ins/VST3/Bertom_EQCurveAnalyzer.vst3
+/Library/Audio/Plug-Ins/VST3/Bettermaker EQ232D.vst3
+/Library/Audio/Plug-Ins/VST3/Flux/BitterSweet.vst3
+/Library/Audio/Plug-Ins/VST3/Black Box Analog Design HG-2.vst3
+/Library/Audio/Plug-Ins/VST3/Black Box Analog Design HG-2MS.vst3
+/Library/Audio/Plug-Ins/VST3/Boogex.vst3
+/Library/Audio/Plug-Ins/VST3/Buchla Easel V.vst3
+/Library/Audio/Plug-Ins/VST3/bx_2098 EQ.vst3
+/Library/Audio/Plug-Ins/VST3/bx_bassdude.vst3
+/Library/Audio/Plug-Ins/VST3/bx_boom.vst3
+/Library/Audio/Plug-Ins/VST3/bx_cleansweep Pro.vst3
+/Library/Audio/Plug-Ins/VST3/bx_cleansweep V2.vst3
+/Library/Audio/Plug-Ins/VST3/bx_console AMEK 9099.vst3
+/Library/Audio/Plug-Ins/VST3/bx_console Focusrite SC.vst3
+/Library/Audio/Plug-Ins/VST3/bx_console N.vst3
+/Library/Audio/Plug-Ins/VST3/bx_console SSL 4000 G.vst3
+/Library/Audio/Plug-Ins/VST3/bx_console SSL 9000 J.vst3
+/Library/Audio/Plug-Ins/VST3/bx_delay2500.vst3
+/Library/Audio/Plug-Ins/VST3/bx_digital V3.vst3
+/Library/Audio/Plug-Ins/VST3/bx_digital V3 mix.vst3
+/Library/Audio/Plug-Ins/VST3/bx_distorange.vst3
+/Library/Audio/Plug-Ins/VST3/bx_greenscreamer.vst3
+/Library/Audio/Plug-Ins/VST3/bx_limiter.vst3
+/Library/Audio/Plug-Ins/VST3/bx_masterdesk.vst3
+/Library/Audio/Plug-Ins/VST3/bx_masterdesk Classic.vst3
+/Library/Audio/Plug-Ins/VST3/bx_masterdesk Pro.vst3
+/Library/Audio/Plug-Ins/VST3/bx_masterdesk True Peak.vst3
+/Library/Audio/Plug-Ins/VST3/bx_meter.vst3
+/Library/Audio/Plug-Ins/VST3/bx_oberhausen.vst3
+/Library/Audio/Plug-Ins/VST3/bx_opto.vst3
+/Library/Audio/Plug-Ins/VST3/bx_refinement.vst3
+/Library/Audio/Plug-Ins/VST3/bx_rockergain100.vst3
+/Library/Audio/Plug-Ins/VST3/bx_rockrack V3.vst3
+/Library/Audio/Plug-Ins/VST3/bx_rockrack V3 Player.vst3
+/Library/Audio/Plug-Ins/VST3/bx_rooMS.vst3
+/Library/Audio/Plug-Ins/VST3/bx_saturator V2.vst3
+/Library/Audio/Plug-Ins/VST3/bx_solo.vst3
+/Library/Audio/Plug-Ins/VST3/bx_stereomaker.vst3
+/Library/Audio/Plug-Ins/VST3/bx_subfilter.vst3
+/Library/Audio/Plug-Ins/VST3/bx_subsynth.vst3
+/Library/Audio/Plug-Ins/VST3/bx_townhouse Buss Compressor.vst3
+/Library/Audio/Plug-Ins/VST3/bx_tuner.vst3
+/Library/Audio/Plug-Ins/VST3/bx_yellowdrive.vst3
+/Users/zenluiz/Library/Audio/Plug-Ins/VST3/ChopSuey.vst3
+/Library/Audio/Plug-Ins/VST3/ChopSuey.vst3
+/Library/Audio/Plug-Ins/VST3/Chorus JUN-6.vst3
+/Library/Audio/Plug-Ins/VST3/ChowMatrix.vst3
+/Library/Audio/Plug-Ins/VST3/ChowMultiTool.vst3
+/Library/Audio/Plug-Ins/VST3/CHOWTapeModel.vst3
+/Library/Audio/Plug-Ins/VST3/ConvologyXT.vst3
+/Library/Audio/Plug-Ins/VST3/Correlometer.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/Crystallizer.vst3
+/Library/Audio/Plug-Ins/VST3/Dangerous BAX EQ Master.vst3
+/Library/Audio/Plug-Ins/VST3/Dangerous BAX EQ Mix.vst3
+/Library/Audio/Plug-Ins/VST3/DC1A3.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/Decapitator.vst3
+/Library/Audio/Plug-Ins/VST3/Acon Digital/DeClick2.vst3
+/Library/Audio/Plug-Ins/VST3/Acon Digital/DeClip2.vst3
+/Library/Audio/Plug-Ins/VST3/Acon Digital/DeHum2.vst3
+/Library/Audio/Plug-Ins/VST3/Acon Digital/DeNoise2.vst3
+/Library/Audio/Plug-Ins/VST3/Dirty LA.vst3
+/Library/Audio/Plug-Ins/VST3/Dirty Tape.vst3
+/Library/Audio/Plug-Ins/VST3/dpMeter5.vst3
+/Library/Audio/Plug-Ins/VST3/Drawmer S73.vst3
+/Library/Audio/Plug-Ins/VST3/Driftmaker.vst3
+/Library/Audio/Plug-Ins/VST3/Driver.vst3
+/Library/Audio/Plug-Ins/VST3/DrumNet.vst3
+/Library/Audio/Plug-Ins/VST3/DS Tantra 2.vst3
+/Library/Audio/Plug-Ins/VST3/DS Thorn.vst3
+/Library/Audio/Plug-Ins/VST3/DSEQ3.vst3
+/Library/Audio/Plug-Ins/VST3/Dumpster Fire.vst3
+/Library/Audio/Plug-Ins/VST3/Dustbin.vst3
+/Library/Audio/Plug-Ins/VST3/Dystroyed.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/EchoBoy.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/EchoBoyJr.vst3
+/Library/Audio/Plug-Ins/VST3/elysia alpha master.vst3
+/Library/Audio/Plug-Ins/VST3/elysia alpha mix.vst3
+/Library/Audio/Plug-Ins/VST3/elysia karacter master.vst3
+/Library/Audio/Plug-Ins/VST3/elysia karacter mix.vst3
+/Library/Audio/Plug-Ins/VST3/elysia mpressor.vst3
+/Library/Audio/Plug-Ins/VST3/elysia museq master.vst3
+/Library/Audio/Plug-Ins/VST3/elysia museq mix.vst3
+/Library/Audio/Plug-Ins/VST3/elysia niveau filter.vst3
+/Library/Audio/Plug-Ins/VST3/elysia nvelope.vst3
+/Library/Audio/Plug-Ins/VST3/elysia phils cascade.vst3
+/Library/Audio/Plug-Ins/VST3/EnergyPanner.vst3
+/Library/Audio/Plug-Ins/VST3/Expanse.vst3
+/Library/Audio/Plug-Ins/VST3/FabFilter Pro-Q 3.vst3
+/Library/Audio/Plug-Ins/VST3/FB3100.vst3
+/Library/Audio/Plug-Ins/VST3/FB3300.vst3
+/Library/Audio/Plug-Ins/VST3/fiedler audio stage.vst3
+/Library/Audio/Plug-Ins/VST3/Filter MINI.vst3
+/Library/Audio/Plug-Ins/VST3/Filter MS-20.vst3
+/Library/Audio/Plug-Ins/VST3/Filterjam.vst3
+/Library/Audio/Plug-Ins/VST3/Filterstep.vst3
+/Library/Audio/Plug-Ins/VST3/Flux Mini 2.vst3
+/Library/Audio/Plug-Ins/VST3/FM8.vst3
+/Library/Audio/Plug-Ins/VST3/Freak.vst3
+/Library/Audio/Plug-Ins/VST3/FreeAMP.vst3
+/Library/Audio/Plug-Ins/VST3/Slate Digital/Fresh Air.vst3
+/Library/Audio/Plug-Ins/VST3/Frontier.vst3
+/Library/Audio/Plug-Ins/VST3/FuzzPlus3.vst3
+/Library/Audio/Plug-Ins/VST3/Gatelab.vst3
+/Library/Audio/Plug-Ins/VST3/Overloud/Gem EQ550.vst3
+/Library/Audio/Plug-Ins/VST3/Overloud/Gem Mod.vst3
+/Library/Audio/Plug-Ins/VST3/GSatPlus.vst3
+/Library/Audio/Plug-Ins/VST3/Guitar Rig 6.vst3
+/Library/Audio/Plug-Ins/VST3/HoRNetVHS.vst3
+/Library/Audio/Plug-Ins/VST3/Horror Box 2 Lite.vst3
+/Library/Audio/Plug-Ins/VST3/HY-Filter4 free.vst3
+/Library/Audio/Plug-Ins/VST3/HY-MPS2 free.vst3
+/Library/Audio/Plug-Ins/VST3/HY-POLY free.vst3
+/Library/Audio/Plug-Ins/VST3/HY-RPE2 free.vst3
+/Library/Audio/Plug-Ins/VST3/HY-SEQ32_free.vst3
+/Library/Audio/Plug-Ins/VST3/HY-Slicer free.vst3
+/Library/Audio/Plug-Ins/VST3/HY-Slicer2 free.vst3
+/Library/Audio/Plug-Ins/VST3/Insight 2.vst3
+/Library/Audio/Plug-Ins/VST3/ISOL8.vst3
+/Library/Audio/Plug-Ins/VST3/IVGI2.vst3
+/Library/Audio/Plug-Ins/VST3/Kick 2.vst3
+/Library/Audio/Plug-Ins/VST3/Kickbox.vst3
+/Library/Audio/Plug-Ins/VST3/Kickstart 2.vst3
+/Library/Audio/Plug-Ins/VST3/Knif Audio Knifonium.vst3
+/Library/Audio/Plug-Ins/VST3/Komplete Kontrol.vst3
+/Library/Audio/Plug-Ins/VST3/Kontakt.vst3
+/Library/Audio/Plug-Ins/VST3/Kontakt 7.vst3
+/Library/Audio/Plug-Ins/VST3/Krush.vst3
+/Library/Audio/Plug-Ins/VST3/LABS.vst3
+/Library/Audio/Plug-Ins/VST3/Lagrange.vst3
+/Library/Audio/Plug-Ins/VST3/LALA.vst3
+/Library/Audio/Plug-Ins/VST3/LaPetiteExcite.vst3
+/Library/Audio/Plug-Ins/VST3/Latency Delay.vst3
+/Library/Audio/Plug-Ins/VST3/LEVELS.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 354E.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 50 Buss.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 50 Channel.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 6X-500.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 7X-500.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 80 Bus.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 80 Channel.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell 902 De-esser.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell ChannelX.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell MBC.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell PEX-500.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell SBC.vst3
+/Library/Audio/Plug-Ins/VST3/Lindell TE-100.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/LittleMicroShift.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/LittlePlate.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/LittleRadiator.vst3
+/Library/Audio/Plug-Ins/VST3/lkjb_Luftikus.vst3
+/Library/Audio/Plug-Ins/VST3/LoFi - Pitch Dropout.vst3
+/Library/Audio/Plug-Ins/VST3/Loopcloud.vst3
+/Library/Audio/Plug-Ins/VST3/Maag EQ2.vst3
+/Library/Audio/Plug-Ins/VST3/Maag EQ4.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MAnalyzer.vst3
+/Library/Audio/Plug-Ins/VST3/Marvel GEQ.vst3
+/Library/Audio/Plug-Ins/VST3/Maschine 2.vst3
+/Library/Audio/Plug-Ins/VST3/Massive.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/EQ/MAutoDynamicEq.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Modulation/MAutopan.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Distortion/MBitFun.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Reverb/MCharmVerb.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Filter/MComb.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Dynamics/MCompressor.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Reverb/MConvolutionEZ.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/EQ/MDynamicEq.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/EQ/MEqualizer.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Modulation/MFlanger.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MFreeformPhase.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Modulation/MFreqShifter.vst3
+/Library/Audio/Plug-Ins/VST3/Millennia NSEQ-2.vst3
+/Library/Audio/Plug-Ins/VST3/Mini V3.vst3
+/Library/Audio/Plug-Ins/VST3/MISHBY.vst3
+/Library/Audio/Plug-Ins/VST3/MIXROOM.vst3
+/Library/Audio/Plug-Ins/VST3/MJUCjr.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MLoudnessAnalyzer.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MMetronome.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MMultiAnalyzer.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MNoiseGenerator.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MNotepad.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MOscillator.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MOscilloscope.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Modulation/MPhaser.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Modulation/MRingModulator.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Distortion/MSaturator.vst3
+/Library/Audio/Plug-Ins/VST3/MSED.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Delay/MSpectralDelay.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Stereo/MSpectralPan.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Stereo/MStereoExpander.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Stereo/MStereoScope.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Modulation/MTremolo.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MTuner.vst3
+/Library/Audio/Plug-Ins/VST3/Acon Digital/Multiply.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Tools/MUtility.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Modulation/MVibrato.vst3
+/Library/Audio/Plug-Ins/VST3/mvMeter2.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Distortion/MWaveFolder.vst3
+/Library/Audio/Plug-Ins/VST3/MeldaProduction/Distortion/MWaveShaper.vst3
+/Library/Audio/Plug-Ins/VST3/Nebula.vst3
+/Library/Audio/Plug-Ins/VST3/Nectar 3.vst3
+/Library/Audio/Plug-Ins/VST3/NEOLD BIG AL.vst3
+/Library/Audio/Plug-Ins/VST3/NEOLD U17.vst3
+/Library/Audio/Plug-Ins/VST3/NEOLD U2A.vst3
+/Library/Audio/Plug-Ins/VST3/NEOLD V76U73.vst3
+/Library/Audio/Plug-Ins/VST3/NEOLD WARBLE.vst3
+/Library/Audio/Plug-Ins/VST3/Neoverb.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Compressor.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Elements.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Equalizer.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Exciter.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Gate.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Sculptor.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Transient Shaper.vst3
+/Library/Audio/Plug-Ins/VST3/Neutron 3 Visual Mixer.vst3
+/Library/Audio/Plug-Ins/VST3/Newfangled Audio/Newfangled EQuivocate.vst3
+/Library/Audio/Plug-Ins/VST3/occularScope.vst3
+/Library/Audio/Plug-Ins/VST3/OldSkoolVerb.vst3
+/Library/Audio/Plug-Ins/VST3/Omega 458A.vst3
+/Library/Audio/Plug-Ins/VST3/Omega TWK.vst3
+/Library/Audio/Plug-Ins/VST3/Oscarizor.vst3
+/Library/Audio/Plug-Ins/VST3/Oszillos Mega Scope.vst3
+/Library/Audio/Plug-Ins/VST3/OTT.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Dynamic EQ.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Dynamics.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Equalizer.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Exciter.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Imager.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Low End Focus.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Master Rebalance.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Match EQ.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Maximizer.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Spectral Shaper.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Vintage Compressor.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Vintage EQ.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Vintage Limiter.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone 9 Vintage Tape.vst3
+/Library/Audio/Plug-Ins/VST3/Ozone Imager 2.vst3
+/Library/Audio/Plug-Ins/VST3/Panflow.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/PanMan.vst3
+/Library/Audio/Plug-Ins/VST3/PeakEater.vst3
+/Library/Audio/Plug-Ins/VST3/Newfangled Audio/Pendulate.vst3
+/Library/Audio/Plug-Ins/VST3/Phasis.vst3
+/Library/Audio/Plug-Ins/VST3/PlaceIt.vst3
+/Library/Audio/Plug-Ins/VST3/PluginDoctor.vst3
+/Library/Audio/Plug-Ins/VST3/Podolski.vst3
+/Library/Audio/Plug-Ins/VST3/Pro Audio DSP DSM V3.vst3
+/Library/Audio/Plug-Ins/VST3/Protoverb.vst3
+/Library/Audio/Plug-Ins/VST3/Purple Audio MC 77.vst3
+/Library/Audio/Plug-Ins/VST3/Eventide/Quadravox.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/Radiator.vst3
+/Library/Audio/Plug-Ins/VST3/Rare.vst3
+/Library/Audio/Plug-Ins/VST3/Raum.vst3
+/Library/Audio/Plug-Ins/VST3/Reaktor 6.vst3
+/Library/Audio/Plug-Ins/VST3/REALIZER.vst3
+/Library/Audio/Plug-Ins/VST3/REFERENCE.vst3
+/Library/Audio/Plug-Ins/VST3/REFSEND.vst3
+/Library/Audio/Plug-Ins/VST3/Regressif.vst3
+/Library/Audio/Plug-Ins/VST3/Relay.vst3
+/Library/Audio/Plug-Ins/VST3/Replika.vst3
+/Library/Audio/Plug-Ins/VST3/Rev PLATE-140.vst3
+/Library/Audio/Plug-Ins/VST3/Noise Engineering/Ruina.vst3
+/Library/Audio/Plug-Ins/VST3/RX 10 De-click.vst3
+/Library/Audio/Plug-Ins/VST3/RX 10 De-clip.vst3
+/Library/Audio/Plug-Ins/VST3/RX 10 De-hum.vst3
+/Library/Audio/Plug-Ins/VST3/RX 10 De-reverb.vst3
+/Library/Audio/Plug-Ins/VST3/RX 10 Repair Assistant.vst3
+/Library/Audio/Plug-Ins/VST3/RX 10 Voice De-noise.vst3
+/Library/Audio/Plug-Ins/VST3/RX 7 Breath Control.vst3
+/Library/Audio/Plug-Ins/VST3/RX 7 De-click.vst3
+/Library/Audio/Plug-Ins/VST3/RX 7 De-clip.vst3
+/Library/Audio/Plug-Ins/VST3/RX 7 De-hum.vst3
+/Library/Audio/Plug-Ins/VST3/RX 7 Voice De-noise.vst3
+/Library/Audio/Plug-Ins/VST3/RX 8 Breath Control.vst3
+/Library/Audio/Plug-Ins/VST3/Saturation Knob.vst3
+/Library/Audio/Plug-Ins/VST3/Schoeps Double MS.vst3
+/Library/Audio/Plug-Ins/VST3/Shadow Hills Class A Mastering Comp.vst3
+/Library/Audio/Plug-Ins/VST3/Shadow Hills Mastering Compressor.vst3
+/Library/Audio/Plug-Ins/VST3/SimpleSide.vst3
+/Library/Audio/Plug-Ins/VST3/Noise Engineering/Sinc Vereor.vst3
+/Library/Audio/Plug-Ins/VST3/Soft Limit.vst3
+/Library/Audio/Plug-Ins/VST3/Solid Bus Comp.vst3
+/Library/Audio/Plug-Ins/VST3/Sound Delay.vst3
+/Library/Audio/Plug-Ins/VST3/SoundID Reference VST3 Plugin.vst3
+/Library/Audio/Plug-Ins/VST3/SPAN.vst3
+/Library/Audio/Plug-Ins/VST3/SPAN Plus.vst3
+/Library/Audio/Plug-Ins/VST3/SPL Attacker Plus.vst3
+/Library/Audio/Plug-Ins/VST3/SPL EQ Ranger Plus.vst3
+/Library/Audio/Plug-Ins/VST3/SPL Free Ranger.vst3
+/Library/Audio/Plug-Ins/VST3/SPL HawkEye.vst3
+/Library/Audio/Plug-Ins/VST3/SPL IRON.vst3
+/Library/Audio/Plug-Ins/VST3/SPL Passeq.vst3
+/Library/Audio/Plug-Ins/VST3/SPL Passeq Single.vst3
+/Library/Audio/Plug-Ins/VST3/SPL PQ.vst3
+/Library/Audio/Plug-Ins/VST3/SPL Transient Designer Plus.vst3
+/Library/Audio/Plug-Ins/VST3/SPL TwinTube.vst3
+/Library/Audio/Plug-Ins/VST3/SPL Vitalizer MK2-T.vst3
+/Library/Audio/Plug-Ins/VST3/Audified/STA Chorus.vst3
+/Library/Audio/Plug-Ins/VST3/Audified/STA Delay.vst3
+/Library/Audio/Plug-Ins/VST3/Audified/STA Enhancer.vst3
+/Library/Audio/Plug-Ins/VST3/Audified/STA Flanger.vst3
+/Library/Audio/Plug-Ins/VST3/Audified/STA Phaser.vst3
+/Library/Audio/Plug-Ins/VST3/Audified/STA Preamp.vst3
+/Library/Audio/Plug-Ins/VST3/SIR Audio Tools/StandardCLIP.vst3
+/Library/Audio/Plug-Ins/VST3/Stereo Touch.vst3
+/Library/Audio/Plug-Ins/VST3/Supercharger.vst3
+/Library/Audio/Plug-Ins/VST3/Soundtoys/SuperPlate.vst3
+/Library/Audio/Plug-Ins/VST3/Surge XT.vst3
+/Library/Audio/Plug-Ins/VST3/Surge XT Effects.vst3
+/Library/Audio/Plug-Ins/VST3/Svep.vst3
+/Library/Audio/Plug-Ins/VST3/TAIP.vst3
+/Library/Audio/Plug-Ins/VST3/TAL-Chorus-LX.vst3
+/Library/Audio/Plug-Ins/VST3/TAL-Filter-2.vst3
+/Library/Audio/Plug-Ins/VST3/TAL-NoiseMaker.vst3
+/Library/Audio/Plug-Ins/VST3/TAL-Reverb-4.vst3
+/Library/Audio/Plug-Ins/VST3/TAL-U-NO-LX-V2.vst3
+/Library/Audio/Plug-Ins/VST3/TAL-Vocoder-2.vst3
+/Library/Audio/Plug-Ins/VST3/Tape.vst3
+/Library/Audio/Plug-Ins/VST3/Tape Cassette 2.vst3
+/Library/Audio/Plug-Ins/VST3/Tape MELLO-FI.vst3
+/Library/Audio/Plug-Ins/VST3/Tape Multi Track.vst3
+/Library/Audio/Plug-Ins/VST3/TB_GonioMeter_v1.vst3
+/Library/Audio/Plug-Ins/VST3/TDR Kotelnikov GE.vst3
+/Library/Audio/Plug-Ins/VST3/TDR Limiter 6 GE.vst3
+/Library/Audio/Plug-Ins/VST3/TDR Molot GE.vst3
+/Library/Audio/Plug-Ins/VST3/TDR Molotok.vst3
+/Library/Audio/Plug-Ins/VST3/TDR Nova.vst3
+/Library/Audio/Plug-Ins/VST3/TDR Nova GE.vst3
+/Library/Audio/Plug-Ins/VST3/TDR SlickEQ M.vst3
+/Library/Audio/Plug-Ins/VST3/TDR VOS SlickEQ.vst3
+/Library/Audio/Plug-Ins/VST3/Tempo Delay.vst3
+/Library/Audio/Plug-Ins/VST3/Tonal Balance Control 2.vst3
+/Library/Audio/Plug-Ins/VST3/TR5 Black 76.vst3
+/Library/Audio/Plug-Ins/VST3/TR5 Classic Clipper.vst3
+/Library/Audio/Plug-Ins/VST3/TR5 Comprexxor.vst3
+/Library/Audio/Plug-Ins/VST3/TR5 EQual.vst3
+/Library/Audio/Plug-Ins/VST3/TR5 One.vst3
+/Library/Audio/Plug-Ins/VST3/TR5 Tape Machine 24.vst3
+/Library/Audio/Plug-Ins/VST3/TR5 VC-670.vst3
+/Library/Audio/Plug-Ins/VST3/Transient Shaper.vst3
+/Library/Audio/Plug-Ins/VST3/TripleCheese.vst3
+/Library/Audio/Plug-Ins/VST3/TSAR-1R Reverb.vst3
+/Library/Audio/Plug-Ins/VST3/Tube Amp.vst3
+/Library/Audio/Plug-Ins/VST3/Tube Delay.vst3
+/Library/Audio/Plug-Ins/VST3/TubeSaturatorVintage.vst3
+/Library/Audio/Plug-Ins/VST3/uaudio_fairchild_660.vst3
+/Library/Audio/Plug-Ins/VST3/uaudio_fairchild_670.vst3
+/Library/Audio/Plug-Ins/VST3/uaudio_teletronix_la-2.vst3
+/Library/Audio/Plug-Ins/VST3/uaudio_teletronix_la-2a_gray.vst3
+/Library/Audio/Plug-Ins/VST3/uaudio_teletronix_la-2a_silver.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Bass Mint.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio BYOME.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Dent 2.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Fault.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio G8.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Indent 2.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio lo-fi-af.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Needlepoint.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Silo.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio SpecOps.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Triad.vst3
+/Library/Audio/Plug-Ins/VST3/Unfiltered Audio Zip.vst3
+/Library/Audio/Plug-Ins/VST3/ValhallaFreqEcho.vst3
+/Library/Audio/Plug-Ins/VST3/ValhallaPlate.vst3
+/Library/Audio/Plug-Ins/VST3/ValhallaSpaceModulator.vst3
+/Library/Audio/Plug-Ins/VST3/ValhallaSupermassive.vst3
+/Library/Audio/Plug-Ins/VST3/Valves.vst3
+/Library/Audio/Plug-Ins/VST3/Vertigo VSC-2.vst3
+/Library/Audio/Plug-Ins/VST3/Vertigo VSM-3.vst3
+/Library/Audio/Plug-Ins/VST3/Vinyl.vst3
+/Library/Audio/Plug-Ins/VST3/Noise Engineering/Virt Vereor.vst3
+/Library/Audio/Plug-Ins/VST3/Vocal Doubler.vst3
+/Library/Audio/Plug-Ins/VST3/Voltage Modular.vst3
+/Library/Audio/Plug-Ins/VST3/Voltage Modular FX.vst3
+/Library/Audio/Plug-Ins/VST3/WaveShell1-VST3 13.0.vst3
+/Library/Audio/Plug-Ins/VST3/WaveShell1-VST3 14.0.vst3
+/Library/Audio/Plug-Ins/VST3/WaveShell1-VST3 14.1.vst3
+/Library/Audio/Plug-Ins/VST3/WaveShell1-VST3 14.12.vst3
+/Library/Audio/Plug-Ins/VST3/WaveShell3-VST3 13.0.vst3
+/Library/Audio/Plug-Ins/VST3/WEDGE FORCE Matcha.vst3
+/Library/Audio/Plug-Ins/VST3/Wider.vst3
+/Library/Audio/Plug-Ins/VST3/Youlean Loudness Meter 2.vst3
+/Library/Audio/Plug-Ins/VST3/ZebraCM.vst3
