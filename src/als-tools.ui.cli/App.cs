@@ -46,12 +46,14 @@ public class App
 
     private async Task RunList(ListOptions options)
     {
-        logger.LogDebug("Listing projects...");
+        logger.LogDebug("Listing projects or plugin names...");
 
         var projects = await liveProjectService.GetAllProjectsAsync();
-        await PrintProjectsAndPlugins(projects, false);
 
-        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
+        if (options.PluginNamesOnly)
+            await PrintPluginNames(projects);
+        else
+            await PrintProjectsAndPlugins(projects, false);
     }
 
     private async Task RunLocate(LocateOptions options)
@@ -70,7 +72,7 @@ public class App
 
         if (compactOutput)
         {
-            var compactItems = projects.Select(p => new 
+            var compactItems = projects.Select(p => new
             {
                 ProjectName = p.Name,
                 ProjectPath = p.Path
@@ -84,5 +86,50 @@ public class App
             var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
             await Console.Out.WriteLineAsync(fullJsonData);
         }
+
+        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count());
+    }
+
+    private async Task PrintPluginNames(IEnumerable<LiveProject> projects)
+    {
+        logger.LogDebug("Printing plugin names...");
+
+        var plugins = projects
+            .Where(proj => proj.Tracks != null && proj.Tracks.Any() && proj.Tracks.All(track => track.Plugins != null && track.Plugins.Any()))
+            .SelectMany(proj => proj.Tracks.SelectMany(track => track.Plugins))
+            .Select(plugin =>
+            new
+            {
+                PluginName = plugin.Name,
+                PluginFormat = plugin.Format.ToString()
+            })
+            .Distinct()
+            .ToList();
+
+        var pluginNamesWithProject = projects
+            .Where(proj => proj.Tracks != null && proj.Tracks.Any() && proj.Tracks.All(track => track.Plugins != null && track.Plugins.Any()))
+            .SelectMany(proj => proj.Tracks.SelectMany(track => track.Plugins), (proj, plugin) => new
+            {
+                ProjectName = proj.Name,
+                PluginName = plugin.Name,
+                PluginFormat = plugin.Format.ToString()
+            })
+            .Distinct()
+            .ToList();
+
+        // var tracks = projects.Where(proj => proj.Tracks.Any(track => track.Plugins.Any())).Select(proj => proj.);
+
+        // var pluginNames = projects.Select(project => project.Tracks.Select(track => track.Plugins.Select(plugin => new 
+        // {
+        //     PluginName = plugin.Name,
+        //     PluginFormat = plugin.Format
+        // }))).Where()
+
+        //()Distinct().ToList();
+
+        var json = JsonSerializer.Serialize<IEnumerable<dynamic>>(pluginNamesWithProject, new JsonSerializerOptions { WriteIndented = true });
+        await Console.Out.WriteLineAsync(json);
+
+        logger.LogDebug(@"Total of distinct plugins: {@TotalOfPlugins}", plugins.Count);
     }
 }
