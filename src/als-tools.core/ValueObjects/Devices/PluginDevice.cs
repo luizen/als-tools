@@ -11,7 +11,7 @@ public class PluginDevice : BaseDevice, ICloneable
 
     public PluginFormat Format { get; }
 
-    public string? Path { get; set; }
+    public string Path { get; set; } = string.Empty;
 
     public object Clone()
     {

@@ -17,14 +17,14 @@ public abstract class BasePluginFormatExtractor : IPluginFormatExtractor
 
     public virtual IDevice ExtractFromXml(XPathNavigator pluginDeviceNode)
     {
-        string? pluginPath = null;
+        string pluginPath = string.Empty;
 
         logger.LogDebug("----");
         logger.LogDebug("Extracting {@PluginFormat} plugin device...", pluginFormat);
         var pluginName = pluginDeviceNode.SelectSingleNode(PluginNameXpath)!.Value;
         logger.LogDebug("Plugin found: {@PluginName} ", pluginName);
 
-        if (PluginPathXpath != null)
+        if (!string.IsNullOrWhiteSpace(PluginPathXpath))
             pluginPath = pluginDeviceNode.SelectSingleNode(PluginPathXpath)!.Value;
 
         var sort = GetPluginSort(pluginDeviceNode, pluginName);
@@ -41,11 +41,11 @@ public abstract class BasePluginFormatExtractor : IPluginFormatExtractor
 
     protected abstract string PluginNameXpath { get; }
 
-    protected virtual string? PluginPathXpath 
+    protected virtual string PluginPathXpath 
     { 
         get
         {
-            return null;
+            return string.Empty;
         }
     }
 

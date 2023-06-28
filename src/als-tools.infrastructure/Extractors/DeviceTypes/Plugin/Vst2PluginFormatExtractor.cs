@@ -24,7 +24,7 @@ public class Vst2PluginFormatExtractor : BasePluginFormatExtractor, IPluginForma
 
     protected override string PluginNameXpath => @"PluginDesc/VstPluginInfo/PlugName/@Value";
 
-    protected override string? PluginPathXpath => @"PluginDesc/VstPluginInfo/Path/@Value";
+    protected override string PluginPathXpath => @"PluginDesc/VstPluginInfo/Path/@Value";
 
     protected override DeviceSort GetPluginSort(XPathNavigator pluginDescNode, string pluginName)
     {
