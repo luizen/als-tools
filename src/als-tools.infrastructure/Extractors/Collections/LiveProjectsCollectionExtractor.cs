@@ -2,10 +2,16 @@ using AlsTools.Core.Entities;
 
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
+/// <summary>
+/// Interface defining a collection extractor specific for Live Projects
+/// </summary>
 public interface ILiveProjectsCollectionExtractor : ICollectionExtractor<LiveProject>
 {
 }
 
+/// <summary>
+/// Collection extractor specific for Live Projects
+/// </summary>
 public class LiveProjectsCollectionExtractor : ILiveProjectsCollectionExtractor
 {
     private readonly ILogger<LiveProjectsCollectionExtractor> logger;

@@ -4,10 +4,17 @@ using AlsTools.Core.ValueObjects.Tracks;
 
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
+/// <summary>
+/// Interface defining a collection extractor specific for Tracks
+/// </summary>
 public interface ITracksCollectionExtractor : ICollectionExtractor<ITrack>
 {
 }
 
+
+/// <summary>
+/// Collection extractor specific for Tracks
+/// </summary>
 public class TracksCollectionExtractor : ITracksCollectionExtractor
 {
     private readonly ILogger<TracksCollectionExtractor> logger;

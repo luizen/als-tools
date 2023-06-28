@@ -5,10 +5,16 @@ using AlsTools.Infrastructure.XmlNodeNames;
 
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
+/// <summary>
+/// Interface defining a collection extractor specific for IDevices
+/// </summary>
 public interface IDevicesCollectionExtractor : ICollectionExtractor<IDevice>
 {
 }
 
+/// <summary>
+/// Collection extractor specific for IDevices
+/// </summary>
 public class DevicesCollectionExtractor : IDevicesCollectionExtractor
 {
     private readonly ILogger<DevicesCollectionExtractor> logger;

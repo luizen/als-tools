@@ -4,15 +4,14 @@ namespace AlsTools.Core.ValueObjects.Devices;
 
 public class PluginDevice : BaseDevice, ICloneable
 {
-    public PluginDevice(DeviceSort sort, PluginFormat format, string path) : base(sort, DeviceType.Plugin)
+    public PluginDevice(DeviceSort sort, PluginFormat format) : base(sort, DeviceType.Plugin)
     {
         Format = format;
-        Path = path;
     }
 
     public PluginFormat Format { get; }
 
-    public string Path { get; }
+    public string? Path { get; set; }
 
     public object Clone()
     {
