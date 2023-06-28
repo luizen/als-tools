@@ -1,5 +1,8 @@
 using AlsTools.Core.Entities;
+using AlsTools.Core.Enums;
 using AlsTools.Core.Interfaces;
+using AlsTools.Core.ValueObjects;
+using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.Services;
 
@@ -49,6 +52,48 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         await repository.InsertAsync(projects);
         return projects.Count;
     }
+
+
+    public async Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection)
+    {
+        var pluginDevicePathEqualityComparer = new PluginDevicePathEqualityComparer();
+        var projects = await GetAllProjectsAsync();
+        var pluginsBeingUsed = projects
+            .Where(proj => 
+                proj.Tracks != null && 
+                proj.Tracks.Any() && 
+                proj.Tracks.Any(track => 
+                    track.Plugins != null && 
+                    track.Plugins.Any())
+            )
+            .SelectMany(proj => 
+                proj.Tracks.SelectMany(track => track.Plugins),
+                (proj, plugin) => (PluginDevice)plugin.Clone()
+            )
+            .Distinct(pluginDevicePathEqualityComparer)
+            .ToList();
+
+        if (selection == PluginUsageSelection.UsedOnly)
+            return pluginsBeingUsed;
+
+        var pluginsNotBeingUsed = new List<PluginDevice>();
+
+        // Only plugins not being used
+        foreach (var availablePlugin in availablePlugins)
+        {
+            if (!pluginsBeingUsed.Any(plugin => pluginDevicePathEqualityComparer.Equals(plugin, availablePlugin)))
+                pluginsNotBeingUsed.Add((PluginDevice)availablePlugin.Clone());
+        }
+
+        return pluginsNotBeingUsed;
+    }
+
+
+// VST2 = LittlePlate, lots of details in the project file
+// VST3 = Little Plate, very few details in the project file
+// In both plugin Info.plist files there is only LittlePlate.
+// Where the hell does Ableton get the plugin name?
+
 
     private IReadOnlyList<LiveProject> LoadProjectsFromSetFiles(IEnumerable<string> filePaths)
     {

@@ -13,7 +13,7 @@ public partial class Program
         {
             config.CaseInsensitiveEnumValues = true;
             config.HelpWriter = Console.Error;
-        }).ParseArguments<InitDbOptions, CountOptions, ListOptions, LocateOptions>(args);
+        }).ParseArguments<InitDbOptions, CountOptions, ListOptions, PluginUsageOptions, LocateOptions>(args);
 
         if (parserResult.Tag == ParserResultType.NotParsed)
         {

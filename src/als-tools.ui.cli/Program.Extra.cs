@@ -1,26 +1,4 @@
-﻿using AlsTools.Core.Config;
-using AlsTools.Core.Interfaces;
-using AlsTools.Core.Services;
-using AlsTools.Core.ValueObjects;
-using AlsTools.Core.ValueObjects.Devices;
-using AlsTools.Infrastructure;
-using AlsTools.Infrastructure.Attributes;
-using AlsTools.Infrastructure.Extractors.Collections;
-using AlsTools.Infrastructure.Extractors.DeviceTypes;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.MaxForLive;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockAudioEffects;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockInstruments;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockMidiEffects;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockRacks;
-using AlsTools.Infrastructure.FileSystem;
-using AlsTools.Infrastructure.Handlers;
-using AlsTools.Infrastructure.Repositories;
-using AlsTools.Infrastructure.XmlNodeNames;
-using AlsTools.Ui.Cli.CliOptions;
-
-namespace AlsTools.Ui.Cli;
+﻿namespace AlsTools.Ui.Cli;
 
 public partial class Program
 {
@@ -68,7 +46,7 @@ public partial class Program
 
         // Build configuration
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
+            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)!.FullName)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
 
@@ -154,6 +132,9 @@ public partial class Program
 
         // DB options
         serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
+
+        // PlugInfo options
+        serviceCollection.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
 
         // Add app
         serviceCollection.AddTransient<App>();
