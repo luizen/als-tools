@@ -18,11 +18,11 @@ public class PlugInfoOptions
 
 public class PluginPathOptions
 {
-    public string[] Vst2Paths { get; set; } = {};
+    public string[] Vst2Paths { get; set; } = Array.Empty<string>();
 
-    public string[] Vst3Paths { get; set; } = {};
-    
-    public string[] AudioUnitPaths { get; set; } = {};
-    
-    public string[] ClapPaths { get; set; } = {};
+    public string[] Vst3Paths { get; set; } = Array.Empty<string>();
+
+    public string[] AudioUnitPaths { get; set; } = Array.Empty<string>();
+
+    public string[] ClapPaths { get; set; } = Array.Empty<string>();
 }
