@@ -116,8 +116,161 @@ public class App
 
         var projects = await liveProjectService.GetAllProjectsAsync();
         await PrintProjectsAndPlugins(projects);
+        // PrintStatistics(projects);
 
         logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
+    }
+
+    private void PrintStatistics(IReadOnlyList<LiveProject> projects)
+    {
+        int max = 500;
+
+        // PrintProjectsWithMostVst2Plugins(max, projects);
+        // PrintProjectsWithLeastVst2Plugins(max, projects);
+        PrintVst2PluginsTable(projects);
+        // PrintProjectsUsingVst2WavesPlugins(max, projects);
+    }
+
+    private void PrintVst2PluginsTable(IReadOnlyList<LiveProject> projects)
+    {
+        var pluginUsageList = projects
+            .SelectMany(project => project.Tracks
+                .SelectMany(track => track.Plugins)
+                .Where(plugin => plugin.Format == PluginFormat.VST2)
+                .GroupBy(plugin => plugin.Name)
+                .Select(group => new PluginUsageInfo
+                {
+                    PluginName = group.Key,
+                    UsageCount = group.Count(),
+                    ProjectNames = new List<string> { project.Name }
+                })
+            )
+            .GroupBy(pluginUsage => pluginUsage.PluginName)
+            .Select(group => new PluginUsageInfo
+            {
+                PluginName = group.Key,
+                UsageCount = group.Sum(pluginUsage => pluginUsage.UsageCount),
+                ProjectNames = group.SelectMany(pluginUsage => pluginUsage.ProjectNames).Distinct().ToList()
+            })
+            .OrderBy(pluginUsage => pluginUsage.UsageCount)
+            .ToList();
+
+        Console.WriteLine("VST2 Plugin Name | Total Projects Used In");
+        Console.WriteLine("---------------------------------------");
+
+        foreach (var pluginUsage in pluginUsageList)
+        {
+            Console.WriteLine($"{pluginUsage.PluginName,-17} | {pluginUsage.ProjectNames.Count,-24}");
+        }
+    }
+
+    private void PrintProjectsWithMostVst2Plugins(int max, IReadOnlyList<LiveProject> projects)
+    {
+        var topProjectsWithMostVst2Plugings = projects
+                            .Select(project => new
+                            {
+                                ProjectName = project.Name,
+                                ProjectPath = project.Path,
+                                DistinctPluginCount = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .Count(),
+                                PluginNames = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .ToList()
+                            })
+                            .OrderByDescending(projectInfo => projectInfo.DistinctPluginCount)
+                            .Take(max)
+                            .ToList();
+
+        Console.WriteLine($"Top {max} projects with most VST2 plugins");
+        foreach (var projectVST2Info in topProjectsWithMostVst2Plugings)
+        {
+            Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
+            Console.WriteLine($"Project Path: {projectVST2Info.ProjectPath}");
+            Console.WriteLine($"Distinct VST2 Plugin Count: {projectVST2Info.DistinctPluginCount}");
+            Console.WriteLine($"VST2 Plugin Names: {string.Join(", ", projectVST2Info.PluginNames)}");
+            Console.WriteLine();
+        }
+    }
+
+    private void PrintProjectsWithLeastVst2Plugins(int max, IReadOnlyList<LiveProject> projects)
+    {
+        var topProjectsWithLeastVst2Plugings = projects
+                            .Select(project => new
+                            {
+                                ProjectName = project.Name,
+                                ProjectPath = project.Path,
+                                DistinctPluginCount = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .Count(),
+                                PluginNames = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .ToList()
+                            })
+                            .Where(projectInfo => projectInfo.DistinctPluginCount > 0)
+                            .OrderBy(projectInfo => projectInfo.DistinctPluginCount)
+                            .Take(max)
+                            .ToList();
+
+        Console.WriteLine($"Top {max} projects with least VST2 plugins");
+        foreach (var projectVST2Info in topProjectsWithLeastVst2Plugings)
+        {
+            Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
+            Console.WriteLine($"Project Path: {projectVST2Info.ProjectPath}");
+            Console.WriteLine($"Distinct VST2 Plugin Count: {projectVST2Info.DistinctPluginCount}");
+            Console.WriteLine($"VST2 Plugin Names: {string.Join(", ", projectVST2Info.PluginNames)}");
+            Console.WriteLine();
+        }
+    }
+
+    private void PrintProjectsUsingVst2WavesPlugins(int max, IReadOnlyList<LiveProject> projects)
+    {
+        // "WaveShell1-VST 14.0."
+        var projs = projects
+            .Select(project => new
+            {
+                ProjectName = project.Name,
+                ProjectPath = project.Path,
+                Plugins = project.Tracks
+                    .SelectMany(track => track.Plugins)
+                    .Where(plugin => plugin.Format == PluginFormat.VST2 && plugin.Path.Contains("WaveShell"))
+                    .Select(plugin => new
+                    {
+                        PluginName = plugin.Name,
+                        PluginPath = plugin.Path
+                    })
+                    .Distinct()
+                    .ToList()
+            })
+            .Where(x => x.Plugins.Any())
+            .Take(max)
+            .ToList();
+
+        Console.WriteLine($"Top {max} projects containing VST2 Waves plugins");
+        foreach (var proj in projs)
+        {
+            Console.WriteLine($"Project Name: {proj.ProjectName}");
+            Console.WriteLine($"Project Path: {proj.ProjectPath}");
+            Console.WriteLine($"VST2 Plugin Names:");
+            foreach (var plug in proj.Plugins)
+            {
+                Console.WriteLine($"\t{plug.PluginName} --> {plug.PluginPath}");
+            }
+
+            Console.WriteLine();
+        }
     }
 
     private async Task RunLocate(LocateOptions options)
@@ -137,4 +290,11 @@ public class App
         var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
         await Console.Out.WriteLineAsync(fullJsonData);
     }
+}
+
+internal class PluginUsageInfo
+{
+    public string PluginName { get; set; }
+    public int UsageCount { get; set; }
+    public List<string> ProjectNames { get; set; }
 }

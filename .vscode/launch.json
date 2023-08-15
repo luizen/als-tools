@@ -19,6 +19,23 @@
             "stopAtEntry": false
         },
         {
+            "name": "Debug - initdb folder <path>",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--folders",
+                "~/Documents/Desenvolvimento/repos/als-tools/extras/sample-live-sets/WithPluginsForCounting",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - initdb folder ALS",
             "type": "coreclr",
             "request": "launch",
@@ -170,7 +187,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - show unused plugins",
+            "name": "Debug - show unused plugins only",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -180,6 +197,23 @@
                 "usage",
                 "--select",
                 "UnusedOnly",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - show used plugins only",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "usage",
+                "--select",
+                "UsedOnly",
                 "--log-level",
                 "verbose"
             ],

@@ -23,4 +23,12 @@ public abstract class BaseDevice : IDevice
     public string Annotation { get; set; } = string.Empty;
 
     public DeviceFamily Family { get; protected set; }
+
+    public bool IsOn { get; set; }
+
+    public bool IsParentRackOn { get; set; }
+
+    public bool IsEnabled => !IsParentRackOn || !IsOn;
+
+    public virtual bool IsGroupDevice => false;
 }

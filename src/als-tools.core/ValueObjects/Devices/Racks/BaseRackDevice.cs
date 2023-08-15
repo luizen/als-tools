@@ -30,4 +30,6 @@ public abstract class BaseRackDevice : StockDevice
         foreach (var device in devices)
             AddDevice(device);
     }
+
+    public override bool IsGroupDevice => true;
 }

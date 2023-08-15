@@ -56,7 +56,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 
     public async Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection)
     {
-        var pluginDevicePathEqualityComparer = new PluginDevicePathEqualityComparer();
+        // var pluginDevicePathEqualityComparer = new PluginDevicePathEqualityComparer();
+        var pluginDeviceEqualityComparer = new PluginDeviceEqualityComparer();
+
         var projects = await GetAllProjectsAsync();
         var pluginsBeingUsed = projects
             .Where(proj => 
@@ -70,7 +72,8 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
                 proj.Tracks.SelectMany(track => track.Plugins),
                 (proj, plugin) => (PluginDevice)plugin.Clone()
             )
-            .Distinct(pluginDevicePathEqualityComparer)
+            //.Distinct(pluginDevicePathEqualityComparer)
+            .Distinct(pluginDeviceEqualityComparer)
             .ToList();
 
         if (selection == PluginUsageSelection.UsedOnly)
@@ -81,7 +84,8 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         // Only plugins not being used
         foreach (var availablePlugin in availablePlugins)
         {
-            if (!pluginsBeingUsed.Any(plugin => pluginDevicePathEqualityComparer.Equals(plugin, availablePlugin)))
+            // if (!pluginsBeingUsed.Any(plugin => pluginDevicePathEqualityComparer.Equals(plugin, availablePlugin)))
+            if (!pluginsBeingUsed.Any(plugin => pluginDeviceEqualityComparer.Equals(plugin, availablePlugin)))
                 pluginsNotBeingUsed.Add((PluginDevice)availablePlugin.Clone());
         }
 
@@ -92,7 +96,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 // VST2 = LittlePlate, lots of details in the project file
 // VST3 = Little Plate, very few details in the project file
 // In both plugin Info.plist files there is only LittlePlate.
-// Where the hell does Ableton get the plugin name?
+// Where the hell does Ableton get the plugin name from?
+
+// USE FUZZY SEARCH!
 
 
     private IReadOnlyList<LiveProject> LoadProjectsFromSetFiles(IEnumerable<string> filePaths)

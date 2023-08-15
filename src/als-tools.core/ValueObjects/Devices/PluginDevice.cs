@@ -30,7 +30,7 @@ public class PluginDeviceEqualityComparer : IEqualityComparer<PluginDevice>
             return false;
 
         return x.Format == y.Format &&
-                x.Name == y.Name;
+                x.Name == y.Name; // TODO: use Fuzzy search here!
     }
 
     public int GetHashCode([DisallowNull] PluginDevice obj)
@@ -66,6 +66,4 @@ public class PluginDevicePathEqualityComparer : IEqualityComparer<PluginDevice>
     {
         return obj.Path.GetHashCode();
     }
-
 }
-

@@ -22,13 +22,28 @@ public interface IDevice
     /// </summary>
     string Annotation { get; set; }
 
-    // /// <summary>
-    // /// The device type
-    // /// </summary>
-    // DeviceType Type { get; }
-
     /// <summary>
     /// The device family
     /// </summary>
     DeviceFamily Family { get; }
+
+    /// <summary>
+    /// Whether the device is turned on or off
+    /// </summary>
+    bool IsOn { get; set; }
+
+    /// <summary>
+    /// Whether the parent rack where this device is located is turned on or off. This will make the device disabled as well.
+    /// </summary>
+    bool IsParentRackOn { get; set; }
+
+    /// <summary>
+    /// Calculates whether this device is enabled or not. It takes into consideration both properties <see cref="IsOn"/> and <see cref="IsParentRackOn"/>. 
+    /// </summary>
+    bool IsEnabled { get; }
+
+    /// <summary>
+    /// Whether this is a device that groups other devices
+    /// </summary>
+    bool IsGroupDevice { get; }
 }

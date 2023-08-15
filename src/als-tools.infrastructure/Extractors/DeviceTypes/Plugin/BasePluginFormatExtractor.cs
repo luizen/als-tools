@@ -25,7 +25,11 @@ public abstract class BasePluginFormatExtractor : IPluginFormatExtractor
         logger.LogDebug("Plugin found: {@PluginName} ", pluginName);
 
         if (!string.IsNullOrWhiteSpace(PluginPathXpath))
-            pluginPath = pluginDeviceNode.SelectSingleNode(PluginPathXpath)!.Value;
+        {
+            var node = pluginDeviceNode.SelectSingleNode(PluginPathXpath);
+            pluginPath = node?.Value ?? string.Empty;
+        }
+            
 
         var sort = GetPluginSort(pluginDeviceNode, pluginName);
         var pluginDevice = new PluginDevice(sort, pluginFormat);
