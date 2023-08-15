@@ -17,6 +17,6 @@
     <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
-    <PackageReference Include="RavenDB.Embedded" Version="5.4.107" />
+    <PackageReference Include="RavenDB.Embedded" Version="5.4.109" />
   </ItemGroup>
 </Project>
