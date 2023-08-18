@@ -90,4 +90,14 @@ public interface ITrack
     /// </summary>
     /// <param name="devices">The list of device objects</param>
     void AddDevices(IEnumerable<IDevice> devices);
+
+    // /// <summary>
+    // /// Whether the track is muted or not
+    // /// </summary>
+    // bool? IsMuted { get; set; }
+
+    // /// <summary>
+    // /// Wehther the track is soloed or not
+    // /// </summary>
+    // bool? IsSoloed { get; set; }
 }

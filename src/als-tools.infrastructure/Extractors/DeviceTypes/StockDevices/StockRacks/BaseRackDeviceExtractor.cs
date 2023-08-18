@@ -33,17 +33,19 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
         logger.LogDebug("Exctracting Rack device chains from XML...");
 
         var devices = new List<IDevice>();
-        var devicesIterator = nav.Select(XPathDevicesSelector);
+        var devicesInBranchIterator = nav.Select(XPathDevicesSelector);
 
         // Iterate through all other devices
-        while (devicesIterator.MoveNext())
+        while (devicesInBranchIterator.MoveNext())
         {
-            if (devicesIterator.Current == null)
+            if (devicesInBranchIterator.Current == null)
                 continue;
 
-            var deviceNode = devicesIterator.Current;
+            var deviceNode = devicesInBranchIterator.Current;
             var device = ExtractDeviceFromNode(deviceNode);
-            devices.Add(device);
+
+            // device.IsParentRackOn
+            // devices.Add(device); //TODO CONTINUE
 
             if (device is BaseRackDevice rackDevice)
             {

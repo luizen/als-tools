@@ -20,9 +20,26 @@ public class App
         await parserResult.WithParsedAsync<InitDbOptions>(options => RunInitDb(options));
         await parserResult.WithParsedAsync<CountOptions>(options => RunCount(options));
         await parserResult.WithParsedAsync<ListOptions>(options => RunList(options));
+        await parserResult.WithParsedAsync<PrintStatisticsOptions>(options => RunPrintStatistics(options));
         await parserResult.WithParsedAsync<PluginUsageOptions>(options => RunPluginUsage(options));
         await parserResult.WithParsedAsync<LocateOptions>(options => RunLocate(options));
         await parserResult.WithNotParsedAsync(errors => { throw new CommandLineParseException(errors); });
+    }
+
+    private async Task RunPrintStatistics(PrintStatisticsOptions options)
+    {
+        logger.LogDebug("Printing statistics...");
+
+        var projects = await liveProjectService.GetAllProjectsAsync();
+
+        int max = 10;
+
+        PrintAllProjectsWithVst2Plugins(projects);
+        PrintProjectsWithMostVst2Plugins(max, projects);
+        PrintProjectsWithLeastVst2Plugins(max, projects);
+        PrintVst2PluginsTable(projects);
+
+        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
     }
 
     private async Task RunPluginUsage(PluginUsageOptions options)
@@ -116,19 +133,8 @@ public class App
 
         var projects = await liveProjectService.GetAllProjectsAsync();
         await PrintProjectsAndPlugins(projects);
-        // PrintStatistics(projects);
 
         logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
-    }
-
-    private void PrintStatistics(IReadOnlyList<LiveProject> projects)
-    {
-        int max = 500;
-
-        // PrintProjectsWithMostVst2Plugins(max, projects);
-        // PrintProjectsWithLeastVst2Plugins(max, projects);
-        PrintVst2PluginsTable(projects);
-        // PrintProjectsUsingVst2WavesPlugins(max, projects);
     }
 
     private void PrintVst2PluginsTable(IReadOnlyList<LiveProject> projects)
@@ -154,6 +160,8 @@ public class App
             })
             .OrderBy(pluginUsage => pluginUsage.UsageCount)
             .ToList();
+
+        PrintHeader("VST2 PLUGINS TABLE");
 
         Console.WriteLine("VST2 Plugin Name | Total Projects Used In");
         Console.WriteLine("---------------------------------------");
@@ -188,7 +196,42 @@ public class App
                             .Take(max)
                             .ToList();
 
-        Console.WriteLine($"Top {max} projects with most VST2 plugins");
+        PrintHeader($"Top {max} projects with most VST2 plugins");
+        foreach (var projectVST2Info in topProjectsWithMostVst2Plugings)
+        {
+            Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
+            Console.WriteLine($"Project Path: {projectVST2Info.ProjectPath}");
+            Console.WriteLine($"Distinct VST2 Plugin Count: {projectVST2Info.DistinctPluginCount}");
+            Console.WriteLine($"VST2 Plugin Names: {string.Join(", ", projectVST2Info.PluginNames)}");
+            Console.WriteLine();
+        }
+    }
+
+    private void PrintAllProjectsWithVst2Plugins(IReadOnlyList<LiveProject> projects)
+    {
+        var topProjectsWithMostVst2Plugings = projects
+                            .Select(project => new
+                            {
+                                ProjectName = project.Name,
+                                ProjectPath = project.Path,
+                                DistinctPluginCount = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .Count(),
+                                PluginNames = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .ToList()
+                            })
+                            .Where(x => x.DistinctPluginCount > 0)
+                            .OrderByDescending(projectInfo => projectInfo.DistinctPluginCount)
+                            .ToList();
+
+        PrintHeader($"All projects with VST2 plugins");
         foreach (var projectVST2Info in topProjectsWithMostVst2Plugings)
         {
             Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
@@ -224,7 +267,7 @@ public class App
                             .Take(max)
                             .ToList();
 
-        Console.WriteLine($"Top {max} projects with least VST2 plugins");
+        PrintHeader($"Top {max} projects with least VST2 plugins");
         foreach (var projectVST2Info in topProjectsWithLeastVst2Plugings)
         {
             Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
@@ -233,6 +276,15 @@ public class App
             Console.WriteLine($"VST2 Plugin Names: {string.Join(", ", projectVST2Info.PluginNames)}");
             Console.WriteLine();
         }
+    }
+
+    private void PrintHeader(string text)
+    {
+        Console.WriteLine(" ");
+        Console.WriteLine("============================================================================================");
+        Console.WriteLine(text);
+        Console.WriteLine("============================================================================================");
+        Console.WriteLine(" ");
     }
 
     private void PrintProjectsUsingVst2WavesPlugins(int max, IReadOnlyList<LiveProject> projects)

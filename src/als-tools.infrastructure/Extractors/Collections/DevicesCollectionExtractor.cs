@@ -90,9 +90,8 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         logger.LogDebug("Getting device type by device node name ({DeviceNodeName})...", deviceNodeName);
 
         var deviceNodeNameUpper = deviceNodeName.ToUpperInvariant();
-        DeviceType type;
 
-        if (deviceTypesByNodeDesc.TryGetValue(deviceNodeNameUpper, out type))
+        if (deviceTypesByNodeDesc.TryGetValue(deviceNodeNameUpper, out DeviceType type))
             return type;
 
         return DeviceType.Stock;

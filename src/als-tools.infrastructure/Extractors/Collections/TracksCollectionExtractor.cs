@@ -65,8 +65,11 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             var effectiveName = trackNode.SelectSingleNode(@"Name/EffectiveName/@Value")?.Value;
             var userName = trackNode.SelectSingleNode(@"Name/UserName/@Value")!.Value;
             var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
-            var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
             var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")!.ValueAsInt;
+            var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
+            var isMuted = trackNode.SelectSingleNode(@"DeviceChain/Mixer/Speaker/Manual/@Value")?.ValueAsBoolean;
+            var isSoloed = trackNode.SelectSingleNode(@"DeviceChain/Mixer/SoloSink/@Value")?.ValueAsBoolean;
+
             var trackDelay = new TrackDelay()
             {
                 Value = trackNode.SelectSingleNode(@"TrackDelay/Value/@Value")?.ValueAsDouble,
@@ -74,7 +77,7 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             };
 
             // Create the track
-            var track = TrackFactory.CreateTrack(trackType, id, effectiveName, userName, annotation, isFrozen, trackDelay, groupId);
+            var track = TrackFactory.CreateTrack(trackType, id, effectiveName, userName, annotation, isFrozen, isMuted, isSoloed, trackDelay, groupId);
 
             logger.LogDebug(@"Extracted Track name: {@TrackName}", track.EffectiveName);
 

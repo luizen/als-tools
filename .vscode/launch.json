@@ -139,7 +139,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - initdb folders Splice + Criacoes",
+            "name": "Debug - initdb folders Splice + Criacoes + Mix + Masters",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -150,6 +150,8 @@
                 "--folders",
                 "~/Splice",
                 "~/Documents/Producao/Criacoes",
+                "~/Documents/Producao/Mixagens",
+                "~/Documents/Producao/Masterizacoes",
                 "--log-level",
                 "verbose"
             ],
@@ -165,6 +167,21 @@
             "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
             "args": [
                 "list",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - print statistics",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "stats",
                 "--log-level",
                 "verbose"
             ],

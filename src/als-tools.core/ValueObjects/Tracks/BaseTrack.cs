@@ -52,6 +52,8 @@ public abstract class BaseTrack : ITrack
     public int TrackGroupId { get; set; }
 
     public bool? IsFrozen { get; set; }
+    // public bool IsMuted { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    // public bool IsSoloed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public void AddDevice(IDevice device)
     {
