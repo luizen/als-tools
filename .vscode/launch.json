@@ -11,7 +11,7 @@
             "args": [
                 "initdb",
                 "--files",
-                "/Users/zenluiz/Desktop/Testes ALS/Projects folder 1/DrumRacks Project/DrumRacks.als",
+                "/Users/zenluiz/Desktop/Testes ALS/Techno Modular Gritty - MIX - com LittlePlate VSt2 Project/Techno Modular Gritty - MIX - com LittlePlate VSt2.als",
                 "--log-level",
                 "verbose"
             ],
@@ -150,8 +150,8 @@
                 "--folders",
                 "~/Splice",
                 "~/Documents/Producao/Criacoes",
-                "~/Documents/Producao/Mixagens",
-                "~/Documents/Producao/Masterizacoes",
+                "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
+                "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
                 "--log-level",
                 "verbose"
             ],

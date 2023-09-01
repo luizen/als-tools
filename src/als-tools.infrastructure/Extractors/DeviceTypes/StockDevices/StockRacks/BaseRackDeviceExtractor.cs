@@ -44,8 +44,9 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
             var deviceNode = devicesInBranchIterator.Current;
             var device = ExtractDeviceFromNode(deviceNode);
 
-            // device.IsParentRackOn
-            // devices.Add(device); //TODO CONTINUE
+            // device.IsParentRackOn  //TODO CONTINUE
+
+            devices.Add(device);
 
             if (device is BaseRackDevice rackDevice)
             {
