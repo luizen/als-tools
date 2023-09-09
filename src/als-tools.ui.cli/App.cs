@@ -32,17 +32,53 @@ public class App
 
         var projects = await liveProjectService.GetAllProjectsAsync();
 
+        var allProjectsWithVst2Plugings = projects
+            .Select(project => new ProjectStatsInfo()
+            {
+                ProjectName = project.Name,
+                ProjectPath = project.Path,
+                DistinctVst2PluginsCount = project.Tracks
+                    .SelectMany(track => track.Plugins)
+                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Select(plugin => plugin.Name)
+                    .Distinct()
+                    .Count(),
+                DistinctVst2PluginNames = project.Tracks
+                    .SelectMany(track => track.Plugins)
+                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Select(plugin => plugin.Name)
+                    .Distinct()
+                    .ToList(),
+                Vst2PluginsStats = project.Tracks
+                    .SelectMany(track => track.Plugins)
+                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .GroupBy(plugin => plugin.Name)
+                    .SelectMany(group =>
+                        group.Select(plugin => new PluginStatsInfo()
+                        {
+                            PluginName = plugin.Name,
+                            PluginCount = group.Count()
+                        })
+                    )
+                    .Distinct()
+                    .ToList()
+            })
+            .Where(x => x.DistinctVst2PluginsCount > 0);
+        // .OrderByDescending(projectInfo => projectInfo.DistinctVst2PluginsCount)
+        // .ToList();
+
         int max = 10;
 
         PrintAllProjectsWithVst2Plugins(projects);
-        PrintProjectsWithMostVst2Plugins(max, projects);
-        PrintProjectsWithMostGivenPluginVst2Plugin(max, "Decapitator", projects);
-        PrintProjectsWithMostGivenPluginVst2Plugin(max, "minimoog V Original", projects);
-        PrintProjectsWithMostGivenPluginVst2Plugin(max, "Maschine 2", projects);
-        PrintProjectsWithMostGivenPluginVst2Plugin(max, "Komplete Kontrol", projects);
-        PrintProjectsWithMostGivenPluginsListVst2Plugin(max, projects, "Decapitator", "minimoog V Original", "Maschine 2", "Komplete Kontrol");
-        PrintProjectsWithLeastVst2Plugins(max, projects);
-        PrintVst2PluginsTable(projects);
+        PrintAllProjectsWithVst2PluginsComplete(projects);
+        // PrintProjectsWithMostVst2Plugins(max, projects);
+        // PrintProjectsWithMostGivenPluginVst2Plugin(max, "Decapitator", projects);
+        // PrintProjectsWithMostGivenPluginVst2Plugin(max, "minimoog V Original", projects);
+        // PrintProjectsWithMostGivenPluginVst2Plugin(max, "Maschine 2", projects);
+        // PrintProjectsWithMostGivenPluginVst2Plugin(max, "Komplete Kontrol", projects);
+        // PrintProjectsWithMostGivenPluginsListVst2Plugin(max, projects, "Decapitator", "minimoog V Original", "Maschine 2", "Komplete Kontrol");
+        // PrintProjectsWithLeastVst2Plugins(max, projects);
+        // PrintVst2PluginsTable(projects);
 
         logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
     }
@@ -301,6 +337,63 @@ public class App
         }
     }
 
+    private void PrintAllProjectsWithVst2PluginsComplete(IReadOnlyList<LiveProject> projects)
+    {
+        //TODO: extrair essa variavel pra fora, e passar pra dentro dos outros m[etodos]
+
+
+        var allProjectsWithVst2Plugings = projects
+                            .Select(project => new ProjectStatsInfo()
+                            {
+                                ProjectName = project.Name,
+                                ProjectPath = project.Path,
+                                DistinctVst2PluginsCount = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .Count(),
+                                DistinctVst2PluginNames = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .Select(plugin => plugin.Name)
+                                    .Distinct()
+                                    .ToList(),
+                                Vst2PluginsStats = project.Tracks
+                                    .SelectMany(track => track.Plugins)
+                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                                    .GroupBy(plugin => plugin.Name)
+                                    .SelectMany(group =>
+                                        group.Select(plugin => new PluginStatsInfo()
+                                        {
+                                            PluginName = plugin.Name,
+                                            PluginCount = group.Count()
+                                        })
+                                    )
+                                    .Distinct()
+                                    .ToList()
+                            })
+                            .Where(x => x.DistinctVst2PluginsCount > 0)
+                            .OrderByDescending(projectInfo => projectInfo.DistinctVst2PluginsCount)
+                            .ToList();
+
+        PrintHeader($"All projects with VST2 plugins (complete)");
+        foreach (var projectVST2Info in allProjectsWithVst2Plugings)
+        {
+            Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
+            Console.WriteLine($"Project Path: {projectVST2Info.ProjectPath}");
+            Console.WriteLine($"Distinct VST2 Plugin Count: {projectVST2Info.DistinctVst2PluginsCount}");
+            Console.WriteLine($"Distinct VST2 Plugin Names: {string.Join(", ", projectVST2Info.DistinctVst2PluginNames)}");
+            Console.WriteLine("VST2 Plugin stats table:");
+
+            projectVST2Info.Vst2PluginsStats.ForEach(plugin =>
+                Console.WriteLine($"Plugin name: {plugin.PluginName} | Plugin count: {plugin.PluginCount}")
+            );
+
+            Console.WriteLine();
+        }
+    }
+
     private void PrintProjectsWithLeastVst2Plugins(int max, IReadOnlyList<LiveProject> projects)
     {
         var topProjectsWithLeastVst2Plugings = projects
@@ -405,7 +498,34 @@ public class App
 
 internal class PluginUsageInfo
 {
-    public string PluginName { get; set; }
-    public int UsageCount { get; set; }
+    public PluginUsageInfo()
+    {
+        ProjectNames = new List<string>();
+    }
+
+    public string PluginName { get; set; } = string.Empty;
+    public int UsageCount { get; set; } = 0;
     public List<string> ProjectNames { get; set; }
+}
+
+internal class ProjectStatsInfo
+{
+    public ProjectStatsInfo()
+    {
+        DistinctVst2PluginNames = new List<string>();
+        Vst2PluginsStats = new List<PluginStatsInfo>();
+    }
+
+    public string ProjectName { get; set; } = string.Empty;
+    public string ProjectPath { get; set; } = string.Empty;
+    public int DistinctVst2PluginsCount { get; set; }
+    public List<string> DistinctVst2PluginNames { get; set; }
+    public List<PluginStatsInfo> Vst2PluginsStats { get; set; }
+}
+
+internal class PluginStatsInfo
+{
+    public string PluginName { get; set; } = string.Empty;
+
+    public int PluginCount { get; set; } = 0;
 }
