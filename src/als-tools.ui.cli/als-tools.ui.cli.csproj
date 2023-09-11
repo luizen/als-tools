@@ -26,6 +26,8 @@
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="RavenDB.Embedded" Version="5.4.109" />
+<PackageReference Include="Spectre.Console" Version="0.47.0" />
+
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\als-tools.core\als-tools.core.csproj" />

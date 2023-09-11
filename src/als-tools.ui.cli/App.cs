@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using Spectre.Console;
+
 namespace AlsTools.Ui.Cli;
 
 public class App
@@ -37,6 +40,16 @@ public class App
             {
                 ProjectName = project.Name,
                 ProjectPath = project.Path,
+                Vst2PluginsCount = project.Tracks
+                    .SelectMany(track => track.Plugins)
+                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Select(plugin => plugin.Name)
+                    .Count(),
+                Vst2PluginNames = project.Tracks
+                    .SelectMany(track => track.Plugins)
+                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Select(plugin => plugin.Name)
+                    .ToList(),
                 DistinctVst2PluginsCount = project.Tracks
                     .SelectMany(track => track.Plugins)
                     .Where(plugin => plugin.Format == PluginFormat.VST2)
@@ -60,7 +73,7 @@ public class App
                             PluginCount = group.Count()
                         })
                     )
-                    .Distinct()
+                    .Distinct(new PluginStatsInfoEqualityComparerByPluginName())
                     .ToList()
             })
             .Where(x => x.DistinctVst2PluginsCount > 0);
@@ -69,9 +82,8 @@ public class App
 
         int max = 10;
 
-        PrintAllProjectsWithVst2Plugins(projects);
-        PrintAllProjectsWithVst2PluginsComplete(projects);
-        // PrintProjectsWithMostVst2Plugins(max, projects);
+        PrintAllProjectsWithVst2PluginsComplete(allProjectsWithVst2Plugings);
+        // PrintProjectsWithMostVst2Plugins(max, allProjectsWithVst2Plugings);
         // PrintProjectsWithMostGivenPluginVst2Plugin(max, "Decapitator", projects);
         // PrintProjectsWithMostGivenPluginVst2Plugin(max, "minimoog V Original", projects);
         // PrintProjectsWithMostGivenPluginVst2Plugin(max, "Maschine 2", projects);
@@ -267,130 +279,116 @@ public class App
         }
     }
 
-    private void PrintProjectsWithMostVst2Plugins(int max, IReadOnlyList<LiveProject> projects)
+    private void PrintProjectsWithMostVst2Plugins(int max, IEnumerable<ProjectStatsInfo> allProjectsWithVst2Plugings)
     {
-        var topProjectsWithMostVst2Plugings = projects
-                            .Select(project => new
-                            {
-                                ProjectName = project.Name,
-                                ProjectPath = project.Path,
-                                DistinctPluginCount = project.Tracks
-                                    .SelectMany(track => track.Plugins)
-                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
-                                    .Select(plugin => plugin.Name)
-                                    .Distinct()
-                                    .Count(),
-                                PluginNames = project.Tracks
-                                    .SelectMany(track => track.Plugins)
-                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
-                                    .Select(plugin => plugin.Name)
-                                    .Distinct()
-                                    .ToList()
-                            })
-                            .OrderByDescending(projectInfo => projectInfo.DistinctPluginCount)
-                            .Take(max)
-                            .ToList();
+        // var topProjectsWithMostVst2Plugings = projects
+        //                     .Select(project => new
+        //                     {
+        //                         ProjectName = project.Name,
+        //                         ProjectPath = project.Path,
+        //                         DistinctPluginCount = project.Tracks
+        //                             .SelectMany(track => track.Plugins)
+        //                             .Where(plugin => plugin.Format == PluginFormat.VST2)
+        //                             .Select(plugin => plugin.Name)
+        //                             .Distinct()
+        //                             .Count(),
+        //                         PluginNames = project.Tracks
+        //                             .SelectMany(track => track.Plugins)
+        //                             .Where(plugin => plugin.Format == PluginFormat.VST2)
+        //                             .Select(plugin => plugin.Name)
+        //                             .Distinct()
+        //                             .ToList()
+        //                     })
+        //                     .OrderByDescending(projectInfo => projectInfo.DistinctPluginCount)
+        //                     .Take(max)
+        //                     .ToList();
 
         PrintHeader($"Top {max} projects with most VST2 plugins");
-        foreach (var projectVST2Info in topProjectsWithMostVst2Plugings)
+
+        var table = CreateConsoleTableForPluginStats();
+
+        foreach (var projectStatsInfo in allProjectsWithVst2Plugings.OrderByDescending(projectInfo => projectInfo.Vst2PluginsCount).Take(max).ToList())
         {
-            Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
-            Console.WriteLine($"Project Path: {projectVST2Info.ProjectPath}");
-            Console.WriteLine($"Distinct VST2 Plugin Count: {projectVST2Info.DistinctPluginCount}");
-            Console.WriteLine($"VST2 Plugin Names: {string.Join(", ", projectVST2Info.PluginNames)}");
-            Console.WriteLine();
+            PrintProjectStatsInfo(projectStatsInfo, table, true);
         }
     }
 
-    private void PrintAllProjectsWithVst2Plugins(IReadOnlyList<LiveProject> projects)
+    private Table CreateConsoleTableForPluginStats()
     {
-        var topProjectsWithMostVst2Plugings = projects
-                            .Select(project => new
-                            {
-                                ProjectName = project.Name,
-                                ProjectPath = project.Path,
-                                DistinctPluginCount = project.Tracks
-                                    .SelectMany(track => track.Plugins)
-                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
-                                    .Select(plugin => plugin.Name)
-                                    .Distinct()
-                                    .Count(),
-                                PluginNames = project.Tracks
-                                    .SelectMany(track => track.Plugins)
-                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
-                                    .Select(plugin => plugin.Name)
-                                    .Distinct()
-                                    .ToList()
-                            })
-                            .Where(x => x.DistinctPluginCount > 0)
-                            .OrderByDescending(projectInfo => projectInfo.DistinctPluginCount)
-                            .ToList();
-
-        PrintHeader($"All projects with VST2 plugins");
-        foreach (var projectVST2Info in topProjectsWithMostVst2Plugings)
-        {
-            Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
-            Console.WriteLine($"Project Path: {projectVST2Info.ProjectPath}");
-            Console.WriteLine($"Distinct VST2 Plugin Count: {projectVST2Info.DistinctPluginCount}");
-            Console.WriteLine($"VST2 Plugin Names: {string.Join(", ", projectVST2Info.PluginNames)}");
-            Console.WriteLine();
-        }
+        return new Table()
+            .HideHeaders()
+            .AddColumn("Plugin name", c => c.NoWrap())
+            .AddColumn("Count");
     }
 
-    private void PrintAllProjectsWithVst2PluginsComplete(IReadOnlyList<LiveProject> projects)
+    private Table CreateConsoleTableForFullProjectStats()
     {
-        //TODO: extrair essa variavel pra fora, e passar pra dentro dos outros m[etodos]
+        return new Table()
+            .Expand()
+            .Border(TableBorder.Rounded)
+            .AddColumn("Project")
+            .AddColumn("VST2s\r\nCount", c => c.Alignment(Justify.Center))
+            .AddColumn("Distinct\r\nVST2s\r\nCount", c => c.Alignment(Justify.Center))
+            .AddColumn("Distinct VST2s Names", c => c.NoWrap = false)
+            .AddColumn("VST2s Stats");
+    }
 
-
-        var allProjectsWithVst2Plugings = projects
-                            .Select(project => new ProjectStatsInfo()
-                            {
-                                ProjectName = project.Name,
-                                ProjectPath = project.Path,
-                                DistinctVst2PluginsCount = project.Tracks
-                                    .SelectMany(track => track.Plugins)
-                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
-                                    .Select(plugin => plugin.Name)
-                                    .Distinct()
-                                    .Count(),
-                                DistinctVst2PluginNames = project.Tracks
-                                    .SelectMany(track => track.Plugins)
-                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
-                                    .Select(plugin => plugin.Name)
-                                    .Distinct()
-                                    .ToList(),
-                                Vst2PluginsStats = project.Tracks
-                                    .SelectMany(track => track.Plugins)
-                                    .Where(plugin => plugin.Format == PluginFormat.VST2)
-                                    .GroupBy(plugin => plugin.Name)
-                                    .SelectMany(group =>
-                                        group.Select(plugin => new PluginStatsInfo()
-                                        {
-                                            PluginName = plugin.Name,
-                                            PluginCount = group.Count()
-                                        })
-                                    )
-                                    .Distinct()
-                                    .ToList()
-                            })
-                            .Where(x => x.DistinctVst2PluginsCount > 0)
-                            .OrderByDescending(projectInfo => projectInfo.DistinctVst2PluginsCount)
-                            .ToList();
-
+    private void PrintAllProjectsWithVst2PluginsComplete(IEnumerable<ProjectStatsInfo> allProjectsWithVst2Plugings, bool printProjectsAsTable = true)
+    {
         PrintHeader($"All projects with VST2 plugins (complete)");
-        foreach (var projectVST2Info in allProjectsWithVst2Plugings)
+
+        Table? projectsTable = printProjectsAsTable ? CreateConsoleTableForFullProjectStats() : null;
+
+        // foreach (var projectStatsInfo in allProjectsWithVst2Plugings.OrderByDescending(projectInfo => projectInfo.DistinctVst2PluginsCount).ToList())
+        foreach (var projectStatsInfo in allProjectsWithVst2Plugings.OrderByDescending(projectInfo => projectInfo.Vst2PluginsCount).ToList())
         {
-            Console.WriteLine($"Project Name: {projectVST2Info.ProjectName}");
-            Console.WriteLine($"Project Path: {projectVST2Info.ProjectPath}");
-            Console.WriteLine($"Distinct VST2 Plugin Count: {projectVST2Info.DistinctVst2PluginsCount}");
-            Console.WriteLine($"Distinct VST2 Plugin Names: {string.Join(", ", projectVST2Info.DistinctVst2PluginNames)}");
-            Console.WriteLine("VST2 Plugin stats table:");
+            PrintProjectStatsInfo(projectStatsInfo, projectsTable, true, printProjectsAsTable);
+        }
 
-            projectVST2Info.Vst2PluginsStats.ForEach(plugin =>
-                Console.WriteLine($"Plugin name: {plugin.PluginName} | Plugin count: {plugin.PluginCount}")
-            );
+        if (projectsTable != null)
+        {
+            AnsiConsole.Write(projectsTable);
+        }
 
-            Console.WriteLine();
+    }
+
+    private void PrintProjectStatsInfo(ProjectStatsInfo projectStatsInfo, Table? projectsTable, bool printVst2PluginStats = true, bool printProjectsAsTable = true)
+    {
+        Table? pluginsTable = null;
+        if (printVst2PluginStats)
+        {
+            pluginsTable = CreateConsoleTableForPluginStats();
+            projectStatsInfo.Vst2PluginsStats.ForEach(plugin => pluginsTable.AddRow(plugin.PluginName, $"[fuchsia]{plugin.PluginCount}[/]"));
+        }
+
+        if (printProjectsAsTable && projectsTable is not null)
+        {
+            // var projectPanel = new Panel(new TextPath(projectStatsInfo.ProjectPath))
+            var projectPanel = new Panel($"[link]{projectStatsInfo.ProjectPath}[/]")
+            {
+                Header = new PanelHeader($":musical_keyboard: [gold1]{projectStatsInfo.ProjectName}[/]"),
+            };
+
+            projectsTable.AddRow(
+                projectPanel,
+                new Markup($"[darkorange]{projectStatsInfo.Vst2PluginsCount}[/]"),
+                new Text(projectStatsInfo.DistinctVst2PluginsCount.ToString()),
+                new Text(string.Join(", ", projectStatsInfo.DistinctVst2PluginNames)),
+                pluginsTable != null ? pluginsTable : Text.Empty);
+        }
+        else
+        {
+            Console.WriteLine($"Project name: {projectStatsInfo.ProjectName}");
+            Console.WriteLine($"Project path: {projectStatsInfo.ProjectPath}");
+            Console.WriteLine($"VST2 plugins count: {projectStatsInfo.Vst2PluginsCount}");
+            Console.WriteLine($"Distinct VST2 plugins count: {projectStatsInfo.DistinctVst2PluginsCount}");
+            Console.WriteLine($"Distinct VST2 plugin names: {string.Join(", ", projectStatsInfo.DistinctVst2PluginNames)}");
+            Console.WriteLine("VST2 plugins stats table:");
+
+            if (printVst2PluginStats && pluginsTable != null)
+            {
+                AnsiConsole.Write(pluginsTable);
+            }
         }
     }
 
@@ -518,6 +516,8 @@ internal class ProjectStatsInfo
 
     public string ProjectName { get; set; } = string.Empty;
     public string ProjectPath { get; set; } = string.Empty;
+    public int Vst2PluginsCount { get; set; }
+    public List<string> Vst2PluginNames { get; set; }
     public int DistinctVst2PluginsCount { get; set; }
     public List<string> DistinctVst2PluginNames { get; set; }
     public List<PluginStatsInfo> Vst2PluginsStats { get; set; }
@@ -528,4 +528,17 @@ internal class PluginStatsInfo
     public string PluginName { get; set; } = string.Empty;
 
     public int PluginCount { get; set; } = 0;
+}
+
+internal class PluginStatsInfoEqualityComparerByPluginName : IEqualityComparer<PluginStatsInfo>
+{
+    public bool Equals(PluginStatsInfo? x, PluginStatsInfo? y)
+    {
+        return x!.PluginName.Equals(y!.PluginName);
+    }
+
+    public int GetHashCode([DisallowNull] PluginStatsInfo obj)
+    {
+        return obj.PluginName.GetHashCode();
+    }
 }
