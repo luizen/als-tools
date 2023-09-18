@@ -22,6 +22,6 @@ public class InitDbCommandHandler : IOptionCommandHandler<InitDbOptions>
         else
             count = await liveProjectService.InitializeDbFromFoldersAsync(options.Folders, options.IncludeBackups);
 
-        logger.LogInformation("Total of projects loaded into DB: @ProjectsLoadedIntoDb", count);
+        logger.LogInformation("Total of projects loaded into DB: {@ProjectsLoadedIntoDb}", count);
     }
 }
