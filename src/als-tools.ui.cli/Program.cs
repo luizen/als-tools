@@ -1,7 +1,4 @@
-﻿using AlsTools.Core.Interfaces;
-using AlsTools.Ui.Cli.CliOptions;
-
-namespace AlsTools.Ui.Cli;
+﻿namespace AlsTools.Ui.Cli;
 
 public partial class Program
 {

@@ -130,6 +130,16 @@ public partial class Program
             .AddSingleton<IScenesCollectionExtractor, ScenesCollectionExtractor>()
             .AddSingleton<ITracksCollectionExtractor, TracksCollectionExtractor>();
 
+        // Add CLI command handlers
+        serviceCollection
+            .AddSingleton<IOptionCommandHandler<InitDbOptions>, InitDbCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<ListOptions>, ListCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<CountOptions>, CountCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<LocateOptions>, LocateCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<PluginUsageOptions>, PluginUsageCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<PrintStatisticsOptions>, PrintStatisticsCommandHandler>()
+            .AddSingleton<ProjectsAndPluginsPrinter>();
+
         // DB options
         serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
 
