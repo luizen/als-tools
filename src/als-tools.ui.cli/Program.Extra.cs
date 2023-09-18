@@ -136,6 +136,9 @@ public partial class Program
         // PlugInfo options
         serviceCollection.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
 
+        // PlugScanning options
+        serviceCollection.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
+
         // Add app
         serviceCollection.AddTransient<App>();
     }
