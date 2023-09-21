@@ -1,12 +1,12 @@
 ﻿
-namespace AlsTools.Ui.Cli;
+namespace AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
-public class InitDbCommandHandler : IOptionCommandHandler<InitDbOptions>
+public class InitDbCommandHandler : BaseCommandHandler, IOptionCommandHandler<InitDbOptions>
 {
     private readonly ILogger<InitDbCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
 
-    public InitDbCommandHandler(ILogger<InitDbCommandHandler> logger, ILiveProjectAsyncService liveProjectService)
+    public InitDbCommandHandler(ILogger<InitDbCommandHandler> logger, ILiveProjectAsyncService liveProjectService, IOptions<ParameterValuesOptions> parameterValuesOptions) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;

@@ -1,12 +1,11 @@
-﻿
-namespace AlsTools.Ui.Cli;
+﻿namespace AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
-public class CountCommandHandler : IOptionCommandHandler<CountOptions>
+public class CountCommandHandler : BaseCommandHandler, IOptionCommandHandler<CountOptions>
 {
     private readonly ILogger<CountCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
 
-    public CountCommandHandler(ILogger<CountCommandHandler> logger, ILiveProjectAsyncService liveProjectService)
+    public CountCommandHandler(ILogger<CountCommandHandler> logger, ILiveProjectAsyncService liveProjectService, IOptions<ParameterValuesOptions> parameterValuesOptions) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;

@@ -1,13 +1,12 @@
-﻿
-namespace AlsTools.Ui.Cli;
+﻿namespace AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
-public class LocateCommandHandler : IOptionCommandHandler<LocateOptions>
+public class LocateCommandHandler : BaseCommandHandler, IOptionCommandHandler<LocateOptions>
 {
     private readonly ILogger<LocateCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
     private readonly ProjectsAndPluginsPrinter projectsAndPluginsPrinter;
 
-    public LocateCommandHandler(ILogger<LocateCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter)
+    public LocateCommandHandler(ILogger<LocateCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter, IOptions<ParameterValuesOptions> parameterValuesOptions) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;

@@ -1,13 +1,12 @@
-﻿
-namespace AlsTools.Ui.Cli;
+﻿namespace AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
-public class ListCommandHandler : IOptionCommandHandler<ListOptions>
+public class ListCommandHandler : BaseCommandHandler, IOptionCommandHandler<ListOptions>
 {
     private readonly ILogger<ListCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
     private readonly ProjectsAndPluginsPrinter projectsAndPluginsPrinter;
 
-    public ListCommandHandler(ILogger<ListCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter)
+    public ListCommandHandler(ILogger<ListCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter, IOptions<ParameterValuesOptions> parameterValuesOptions) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;

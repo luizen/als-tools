@@ -1,13 +1,12 @@
-﻿
-namespace AlsTools.Ui.Cli;
+﻿namespace AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
-public class PluginUsageCommandHandler : IOptionCommandHandler<PluginUsageOptions>
+public class PluginUsageCommandHandler : BaseCommandHandler, IOptionCommandHandler<PluginUsageOptions>
 {
     private readonly ILogger<PluginUsageCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
     private readonly IOptions<PlugInfoOptions> plugInfoOptions;
 
-    public PluginUsageCommandHandler(ILogger<PluginUsageCommandHandler> logger, ILiveProjectAsyncService liveProjectService, IOptions<PlugInfoOptions> plugInfoOptions)
+    public PluginUsageCommandHandler(ILogger<PluginUsageCommandHandler> logger, ILiveProjectAsyncService liveProjectService, IOptions<PlugInfoOptions> plugInfoOptions, IOptions<ParameterValuesOptions> parameterValuesOptions) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;

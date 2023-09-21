@@ -1,6 +1,3 @@
-using System.Collections.ObjectModel;
-using AlsTools.Core.ValueObjects;
-
 namespace AlsTools.Ui.Cli.CliOptions;
 
 [Verb("locate", HelpText = "Locates projects containing given plugins by their names.")]

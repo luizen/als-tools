@@ -1,16 +1,15 @@
-﻿
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Spectre.Console;
 
-namespace AlsTools.Ui.Cli;
+namespace AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
-public class PrintStatisticsCommandHandler : IOptionCommandHandler<PrintStatisticsOptions>
+public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandHandler<PrintStatisticsOptions>
 {
     private readonly ILogger<PrintStatisticsCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
     private readonly ProjectsAndPluginsPrinter projectsAndPluginsPrinter;
 
-    public PrintStatisticsCommandHandler(ILogger<PrintStatisticsCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter)
+    public PrintStatisticsCommandHandler(ILogger<PrintStatisticsCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter, IOptions<ParameterValuesOptions> parameterValuesOptions) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;

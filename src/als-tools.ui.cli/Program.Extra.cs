@@ -1,4 +1,8 @@
-﻿namespace AlsTools.Ui.Cli;
+﻿using AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
+
+namespace AlsTools.Ui.Cli;
+
+
 
 public partial class Program
 {
@@ -148,6 +152,9 @@ public partial class Program
 
         // PlugScanning options
         serviceCollection.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
+
+        // ParameterValues options
+        serviceCollection.Configure<ParameterValuesOptions>(configuration.GetSection(nameof(ParameterValuesOptions)));
 
         // Add app
         serviceCollection.AddTransient<App>();
