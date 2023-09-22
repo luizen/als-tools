@@ -22,8 +22,7 @@ public abstract class BaseRackDevice : StockDevice
         if (device == null)
             throw new ArgumentNullException(nameof(device));
 
-        device.HasParentRack = true;
-        device.IsParentRackOn = IsOn;
+        device.DefineParentRack(IsOn);
 
         childrenDevices.Value.Add(device);
     }

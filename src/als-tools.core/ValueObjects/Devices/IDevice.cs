@@ -28,9 +28,14 @@ public interface IDevice
     DeviceFamily Family { get; }
 
     /// <summary>
-    /// Whether the device is contained within a rack
+    /// Helper property that calculates whether the device is contained within a rack or not
     /// </summary>
-    bool HasParentRack { get; set; }
+    bool HasParentRack { get; }
+
+    /// <summary>
+    /// Contains (optional) information about parent rack device
+    /// </summary>
+    ParentDeviceDescriptor? ParentRackDevice { get; }
 
     /// <summary>
     /// Whether the device is turned on or off
@@ -38,12 +43,7 @@ public interface IDevice
     bool IsOn { get; set; }
 
     /// <summary>
-    /// Whether the parent rack where this device is located is turned on or off. This will make the device disabled as well.
-    /// </summary>
-    bool IsParentRackOn { get; set; }
-
-    /// <summary>
-    /// Calculates whether this device is enabled or not. It takes into consideration both properties <see cref="IsOn"/> and <see cref="IsParentRackOn"/>. 
+    /// Helper property that calculates whether this device is enabled or not. It takes into consideration both properties <see cref="IsOn"/> and <see cref="ParentDeviceDescriptor.IsOn"/>. 
     /// </summary>
     bool IsEnabled { get; }
 
@@ -51,4 +51,10 @@ public interface IDevice
     /// Whether this is a device that groups other devices (eg.: Rack device)
     /// </summary>
     bool IsGroupDevice { get; }
+
+    /// <summary>
+    /// Initializes the <see cref="ParentRackDevice"/> property, marking this device as having a parent
+    /// </summary>
+    /// <param name="isParentRackOn">Whether the parent rack device is on/off</param>
+    void DefineParentRack(bool isParentRackOn);
 }
