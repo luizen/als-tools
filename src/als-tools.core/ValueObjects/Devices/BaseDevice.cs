@@ -24,6 +24,8 @@ public abstract class BaseDevice : IDevice
 
     public DeviceFamily Family { get; protected set; }
 
+    public bool HasParentRack { get; set; } = false;
+
     public bool IsOn { get; set; } = true;
 
     public bool IsParentRackOn { get; set; } = true;

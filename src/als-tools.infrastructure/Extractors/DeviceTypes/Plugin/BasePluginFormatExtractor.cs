@@ -29,16 +29,17 @@ public abstract class BasePluginFormatExtractor : IPluginFormatExtractor
             var node = pluginDeviceNode.SelectSingleNode(PluginPathXpath);
             pluginPath = node?.Value ?? string.Empty;
         }
-            
 
         var sort = GetPluginSort(pluginDeviceNode, pluginName);
-        var pluginDevice = new PluginDevice(sort, pluginFormat);
-
-        pluginDevice.Name = pluginName;
-        pluginDevice.UserName = pluginDeviceNode.SelectSingleNode(@"UserName/@Value")!.Value;
-        pluginDevice.Annotation = pluginDeviceNode.SelectSingleNode(@"Annotation/@Value")!.Value;
-        pluginDevice.Id = pluginDeviceNode.SelectSingleNode(@"@Id")!.ValueAsInt;
-        pluginDevice.Path = pluginPath;
+        var pluginDevice = new PluginDevice(sort, pluginFormat)
+        {
+            Name = pluginName,
+            UserName = pluginDeviceNode.SelectSingleNode(@"UserName/@Value")!.Value,
+            Annotation = pluginDeviceNode.SelectSingleNode(@"Annotation/@Value")!.Value,
+            Id = pluginDeviceNode.SelectSingleNode(@"@Id")!.ValueAsInt,
+            IsOn = pluginDeviceNode.SelectSingleNode(@"On/Manual/@Value")!.ValueAsBoolean,
+            Path = pluginPath
+        };
 
         return pluginDevice;
     }

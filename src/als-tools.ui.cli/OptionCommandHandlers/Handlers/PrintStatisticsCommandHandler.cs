@@ -78,7 +78,7 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         // .OrderByDescending(projectInfo => projectInfo.DistinctVst2PluginsCount)
         // .ToList();
 
-        int max = 10;
+        // int max = 10;
 
         PrintAllProjectsWithVst2PluginsComplete(allProjectsWithVst2Plugings, true);
         // PrintProjectsWithMostVst2Plugins(max, allProjectsWithVst2Plugings);

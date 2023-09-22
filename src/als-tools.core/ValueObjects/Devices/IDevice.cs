@@ -28,6 +28,11 @@ public interface IDevice
     DeviceFamily Family { get; }
 
     /// <summary>
+    /// Whether the device is contained within a rack
+    /// </summary>
+    bool HasParentRack { get; set; }
+
+    /// <summary>
     /// Whether the device is turned on or off
     /// </summary>
     bool IsOn { get; set; }
@@ -43,7 +48,7 @@ public interface IDevice
     bool IsEnabled { get; }
 
     /// <summary>
-    /// Whether this is a device that groups other devices
+    /// Whether this is a device that groups other devices (eg.: Rack device)
     /// </summary>
     bool IsGroupDevice { get; }
 }
