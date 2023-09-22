@@ -8,12 +8,14 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
     private readonly ILogger<PrintStatisticsCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
     private readonly ProjectsAndPluginsPrinter projectsAndPluginsPrinter;
+    private readonly IOptions<PlugScanningOptions> plugScanningOptions;
 
-    public PrintStatisticsCommandHandler(ILogger<PrintStatisticsCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter, IOptions<ParameterValuesOptions> parameterValuesOptions) : base(parameterValuesOptions)
+    public PrintStatisticsCommandHandler(ILogger<PrintStatisticsCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter, IOptions<ParameterValuesOptions> parameterValuesOptions, IOptions<PlugScanningOptions> plugScanningOptions) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;
         this.projectsAndPluginsPrinter = projectsAndPluginsPrinter;
+        this.plugScanningOptions = plugScanningOptions;
     }
 
     public async Task Execute(PrintStatisticsOptions options)
@@ -21,8 +23,15 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         logger.LogDebug("Printing statistics...");
 
         var projects = await liveProjectService.GetAllProjectsAsync();
-        // var skipPlugins = plugScanningOptions.Value.SkipPlugins;
-        // var pluginsToSkip = plugScanningOptions.Value.PluginsToSkip;
+        var skipPlugins = plugScanningOptions.Value.SkipPlugins;
+        var pluginsToSkip = plugScanningOptions.Value.PluginsToSkip;
+        var ignoreDisabledDevices = options.IgnoreDisabledDevices;
+
+        // Func<PluginDevice, bool> predicate = (PluginDevice plugin) => plugin.Format == PluginFormat.VST2;
+        Func<PluginDevice, bool> predicate = (PluginDevice plugin) =>
+            plugin.Format == PluginFormat.VST2 &&
+            (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == plugin.Format && x.PluginName == plugin.Name)) &&
+            (!ignoreDisabledDevices || plugin.IsEnabled);
 
         var allProjectsWithVst2Plugings = projects
             .Select(project => new ProjectStatsInfo()
@@ -31,34 +40,29 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
                 ProjectPath = project.Path,
                 Vst2PluginsCount = project.Tracks
                     .SelectMany(track => track.Plugins)
-                    // .Where(plugin => plugin.Format == PluginFormat.VST2 && (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == PluginFormat.VST2 && x.PluginName == plugin.Name)))
-                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Where(predicate)
                     .Select(plugin => plugin.Name)
                     .Count(),
                 Vst2PluginNames = project.Tracks
                     .SelectMany(track => track.Plugins)
-                    // .Where(plugin => plugin.Format == PluginFormat.VST2 && (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == PluginFormat.VST2 && x.PluginName == plugin.Name)))
-                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Where(predicate)
                     .Select(plugin => plugin.Name)
                     .ToList(),
                 DistinctVst2PluginsCount = project.Tracks
                     .SelectMany(track => track.Plugins)
-                    // .Where(plugin => plugin.Format == PluginFormat.VST2 && (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == PluginFormat.VST2 && x.PluginName == plugin.Name)))
-                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Where(predicate)
                     .Select(plugin => plugin.Name)
                     .Distinct()
                     .Count(),
                 DistinctVst2PluginNames = project.Tracks
                     .SelectMany(track => track.Plugins)
-                    // .Where(plugin => plugin.Format == PluginFormat.VST2 && (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == PluginFormat.VST2 && x.PluginName == plugin.Name)))
-                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Where(predicate)
                     .Select(plugin => plugin.Name)
                     .Distinct()
                     .ToList(),
                 Vst2PluginsStats = project.Tracks
                     .SelectMany(track => track.Plugins)
-                    // .Where(plugin => plugin.Format == PluginFormat.VST2 && (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == PluginFormat.VST2 && x.PluginName == plugin.Name)))
-                    .Where(plugin => plugin.Format == PluginFormat.VST2)
+                    .Where(predicate)
                     .GroupBy(plugin => plugin.Name)
                     .SelectMany(group =>
                         group.Select(plugin => new PluginStatsInfo()

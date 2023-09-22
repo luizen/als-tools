@@ -10,7 +10,7 @@ public abstract class BaseRackDevice : StockDevice
         childrenDevices = new Lazy<List<IDevice>>();
     }
 
-    private Lazy<List<IDevice>> childrenDevices;
+    private readonly Lazy<List<IDevice>> childrenDevices;
 
     /// <summary>
     /// A Rack can have children devices...
@@ -21,6 +21,8 @@ public abstract class BaseRackDevice : StockDevice
     {
         if (device == null)
             throw new ArgumentNullException(nameof(device));
+
+        device.IsParentRackOn = IsOn;
 
         childrenDevices.Value.Add(device);
     }

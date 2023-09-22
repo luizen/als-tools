@@ -11,7 +11,7 @@
             "args": [
                 "initdb",
                 "--files",
-                "/Users/zenluiz/Desktop/Testes ALS/Techno Modular Gritty - MIX - com LittlePlate VSt2 Project/Techno Modular Gritty - MIX - com LittlePlate VSt2.als",
+                "/Users/zenluiz/Desktop/Testes ALS/DisabledRacks Project/DisabledRacks.als",
                 "--log-level",
                 "verbose"
             ],
@@ -182,6 +182,7 @@
             "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
             "args": [
                 "stats",
+                "--ignore-disabled",
                 "--log-level",
                 "verbose"
             ],
