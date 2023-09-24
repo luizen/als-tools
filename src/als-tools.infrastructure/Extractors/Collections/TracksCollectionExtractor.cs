@@ -67,8 +67,8 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
             var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")!.ValueAsInt;
             var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
-            var isMuted = trackNode.SelectSingleNode(@"DeviceChain/Mixer/Speaker/Manual/@Value")?.ValueAsBoolean;
-            var isSoloed = trackNode.SelectSingleNode(@"DeviceChain/Mixer/SoloSink/@Value")?.ValueAsBoolean;
+            var isMuted = !trackNode.SelectSingleNode(@"DeviceChain/Mixer/Speaker/Manual/@Value")!.ValueAsBoolean;
+            var isSoloed = trackNode.SelectSingleNode(@"DeviceChain/Mixer/SoloSink/@Value")!.ValueAsBoolean;
 
             var trackDelay = new TrackDelay()
             {

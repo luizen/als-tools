@@ -11,7 +11,7 @@
             "args": [
                 "initdb",
                 "--files",
-                "/Users/zenluiz/Desktop/Testes ALS/DisabledRacks Project/DisabledRacks.als",
+                "~/Desktop/Testes ALS/MutedAndSoloed Project/MutedAndSoloed.als",
                 "--log-level",
                 "verbose"
             ],
