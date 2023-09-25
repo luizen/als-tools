@@ -18,5 +18,6 @@
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="RavenDB.Embedded" Version="5.4.110" />
+    <PackageReference Include="FuzzySharp" Version="2.0.2" />
   </ItemGroup>
 </Project>

@@ -3,9 +3,9 @@ using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;
 
-public class AuPluginFormatExtractor : BasePluginFormatExtractor, IPluginFormatExtractor
+public class AuV3PluginFormatExtractor : BasePluginFormatExtractor, IPluginFormatExtractor
 {
-    public AuPluginFormatExtractor(ILogger<AuPluginFormatExtractor> logger) : base(logger, PluginFormat.AU)
+    public AuV3PluginFormatExtractor(ILogger<AuV3PluginFormatExtractor> logger) : base(logger, PluginFormat.AUv3)
     {
     }
 

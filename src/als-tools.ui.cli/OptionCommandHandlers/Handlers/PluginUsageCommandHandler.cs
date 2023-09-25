@@ -67,7 +67,7 @@ public class PluginUsageCommandHandler : BaseCommandHandler, IOptionCommandHandl
 
         foreach (var pluginName in auPlugins)
         {
-            plugins.Add(new PluginDevice(DeviceSort.Unknown, PluginFormat.AU)
+            plugins.Add(new PluginDevice(DeviceSort.Unknown, PluginFormat.AUv2)
             {
                 Name = pluginName
             });

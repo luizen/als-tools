@@ -20,11 +20,13 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
     private readonly ILogger<TracksCollectionExtractor> logger;
 
     private readonly IDevicesCollectionExtractor devicesCollectionExtractor;
+    private readonly XpathExtractorHelper xpathExtractorHelper;
 
-    public TracksCollectionExtractor(ILogger<TracksCollectionExtractor> logger, IDevicesCollectionExtractor devicesCollectionExtractor)
+    public TracksCollectionExtractor(ILogger<TracksCollectionExtractor> logger, IDevicesCollectionExtractor devicesCollectionExtractor, XpathExtractorHelper xpathExtractorHelper)
     {
         this.logger = logger;
         this.devicesCollectionExtractor = devicesCollectionExtractor;
+        this.xpathExtractorHelper = xpathExtractorHelper;
     }
 
     public IReadOnlyList<ITrack> ExtractFromXml(XPathNavigator nav)
@@ -67,8 +69,11 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
             var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")!.ValueAsInt;
             var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
-            var isMuted = !trackNode.SelectSingleNode(@"DeviceChain/Mixer/Speaker/Manual/@Value")!.ValueAsBoolean;
-            var isSoloed = trackNode.SelectSingleNode(@"DeviceChain/Mixer/SoloSink/@Value")!.ValueAsBoolean;
+            bool? isMuted = default;
+            bool? isSoloed = default;
+
+            ExtractIsMutedProperty(trackNode, (result) => isMuted = !result);
+            ExtractIsSoloedProperty(trackNode, (result) => isSoloed = result);
 
             var trackDelay = new TrackDelay()
             {
@@ -88,5 +93,28 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
 
             tracks.Add(track);
         }
+    }
+
+    private bool ExtractIsMutedProperty(XPathNavigator nav, Action<bool> successAction)
+    {
+        string[] isMutedExpressions =
+            {
+                "DeviceChain/Mixer/Speaker/Manual/@Value",
+                "DeviceChain/Mixer/Speaker/ArrangerAutomation/Events/*/@Value",    // for older versions
+                "MasterChain/Mixer/Speaker/ArrangerAutomation/Events/*/@Value"     // for older versions
+            };
+
+        return xpathExtractorHelper.TryGetOneOfXpathValues(nav, isMutedExpressions, successAction);
+    }
+
+    private bool ExtractIsSoloedProperty(XPathNavigator nav, Action<bool> successAction)
+    {
+        string[] isSoloedExpressions =
+            {
+                "DeviceChain/Mixer/SoloSink/@Value",
+                "MasterChain/Mixer/SoloSink/@Value"    // for older versions
+            };
+
+        return xpathExtractorHelper.TryGetOneOfXpathValues(nav, isSoloedExpressions, successAction);
     }
 }

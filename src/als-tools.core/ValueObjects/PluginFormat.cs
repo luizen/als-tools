@@ -2,9 +2,11 @@ namespace AlsTools.Core.ValueObjects;
 
 public enum PluginFormat
 {
-    AU = 1,
+    AUv2 = 1,
 
     VST2 = 2,
 
-    VST3 = 3
+    VST3 = 3,
+
+    AUv3 = 4 //TODO: AUv3
 }

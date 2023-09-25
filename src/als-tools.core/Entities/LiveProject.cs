@@ -51,19 +51,19 @@ public class LiveProject
     public int? SchemaChangeCount { get; set; }
 
     /// <summary>
-    /// The project tempo/BPM
+    /// The project tempo/BPM.
     /// </summary>
-    public double Tempo { get; set; }
+    public double? Tempo { get; set; }
 
     /// <summary>
     /// The project time signature. It is probably a bit mask.
     /// </summary>
-    public int TimeSignature { get; set; }
+    public int? TimeSignature { get; set; }
 
     /// <summary>
     /// The project global groove amount
     /// </summary>
-    public double GlobalGrooveAmount { get; set; }
+    public double? GlobalGrooveAmount { get; set; }
 
     /// <summary>
     /// The tracks this project contains

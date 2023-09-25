@@ -1,4 +1,5 @@
-﻿using AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
+﻿using AlsTools.Infrastructure.Extractors;
+using AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
 namespace AlsTools.Ui.Cli;
 
@@ -64,6 +65,8 @@ public partial class Program
         serviceCollection.AddSingleton<UserFolderHandler>(svcProvider =>
             new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
 
+        serviceCollection.AddSingleton<XpathExtractorHelper>();
+
         // MaxForLive Sort Extractors
         serviceCollection.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
                      new Dictionary<string, IMaxForLiveDeviceSortExtractor>()
@@ -80,7 +83,8 @@ public partial class Program
                      {
                          [PluginFormat.VST2] = new Vst2PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst2PluginFormatExtractor>>()),
                          [PluginFormat.VST3] = new Vst3PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst3PluginFormatExtractor>>()),
-                         [PluginFormat.AU] = new AuPluginFormatExtractor(svcProvider.GetRequiredService<ILogger<AuPluginFormatExtractor>>())
+                         [PluginFormat.AUv2] = new AuV2PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<AuV2PluginFormatExtractor>>())//,
+                                                                                                                                                  //  [PluginFormat.AUv3] = new AuV3PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<AuV3PluginFormatExtractor>>())
                      }
                 );
 

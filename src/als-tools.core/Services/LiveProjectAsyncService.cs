@@ -61,11 +61,11 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 
         var projects = await GetAllProjectsAsync();
         var pluginsBeingUsed = projects
-            .Where(proj => 
-                proj.Tracks != null && 
-                proj.Tracks.Any() && 
-                proj.Tracks.Any(track => 
-                    track.Plugins != null && 
+            .Where(proj =>
+                // proj.Tracks != null && 
+                // proj.Tracks.Any() && 
+                proj.Tracks.Any(track =>
+                    // track.Plugins != null && 
                     track.Plugins.Any())
             )
             .SelectMany(proj => 
