@@ -57,9 +57,19 @@ public abstract class BaseTrack : ITrack
 
     public bool? IsFrozen { get; set; }
 
-    public bool IsMuted { get; set; }
+    public bool? IsMuted { get; set; }
 
-    public bool IsSoloed { get; set; }
+    public bool? IsSoloed { get; set; }
+
+    public bool IsGroupTrack => Type == TrackType.Group;
+
+    public bool IsAudioTrack => Type == TrackType.Audio;
+
+    public bool IsMidiTrack => Type == TrackType.Midi;
+
+    public bool IsReturnGroupTrack => Type == TrackType.Return;
+
+    public bool IsMasterTrack => Type == TrackType.Master;
 
     public void AddDevice(IDevice device)
     {
