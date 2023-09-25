@@ -20,7 +20,9 @@ public class EmbeddedDatabaseContext : IEmbeddedDatabaseContext
             if (!isInitialized)
                 throw new InvalidOperationException("It is not possible to get the DocumentStore because the Embedded DB Server has not been started yet.");
 
-            return documentStore ?? EmbeddedServer.Instance.GetDocumentStore(options.Value.DocumentStoreName);
+            documentStore ??= EmbeddedServer.Instance.GetDocumentStore(options.Value.DocumentStoreName);
+
+            return documentStore;
         }
     }
 
