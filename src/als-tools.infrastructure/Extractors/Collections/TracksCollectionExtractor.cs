@@ -72,6 +72,8 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             bool? isMuted = default;
             bool? isSoloed = default;
 
+            //TODO: handle solo/cue in the Master / Cue track. Test Mute and Solo using an audio interface with more than 1 output (my Apogee)
+            // More info: https://www.ableton.com/en/manual/mixing/#soloing-and-cueing
             ExtractIsMutedProperty(trackNode, (result) => isMuted = !result);
             ExtractIsSoloedProperty(trackNode, (result) => isSoloed = result);
 

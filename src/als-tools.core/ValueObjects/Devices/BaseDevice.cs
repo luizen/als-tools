@@ -1,6 +1,6 @@
 namespace AlsTools.Core.ValueObjects.Devices;
 
-public abstract class BaseDevice : IDevice
+public abstract record BaseDevice : IDevice
 {
     public static IList<IDevice> EmptyDevicesList = Enumerable.Empty<IDevice>().ToList();
 

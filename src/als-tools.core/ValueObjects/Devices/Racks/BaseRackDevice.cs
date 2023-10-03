@@ -1,6 +1,6 @@
 namespace AlsTools.Core.ValueObjects.Devices.Racks;
 
-public abstract class BaseRackDevice : StockDevice
+public abstract record BaseRackDevice : StockDevice
 {
     protected BaseRackDevice(DeviceSort deviceSort) : base(deviceSort)
     {
