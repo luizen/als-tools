@@ -118,13 +118,13 @@ Since not all music producers (Ableton Live users) work in/with the same platfor
 
 ### Development dependencies
 
-The `als-tools` project is currently developed using [.NET 6](https://docs.microsoft.com/en-us/dotnet/). To build and run the tool from its source-code, the **.NET 6 SDK** must be installed on your computer. This includes the SDK itself and Runtime packages as well.
+The `als-tools` project is currently developed using [.NET 7](https://docs.microsoft.com/en-us/dotnet/). To build and run the tool from its source-code, the **.NET 7 SDK** must be installed on your computer. This includes the SDK itself and Runtime packages as well.
 
 Click [here](https://dotnet.microsoft.com/en-us/download) to visit the .NET download page.
 
 ## Tech stack
 
-- [.NET 6](https://docs.microsoft.com/en-us/dotnet/) console application
+- [.NET 7](https://docs.microsoft.com/en-us/dotnet/) console application
 - [RavenDB](http://ravendb.net) - Embedded NoSQL document database
 - [Serilog](http://serilog.net) - Logging library
 - [CommandLineParser](https://github.com/commandlineparser/commandline) - CLI parameters parsing
