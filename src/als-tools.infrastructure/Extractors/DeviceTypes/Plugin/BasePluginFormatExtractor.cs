@@ -17,22 +17,41 @@ public abstract class BasePluginFormatExtractor : IPluginFormatExtractor
 
     public virtual IDevice ExtractFromXml(XPathNavigator pluginDeviceNode)
     {
+        string pluginPath = string.Empty;
+
         logger.LogDebug("----");
         logger.LogDebug("Extracting {@PluginFormat} plugin device...", pluginFormat);
         var pluginName = pluginDeviceNode.SelectSingleNode(PluginNameXpath)!.Value;
         logger.LogDebug("Plugin found: {@PluginName} ", pluginName);
 
+        if (!string.IsNullOrWhiteSpace(PluginPathXpath))
+        {
+            var node = pluginDeviceNode.SelectSingleNode(PluginPathXpath);
+            pluginPath = node?.Value ?? string.Empty;
+        }
+
         var sort = GetPluginSort(pluginDeviceNode, pluginName);
-        var pluginDevice = new PluginDevice(sort, pluginFormat);
-        pluginDevice.Name = pluginName;
-        pluginDevice.UserName = pluginDeviceNode.SelectSingleNode(@"UserName/@Value")!.Value;
-        pluginDevice.Annotation = pluginDeviceNode.SelectSingleNode(@"Annotation/@Value")!.Value;
-        pluginDevice.Id = pluginDeviceNode.SelectSingleNode(@"@Id")!.ValueAsInt;
+        var pluginDevice = new PluginDevice(sort, pluginFormat, pluginPath)
+        {
+            Name = pluginName,
+            UserName = pluginDeviceNode.SelectSingleNode(@"UserName/@Value")!.Value,
+            Annotation = pluginDeviceNode.SelectSingleNode(@"Annotation/@Value")!.Value,
+            Id = pluginDeviceNode.SelectSingleNode(@"@Id")!.ValueAsInt,
+            IsOn = pluginDeviceNode.SelectSingleNode(@"On/Manual/@Value")!.ValueAsBoolean
+        };
 
         return pluginDevice;
     }
 
     protected abstract string PluginNameXpath { get; }
+
+    protected virtual string PluginPathXpath 
+    { 
+        get
+        {
+            return string.Empty;
+        }
+    }
 
     protected abstract DeviceSort GetPluginSort(XPathNavigator pluginDescNode, string pluginName);
 }

@@ -43,9 +43,8 @@ public static class LiveStockDeviceNodeNames
     public static string GetDeviceNameByNodeName(string nodeName)
     {
         var key = nodeName.ToUpperInvariant();
-        string? value;
 
-        if (stockDeviceNamesByNodeInternalName.TryGetValue(key, out value))
+        if (stockDeviceNamesByNodeInternalName.TryGetValue(key, out string? value))
             return value;
 
         return nodeName;

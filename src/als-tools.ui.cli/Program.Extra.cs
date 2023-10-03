@@ -1,26 +1,9 @@
-﻿using AlsTools.Core.Config;
-using AlsTools.Core.Interfaces;
-using AlsTools.Core.Services;
-using AlsTools.Core.ValueObjects;
-using AlsTools.Core.ValueObjects.Devices;
-using AlsTools.Infrastructure;
-using AlsTools.Infrastructure.Attributes;
-using AlsTools.Infrastructure.Extractors.Collections;
-using AlsTools.Infrastructure.Extractors.DeviceTypes;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.MaxForLive;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.Plugin;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockAudioEffects;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockInstruments;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockMidiEffects;
-using AlsTools.Infrastructure.Extractors.DeviceTypes.StockDevices.StockRacks;
-using AlsTools.Infrastructure.FileSystem;
-using AlsTools.Infrastructure.Handlers;
-using AlsTools.Infrastructure.Repositories;
-using AlsTools.Infrastructure.XmlNodeNames;
-using AlsTools.Ui.Cli.CliOptions;
+﻿using AlsTools.Infrastructure.Extractors;
+using AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
 namespace AlsTools.Ui.Cli;
+
+
 
 public partial class Program
 {
@@ -68,7 +51,7 @@ public partial class Program
 
         // Build configuration
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
+            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)!.FullName)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
 
@@ -81,6 +64,8 @@ public partial class Program
         // Add some helpers
         serviceCollection.AddSingleton<UserFolderHandler>(svcProvider =>
             new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
+
+        serviceCollection.AddSingleton<XpathExtractorHelper>();
 
         // MaxForLive Sort Extractors
         serviceCollection.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
@@ -98,7 +83,8 @@ public partial class Program
                      {
                          [PluginFormat.VST2] = new Vst2PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst2PluginFormatExtractor>>()),
                          [PluginFormat.VST3] = new Vst3PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst3PluginFormatExtractor>>()),
-                         [PluginFormat.AU] = new AuPluginFormatExtractor(svcProvider.GetRequiredService<ILogger<AuPluginFormatExtractor>>())
+                         [PluginFormat.AUv2] = new AuV2PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<AuV2PluginFormatExtractor>>())//,
+                                                                                                                                                  //  [PluginFormat.AUv3] = new AuV3PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<AuV3PluginFormatExtractor>>())
                      }
                 );
 
@@ -152,8 +138,27 @@ public partial class Program
             .AddSingleton<IScenesCollectionExtractor, ScenesCollectionExtractor>()
             .AddSingleton<ITracksCollectionExtractor, TracksCollectionExtractor>();
 
+        // Add CLI command handlers
+        serviceCollection
+            .AddSingleton<IOptionCommandHandler<InitDbOptions>, InitDbCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<ListOptions>, ListCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<CountOptions>, CountCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<LocateOptions>, LocateCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<PluginUsageOptions>, PluginUsageCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<PrintStatisticsOptions>, PrintStatisticsCommandHandler>()
+            .AddSingleton<ProjectsAndPluginsPrinter>();
+
         // DB options
         serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
+
+        // PlugInfo options
+        serviceCollection.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
+
+        // PlugScanning options
+        serviceCollection.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
+
+        // ParameterValues options
+        serviceCollection.Configure<ParameterValuesOptions>(configuration.GetSection(nameof(ParameterValuesOptions)));
 
         // Add app
         serviceCollection.AddTransient<App>();

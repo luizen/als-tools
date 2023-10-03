@@ -1,6 +1,6 @@
 namespace AlsTools.Core.ValueObjects.Devices.Racks;
 
-public abstract class BaseRackDevice : StockDevice
+public abstract record BaseRackDevice : StockDevice
 {
     protected BaseRackDevice(DeviceSort deviceSort) : base(deviceSort)
     {
@@ -10,7 +10,7 @@ public abstract class BaseRackDevice : StockDevice
         childrenDevices = new Lazy<List<IDevice>>();
     }
 
-    private Lazy<List<IDevice>> childrenDevices;
+    private readonly Lazy<List<IDevice>> childrenDevices;
 
     /// <summary>
     /// A Rack can have children devices...
@@ -22,6 +22,8 @@ public abstract class BaseRackDevice : StockDevice
         if (device == null)
             throw new ArgumentNullException(nameof(device));
 
+        device.DefineParentRack(IsOn);
+
         childrenDevices.Value.Add(device);
     }
 
@@ -30,4 +32,6 @@ public abstract class BaseRackDevice : StockDevice
         foreach (var device in devices)
             AddDevice(device);
     }
+
+    public override bool IsGroupDevice => true;
 }

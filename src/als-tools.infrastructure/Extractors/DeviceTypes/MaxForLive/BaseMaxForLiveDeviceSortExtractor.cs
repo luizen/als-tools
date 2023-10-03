@@ -24,7 +24,8 @@ public abstract class BaseMaxForLiveDeviceSortExtractor : IMaxForLiveDeviceSortE
             Id = deviceNode.SelectSingleNode(@"@Id")!.ValueAsInt,
             Name = GetMaxForLiveDeviceNameFromXmlFileRefNode(deviceNode),
             UserName = deviceNode.SelectSingleNode(@"UserName/@Value")!.Value,
-            Annotation = deviceNode.SelectSingleNode(@"Annotation/@Value")!.Value
+            Annotation = deviceNode.SelectSingleNode(@"Annotation/@Value")!.Value,
+            IsOn = deviceNode.SelectSingleNode(@"On/Manual/@Value")!.ValueAsBoolean
         };
 
         return device;

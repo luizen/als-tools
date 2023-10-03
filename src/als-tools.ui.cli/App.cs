@@ -1,79 +1,52 @@
-using AlsTools.Core.Entities;
-using AlsTools.Core.Interfaces;
-using AlsTools.Ui.Cli.CliOptions;
-using AlsTools.Ui.Cli.Exceptions;
-
 namespace AlsTools.Ui.Cli;
 
 public class App
 {
     private readonly ILogger<App> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
+    private readonly IOptions<PlugInfoOptions> plugInfoOptions;
+    private readonly IOptionCommandHandler<InitDbOptions> initDbCommandHandler;
+    private readonly IOptionCommandHandler<ListOptions> listCommandHandler;
+    private readonly IOptionCommandHandler<CountOptions> countCommandHandler;
+    private readonly IOptionCommandHandler<LocateOptions> locateCommandHandler;
+    private readonly IOptionCommandHandler<PluginUsageOptions> pluginUsageCommandHandler;
+    private readonly IOptionCommandHandler<PrintStatisticsOptions> printStatisticsCommandHandler;
 
-    public App(ILogger<App> logger, ILiveProjectAsyncService liveProjectService)
+    // private readonly IOptions<PlugScanningOptions> plugScanningOptions;
+
+    public App(
+        ILogger<App> logger,
+        ILiveProjectAsyncService liveProjectService,
+        IOptions<PlugInfoOptions> plugInfoOptions,
+        IOptionCommandHandler<InitDbOptions> initDbCommandHandler,
+        IOptionCommandHandler<ListOptions> listCommandHandler,
+        IOptionCommandHandler<CountOptions> countCommandHandler,
+        IOptionCommandHandler<LocateOptions> locateCommandHandler,
+        IOptionCommandHandler<PluginUsageOptions> pluginUsageCommandHandler,
+        IOptionCommandHandler<PrintStatisticsOptions> printStatisticsCommandHandler)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;
+        this.plugInfoOptions = plugInfoOptions;
+        this.initDbCommandHandler = initDbCommandHandler;
+        this.listCommandHandler = listCommandHandler;
+        this.countCommandHandler = countCommandHandler;
+        this.locateCommandHandler = locateCommandHandler;
+        this.pluginUsageCommandHandler = pluginUsageCommandHandler;
+        this.printStatisticsCommandHandler = printStatisticsCommandHandler;
+        // this.plugScanningOptions = plugScanningOptions;
     }
 
     public async Task Run(ParserResult<object> parserResult)
     {
         logger.LogDebug("Starting application...");
 
-        await parserResult.WithParsedAsync<InitDbOptions>(options => RunInitDb(options));
-        await parserResult.WithParsedAsync<CountOptions>(options => RunCount(options));
-        await parserResult.WithParsedAsync<ListOptions>(options => RunList(options));
-        await parserResult.WithParsedAsync<LocateOptions>(options => RunLocate(options));
+        await parserResult.WithParsedAsync<InitDbOptions>(options => initDbCommandHandler.Execute(options));
+        await parserResult.WithParsedAsync<CountOptions>(options => countCommandHandler.Execute(options));
+        await parserResult.WithParsedAsync<ListOptions>(options => listCommandHandler.Execute(options));
+        await parserResult.WithParsedAsync<PrintStatisticsOptions>(options => printStatisticsCommandHandler.Execute(options));
+        await parserResult.WithParsedAsync<PluginUsageOptions>(options => pluginUsageCommandHandler.Execute(options));
+        await parserResult.WithParsedAsync<LocateOptions>(options => locateCommandHandler.Execute(options));
         await parserResult.WithNotParsedAsync(errors => { throw new CommandLineParseException(errors); });
-    }
-
-    private async Task RunInitDb(InitDbOptions options)
-    {
-        logger.LogDebug("Initializing database...");
-
-        int count = 0;
-        if (options.Files.Any())
-            count = await liveProjectService.InitializeDbFromFilesAsync(options.Files);
-        else
-            count = await liveProjectService.InitializeDbFromFoldersAsync(options.Folders, options.IncludeBackups);
-
-        await Console.Out.WriteLineAsync($"\nTotal of projects loaded into DB: {count}");
-    }
-
-    private async Task RunCount(CountOptions options)
-    {
-        logger.LogDebug("Counting projects...");
-
-        int count = await liveProjectService.CountProjectsAsync();
-
-        await Console.Out.WriteLineAsync($"\nTotal of projects in the DB: {count}");
-    }
-
-    private async Task RunList(ListOptions options)
-    {
-        logger.LogDebug("Listing projects...");
-
-        var projects = await liveProjectService.GetAllProjectsAsync();
-        await PrintProjectsAndPlugins(projects);
-
-        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
-    }
-
-    private async Task RunLocate(LocateOptions options)
-    {
-        logger.LogDebug("Locating projects...");
-
-        var projects = await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginNamesToLocate);
-        await PrintProjectsAndPlugins(projects);
-
-        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
-    }
-
-    private async Task PrintProjectsAndPlugins(IEnumerable<LiveProject> projects)
-    {
-        logger.LogDebug("Printing projects and their details...");
-
-        var fullJsonData = JsonSerializer.Serialize<IEnumerable<LiveProject>>(projects, new JsonSerializerOptions { WriteIndented = true });
-        await Console.Out.WriteLineAsync(fullJsonData);
     }
 }

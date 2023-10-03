@@ -150,3 +150,2137 @@ Branches - Branches/MidiEffectBranch
 Midi Effect rack inside another Midi Effect rack -> 
 /Ableton/LiveSet/Tracks/MidiTrack[7]/DeviceChain/DeviceChain/Devices/MidiEffectGroupDevice/Branches/MidiEffectBranch[2]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiEffectGroupDevice/
 	Branches/MidiEffectBranch[1]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiPitcher
+
+
+
+
+
+
+
+=========================
+
+<AudioTrack Id="14">
+    <DeviceChain>
+        <DeviceChain>
+            <Devices>
+                <PluginDevice Id="4">
+                    <SourceContext>
+                        <Value>
+                            <BranchSourceContext Id="0">
+                                <OriginalFileRef />
+                                <BrowserContentPath Value="query:Plugins#VST3:Soundtoys:Little%20Plate" />
+                                <PresetRef />
+                                <BranchDeviceId Value="device:vst3:audiofx:5653544c-504c-386c-6974-746c65706c61" />
+                            </BranchSourceContext>
+                        </Value>
+                    </SourceContext>
+                    <PluginDesc>
+                        <Vst3PluginInfo Id="0">
+                            <Name Value="Little Plate" />
+                            <DeviceType Value="2" />
+                        </Vst3PluginInfo>
+                    </PluginDesc>
+                </PluginDevice>
+            </Devices>
+        </DeviceChain>
+    </DeviceChain>
+</AudioTrack>
+
+
+
+<AudioTrack Id="8">
+    <DeviceChain>
+        <DeviceChain>
+            <Devices>
+                <PluginDevice Id="4">
+                    <SourceContext>
+                        <Value>
+                            <BranchSourceContext Id="0">
+                                <OriginalFileRef />
+                                <BrowserContentPath Value="query:Plugins#VST:Local:Soundtoys:LittlePlate" />
+                                <PresetRef />
+                                <BranchDeviceId Value="device:vst:audiofx:1280330808?n=LittlePlate" />
+                            </BranchSourceContext>
+                        </Value>
+                    </SourceContext>
+                    <PluginDesc>
+                        <VstPluginInfo Id="0">
+                            <Path Value="/Library/Audio/Plug-Ins/VST/Soundtoys/LittlePlate.vst" />
+                            <PlugName Value="LittlePlate" />
+                        </VstPluginInfo>
+                    </PluginDesc>
+                </PluginDevice>
+            </Devices>
+        </DeviceChain>
+    </DeviceChain>
+</AudioTrack>
+
+
+
+<AuPluginInfo Id="0">
+	<WinPosX Value="54" />
+	<WinPosY Value="84" />
+	<ComponentType Value="1635085670" />
+	<ComponentSubType Value="1413960787" />
+	<ComponentManufacturer Value="1802721110" />
+	<Name Value="AR TG Mastering (s)" />
+	<Manufacturer Value="Waves" />
+	<ParameterCount Value="104" />
+	<Preset>
+		<AuPreset Id="1">
+			<OverwriteProtectionNumber Value="2817" />
+			<MpeEnabled Value="0" />
+			<MpeSettings>
+				<ZoneType Value="0" />
+				<FirstNoteChannel Value="1" />
+				<LastNoteChannel Value="15" />
+			</MpeSettings>
+			<ParameterSettings />
+			<IsOn Value="true" />
+			<PowerMacroControlIndex Value="-1" />
+			<PowerMacroMappingRange>
+				<Min Value="64" />
+				<Max Value="127" />
+			</PowerMacroMappingRange>
+			<IsFolded Value="false" />
+			<StoredAllParameters Value="true" />
+			<DeviceLomId Value="0" />
+			<DeviceViewLomId Value="0" />
+			<IsOnLomId Value="0" />
+			<ParametersListWrapperLomId Value="0" />
+			<Buffer>
+				
+			</Buffer>
+			<PresetRef>
+				<FilePresetRef Id="0">
+					<FileRef>
+						<RelativePathType Value="1" />
+						<RelativePath Value="../../../../Library/Caches/Ableton/Presets/AudioUnits/Waves/AR TG Mastering (s)/Default.aupreset" />
+						<Path Value="/Users/zenluiz/Library/Caches/Ableton/Presets/AudioUnits/Waves/AR TG Mastering (s)/Default.aupreset" />
+						<Type Value="2" />
+						<LivePackName Value="" />
+						<LivePackId Value="" />
+						<OriginalFileSize Value="0" />
+						<OriginalCrc Value="0" />
+					</FileRef>
+				</FilePresetRef>
+			</PresetRef>
+			<Name Value="Default" />
+			<Manufacturer Value="1802721110" />
+			<SubType Value="1413960787" />
+			<Type Value="1635085670" />
+		</AuPreset>
+	</Preset>
+	<IsUnusable Value="false" />
+</AuPluginInfo>
+
+
+
+
+
+
+var pluginsNotBeingUsed = [
+  {
+    "PluginName": "A1StereoControl",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "A1TriggerGate",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Aalto",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "ABL3x",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "BarkOfDog2",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "BazilleCM",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "BitterSweetV3-x64",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Decapitator",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "DLYM",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Driver",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "EchoBoy",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "EchoBoyJr",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "FB3100",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Filterjam",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "FuzzPlus3",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Gem EQ550",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Guitar Rig 5",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Guitar Rig 6",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Horror Box 2 Lite",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "hypercyclic",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Kickbox",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Knif Audio Knifonium",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Komplete Kontrol",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Kontakt",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "LaPetiteExcite",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "LittleMicroShift",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "LittlePlate",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "LittleRadiator",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "lkjb_Luftikus",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Loopcloud",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Maschine 2",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Maschine 2 FX",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Massive",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "minimoog V Original",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "minimoog V Original Efx",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "MJUCjr",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Multiply",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Nebula",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Neutron 3 Equalizer",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Newfangled EQuivocate",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Ozone 9 Dynamic EQ",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "PanCake2",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "PanMan",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Protoverb",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "PSP cmDelay",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "PunchBox",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Quadravox",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Radiator",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Raum",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Reaktor 6",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Reaktor 6 FX",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Replika",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "RX 7 Breath Control",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "RX 7 De-click",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "RX 7 De-clip",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "RX 7 De-hum",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "RX 7 Voice De-noise",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Saturation Knob",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "SGA1566",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "SimpleSide",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Sinnah",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Solid Bus Comp",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Sonalksis FreeG Stereo",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "STA Chorus",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "STA Delay",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "STA Enhancer",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "STA Flanger",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "STA Phaser",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "STA Preamp",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "StereoToolV3-x64",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Supercharger",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Synth1",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "TDR VOS SlickEQ",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "TR5 Black 76",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "TR5 Classic Clipper",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "TR5 EQual",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "TR5 One",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "TR5 VC-670",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "TubeSaturatorVintage",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "VacuumPro",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Vocal Doubler",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "WaveShell1-VST 13.0",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "WaveShell1-VST 14.0",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "WaveShell1-VST 14.1",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "WaveShell1-VST 14.12",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "WaveShell3-VST 13.0",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Wider",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "X8 Lite",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "XILS 3.2",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "Zebralette",
+    "PluginFormat": "VST2"
+  },
+  {
+    "PluginName": "A1StereoControl",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "A1TriggerGate",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ABL3x",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Acme Opticom XLA-3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ADPTR MetricAB",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ADPTR Sculpt",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ADPTR StreamLiner",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "AirMusic",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "AMEK EQ 200",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "AMEK Mastering Compressor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ampeg SVTVR Classic",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ANIMATE",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Backmask",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "BarkOfDog2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "BASSROOM",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Bazille",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "BBC Symphony Orchestra",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Bertom_EQCurveAnalyzer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Bettermaker EQ232D",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "BitterSweet",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Black Box Analog Design HG-2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Black Box Analog Design HG-2MS",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Boogex",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Buchla Easel V",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_2098 EQ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_bassdude",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_boom",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_cleansweep Pro",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_cleansweep V2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_console AMEK 9099",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_console Focusrite SC",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_console N",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_console SSL 4000 G",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_console SSL 9000 J",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_delay2500",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_digital V3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_digital V3 mix",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_distorange",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_greenscreamer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_limiter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_masterdesk",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_masterdesk Classic",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_masterdesk Pro",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_masterdesk True Peak",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_meter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_oberhausen",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_opto",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_refinement",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_rockergain100",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_rockrack V3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_rockrack V3 Player",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_rooMS",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_saturator V2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_solo",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_stereomaker",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_subfilter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_subsynth",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_townhouse Buss Compressor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_tuner",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "bx_yellowdrive",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ChopSuey",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Chorus JUN-6",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ChowMatrix",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ChowMultiTool",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "CHOWTapeModel",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ConvologyXT",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Correlometer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Crystallizer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Dangerous BAX EQ Master",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Dangerous BAX EQ Mix",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DC1A3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Decapitator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DeClick2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DeClip2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DeHum2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DeNoise2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Dirty LA",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Dirty Tape",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "dpMeter5",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Drawmer S73",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Driftmaker",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Driver",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DrumNet",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DS Tantra 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DS Thorn",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "DSEQ3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Dumpster Fire",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Dustbin",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Dystroyed",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "EchoBoy",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "EchoBoyJr",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia alpha master",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia alpha mix",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia karacter master",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia karacter mix",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia mpressor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia museq master",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia museq mix",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia niveau filter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia nvelope",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "elysia phils cascade",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "EnergyPanner",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Expanse",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "FabFilter Pro-Q 3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "FB3100",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "FB3300",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "fiedler audio stage",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Filter MINI",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Filter MS-20",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Filterjam",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Filterstep",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Flux Mini 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "FM8",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Freak",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "FreeAMP",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Fresh Air",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Frontier",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "FuzzPlus3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Gem EQ550",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Gem Mod",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "GSatPlus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Guitar Rig 6",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HoRNetVHS",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Horror Box 2 Lite",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HY-Filter4 free",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HY-MPS2 free",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HY-POLY free",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HY-RPE2 free",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HY-SEQ32_free",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HY-Slicer free",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "HY-Slicer2 free",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Insight 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ISOL8",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "IVGI2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Kick 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Kickbox",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Kickstart 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Knif Audio Knifonium",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Komplete Kontrol",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Kontakt",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Kontakt 7",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Krush",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "LABS",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lagrange",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "LaPetiteExcite",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Latency Delay",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "LEVELS",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 354E",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 50 Buss",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 50 Channel",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 6X-500",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 7X-500",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 80 Bus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 80 Channel",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell 902 De-esser",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell ChannelX",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell MBC",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell PEX-500",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell SBC",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Lindell TE-100",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "LittleMicroShift",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "LittlePlate",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "LittleRadiator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "lkjb_Luftikus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "LoFi - Pitch Dropout",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Loopcloud",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Maag EQ2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Maag EQ4",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MAnalyzer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Marvel GEQ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Maschine 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Massive",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MAutoDynamicEq",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MAutopan",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MBitFun",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MCharmVerb",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MComb",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MCompressor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MConvolutionEZ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MDynamicEq",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MEqualizer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MFlanger",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MFreeformPhase",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MFreqShifter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Millennia NSEQ-2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Mini V3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MISHBY",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MIXROOM",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MJUCjr",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MLoudnessAnalyzer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MMetronome",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MMultiAnalyzer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MNoiseGenerator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MNotepad",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MOscillator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MOscilloscope",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MPhaser",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MRingModulator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MSaturator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MSED",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MSpectralDelay",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MSpectralPan",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MStereoExpander",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MStereoScope",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MTremolo",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MTuner",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Multiply",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MUtility",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MVibrato",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "mvMeter2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MWaveFolder",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "MWaveShaper",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Nebula",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Nectar 3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "NEOLD BIG AL",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "NEOLD U17",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "NEOLD U2A",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "NEOLD V76U73",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "NEOLD WARBLE",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neoverb",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Compressor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Elements",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Equalizer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Exciter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Gate",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Sculptor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Transient Shaper",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Neutron 3 Visual Mixer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Newfangled EQuivocate",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "occularScope",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "OldSkoolVerb",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Omega 458A",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Omega TWK",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Oscarizor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Oszillos Mega Scope",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "OTT",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Dynamic EQ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Dynamics",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Equalizer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Exciter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Imager",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Low End Focus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Master Rebalance",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Match EQ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Maximizer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Spectral Shaper",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Vintage Compressor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Vintage EQ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Vintage Limiter",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone 9 Vintage Tape",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ozone Imager 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Panflow",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "PanMan",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "PeakEater",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Pendulate",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Phasis",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "PlaceIt",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "PluginDoctor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Podolski",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Pro Audio DSP DSM V3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Protoverb",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Purple Audio MC 77",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Quadravox",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Radiator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Rare",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Raum",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Reaktor 6",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "REALIZER",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "REFERENCE",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "REFSEND",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Regressif",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Relay",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Replika",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Rev PLATE-140",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Ruina",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 10 De-click",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 10 De-clip",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 10 De-hum",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 10 De-reverb",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 10 Repair Assistant",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 10 Voice De-noise",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 7 Breath Control",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 7 De-click",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 7 De-clip",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 7 De-hum",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 7 Voice De-noise",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "RX 8 Breath Control",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Saturation Knob",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Schoeps Double MS",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Shadow Hills Class A Mastering Comp",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Shadow Hills Mastering Compressor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SimpleSide",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Sinc Vereor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Soft Limit",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Solid Bus Comp",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Sound Delay",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SoundID Reference VST3 Plugin",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPAN",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPAN Plus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL Attacker Plus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL EQ Ranger Plus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL Free Ranger",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL HawkEye",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL IRON",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL Passeq",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL Passeq Single",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL PQ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL Transient Designer Plus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL TwinTube",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SPL Vitalizer MK2-T",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "STA Chorus",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "STA Delay",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "STA Enhancer",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "STA Flanger",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "STA Phaser",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "STA Preamp",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "StandardCLIP",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Stereo Touch",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Supercharger",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "SuperPlate",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Surge XT",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Surge XT Effects",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Svep",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TAL-Chorus-LX",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TAL-Filter-2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TAL-NoiseMaker",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TAL-Reverb-4",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TAL-U-NO-LX-V2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TAL-Vocoder-2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tape",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tape Cassette 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tape MELLO-FI",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tape Multi Track",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TB_GonioMeter_v1",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR Kotelnikov GE",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR Limiter 6 GE",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR Molot GE",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR Molotok",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR Nova",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR Nova GE",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR SlickEQ M",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TDR VOS SlickEQ",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tempo Delay",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tonal Balance Control 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TR5 Black 76",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TR5 Classic Clipper",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TR5 Comprexxor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TR5 EQual",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TR5 One",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TR5 Tape Machine 24",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TR5 VC-670",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Transient Shaper",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TripleCheese",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TSAR-1R Reverb",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tube Amp",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Tube Delay",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "TubeSaturatorVintage",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "uaudio_fairchild_660",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "uaudio_fairchild_670",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "uaudio_teletronix_la-2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "uaudio_teletronix_la-2a_gray",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "uaudio_teletronix_la-2a_silver",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Bass Mint",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio BYOME",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Dent 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Fault",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio G8",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Indent 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio lo-fi-af",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Needlepoint",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Silo",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio SpecOps",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Triad",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Unfiltered Audio Zip",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ValhallaFreqEcho",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ValhallaPlate",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ValhallaSpaceModulator",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ValhallaSupermassive",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Valves",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Vertigo VSC-2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Vertigo VSM-3",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Vinyl",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Virt Vereor",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Vocal Doubler",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Voltage Modular",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Voltage Modular FX",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "WaveShell1-VST3 13.0",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "WaveShell1-VST3 14.0",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "WaveShell1-VST3 14.1",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "WaveShell1-VST3 14.12",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "WaveShell3-VST3 13.0",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "WEDGE FORCE Matcha",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Wider",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "Youlean Loudness Meter 2",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ZebraCM",
+    "PluginFormat": "VST3"
+  },
+  {
+    "PluginName": "ChopSuey",
+    "PluginFormat": "AU"
+  },
+  {
+    "PluginName": "PunchBox",
+    "PluginFormat": "AU"
+  },
+  {
+    "PluginName": "Synth1",
+    "PluginFormat": "AU"
+  }
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+======================= 
+
+FOR CHAT GPT
+
+public class LiveProject
+{
+    public string Name { get; set; }
+    public List<Track> Tracks { get; set; }
+}
+
+public class Track
+{
+    public string UserName { get; set; }
+    public List<PluginDevice> Plugins { get; set; }
+}
+
+public class PluginDevice
+{
+    public string Name { get; set; }
+    public PluginFormat Format { get; }   
+}
+
+public enum PluginFormat
+{
+    AU = 1,
+    VST2 = 2,
+    VST3 = 3
+}

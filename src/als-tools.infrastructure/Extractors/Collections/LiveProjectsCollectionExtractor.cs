@@ -2,17 +2,25 @@ using AlsTools.Core.Entities;
 
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
+/// <summary>
+/// Interface defining a collection extractor specific for Live Projects
+/// </summary>
 public interface ILiveProjectsCollectionExtractor : ICollectionExtractor<LiveProject>
 {
 }
 
+/// <summary>
+/// Collection extractor specific for Live Projects
+/// </summary>
 public class LiveProjectsCollectionExtractor : ILiveProjectsCollectionExtractor
 {
     private readonly ILogger<LiveProjectsCollectionExtractor> logger;
+    private readonly XpathExtractorHelper xpathExtractorHelper;
 
-    public LiveProjectsCollectionExtractor(ILogger<LiveProjectsCollectionExtractor> logger)
+    public LiveProjectsCollectionExtractor(ILogger<LiveProjectsCollectionExtractor> logger, XpathExtractorHelper xpathExtractorHelper)
     {
         this.logger = logger;
+        this.xpathExtractorHelper = xpathExtractorHelper;
     }
 
     public IReadOnlyList<LiveProject> ExtractFromXml(XPathNavigator nav)
@@ -20,40 +28,33 @@ public class LiveProjectsCollectionExtractor : ILiveProjectsCollectionExtractor
         logger.LogDebug("----");
         logger.LogDebug("Extracting Live Project from XML...");
 
-        var project = new LiveProject()
-        {
-            Creator = GetProjectAttribute<string>(nav, "Creator")!,
-            MajorVersion = GetProjectAttribute<string>(nav, "MajorVersion")!,
-            MinorVersion = GetProjectAttribute<string>(nav, "MinorVersion")!,
-            SchemaChangeCount = GetProjectAttribute<int>(nav, "SchemaChangeCount"),
-            Tempo = GetMasterTrackMixerAttribute<double>(nav, "Tempo"),
-            TimeSignature = GetMasterTrackMixerAttribute<int>(nav, "TimeSignature"),
-            GlobalGrooveAmount = GetMasterTrackMixerAttribute<double>(nav, "GlobalGrooveAmount")
-        };
+        var project = new LiveProject();
+
+        TryGetProjectAttribute<string>(nav, "Creator", (result) => project.Creator = result);
+        TryGetProjectAttribute<string>(nav, "MajorVersion", (result) => project.MajorVersion = result);
+        TryGetProjectAttribute<string>(nav, "MinorVersion", (result) => project.MinorVersion = result);
+        TryGetProjectAttribute<int>(nav, "SchemaChangeCount", (result) => project.SchemaChangeCount = result);
+        TryGetMasterTrackMixerAttribute<double>(nav, "Tempo", (result) => project.Tempo = result);
+        TryGetMasterTrackMixerAttribute<int>(nav, "TimeSignature", (result) => project.TimeSignature = result);
+        TryGetMasterTrackMixerAttribute<double>(nav, "GlobalGrooveAmount", (result) => project.GlobalGrooveAmount = result);
 
         return new List<LiveProject>() { project };
     }
 
-    private T GetMasterTrackMixerAttribute<T>(XPathNavigator nav, string attribute)
+    private void TryGetMasterTrackMixerAttribute<T>(XPathNavigator nav, string attribute, Action<T> successAction)
     {
-        var expression = $"/Ableton/LiveSet/MasterTrack/DeviceChain/Mixer/{attribute}/Manual/@Value";
-        return GetXpathValue<T>(nav, expression);
+        string[] expressionsToTry =
+        {
+            $"/Ableton/LiveSet/MasterTrack/DeviceChain/Mixer/{attribute}/Manual/@Value",
+            $"/Ableton/LiveSet/MasterTrack/MasterChain/Mixer/{attribute}/ArrangerAutomation/Events/*/@Value"
+        };
+
+        xpathExtractorHelper.TryGetOneOfXpathValues(nav, expressionsToTry, successAction);
     }
 
-    private T GetProjectAttribute<T>(XPathNavigator nav, string attribute)
+    private void TryGetProjectAttribute<T>(XPathNavigator nav, string attribute, Action<T> successAction)
     {
         var expression = $"/Ableton/@{attribute}";
-        return GetXpathValue<T>(nav, expression);
-    }
-
-    //TODO: extract this method to some util class
-    private T GetXpathValue<T>(XPathNavigator nav, string expression)
-    {
-        var node = nav.SelectSingleNode(expression);
-        if (node == null)
-            return default(T)!;
-
-        var result = (T)node.ValueAs(typeof(T));
-        return result;
+        xpathExtractorHelper.TryGetXpathValue(nav, expression, successAction);
     }
 }

@@ -2,10 +2,17 @@ using AlsTools.Core.ValueObjects;
 
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
+
+/// <summary>
+/// Interface defining a collection extractor specific for Locators
+/// </summary>
 public interface ILocatorsCollectionExtractor : ICollectionExtractor<Locator>
 {
 }
 
+/// <summary>
+/// Collection extractor specific for Locators
+/// </summary>
 public class LocatorsCollectionExtractor : ILocatorsCollectionExtractor
 {
     private readonly ILogger<LocatorsCollectionExtractor> logger;

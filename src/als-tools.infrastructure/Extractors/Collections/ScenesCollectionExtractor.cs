@@ -2,10 +2,16 @@ using AlsTools.Core.ValueObjects;
 
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
+/// <summary>
+/// Interface defining a collection extractor specific for Scenes
+/// </summary>
 public interface IScenesCollectionExtractor : ICollectionExtractor<Scene>
 {
 }
 
+/// <summary>
+/// Collection extractor specific for Scenes
+/// </summary>
 public class ScenesCollectionExtractor : IScenesCollectionExtractor
 {
     private readonly ILogger<ScenesCollectionExtractor> logger;

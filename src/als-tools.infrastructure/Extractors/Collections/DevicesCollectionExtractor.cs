@@ -5,10 +5,16 @@ using AlsTools.Infrastructure.XmlNodeNames;
 
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
+/// <summary>
+/// Interface defining a collection extractor specific for IDevices
+/// </summary>
 public interface IDevicesCollectionExtractor : ICollectionExtractor<IDevice>
 {
 }
 
+/// <summary>
+/// Collection extractor specific for IDevices
+/// </summary>
 public class DevicesCollectionExtractor : IDevicesCollectionExtractor
 {
     private readonly ILogger<DevicesCollectionExtractor> logger;
@@ -84,9 +90,8 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         logger.LogDebug("Getting device type by device node name ({DeviceNodeName})...", deviceNodeName);
 
         var deviceNodeNameUpper = deviceNodeName.ToUpperInvariant();
-        DeviceType type;
 
-        if (deviceTypesByNodeDesc.TryGetValue(deviceNodeNameUpper, out type))
+        if (deviceTypesByNodeDesc.TryGetValue(deviceNodeNameUpper, out DeviceType type))
             return type;
 
         return DeviceType.Stock;

@@ -1,7 +1,4 @@
-﻿using AlsTools.Core.Interfaces;
-using AlsTools.Ui.Cli.CliOptions;
-
-namespace AlsTools.Ui.Cli;
+﻿namespace AlsTools.Ui.Cli;
 
 public partial class Program
 {
@@ -13,7 +10,7 @@ public partial class Program
         {
             config.CaseInsensitiveEnumValues = true;
             config.HelpWriter = Console.Error;
-        }).ParseArguments<InitDbOptions, CountOptions, ListOptions, LocateOptions>(args);
+        }).ParseArguments<InitDbOptions, CountOptions, ListOptions, PrintStatisticsOptions, PluginUsageOptions, LocateOptions>(args);
 
         if (parserResult.Tag == ParserResultType.NotParsed)
         {

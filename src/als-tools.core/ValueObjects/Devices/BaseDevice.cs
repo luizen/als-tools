@@ -1,6 +1,6 @@
 namespace AlsTools.Core.ValueObjects.Devices;
 
-public abstract class BaseDevice : IDevice
+public abstract record BaseDevice : IDevice
 {
     public static IList<IDevice> EmptyDevicesList = Enumerable.Empty<IDevice>().ToList();
 
@@ -23,4 +23,19 @@ public abstract class BaseDevice : IDevice
     public string Annotation { get; set; } = string.Empty;
 
     public DeviceFamily Family { get; protected set; }
+
+    public bool IsOn { get; set; } = true;
+
+    public bool HasParentRack => ParentRackDevice.HasValue;
+
+    public ParentDeviceDescriptor? ParentRackDevice { get; private set; } = null;
+
+    public bool IsEnabled => IsOn && (!ParentRackDevice.HasValue || ParentRackDevice.Value.IsOn);
+
+    public virtual bool IsGroupDevice => false;
+
+    public void DefineParentRack(bool isParentRackOn)
+    {
+        ParentRackDevice = new ParentDeviceDescriptor(isParentRackOn);
+    }
 }

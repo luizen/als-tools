@@ -7,7 +7,6 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
 {
     private readonly Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors;
     private readonly IDictionary<string, DeviceType> deviceTypesByNodeDesc;
-
     public abstract string XPathDevicesSelector { get; }
 
     public BaseRackDeviceExtractor(ILogger<BaseRackDeviceExtractor> logger, Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors, IDictionary<string, DeviceType> deviceTypesByNodeDesc) : base(logger)
@@ -18,13 +17,13 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
 
     public override IDevice ExtractFromXml(XPathNavigator deviceNode)
     {
-        var device = (BaseRackDevice)base.ExtractFromXml(deviceNode);
+        var rackDevice = (BaseRackDevice)base.ExtractFromXml(deviceNode);
         var devicesFromBranches = GetDevicesFromCommonBranches(deviceNode);
         var devicesFromReturnBranches = GetDevicesFromReturnBranches(deviceNode);
-        device.AddDevices(devicesFromBranches);
-        device.AddDevices(devicesFromReturnBranches);
+        rackDevice.AddDevices(devicesFromBranches);
+        rackDevice.AddDevices(devicesFromReturnBranches);
 
-        return device;
+        return rackDevice;
     }
 
     protected IList<IDevice> GetDevicesFromCommonBranches(XPathNavigator nav)
@@ -33,19 +32,20 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
         logger.LogDebug("Exctracting Rack device chains from XML...");
 
         var devices = new List<IDevice>();
-        var devicesIterator = nav.Select(XPathDevicesSelector);
+        var devicesInBranchIterator = nav.Select(XPathDevicesSelector);
 
         // Iterate through all other devices
-        while (devicesIterator.MoveNext())
+        while (devicesInBranchIterator.MoveNext())
         {
-            if (devicesIterator.Current == null)
+            if (devicesInBranchIterator.Current == null)
                 continue;
 
-            var deviceNode = devicesIterator.Current;
-            var device = ExtractDeviceFromNode(deviceNode);
-            devices.Add(device);
+            var deviceNode = devicesInBranchIterator.Current;
+            var extractedDevice = ExtractDeviceFromNode(deviceNode);
 
-            if (device is BaseRackDevice rackDevice)
+            devices.Add(extractedDevice);
+
+            if (extractedDevice is BaseRackDevice rackDevice)
             {
                 var childen = rackDevice.ChildrenDevices;
                 devices.AddRange(childen.AsEnumerable());
@@ -57,6 +57,7 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
 
     protected virtual IList<IDevice> GetDevicesFromReturnBranches(XPathNavigator nav)
     {
+        //TODO: continue
         return BaseDevice.EmptyDevicesList;
     }
 

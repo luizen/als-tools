@@ -6,6 +6,8 @@ public abstract class BaseTrack : ITrack
 {
     public const int DefaultGroupId = -1;
 
+    private const int UndefinedTrackGroupId = -1;
+
     public BaseTrack(TrackType type)
     {
         // stockDevices = new Lazy<List<StockDevice>>();
@@ -43,15 +45,31 @@ public abstract class BaseTrack : ITrack
 
     public string Annotation { get; set; } = string.Empty;
 
-    public GroupTrack? ParentGroupTrack { get; set; }
+    // public GroupTrack? ParentGroupTrack { get; set; }
 
-    public bool IsPartOfGroup => ParentGroupTrack != null;
+    // public bool IsPartOfGroup => ParentGroupTrack != null;
+
+    public bool IsPartOfGroup => TrackGroupId != UndefinedTrackGroupId;
 
     public TrackDelay TrackDelay { get; set; }
 
     public int TrackGroupId { get; set; }
 
     public bool? IsFrozen { get; set; }
+
+    public bool? IsMuted { get; set; }
+
+    public bool? IsSoloed { get; set; }
+
+    public bool IsGroupTrack => Type == TrackType.Group;
+
+    public bool IsAudioTrack => Type == TrackType.Audio;
+
+    public bool IsMidiTrack => Type == TrackType.Midi;
+
+    public bool IsReturnGroupTrack => Type == TrackType.Return;
+
+    public bool IsMasterTrack => Type == TrackType.Master;
 
     public void AddDevice(IDevice device)
     {

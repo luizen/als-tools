@@ -1,5 +1,8 @@
 using AlsTools.Core.Entities;
+using AlsTools.Core.Enums;
 using AlsTools.Core.Interfaces;
+using AlsTools.Core.ValueObjects;
+using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.Services;
 
@@ -49,6 +52,64 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         await repository.InsertAsync(projects);
         return projects.Count;
     }
+
+
+    public async Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availableInstalledPlugins, PluginUsageSelection selection)
+    {
+        // var pluginDevicePathEqualityComparer = new PluginDevicePathEqualityComparer();
+        var pluginDeviceExactMatchEqualityComparer = new PluginDeviceEqualityComparer(true);
+        var pluginDeviceFuzzyMatchEqualityComparer = new PluginDeviceEqualityComparer(false);
+        var pluginNameEqualityComparer = new PluginDeviceNameFuzzyEqualityComparer();
+
+        var projects = await GetAllProjectsAsync();
+        var pluginsBeingUsed = projects
+            .Where(proj =>
+                proj.Tracks.Any(track =>
+                    track.Plugins.Any())
+            )
+            .SelectMany(proj => 
+                proj.Tracks.SelectMany(track => track.Plugins),
+                (proj, plugin) => plugin with { }
+            )
+            .Distinct(pluginDeviceExactMatchEqualityComparer)
+            .ToList();
+
+        // var namesOfPluginsBeingUsed = projects
+        //     .Where(proj =>
+        //         proj.Tracks.Any(track =>
+        //             track.Plugins.Any())
+        //     )
+        //     .SelectMany(proj =>
+        //         proj.Tracks.SelectMany(track => track.Plugins),
+        //         (_, plugin) => plugin.Name
+        //     )
+        //     .Distinct()
+        //     .ToList();
+
+        // if (selection == PluginUsageSelection.UsedOnly)
+        //     return namesOfPluginsBeingUsed;
+
+        var pluginsNotBeingUsed = new List<PluginDevice>();
+
+        // Only plugins not being used
+        foreach (var availablePlugin in availableInstalledPlugins)
+        {
+            if (!pluginsBeingUsed.Any(plugin => pluginDeviceFuzzyMatchEqualityComparer.Equals(plugin, availablePlugin)))
+                // if (!namesOfPluginsBeingUsed.Any(pluginName => pluginNameEqualityComparer.Equals(pluginName, availablePlugin.Name)))
+                pluginsNotBeingUsed.Add(availablePlugin with { });
+        }
+
+        return pluginsNotBeingUsed;
+    }
+
+
+// VST2 = LittlePlate, lots of details in the project file
+// VST3 = Little Plate, very few details in the project file
+// In both plugin Info.plist files there is only LittlePlate.
+// Where the hell does Ableton get the plugin name from?
+
+// USE FUZZY SEARCH!
+
 
     private IReadOnlyList<LiveProject> LoadProjectsFromSetFiles(IEnumerable<string> filePaths)
     {

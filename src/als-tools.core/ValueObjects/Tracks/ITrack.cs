@@ -90,4 +90,39 @@ public interface ITrack
     /// </summary>
     /// <param name="devices">The list of device objects</param>
     void AddDevices(IEnumerable<IDevice> devices);
+
+    /// <summary>
+    /// Whether the track is muted or not
+    /// </summary>
+    bool? IsMuted { get; set; }
+
+    /// <summary>
+    /// Wehther the track is soloed or not
+    /// </summary>
+    bool? IsSoloed { get; set; }
+
+    /// <summary>
+    /// Helper property that tells whether this track is a Group track
+    /// </summary>
+    bool IsGroupTrack { get; }
+
+    /// <summary>
+    /// Helper property that tells whether this track is a Audio track
+    /// </summary>
+    bool IsAudioTrack { get; }
+
+    /// <summary>
+    /// Helper property that tells whether this track is a Midi track
+    /// </summary>
+    bool IsMidiTrack { get; }
+
+    /// <summary>
+    /// Helper property that tells whether this track is a Return track
+    /// </summary>
+    bool IsReturnGroupTrack { get; }
+
+    /// <summary>
+    /// Helper property that tells whether this track is a Master track
+    /// </summary>
+    bool IsMasterTrack { get; }
 }
