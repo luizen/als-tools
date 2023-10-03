@@ -54,39 +54,49 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     }
 
 
-    public async Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection)
+    public async Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availableInstalledPlugins, PluginUsageSelection selection)
     {
         // var pluginDevicePathEqualityComparer = new PluginDevicePathEqualityComparer();
-        var pluginDeviceEqualityComparer = new PluginDeviceEqualityComparer();
+        var pluginDeviceExactMatchEqualityComparer = new PluginDeviceEqualityComparer(true);
+        var pluginDeviceFuzzyMatchEqualityComparer = new PluginDeviceEqualityComparer(false);
+        var pluginNameEqualityComparer = new PluginDeviceNameFuzzyEqualityComparer();
 
         var projects = await GetAllProjectsAsync();
         var pluginsBeingUsed = projects
             .Where(proj =>
-                // proj.Tracks != null && 
-                // proj.Tracks.Any() && 
                 proj.Tracks.Any(track =>
-                    // track.Plugins != null && 
                     track.Plugins.Any())
             )
             .SelectMany(proj => 
                 proj.Tracks.SelectMany(track => track.Plugins),
-                (proj, plugin) => (PluginDevice)plugin.Clone()
+                (proj, plugin) => plugin with { }
             )
-            //.Distinct(pluginDevicePathEqualityComparer)
-            .Distinct(pluginDeviceEqualityComparer)
+            .Distinct(pluginDeviceExactMatchEqualityComparer)
             .ToList();
 
-        if (selection == PluginUsageSelection.UsedOnly)
-            return pluginsBeingUsed;
+        // var namesOfPluginsBeingUsed = projects
+        //     .Where(proj =>
+        //         proj.Tracks.Any(track =>
+        //             track.Plugins.Any())
+        //     )
+        //     .SelectMany(proj =>
+        //         proj.Tracks.SelectMany(track => track.Plugins),
+        //         (_, plugin) => plugin.Name
+        //     )
+        //     .Distinct()
+        //     .ToList();
+
+        // if (selection == PluginUsageSelection.UsedOnly)
+        //     return namesOfPluginsBeingUsed;
 
         var pluginsNotBeingUsed = new List<PluginDevice>();
 
         // Only plugins not being used
-        foreach (var availablePlugin in availablePlugins)
+        foreach (var availablePlugin in availableInstalledPlugins)
         {
-            // if (!pluginsBeingUsed.Any(plugin => pluginDevicePathEqualityComparer.Equals(plugin, availablePlugin)))
-            if (!pluginsBeingUsed.Any(plugin => pluginDeviceEqualityComparer.Equals(plugin, availablePlugin)))
-                pluginsNotBeingUsed.Add((PluginDevice)availablePlugin.Clone());
+            if (!pluginsBeingUsed.Any(plugin => pluginDeviceFuzzyMatchEqualityComparer.Equals(plugin, availablePlugin)))
+                // if (!namesOfPluginsBeingUsed.Any(pluginName => pluginNameEqualityComparer.Equals(pluginName, availablePlugin.Name)))
+                pluginsNotBeingUsed.Add(availablePlugin with { });
         }
 
         return pluginsNotBeingUsed;
