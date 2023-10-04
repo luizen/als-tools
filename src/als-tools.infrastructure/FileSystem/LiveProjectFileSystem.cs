@@ -10,43 +10,42 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
     {
         this.userFolderHandler = userFolderHandler;
     }
-    
-    public IReadOnlyList<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
+
+    public IReadOnlyList<string> GetProjectFilesFullPathFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
     {
-        var result = new List<FileInfo>();
+        var result = new List<string>();
 
         foreach (var folderPath in folderPaths)
         {
-            var files = GetProjectFilesFromSingleDirectory(folderPath, includeBackupFolder);
-            result.AddRange(files);
+            var fileFullPaths = GetProjectFilesFullPathFromSingleDirectory(folderPath, includeBackupFolder);
+            result.AddRange(fileFullPaths);
         }
 
         return result;
     }
 
-    public IReadOnlyList<FileInfo> LoadProjectFilesFromSetFiles(IEnumerable<string> setFilePaths)
+    public IReadOnlyList<string> GetProjectFilesFullPathFromSetFiles(IEnumerable<string> setFilePaths)
     {
-        var result = new List<FileInfo>();
+        var result = new List<string>();
 
         foreach (var filePath in setFilePaths)
         {
             var file = GetProjectFileFromSetFile(filePath);
-            result.Add(file);
+            result.Add(file.FullName);
         }
 
         return result;
     }
 
-    private IReadOnlyCollection<FileInfo> GetProjectFilesFromSingleDirectory(string folderPath, bool includeBackupFolder)
+    private IReadOnlyCollection<string> GetProjectFilesFullPathFromSingleDirectory(string folderPath, bool includeBackupFolder)
     {
         var path = userFolderHandler.GetFullPath(folderPath);
-        var dirInfo = new DirectoryInfo(path);
-        var files = dirInfo.GetFiles("*.als", new EnumerationOptions() { RecurseSubdirectories = true }).AsEnumerable();
+        var fullPaths = Directory.EnumerateFiles(path, "*.als", SearchOption.AllDirectories);
 
         if (!includeBackupFolder)
-            files = files.Where(x => !x.FullName.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
+            fullPaths = fullPaths.Where(path => !path.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
 
-        return files.ToList();
+        return fullPaths.ToList();
     }
 
     private FileInfo GetProjectFileFromSetFile(string setFilePath)
