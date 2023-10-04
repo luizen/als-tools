@@ -1,7 +1,6 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Enums;
 using AlsTools.Core.Interfaces;
-using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.Services;
@@ -113,25 +112,25 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 
     private IReadOnlyList<LiveProject> LoadProjectsFromSetFiles(IEnumerable<string> filePaths)
     {
-        var files = fs.LoadProjectFilesFromSetFiles(filePaths);
+        var files = fs.GetProjectFilesFullPathFromSetFiles(filePaths);
 
         return ExtractProjectsFromFiles(files);
     }
 
     private IReadOnlyList<LiveProject> LoadProjectsFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
     {
-        var files = fs.LoadProjectFilesFromDirectories(folderPaths, includeBackupFolder);
+        var files = fs.GetProjectFilesFullPathFromDirectories(folderPaths, includeBackupFolder);
 
         return ExtractProjectsFromFiles(files);
     }
 
-    private IReadOnlyList<LiveProject> ExtractProjectsFromFiles(IEnumerable<FileInfo> files)
+    private IReadOnlyList<LiveProject> ExtractProjectsFromFiles(IEnumerable<string> filePaths)
     {
         var projects = new List<LiveProject>();
 
-        foreach (var f in files)
+        foreach (var filePath in filePaths)
         {
-            var project = extractor.ExtractProjectFromFile(f);
+            var project = extractor.ExtractProjectFromFile(filePath);
             projects.Add(project);
         }
 

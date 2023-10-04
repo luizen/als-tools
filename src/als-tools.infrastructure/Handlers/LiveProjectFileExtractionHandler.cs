@@ -28,13 +28,14 @@ public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandle
         this.locatorExtractionHandler = locatorExtractionHandler;
     }
 
-    public LiveProject ExtractProjectFromFile(FileInfo file)
+    public LiveProject ExtractProjectFromFile(string projectFileFullPath)
     {
         logger.LogDebug("=========================================================================");
-        logger.LogTrace("Start: ExtractProjectFromFile. File: {@File}", file.FullName);
+        logger.LogTrace("Start: ExtractProjectFromFile. File: {@File}", projectFileFullPath);
 
         logger.LogTrace("Opening project file as read-only...");
-        using (FileStream originalFileStream = file.OpenRead())
+
+        using (FileStream originalFileStream = File.OpenRead(projectFileFullPath))
         {
             logger.LogTrace("Unzipping file into memory...");
             using (GZipStream decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
@@ -47,7 +48,8 @@ public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandle
                     var nav = xPathDoc.CreateNavigator();
 
                     logger.LogTrace("Calling the entry point: ExtractProject()...");
-                    var project = ExtractProject(file.Name, file.FullName, nav);
+
+                    var project = ExtractProject(Path.GetFileName(projectFileFullPath), projectFileFullPath, nav);
                     return project;
                 }
             }

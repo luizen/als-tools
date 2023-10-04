@@ -2,7 +2,7 @@ namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectFileSystem
 {
-    IReadOnlyList<FileInfo> LoadProjectFilesFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder);
+    IReadOnlyList<string> GetProjectFilesFullPathFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder);
 
-    IReadOnlyList<FileInfo> LoadProjectFilesFromSetFiles(IEnumerable<string> setFilePaths);
+    IReadOnlyList<string> GetProjectFilesFullPathFromSetFiles(IEnumerable<string> setFilePaths);
 }
