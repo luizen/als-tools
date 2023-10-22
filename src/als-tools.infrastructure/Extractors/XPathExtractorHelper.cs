@@ -26,4 +26,23 @@ public class XpathExtractorHelper
 
         return false;
     }
+
+    public XPathNavigator? TryGetXpathNode(XPathNavigator nav, string expression)
+    {
+        var node = nav.SelectSingleNode(expression);
+        return node;
+    }
+
+    public XPathNavigator? TryGetOneOfXpathNodes(XPathNavigator nav, string[] expressions)
+    {
+        foreach (var expression in expressions)
+        {
+            // The first that works, we can stop and return
+            var node = TryGetXpathNode(nav, expression);
+            if (node != null)
+                return node;
+        }
+
+        return null;
+    }
 }
