@@ -84,6 +84,8 @@ public static class LiveStockDeviceNodeNames
 
         public const string Collision = "Collision";
 
+        public const string Drift = "Drift";
+
         public const string Electric = "LoungeLizard";
 
         public const string ExternalInstrument = "ProxyInstrumentDevice";
@@ -119,11 +121,15 @@ public static class LiveStockDeviceNodeNames
 
         public const string ChannelEq = "ChannelEq";
 
+        public const string Chorus = "Chorus"; // Older version of Chorus
+
         public const string ChorusEnsemble = "Chorus2";
 
         public const string Compressor = "Compressor2";
 
         public const string Corpus = "Corpus";
+
+        public const string CrossDelay = "CrossDelay"; // Older version of Delay
 
         public const string Delay = "Delay";
 
@@ -136,6 +142,10 @@ public static class LiveStockDeviceNodeNames
         public const string Eq8 = "Eq8";
 
         public const string Eq3 = "FilterEQ3";
+
+        public const string Flanger = "Flanger"; // Older version of Flanger
+
+        public const string FrequencyShifter = "FrequencyShifter"; // Older version of FrequencyShifter
 
         public const string Erosion = "Erosion";
 
@@ -161,9 +171,15 @@ public static class LiveStockDeviceNodeNames
 
         public const string Pedal = "Pedal";
 
+        public const string Phaser = "Phaser"; // Older version of Phaser
+
         public const string PhaserFlanger = "PhaserNew";
 
-        public const string Redux = "Redux2";
+        public const string PingPongDelay = "PingPongDelay"; // Older version of PingPongDelay
+
+        public const string Redux = "Redux"; // Older version of Redux
+
+        public const string Redux2 = "Redux2";
 
         public const string Resonators = "Resonator";
 
