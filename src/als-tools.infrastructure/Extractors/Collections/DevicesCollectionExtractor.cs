@@ -19,6 +19,7 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
 {
     private readonly ILogger<DevicesCollectionExtractor> logger;
     private readonly Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors;
+    private readonly XpathExtractorHelper xpathExtractorHelper;
 
     private static readonly IDictionary<string, DeviceType> deviceTypesByNodeDesc = new Dictionary<string, DeviceType>()
     {
@@ -29,13 +30,14 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         [DeviceTypeNodeName.MaxForLiveMidiEffect] = DeviceType.MaxForLive
     };
 
-    public DevicesCollectionExtractor(ILogger<DevicesCollectionExtractor> logger, Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors)
+    public DevicesCollectionExtractor(ILogger<DevicesCollectionExtractor> logger, Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>> deviceTypeExtractors, XpathExtractorHelper xpathExtractorHelper)
     {
         if (deviceTypeExtractors == null || deviceTypeExtractors.Value.Count == 0)
             throw new ArgumentNullException(nameof(deviceTypeExtractors));
 
         this.logger = logger;
         this.deviceTypeExtractors = deviceTypeExtractors;
+        this.xpathExtractorHelper = xpathExtractorHelper;
     }
 
     public IReadOnlyList<IDevice> ExtractFromXml(XPathNavigator nav)
@@ -43,21 +45,36 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         logger.LogDebug("----");
         logger.LogDebug("Exctracting devices from XML...");
 
-        var devices = new List<IDevice>();
-        var devicesIterator = nav.Select(@"DeviceChain/DeviceChain/Devices");
-        devicesIterator.MoveNext();
-
-        if (devicesIterator.Current?.HasChildren ?? false)
-        {
-            if (devicesIterator.Current.MoveToFirstChild())
+        string[] devicesNodeExpressions =
             {
-                // Get first device
-                ExtractDeviceIntoDevicesList(devices, devicesIterator.Current);
+                @"DeviceChain/DeviceChain/Devices",
+                @"MasterChain/DeviceChain/Devices" // for older versions
+            };
 
-                // Iterate through all other devices
-                while (devicesIterator.Current.MoveToNext())
+        // Try to get the <Devices> node
+        var node = xpathExtractorHelper.TryGetOneOfXpathNodes(nav, devicesNodeExpressions);
+        if (node == null)
+            return Enumerable.Empty<IDevice>().ToArray();
+
+        var devices = new List<IDevice>();
+
+        // Currently 'node' should be the <Devices> node
+        if (node.HasChildren)
+        {
+            //TODO: try this later, maybe it's even better
+            // devicesNode.Select(@"./*");
+
+            if (node.MoveToFirstChild())
+            {
+                // Now 'node' should be the first device under the <Devices> node
+
+                // Get first device
+                ExtractDeviceIntoDevicesList(devices, node);
+
+                // Iterate through all other sibling devices
+                while (node.MoveToNext())
                 {
-                    ExtractDeviceIntoDevicesList(devices, devicesIterator.Current);
+                    ExtractDeviceIntoDevicesList(devices, node);
                 }
             }
         }
