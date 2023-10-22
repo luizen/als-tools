@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug - initdb file <path>",
+            "name": "Debug - initdb files <path>",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -14,7 +14,7 @@
                 "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes/Techno C Master Project/Techno C Master.als",
                 "~/Desktop/Testes ALS/Master with Devices Project/Master with Devices.als",
                 "--log-level",
-                "information"
+                "verbose"
             ],
             "console": "internalConsole",
             "stopAtEntry": false

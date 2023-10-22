@@ -61,8 +61,7 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
         // Currently 'node' should be the <Devices> node
         if (node.HasChildren)
         {
-            //TODO: try this later, maybe it's even better
-            // devicesNode.Select(@"./*");
+            // This also works: node.Select(@"./*");
 
             if (node.MoveToFirstChild())
             {

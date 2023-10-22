@@ -1,3 +1,14 @@
+if (node.HasChildren)
+{
+  var nodesIterator = node.Select(@"./*");
+  while (nodesIterator.MoveNext())
+  {
+      var nodeNav = nodesIterator.Current;
+      if (nodeNav != null)
+          ExtractDeviceIntoDevicesList(devices, nodeNav);
+  }
+}
+
 
 AudioFxRack With Childen AudioFxRack
 	Branches

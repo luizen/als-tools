@@ -21,13 +21,12 @@ public class StockDeviceDeviceTypeExtractor : IDeviceTypeExtractor
 
         var stockDeviceNodeName = deviceNode.Name.ToUpperInvariant();
 
-        if (!stockDeviceExtractors.ContainsKey(stockDeviceNodeName))
+        if (!stockDeviceExtractors.TryGetValue(stockDeviceNodeName, out IStockDeviceExtractor? extractor))
         {
             logger.LogWarning(@"A stock device with node named '{@DeviceNodeName}' does not have a valid extractor for it.", deviceNode.Name);
             return new UnknownStockDevice(deviceNode.Name);
         }
 
-        var extractor = stockDeviceExtractors[stockDeviceNodeName];
         var device = extractor.ExtractFromXml(deviceNode);
         return device;
     }

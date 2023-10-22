@@ -31,12 +31,13 @@ public class Vst2PluginFormatExtractor : BasePluginFormatExtractor, IPluginForma
         var category = pluginDescNode.SelectSingleNode(@"PluginDesc/VstPluginInfo/Category/@Value")!.Value;
 
         // Voxengo SPAN, for instance (and I have no idea why), has <Category Value="3" />
-        if (!deviceSortsByCategory.ContainsKey(category))
+
+        if (!deviceSortsByCategory.TryGetValue(category, out DeviceSort deviceSort))
         {
             logger.LogWarning(@"A plugin was found with an unknown Category node value. Plugin name: {@PluginName}; Category: {@Category}; Expected valid categories: {@ValidCategories}.", pluginName, category, deviceSortsByCategory.Keys);
             return DeviceSort.Unknown;
         }
 
-        return deviceSortsByCategory[category];
+        return deviceSort;
     }
 }
