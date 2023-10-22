@@ -11,9 +11,10 @@
             "args": [
                 "initdb",
                 "--files",
-                "~/Desktop/Testes ALS/MutedAndSoloed Project/MutedAndSoloed.als",
+                "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes/Techno C Master Project/Techno C Master.als",
+                "~/Desktop/Testes ALS/Master with Devices Project/Master with Devices.als",
                 "--log-level",
-                "verbose"
+                "information"
             ],
             "console": "internalConsole",
             "stopAtEntry": false

@@ -30,7 +30,7 @@ public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor
         device.UserName = deviceNode.SelectSingleNode(@"UserName/@Value")!.Value;
         device.Annotation = deviceNode.SelectSingleNode(@"Annotation/@Value")!.Value;
         device.Id = deviceNode.SelectSingleNode(@"@Id")!.ValueAsInt;
-        device.IsOn = deviceNode.SelectSingleNode(@"On/Manual/@Value")!.ValueAsBoolean;
+        device.IsOn = deviceNode.SelectSingleNode(@"On/Manual/@Value")?.ValueAsBoolean;
 
         return device;
     }

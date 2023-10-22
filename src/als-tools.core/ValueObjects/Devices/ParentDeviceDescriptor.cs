@@ -1,3 +1,3 @@
 ﻿namespace AlsTools.Core;
 
-public readonly record struct ParentDeviceDescriptor(bool IsOn);
+public readonly record struct ParentDeviceDescriptor(bool? IsOn);

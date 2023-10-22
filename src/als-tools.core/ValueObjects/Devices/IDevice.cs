@@ -40,7 +40,7 @@ public interface IDevice
     /// <summary>
     /// Whether the device is turned on or off
     /// </summary>
-    bool IsOn { get; set; }
+    bool? IsOn { get; set; }
 
     /// <summary>
     /// Helper property that calculates whether this device is enabled or not. It takes into consideration both properties <see cref="IsOn"/> and <see cref="ParentDeviceDescriptor.IsOn"/>. 
@@ -56,5 +56,5 @@ public interface IDevice
     /// Initializes the <see cref="ParentRackDevice"/> property, marking this device as having a parent
     /// </summary>
     /// <param name="isParentRackOn">Whether the parent rack device is on/off</param>
-    void DefineParentRack(bool isParentRackOn);
+    void DefineParentRack(bool? isParentRackOn);
 }

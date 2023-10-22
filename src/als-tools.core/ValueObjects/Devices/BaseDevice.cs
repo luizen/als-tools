@@ -24,17 +24,17 @@ public abstract record BaseDevice : IDevice
 
     public DeviceFamily Family { get; protected set; }
 
-    public bool IsOn { get; set; } = true;
+    public bool? IsOn { get; set; } = true;
 
     public bool HasParentRack => ParentRackDevice.HasValue;
 
     public ParentDeviceDescriptor? ParentRackDevice { get; private set; } = null;
 
-    public bool IsEnabled => IsOn && (!ParentRackDevice.HasValue || ParentRackDevice.Value.IsOn);
+    public bool IsEnabled => IsOn.HasValueTrue() && (!ParentRackDevice.HasValue || IsOn.HasValueTrue());
 
     public virtual bool IsGroupDevice => false;
 
-    public void DefineParentRack(bool isParentRackOn)
+    public void DefineParentRack(bool? isParentRackOn)
     {
         ParentRackDevice = new ParentDeviceDescriptor(isParentRackOn);
     }

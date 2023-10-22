@@ -37,7 +37,7 @@ public abstract class BasePluginFormatExtractor : IPluginFormatExtractor
             UserName = pluginDeviceNode.SelectSingleNode(@"UserName/@Value")!.Value,
             Annotation = pluginDeviceNode.SelectSingleNode(@"Annotation/@Value")!.Value,
             Id = pluginDeviceNode.SelectSingleNode(@"@Id")!.ValueAsInt,
-            IsOn = pluginDeviceNode.SelectSingleNode(@"On/Manual/@Value")!.ValueAsBoolean
+            IsOn = pluginDeviceNode.SelectSingleNode(@"On/Manual/@Value")?.ValueAsBoolean
         };
 
         return pluginDevice;
