@@ -38,10 +38,10 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths)
     {
         await repository.DeleteAllAsync();
-        var project = LoadProjectsFromSetFiles(filePaths);
-        await repository.InsertAsync(project);
+        var projects = LoadProjectsFromSetFiles(filePaths);
+        await repository.InsertAsync(projects);
 
-        return 1;
+        return projects.Count;
     }
 
     public async Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder)
