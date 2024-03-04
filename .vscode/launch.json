@@ -140,6 +140,23 @@
             "stopAtEntry": false
         },
         {
+            "name": "Debug - initdb folders User Library",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--folders",
+                "~/Music/Ableton/User Library",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - initdb folders Splice + Criacoes + Mix + Masters",
             "type": "coreclr",
             "request": "launch",
@@ -154,7 +171,7 @@
                 "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
                 "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
                 "--log-level",
-                "verbose"
+                "information"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
