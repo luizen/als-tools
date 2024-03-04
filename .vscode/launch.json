@@ -202,7 +202,8 @@
                 "stats",
                 "--ignore-disabled",
                 "--log-level",
-                "verbose"
+                "verbose",
+                "--all"
             ],
             "console": "internalConsole",
             "stopAtEntry": false

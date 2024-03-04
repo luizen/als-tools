@@ -8,10 +8,10 @@ public class PrintStatisticsOptions : CommonOptions
     [Option("ignore-disabled", HelpText = "When calculating statistics, ignores the devices that are directly disabled (turned off) or are within a disabled rack.", Default = false)]
     public bool IgnoreDisabledDevices { get; set; }
 
-    [Option("all", SetName = "StatsOptions", Required = true, HelpText = "Prints all available statistics")]
+    [Option("all", SetName = "StatsOptions", HelpText = "Prints all available statistics")]
     public bool All { get; set; } = false;
 
-    [Option("count-projects", SetName = "StatsOptions", Required = true, Min = 1, HelpText = "Shows the total number of projects stored in the als-tools database.")]
+    [Option("count-projects", SetName = "StatsOptions", Min = 1, HelpText = "Shows the total number of projects stored in the als-tools database.")]
     public bool CountProjects { get; set; }
 
     [Option("tracks-per-project", SetName = "StatsOptions", Min = 1, HelpText = "Shows all project names and the number of tracks for each.")]

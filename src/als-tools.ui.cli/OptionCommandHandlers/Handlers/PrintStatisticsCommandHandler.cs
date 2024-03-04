@@ -28,59 +28,106 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         var ignoreDisabledDevices = options.IgnoreDisabledDevices;
 
         // Func<PluginDevice, bool> predicate = (PluginDevice plugin) => plugin.Format == PluginFormat.VST2;
-        Func<PluginDevice, bool> predicate = (PluginDevice plugin) =>
-            plugin.Format == PluginFormat.VST2 &&
-            (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == plugin.Format && x.PluginName == plugin.Name)) &&
-            (!ignoreDisabledDevices || plugin.IsEnabled);
 
-        var allProjectsWithVst2Plugings = projects
-            .Select(project => new ProjectStatsInfo()
-            {
-                ProjectName = project.Name,
-                ProjectPath = project.Path,
-                Vst2PluginsCount = project.Tracks
-                    .SelectMany(track => track.Plugins)
-                    .Where(predicate)
-                    .Select(plugin => plugin.Name)
-                    .Count(),
-                Vst2PluginNames = project.Tracks
-                    .SelectMany(track => track.Plugins)
-                    .Where(predicate)
-                    .Select(plugin => plugin.Name)
-                    .ToList(),
-                DistinctVst2PluginsCount = project.Tracks
-                    .SelectMany(track => track.Plugins)
-                    .Where(predicate)
-                    .Select(plugin => plugin.Name)
-                    .Distinct()
-                    .Count(),
-                DistinctVst2PluginNames = project.Tracks
-                    .SelectMany(track => track.Plugins)
-                    .Where(predicate)
-                    .Select(plugin => plugin.Name)
-                    .Distinct()
-                    .ToList(),
-                Vst2PluginsStats = project.Tracks
-                    .SelectMany(track => track.Plugins)
-                    .Where(predicate)
-                    .GroupBy(plugin => plugin.Name)
-                    .SelectMany(group =>
-                        group.Select(plugin => new PluginStatsInfo()
-                        {
-                            PluginName = plugin.Name,
-                            PluginCount = group.Count()
-                        })
-                    )
-                    .Distinct(new PluginStatsInfoEqualityComparerByPluginName())
-                    .ToList()
-            })
-            .Where(x => x.DistinctVst2PluginsCount > 0);
+
+        // Func<PluginDevice, bool> predicate = (PluginDevice plugin) =>
+        //     plugin.Format == PluginFormat.VST2 &&
+        //     (!skipPlugins || pluginsToSkip.Any(x => x.PluginFormat == plugin.Format && x.PluginName == plugin.Name)) &&
+        //     (!ignoreDisabledDevices || plugin.IsEnabled);
+
+        // var allProjectsWithVst2Plugings = projects
+        //     .Select(project => new ProjectStatsInfo()
+        //     {
+        //         ProjectName = project.Name,
+        //         ProjectPath = project.Path,
+        //         Vst2PluginsCount = project.Tracks
+        //             .SelectMany(track => track.Plugins)
+        //             .Where(predicate)
+        //             .Select(plugin => plugin.Name)
+        //             .Count(),
+        //         Vst2PluginNames = project.Tracks
+        //             .SelectMany(track => track.Plugins)
+        //             .Where(predicate)
+        //             .Select(plugin => plugin.Name)
+        //             .ToList(),
+        //         DistinctVst2PluginsCount = project.Tracks
+        //             .SelectMany(track => track.Plugins)
+        //             .Where(predicate)
+        //             .Select(plugin => plugin.Name)
+        //             .Distinct()
+        //             .Count(),
+        //         DistinctVst2PluginNames = project.Tracks
+        //             .SelectMany(track => track.Plugins)
+        //             .Where(predicate)
+        //             .Select(plugin => plugin.Name)
+        //             .Distinct()
+        //             .ToList(),
+        //         Vst2PluginsStats = project.Tracks
+        //             .SelectMany(track => track.Plugins)
+        //             .Where(predicate)
+        //             .GroupBy(plugin => plugin.Name)
+        //             .SelectMany(group =>
+        //                 group.Select(plugin => new PluginStatsInfo()
+        //                 {
+        //                     PluginName = plugin.Name,
+        //                     PluginCount = group.Count()
+        //                 })
+        //             )
+        //             .Distinct(new PluginStatsInfoEqualityComparerByPluginName())
+        //             .ToList()
+        //     })
+        //     .Where(x => x.DistinctVst2PluginsCount > 0);
+
         // .OrderByDescending(projectInfo => projectInfo.DistinctVst2PluginsCount)
         // .ToList();
 
+        SetAllOptionsIfAll(options);
+
+        ExecuteIfTrue(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
+
+        ExecuteIfTrue(options.TracksPerProject, () => PrintNumberOfTracksPerProject(projects));
+
+        ExecuteIfTrue(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(projects));
+
+
+        if (options.MostUsedPlugins)
+        {
+
+        }
+
+        if (options.MostUsedStockDevice)
+        {
+
+        }
+
+        if (options.PluginsPerProject)
+        {
+
+        }
+
+        if (options.ProjectsWithHighestPluginCount)
+        {
+
+        }
+
+        if (options.ProjectsWithHighestTrackCount)
+        {
+
+        }
+
+        if (options.StockDevicesPerProject)
+        {
+
+        }
+
+        if (options.TracksPerProject)
+        {
+
+        }
+
         // int max = 10;
 
-        PrintAllProjectsWithVst2PluginsComplete(allProjectsWithVst2Plugings, true);
+        // PrintAllProjectsWithVst2PluginsComplete(allProjectsWithVst2Plugings, true);
         // PrintProjectsWithMostVst2Plugins(max, allProjectsWithVst2Plugings);
         // PrintProjectsWithMostGivenPluginVst2Plugin(max, "Decapitator", projects);
         // PrintProjectsWithMostGivenPluginVst2Plugin(max, "minimoog V Original", projects);
@@ -90,7 +137,76 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         // PrintProjectsWithLeastVst2Plugins(max, projects);
         // PrintVst2PluginsTable(projects);
 
-        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
+        // logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
+    }
+
+    private void PrintNumberOfStockDevicesPerProject(IReadOnlyList<LiveProject> projects)
+    {
+        var projectsAndStockDevicesCount = projects.Select(project => new
+        {
+            ProjectName = project.Name,
+            StockDevicesCount = project.Tracks
+                .Sum(track => track.StockDevices.Count)
+
+        })
+        .OrderByDescending(x => x.StockDevicesCount)
+        .ToList();
+
+        PrintHeader($"Number of stock devices per project");
+        var table = CreateSimpleConsoleTable("Project", "Stock devices count");
+
+        foreach (var p in projectsAndStockDevicesCount)
+        {
+            table.AddRow(
+                new Text(p.ProjectName),
+                new Text(p.StockDevicesCount.ToString()));
+        }
+
+        AnsiConsole.Write(table);
+    }
+
+    private void SetAllOptionsIfAll(PrintStatisticsOptions options)
+    {
+        if (options.All)
+        {
+            options.PluginsPerProject =
+                options.TracksPerProject =
+                    options.CountProjects =
+                        options.StockDevicesPerProject =
+                            options.MostUsedPlugins =
+                                options.MostUsedStockDevice =
+                                    options.ProjectsWithHighestPluginCount =
+                                        options.ProjectsWithHighestTrackCount = true;
+        }
+    }
+
+    private void PrintNumberOfTracksPerProject(IReadOnlyList<LiveProject> projects)
+    {
+        var projectsAndTrackCount = projects.Select(project => new
+        {
+            ProjectName = project.Name,
+            TrackCount = project.Tracks.Count()
+        })
+        .OrderByDescending(x => x.TrackCount)
+        .ToList();
+
+        PrintHeader($"Number of tracks per project");
+        var table = CreateSimpleConsoleTable("Project", "Track count");
+
+        foreach (var p in projectsAndTrackCount)
+        {
+            table.AddRow(
+                new Text(p.ProjectName),
+                new Text(p.TrackCount.ToString()));
+        }
+
+        AnsiConsole.Write(table);
+    }
+
+    private void ExecuteIfTrue(bool optionValue, Action action)
+    {
+        if (optionValue)
+            action();
     }
 
     private void PrintVst2PluginsTable(IReadOnlyList<LiveProject> projects)
@@ -216,12 +332,17 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         }
     }
 
-    private Table CreateConsoleTableForPluginStats()
+    private Table CreateSimpleConsoleTable(string column1Name, string column2Name)
     {
         return new Table()
             .HideHeaders()
-            .AddColumn("Plugin name", c => c.NoWrap())
-            .AddColumn("Count");
+            .AddColumn(column1Name, c => c.NoWrap())
+            .AddColumn(column2Name, c => c.NoWrap());
+    }
+
+    private Table CreateConsoleTableForPluginStats()
+    {
+        return CreateSimpleConsoleTable("Plugin name", "Count");
     }
 
     private Table CreateConsoleTableForFullProjectStats()
