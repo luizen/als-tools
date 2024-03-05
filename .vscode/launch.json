@@ -203,7 +203,9 @@
                 "--ignore-disabled",
                 "--log-level",
                 "verbose",
-                "--all"
+                "--all",
+                "--limit",
+                "20"
             ],
             "console": "internalConsole",
             "stopAtEntry": false

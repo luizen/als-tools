@@ -8,14 +8,14 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
     private readonly ILogger<PrintStatisticsCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
     private readonly ProjectsAndPluginsPrinter projectsAndPluginsPrinter;
-    private readonly IOptions<PlugScanningOptions> plugScanningOptions;
+    // private readonly IOptions<PlugScanningOptions> plugScanningOptions;
 
-    public PrintStatisticsCommandHandler(ILogger<PrintStatisticsCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter, IOptions<ParameterValuesOptions> parameterValuesOptions, IOptions<PlugScanningOptions> plugScanningOptions) : base(parameterValuesOptions)
+    public PrintStatisticsCommandHandler(ILogger<PrintStatisticsCommandHandler> logger, ILiveProjectAsyncService liveProjectService, ProjectsAndPluginsPrinter projectsAndPluginsPrinter, IOptions<ParameterValuesOptions> parameterValuesOptions /*, IOptions<PlugScanningOptions> plugScanningOptions*/) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;
         this.projectsAndPluginsPrinter = projectsAndPluginsPrinter;
-        this.plugScanningOptions = plugScanningOptions;
+        // this.plugScanningOptions = plugScanningOptions;
     }
 
     public async Task Execute(PrintStatisticsOptions options)
@@ -23,8 +23,8 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         logger.LogDebug("Printing statistics...");
 
         var projects = await liveProjectService.GetAllProjectsAsync();
-        var skipPlugins = plugScanningOptions.Value.SkipPlugins;
-        var pluginsToSkip = plugScanningOptions.Value.PluginsToSkip;
+        // var skipPlugins = plugScanningOptions.Value.SkipPlugins;
+        // var pluginsToSkip = plugScanningOptions.Value.PluginsToSkip;
         var ignoreDisabledDevices = options.IgnoreDisabledDevices;
 
         // Func<PluginDevice, bool> predicate = (PluginDevice plugin) => plugin.Format == PluginFormat.VST2;
@@ -85,20 +85,13 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
 
         ExecuteIfTrue(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
 
-        ExecuteIfTrue(options.TracksPerProject, () => PrintNumberOfTracksPerProject(projects));
+        ExecuteIfTrue(options.TracksPerProject, () => PrintNumberOfTracksPerProject(projects, options));
 
-        ExecuteIfTrue(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(projects));
+        ExecuteIfTrue(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(projects, options));
 
+        ExecuteIfTrue(options.MostUsedPlugins, () => PrintMostUsedPlugins(projects, options));
 
-        if (options.MostUsedPlugins)
-        {
-
-        }
-
-        if (options.MostUsedStockDevice)
-        {
-
-        }
+        ExecuteIfTrue(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(projects, options));
 
         if (options.PluginsPerProject)
         {
@@ -140,13 +133,89 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         // logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
     }
 
-    private void PrintNumberOfStockDevicesPerProject(IReadOnlyList<LiveProject> projects)
+    private void PrintMostUsedStockDevices(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
     {
+        Func<StockDevice, bool> ignoreDisabledPredicate = (StockDevice device) => !options.IgnoreDisabledDevices || device.IsEnabled;
+
+        var stockDevicesUsageList = projects
+           .SelectMany(project => project.Tracks
+               .SelectMany(track => track.StockDevices.Where(ignoreDisabledPredicate))
+               .GroupBy(device => device.Name)
+               .Select(group => new
+               {
+                   StockDeviceName = group.Key,
+                   UsageCount = group.Count()
+               })
+           )
+           .GroupBy(deviceUsage => deviceUsage.StockDeviceName)
+           .Select(group => new
+           {
+               StockDeviceName = group.Key,
+               TotalUsageCount = group.Sum(deviceUsage => deviceUsage.UsageCount)
+           })
+           .OrderByDescending(deviceUsage => deviceUsage.TotalUsageCount)
+           .Take(options.Limit)
+           .ToList();
+
+        PrintHeader($"Most used stock devices");
+        var table = CreateSimpleConsoleTable("Stock device name", "Usage count");
+
+        foreach (var usage in stockDevicesUsageList)
+        {
+            table.AddRow(
+                new Text(usage.StockDeviceName),
+                new Text(usage.TotalUsageCount.ToString()));
+        }
+
+        AnsiConsole.Write(table);
+    }
+
+    private void PrintMostUsedPlugins(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
+    {
+        Func<PluginDevice, bool> ignoreDisabledPredicate = (PluginDevice plugin) => !options.IgnoreDisabledDevices || plugin.IsEnabled;
+
+        var pluginsUsageList = projects
+           .SelectMany(project => project.Tracks
+               .SelectMany(track => track.Plugins.Where(ignoreDisabledPredicate))
+               .GroupBy(plugin => plugin.Name)
+               .Select(group => new
+               {
+                   PluginName = group.Key,
+                   UsageCount = group.Count()
+               })
+           )
+           .GroupBy(pluginUsage => pluginUsage.PluginName)
+           .Select(group => new
+           {
+               PluginName = group.Key,
+               TotalUsageCount = group.Sum(pluginUsage => pluginUsage.UsageCount)
+           })
+           .OrderByDescending(pluginUsage => pluginUsage.TotalUsageCount)
+           .Take(options.Limit)
+           .ToList();
+
+        PrintHeader($"Most used plugins");
+        var table = CreateSimpleConsoleTable("Plugin name", "Usage count");
+
+        foreach (var pluginUsage in pluginsUsageList)
+        {
+            table.AddRow(
+                new Text(pluginUsage.PluginName),
+                new Text(pluginUsage.TotalUsageCount.ToString()));
+        }
+
+        AnsiConsole.Write(table);
+    }
+
+    private void PrintNumberOfStockDevicesPerProject(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
+    {
+        Func<StockDevice, bool> ignoreDisabledPredicate = (StockDevice device) => !options.IgnoreDisabledDevices || device.IsEnabled;
+
         var projectsAndStockDevicesCount = projects.Select(project => new
         {
             ProjectName = project.Name,
             StockDevicesCount = project.Tracks
-                .Sum(track => track.StockDevices.Count)
+                .Sum(track => track.StockDevices.Where(ignoreDisabledPredicate).Count())
 
         })
         .OrderByDescending(x => x.StockDevicesCount)
@@ -180,7 +249,7 @@ public class PrintStatisticsCommandHandler : BaseCommandHandler, IOptionCommandH
         }
     }
 
-    private void PrintNumberOfTracksPerProject(IReadOnlyList<LiveProject> projects)
+    private void PrintNumberOfTracksPerProject(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
     {
         var projectsAndTrackCount = projects.Select(project => new
         {

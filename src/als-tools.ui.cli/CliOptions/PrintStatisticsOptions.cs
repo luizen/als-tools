@@ -3,7 +3,7 @@ namespace AlsTools.Ui.Cli.CliOptions;
 [Verb("stats", HelpText = "Print statistics.")]
 public class PrintStatisticsOptions : CommonOptions
 {
-    public const uint DefaultLimitValue = 10;
+    public const int DefaultLimitValue = 10;
 
     [Option("ignore-disabled", HelpText = "When calculating statistics, ignores the devices that are directly disabled (turned off) or are within a disabled rack.", Default = false)]
     public bool IgnoreDisabledDevices { get; set; }
@@ -36,5 +36,5 @@ public class PrintStatisticsOptions : CommonOptions
     public bool ProjectsWithHighestTrackCount { get; set; }
 
     [Option("limit", HelpText = "The number of items to be displayed by the stats. E.g.: the top <limit> most used plugins")]
-    public uint Limit { get; set; } = DefaultLimitValue;
+    public int Limit { get; set; } = DefaultLimitValue;
 }
