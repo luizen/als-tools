@@ -205,7 +205,7 @@
                 "verbose",
                 "--all",
                 "--limit",
-                "20"
+                "5"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
