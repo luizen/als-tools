@@ -15,4 +15,6 @@ public interface ILiveProjectAsyncRepository
     Task DeleteAllAsync();
     
     Task<int> CountProjectsAsync();
+
+    Task<IEnumerable<NameCountElement>> GetTracksCountPerProjectAsync();
 }

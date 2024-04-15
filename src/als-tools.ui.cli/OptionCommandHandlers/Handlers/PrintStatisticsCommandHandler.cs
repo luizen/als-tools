@@ -24,21 +24,21 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
 
         SetAllOptionsIfAll(options);
 
-        ExecuteIfTrue(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
+        ExecuteIfOptionWasSet(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
 
-        ExecuteIfTrue(options.TracksPerProject, () => PrintNumberOfTracksPerProject(projects, options));
+        ExecuteIfOptionWasSet(options.TracksPerProject, () => PrintNumberOfTracksPerProject(projects, options));
 
-        ExecuteIfTrue(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(projects, options));
+        ExecuteIfOptionWasSet(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(projects, options));
 
-        ExecuteIfTrue(options.PluginsPerProject, () => PrintNumberOfPluginsPerProject(projects, options));
+        ExecuteIfOptionWasSet(options.PluginsPerProject, () => PrintNumberOfPluginsPerProject(projects, options));
 
-        ExecuteIfTrue(options.MostUsedPlugins, () => PrintMostUsedPlugins(projects, options));
+        ExecuteIfOptionWasSet(options.MostUsedPlugins, () => PrintMostUsedPlugins(projects, options));
 
-        ExecuteIfTrue(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(projects, options));
+        ExecuteIfOptionWasSet(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(projects, options));
 
-        ExecuteIfTrue(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(projects, options));
+        ExecuteIfOptionWasSet(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(projects, options));
 
-        ExecuteIfTrue(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTrackCount(projects, options));
+        ExecuteIfOptionWasSet(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTrackCount(projects, options));
     }
 
     private void PrintProjectsWithHighestTrackCount(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
@@ -222,6 +222,23 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         AnsiConsole.Write(table);
     }
 
+    private async Task PrintNumberOfTracksPerProject_UsingDB(PrintStatisticsOptions options)
+    {
+        var projectsAndTrackCount = await liveProjectService.GetTracksCountPerProjectAsync();
+
+        PrintHeader($"Number of tracks per project");
+        var table = CreateSimpleConsoleTable("Project", "Track count");
+
+        foreach (var p in projectsAndTrackCount)
+        {
+            table.AddRow(
+                new Text(p.Name),
+                new Text(p.Count.ToString()));
+        }
+
+        AnsiConsole.Write(table);
+    }
+
     private void PrintNumberOfTracksPerProject(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
     {
         var projectsAndTrackCount = projects.Select(project => new
@@ -245,7 +262,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         AnsiConsole.Write(table);
     }
 
-    private void ExecuteIfTrue(bool optionValue, Action action)
+    private void ExecuteIfOptionWasSet(bool optionValue, Action action)
     {
         if (optionValue)
             action();

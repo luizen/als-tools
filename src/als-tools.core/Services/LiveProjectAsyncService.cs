@@ -136,4 +136,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 
         return projects;
     }
+
+    public async Task<IEnumerable<NameCountElement>> GetTracksCountPerProjectAsync()
+    {
+        return await repository.GetTracksCountPerProjectAsync();
+    }
 }

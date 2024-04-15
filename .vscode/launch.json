@@ -218,6 +218,8 @@
             "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
             "args": [
                 "stats",
+                "--log-level",
+                "verbose",
                 "--all",
                 "--limit",
                 "10"

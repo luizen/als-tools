@@ -18,4 +18,6 @@ public interface ILiveProjectAsyncService
     Task<int> CountProjectsAsync();
 
     Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection);
+
+    Task<IEnumerable<NameCountElement>> GetTracksCountPerProjectAsync();
 }
