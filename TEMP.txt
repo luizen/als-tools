@@ -1,3 +1,78 @@
+"Format": 2,
+.*
+.*
+.*Name": "bla
+
+
+
+("Path": "[a-zA-Z0-9/ .-_]+")([\s\S\n]*?)("Name": "Maschine 2",)([\s\S\n]*?)("Locators": \[)([\s\S\n]*?)(\])
+("Path": "[_/a-zA-Z0-9\W]+?")([\s\S\n]*?)("Name": "Maschine 2",)([\s\S\n]*?)("Locators": \[)([\s\S\n]*?)(\])
+
+
+("StockDevices": \[)([\s\S\n]*?)(\],)
+
+
+all-projects2.json
+
+$1
+
+
+
+("Path": "[a-zA-Z0-9/\\ ._()#-]+")
+("Path": "[_/a-zA-Z0-9\W]+?")
+
+
+
+
+"Format": 3,
+.*
+.*
+.*Name": "((?!Maschine 2).)*"
+
+
+
+
+.*\{
+.*"Format": 3,
+.*
+.*
+.*Name": "((?!Maschine 2).)*".*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*\},
+
+"Tracks": \[
+.*\{
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*
+.*,
+
+
+
+[19:36:47 WRN] A stock device with node named 'InstrumentMeld' does not have a valid extractor for it.
+[19:36:47 WRN] A stock device with node named 'Roar' does not have a valid extractor for it.
+
+
 if (node.HasChildren)
 {
   var nodesIterator = node.Select(@"./*");

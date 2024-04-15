@@ -40,12 +40,19 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
     private IReadOnlyCollection<string> GetProjectFilesFullPathFromSingleDirectory(string folderPath, bool includeBackupFolder)
     {
         var path = userFolderHandler.GetFullPath(folderPath);
-        var fullPaths = Directory.EnumerateFiles(path, "*.als", SearchOption.AllDirectories);
+        var fullPaths = MultiEnumerateFiles(path, "*.als|*.alc");
 
         if (!includeBackupFolder)
             fullPaths = fullPaths.Where(path => !path.Contains(@"/Backup/", StringComparison.InvariantCultureIgnoreCase));
 
         return fullPaths.ToList();
+    }
+
+    private IEnumerable<string> MultiEnumerateFiles(string path, string patterns)
+    {
+        foreach (var pattern in patterns.Split('|'))
+            foreach (var fileName in Directory.EnumerateFiles(path, pattern, SearchOption.AllDirectories))
+                yield return fileName;
     }
 
     private FileInfo GetProjectFileFromSetFile(string setFilePath)

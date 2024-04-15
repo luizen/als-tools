@@ -140,6 +140,23 @@
             "stopAtEntry": false
         },
         {
+            "name": "Debug - initdb folders User Library",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "initdb",
+                "--folders",
+                "~/Music/Ableton/User Library",
+                "--log-level",
+                "verbose"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "Debug - initdb folders Splice + Criacoes + Mix + Masters",
             "type": "coreclr",
             "request": "launch",
@@ -154,7 +171,7 @@
                 "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
                 "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
                 "--log-level",
-                "verbose"
+                "information"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
@@ -175,7 +192,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - print statistics",
+            "name": "Debug - print some statistics (ignore disabled and limit 5)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -184,8 +201,28 @@
             "args": [
                 "stats",
                 "--ignore-disabled",
+                "--projets-with-more-plugins",
+                "--most-used-plugins",
+                "--limit",
+                "5"
+            ],
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug - print all statistics (counting disabled)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.cli/bin/Debug/net7.0/als-tools.ui.cli.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.cli",
+            "args": [
+                "stats",
                 "--log-level",
-                "verbose"
+                "verbose",
+                "--all",
+                "--limit",
+                "10"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
