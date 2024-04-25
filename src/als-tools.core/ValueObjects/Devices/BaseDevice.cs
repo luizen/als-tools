@@ -14,7 +14,7 @@ public abstract record BaseDevice : IDevice
         Family = family;
     }
 
-    public int Id { get; set; }
+    // public int Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
 

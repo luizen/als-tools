@@ -1,7 +1,19 @@
+using AlsTools.Core.Entities;
+
 namespace AlsTools.Core.ValueObjects;
 
 public class Locator
 {
+    /// <summary>
+    /// Gets or sets the ID of the live project associated with the locator.
+    /// </summary>
+    public int LiveProjectId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the live project associated with the locator.
+    /// </summary>
+    public LiveProject LiveProject { get; set; }
+
     /// <summary>
     /// Locator number (Id attribute)
     /// </summary>

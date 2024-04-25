@@ -1,9 +1,8 @@
 ﻿using AlsTools.Infrastructure.Extractors;
 using AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlsTools.Ui.Cli;
-
-
 
 public partial class Program
 {
@@ -43,11 +42,11 @@ public partial class Program
             .Build();
     }
 
-    private static void ConfigureServices(IServiceCollection serviceCollection)
+    private static void ConfigureServices(IServiceCollection services)
     {
         Log.Debug("Configuring services...");
 
-        serviceCollection.AddLogging();
+        services.AddLogging();
 
         // Build configuration
         var configuration = new ConfigurationBuilder()
@@ -56,19 +55,20 @@ public partial class Program
             .Build();
 
         // Add access to generic IConfigurationRoot
-        serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
+        services.AddSingleton<IConfigurationRoot>(configuration);
 
         // Add DbContext
-        serviceCollection.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
+        services.AddDbContext<AlsToolsDbContext>(options =>
+            options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
         // Add some helpers
-        serviceCollection.AddSingleton<UserFolderHandler>(svcProvider =>
+        services.AddSingleton<UserFolderHandler>(svcProvider =>
             new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
 
-        serviceCollection.AddSingleton<XpathExtractorHelper>();
+        services.AddSingleton<XpathExtractorHelper>();
 
         // MaxForLive Sort Extractors
-        serviceCollection.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
+        services.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
                      new Dictionary<string, IMaxForLiveDeviceSortExtractor>()
                      {
                          [DeviceTypeNodeName.MaxForLiveAudioEffect] = new MaxForLiveAudioEffectDeviceSortExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveAudioEffectDeviceSortExtractor>>()),
@@ -78,7 +78,7 @@ public partial class Program
                 );
 
         // Plugin Format Extractors
-        serviceCollection.AddSingleton<IDictionary<PluginFormat, IPluginFormatExtractor>>(svcProvider =>
+        services.AddSingleton<IDictionary<PluginFormat, IPluginFormatExtractor>>(svcProvider =>
                      new Dictionary<PluginFormat, IPluginFormatExtractor>()
                      {
                          [PluginFormat.VST2] = new Vst2PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst2PluginFormatExtractor>>()),
@@ -89,7 +89,7 @@ public partial class Program
                 );
 
         // Device Types by Node desc
-        serviceCollection.AddSingleton<IDictionary<string, DeviceType>>(svcProvider =>
+        services.AddSingleton<IDictionary<string, DeviceType>>(svcProvider =>
                      new Dictionary<string, DeviceType>()
                      {
                          [DeviceTypeNodeName.Plugin] = DeviceType.Plugin,
@@ -101,21 +101,21 @@ public partial class Program
                 );
 
         // Common Live stock devices extractors
-        serviceCollection.AddSingleton<ICommonStockAudioEffectDeviceExtractor, CommonStockAudioEffectDeviceExtractor>();
-        serviceCollection.AddSingleton<ICommonStockMidiEffectDeviceExtractor, CommonStockMidiEffectDeviceExtractor>();
-        serviceCollection.AddSingleton<ICommonStockInstrumentDeviceExtractor, CommonStockInstrumentDeviceExtractor>();
+        services.AddSingleton<ICommonStockAudioEffectDeviceExtractor, CommonStockAudioEffectDeviceExtractor>();
+        services.AddSingleton<ICommonStockMidiEffectDeviceExtractor, CommonStockMidiEffectDeviceExtractor>();
+        services.AddSingleton<ICommonStockInstrumentDeviceExtractor, CommonStockInstrumentDeviceExtractor>();
 
         // Live Stock Racks extractors
-        serviceCollection.AddSingleton<AudioEffectRackDeviceExtractor>();
-        serviceCollection.AddSingleton<MidiEffectRackDeviceExtractor>();
-        serviceCollection.AddSingleton<MidiInstrumentRackDeviceExtractor>();
-        serviceCollection.AddSingleton<DrumRackDeviceExtractor>();
+        services.AddSingleton<AudioEffectRackDeviceExtractor>();
+        services.AddSingleton<MidiEffectRackDeviceExtractor>();
+        services.AddSingleton<MidiInstrumentRackDeviceExtractor>();
+        services.AddSingleton<DrumRackDeviceExtractor>();
 
         // All Live Stock device extractors by their XML node names
-        serviceCollection.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
+        services.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
 
         // Device type extractors
-        serviceCollection.AddSingleton<Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>>(svcProvider =>
+        services.AddSingleton<Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>>(svcProvider =>
                      new Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>(() =>
                         new Dictionary<DeviceType, IDeviceTypeExtractor>()
                         {
@@ -124,12 +124,14 @@ public partial class Program
                             [DeviceType.MaxForLive] = new MaxForLiveDeviceTypeExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveDeviceTypeExtractor>>(), svcProvider.GetRequiredService<IDictionary<string, IMaxForLiveDeviceSortExtractor>>()),
                         }
                      )
+
+
                 );
 
         // Add services
-        serviceCollection
+        services
             .AddSingleton<ILiveProjectAsyncService, LiveProjectAsyncService>()
-            .AddSingleton<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
+            .AddSingleton<ILiveProjectAsyncRepository, LiveProjectEfCoreRepository>()
             .AddSingleton<ILiveProjectFileExtractionHandler, LiveProjectFileExtractionHandler>()
             .AddSingleton<ILiveProjectFileSystem, LiveProjectFileSystem>()
             .AddSingleton<ILiveProjectsCollectionExtractor, LiveProjectsCollectionExtractor>()
@@ -139,7 +141,7 @@ public partial class Program
             .AddSingleton<ITracksCollectionExtractor, TracksCollectionExtractor>();
 
         // Add CLI command handlers
-        serviceCollection
+        services
             .AddSingleton<IOptionCommandHandler<InitDbOptions>, InitDbCommandHandler>()
             .AddSingleton<IOptionCommandHandler<ListOptions>, ListCommandHandler>()
             .AddSingleton<IOptionCommandHandler<CountOptions>, CountCommandHandler>()
@@ -148,20 +150,17 @@ public partial class Program
             .AddSingleton<IOptionCommandHandler<PrintStatisticsOptions>, PrintStatisticsCommandHandler>()
             .AddSingleton<ProjectsAndPluginsPrinter>();
 
-        // DB options
-        serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
-
         // PlugInfo options
-        serviceCollection.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
+        services.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
 
         // PlugScanning options
-        serviceCollection.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
+        services.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
 
         // ParameterValues options
-        serviceCollection.Configure<ParameterValuesOptions>(configuration.GetSection(nameof(ParameterValuesOptions)));
+        services.Configure<ParameterValuesOptions>(configuration.GetSection(nameof(ParameterValuesOptions)));
 
         // Add app
-        serviceCollection.AddTransient<App>();
+        services.AddTransient<App>();
     }
 
     private static IDictionary<string, IStockDeviceExtractor> BuildStockDeviceExtractors(IServiceProvider svcProvider)

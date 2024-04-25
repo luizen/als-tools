@@ -29,9 +29,6 @@ public partial class Program
 
             try
             {
-                var embeddedDbContext = services.GetRequiredService<IEmbeddedDatabaseContext>();
-                embeddedDbContext.Initialize();
-
                 var app = services.GetRequiredService<App>();
                 await app.Run(parserResult);
 

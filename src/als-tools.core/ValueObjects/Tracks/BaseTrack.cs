@@ -1,3 +1,4 @@
+using AlsTools.Core.Entities;
 using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.ValueObjects.Tracks;
@@ -8,7 +9,7 @@ public abstract class BaseTrack : ITrack
 
     private const int UndefinedTrackGroupId = -1;
 
-    public BaseTrack(TrackType type)
+    public BaseTrack(TrackType type, LiveProject liveProject)
     {
         // stockDevices = new Lazy<List<StockDevice>>();
         // plugins = new Lazy<List<PluginDevice>>();
@@ -20,6 +21,8 @@ public abstract class BaseTrack : ITrack
 
         TrackDelay = new TrackDelay();
         Type = type;
+        LiveProject = liveProject;
+        LiveProjectId = liveProject.Id;
     }
 
     // private Lazy<List<StockDevice>> stockDevices;
@@ -28,6 +31,9 @@ public abstract class BaseTrack : ITrack
 
     // private Lazy<List<MaxForLiveDevice>> maxForLiveDevices;
 
+    public int LiveProjectId { get; set; }
+
+    public LiveProject LiveProject { get; set; }
 
     public int? Id { get; set; }
 
@@ -37,11 +43,11 @@ public abstract class BaseTrack : ITrack
 
     public TrackType Type { get; set; }
 
-    public IList<StockDevice> StockDevices { get; set; }
+    public ICollection<StockDevice> StockDevices { get; set; }
 
-    public IList<PluginDevice> Plugins { get; set; }
+    public ICollection<PluginDevice> Plugins { get; set; }
 
-    public IList<MaxForLiveDevice> MaxForLiveDevices { get; set; }
+    public ICollection<MaxForLiveDevice> MaxForLiveDevices { get; set; }
 
     public string Annotation { get; set; } = string.Empty;
 

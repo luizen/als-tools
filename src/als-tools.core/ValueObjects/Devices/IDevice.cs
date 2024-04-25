@@ -1,7 +1,13 @@
+using AlsTools.Core.ValueObjects.Tracks;
+
 namespace AlsTools.Core.ValueObjects.Devices;
 
 public interface IDevice
 {
+    int TrackId { get; set; }
+
+    ITrack Track { get; set; }
+
     /// <summary>
     /// The device intenal Id attribute
     /// </summary>

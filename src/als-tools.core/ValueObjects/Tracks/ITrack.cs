@@ -1,9 +1,20 @@
+using AlsTools.Core.Entities;
 using AlsTools.Core.ValueObjects.Devices;
 
 namespace AlsTools.Core.ValueObjects.Tracks;
 
 public interface ITrack
 {
+    /// <summary>
+    /// Gets or sets the ID of the live project associated with the track.
+    /// </summary>
+    public int LiveProjectId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the live project associated with the track.
+    /// </summary>
+    public LiveProject LiveProject { get; set; }
+
     /// <summary>
     /// The track intenal Id attribute. Might be not available (eg.: Master Track)
     /// </summary>
@@ -65,17 +76,17 @@ public interface ITrack
     /// <summary>
     /// The Ableton Live stock devices this track contains
     /// </summary>
-    IList<StockDevice> StockDevices { get; set; }
+    ICollection<StockDevice> StockDevices { get; set; }
 
     /// <summary>
     /// The third party plugins this track contains
     /// </summary>
-    IList<PluginDevice> Plugins { get; set; }
+    ICollection<PluginDevice> Plugins { get; set; }
 
     /// <summary>
     /// The MaxForLive devices this track contains
     /// </summary>
-    IList<MaxForLiveDevice> MaxForLiveDevices { get; set; }
+    ICollection<MaxForLiveDevice> MaxForLiveDevices { get; set; }
 
     /// <summary>
     /// Adds a device to either the <see cref="StockDevices" />, <see cref="Plugins" /> or <see cref="MaxForLiveDevices" />

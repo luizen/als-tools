@@ -1,7 +1,19 @@
+using AlsTools.Core.Entities;
+
 namespace AlsTools.Core.ValueObjects;
 
 public class Scene
 {
+    /// <summary>
+    /// Gets or sets the ID of the live project associated with the scene.
+    /// </summary>
+    public int LiveProjectId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the live project associated with the scene.
+    /// </summary>
+    public LiveProject LiveProject { get; set; }
+
     /// <summary>
     /// Scene number (Id attribute)
     /// </summary>
