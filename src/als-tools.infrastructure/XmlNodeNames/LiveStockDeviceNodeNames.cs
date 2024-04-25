@@ -92,6 +92,8 @@ public static class LiveStockDeviceNodeNames
 
         public const string Impulse = "InstrumentImpulse";
 
+        public const string Meld = "InstrumentMeld";
+
         public const string Operator = "Operator";
 
         public const string Sampler = "MultiSampler";
@@ -184,6 +186,8 @@ public static class LiveStockDeviceNodeNames
         public const string Resonators = "Resonator";
 
         public const string Reverb = "Reverb";
+
+        public const string Roar = "Roar";
 
         public const string Saturator = "Saturator";
 
