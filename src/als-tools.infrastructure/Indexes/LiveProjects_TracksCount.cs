@@ -4,26 +4,26 @@ using Raven.Client.Documents.Indexes;
 
 namespace AlsTools.Infrastructure.Indexes;
 
-public class LiveProjects_TracksCount : AbstractIndexCreationTask<LiveProject, TracksCountPerProjectResult>
+public class LiveProjects_TracksCount : AbstractIndexCreationTask<LiveProject, ItemsCountPerProjectResult>
 {
     public LiveProjects_TracksCount()
     {
         Map = projects => from project in projects
                           from track in project.Tracks
-                          select new TracksCountPerProjectResult()
+                          select new ItemsCountPerProjectResult()
                           {
                               ProjectName = project.Name,
                               ProjectPath = project.Path,
-                              TracksCount = 1
+                              ItemsCount = 1
                           };
 
         Reduce = results => from result in results
                             group result by new { result.ProjectPath, result.ProjectName } into g
-                            select new TracksCountPerProjectResult()
+                            select new ItemsCountPerProjectResult()
                             {
                                 ProjectName = g.Key.ProjectName,
                                 ProjectPath = g.Key.ProjectPath,
-                                TracksCount = g.Sum(x => x.TracksCount)
+                                ItemsCount = g.Sum(x => x.ItemsCount)
                             };
     }
 }

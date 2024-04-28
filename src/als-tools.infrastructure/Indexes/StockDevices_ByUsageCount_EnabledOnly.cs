@@ -4,7 +4,7 @@ using Raven.Client.Documents.Indexes;
 
 namespace AlsTools.Infrastructure.Indexes;
 
-public class StockDevices_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<LiveProject, StockDevicesUsageCountResult>
+public class StockDevices_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<LiveProject, DevicesUsageCountResult>
 {
     public StockDevices_ByUsageCount_EnabledOnly()
     {
@@ -12,17 +12,17 @@ public class StockDevices_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<L
                           from track in project.Tracks
                           from stockDevice in track.StockDevices
                           where stockDevice.IsEnabled
-                          select new StockDevicesUsageCountResult()
+                          select new DevicesUsageCountResult()
                           {
-                              StockDeviceName = stockDevice.Name,
+                              DeviceName = stockDevice.Name,
                               UsageCount = 1
                           };
 
         Reduce = results => from result in results
-                            group result by result.StockDeviceName into g
-                            select new StockDevicesUsageCountResult()
+                            group result by result.DeviceName into g
+                            select new DevicesUsageCountResult()
                             {
-                                StockDeviceName = g.Key,
+                                DeviceName = g.Key,
                                 UsageCount = g.Sum(x => x.UsageCount)
                             };
     }

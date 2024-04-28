@@ -7,17 +7,17 @@ namespace AlsTools.Infrastructure.Repositories;
 
 public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
 {
-    private IRavenQueryable<PluginsCountPerProjectResult> GetPluginsCountDisabledQuery(bool ignoreDisabled)
+    private IRavenQueryable<ItemsCountPerProjectResult> GetPluginsCountDisabledQuery(bool ignoreDisabled)
     {
         return ignoreDisabled
-            ? store.OpenAsyncSession().Query<PluginsCountPerProjectResult, LiveProjects_PluginsCount_EnabledOnly>()
-            : store.OpenAsyncSession().Query<PluginsCountPerProjectResult, LiveProjects_PluginsCount>();
+            ? store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_PluginsCount_EnabledOnly>()
+            : store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_PluginsCount>();
     }
 
-    private IRavenQueryable<StockDevicesCountPerProjectResult> GetStockDevicesCountDisabledQuery(bool ignoreDisabled)
+    private IRavenQueryable<ItemsCountPerProjectResult> GetStockDevicesCountDisabledQuery(bool ignoreDisabled)
     {
         return ignoreDisabled
-            ? store.OpenAsyncSession().Query<StockDevicesCountPerProjectResult, LiveProjects_StockDevicesCount_EnabledOnly>()
-            : store.OpenAsyncSession().Query<StockDevicesCountPerProjectResult, LiveProjects_StockDevicesCount>();
+            ? store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_StockDevicesCount_EnabledOnly>()
+            : store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_StockDevicesCount>();
     }
 }

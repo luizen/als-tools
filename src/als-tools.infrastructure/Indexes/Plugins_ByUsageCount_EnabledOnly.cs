@@ -4,7 +4,7 @@ using Raven.Client.Documents.Indexes;
 
 namespace AlsTools.Infrastructure.Indexes;
 
-public class Plugins_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<LiveProject, PluginsUsageCountResult>
+public class Plugins_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<LiveProject, DevicesUsageCountResult>
 {
     public Plugins_ByUsageCount_EnabledOnly()
     {
@@ -12,17 +12,17 @@ public class Plugins_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<LivePr
                           from track in project.Tracks
                           from plugin in track.Plugins
                           where plugin.IsEnabled
-                          select new PluginsUsageCountResult()
+                          select new DevicesUsageCountResult()
                           {
-                              PluginName = plugin.Name,
+                              DeviceName = plugin.Name,
                               UsageCount = 1
                           };
 
         Reduce = results => from result in results
-                            group result by result.PluginName into g
-                            select new PluginsUsageCountResult()
+                            group result by result.DeviceName into g
+                            select new DevicesUsageCountResult()
                             {
-                                PluginName = g.Key,
+                                DeviceName = g.Key,
                                 UsageCount = g.Sum(x => x.UsageCount)
                             };
     }

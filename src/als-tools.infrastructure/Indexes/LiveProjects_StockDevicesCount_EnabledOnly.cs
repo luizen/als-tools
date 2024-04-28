@@ -4,7 +4,7 @@ using Raven.Client.Documents.Indexes;
 
 namespace AlsTools.Infrastructure.Indexes;
 
-public class LiveProjects_StockDevicesCount_EnabledOnly : AbstractIndexCreationTask<LiveProject, StockDevicesCountPerProjectResult>
+public class LiveProjects_StockDevicesCount_EnabledOnly : AbstractIndexCreationTask<LiveProject, ItemsCountPerProjectResult>
 {
     public LiveProjects_StockDevicesCount_EnabledOnly()
     {
@@ -12,20 +12,20 @@ public class LiveProjects_StockDevicesCount_EnabledOnly : AbstractIndexCreationT
                           from track in project.Tracks
                           from stockDevice in track.StockDevices
                           where stockDevice.IsEnabled
-                          select new StockDevicesCountPerProjectResult()
+                          select new ItemsCountPerProjectResult()
                           {
                               ProjectName = project.Name,
                               ProjectPath = project.Path,
-                              StockDevicesCount = 1
+                              ItemsCount = 1
                           };
 
         Reduce = results => from result in results
                             group result by new { result.ProjectPath, result.ProjectName } into g
-                            select new StockDevicesCountPerProjectResult()
+                            select new ItemsCountPerProjectResult()
                             {
                                 ProjectName = g.Key.ProjectName,
                                 ProjectPath = g.Key.ProjectPath,
-                                StockDevicesCount = g.Sum(x => x.StockDevicesCount)
+                                ItemsCount = g.Sum(x => x.ItemsCount)
                             };
     }
 }

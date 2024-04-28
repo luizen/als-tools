@@ -24,11 +24,11 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         await ExecuteIfOptionWasSetAsync(options.CountProjects, () => PrintTotalOfProjects());
         await ExecuteIfOptionWasSetAsync(options.TracksPerProject, () => PrintNumberOfTracksPerProject());
         await ExecuteIfOptionWasSetAsync(options.PluginsPerProject, () => PrintNumberOfPluginsPerProject(options));
-        await ExecuteIfOptionWasSetAsync(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(options));
-        await ExecuteIfOptionWasSetAsync(options.MostUsedPlugins, () => PrintMostUsedPlugins(options));
-        await ExecuteIfOptionWasSetAsync(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(options));
-        await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTracksCount(options));
-        await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(options));
+        // await ExecuteIfOptionWasSetAsync(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(options));
+        // await ExecuteIfOptionWasSetAsync(options.MostUsedPlugins, () => PrintMostUsedPlugins(options));
+        // await ExecuteIfOptionWasSetAsync(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(options));
+        // await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTracksCount(options));
+        // await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(options));
     }
 
     private async Task PrintTotalOfProjects()
@@ -50,7 +50,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
             await Task.Run(() => table.AddRow(
                 new Text(trackCount.ProjectName),
                 new Text(trackCount.ProjectPath),
-                new Text(trackCount.TracksCount.ToString())));
+                new Text(trackCount.ItemsCount.ToString())));
         }
 
         await Task.Run(() => AnsiConsole.Write(table));
@@ -68,7 +68,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
             await Task.Run(() => table.AddRow(
                 new Text(pluginCount.ProjectName),
                 new Text(pluginCount.ProjectPath),
-                new Text(pluginCount.PluginsCount.ToString())));
+                new Text(pluginCount.ItemsCount.ToString())));
         }
 
         await Task.Run(() => AnsiConsole.Write(table));
@@ -86,7 +86,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
             await Task.Run(() => table.AddRow(
                 new Text(stockDevicesCount.ProjectName),
                 new Text(stockDevicesCount.ProjectPath),
-                new Text(stockDevicesCount.StockDevicesCount.ToString())));
+                new Text(stockDevicesCount.ItemsCount.ToString())));
         }
 
         await Task.Run(() => AnsiConsole.Write(table));
@@ -104,7 +104,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
             await Task.Run(() => table.AddRow(
                 new Text(pluginUsage.ProjectName),
                 new Text(pluginUsage.ProjectPath),
-                new Text(pluginUsage.PluginsCount.ToString())));
+                new Text(pluginUsage.ItemsCount.ToString())));
         }
 
         await Task.Run(() => AnsiConsole.Write(table));
@@ -122,7 +122,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
             await Task.Run(() => table.AddRow(
                 new Text(p.ProjectName),
                 new Text(p.ProjectPath),
-                new Text(p.TracksCount.ToString())));
+                new Text(p.ItemsCount.ToString())));
         }
 
         await Task.Run(() => AnsiConsole.Write(table));
@@ -140,7 +140,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         foreach (var p in stockDevicesUsageCount)
         {
             await Task.Run(() => table.AddRow(
-                new Text(p.StockDeviceName),
+                new Text(p.DeviceName),
                 new Text(p.UsageCount.ToString())));
         }
 
@@ -158,7 +158,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         foreach (var p in pluginsUsageCount)
         {
             await Task.Run(() => table.AddRow(
-                new Text(p.PluginName),
+                new Text(p.DeviceName),
                 new Text(p.UsageCount.ToString())));
         }
 
@@ -193,19 +193,19 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         }
     }
 
-    private Table CreateSimpleConsoleTable(string column1Name, string column2Name)
+    private Table CreateSimpleConsoleTable(string column1Name, string column2Name, bool wrap = true)
     {
         return new Table()
             .AddColumn(column1Name, c => c.NoWrap())
             .AddColumn(column2Name, c => c.NoWrap());
     }
 
-    private Table CreateSimpleConsoleTable(string column1Name, string column2Name, string column3Name)
+    private Table CreateSimpleConsoleTable(string column1Name, string column2Name, string column3Name, bool wrap = true)
     {
         return new Table()
-            .AddColumn(column1Name, c => c.NoWrap())
-            .AddColumn(column2Name, c => c.NoWrap())
-            .AddColumn(column3Name, c => c.NoWrap());
+            .AddColumn(column1Name, wrap ? null : c => c.NoWrap())
+            .AddColumn(column2Name, wrap ? null : c => c.NoWrap())
+            .AddColumn(column3Name, wrap ? null : c => c.NoWrap());
     }
 
     private void PrintHeader(string text)

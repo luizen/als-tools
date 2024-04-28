@@ -1,8 +1,8 @@
 ﻿namespace AlsTools.Core.ValueObjects.ResultSets;
 
-public class PluginsUsageCountResult
+public class DevicesUsageCountResult
 {
-    public required string PluginName { get; set; }
+    public required string DeviceName { get; set; }
 
     public int UsageCount { get; set; }
 }

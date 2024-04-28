@@ -4,27 +4,27 @@ using Raven.Client.Documents.Indexes;
 
 namespace AlsTools.Infrastructure.Indexes;
 
-public class LiveProjects_StockDevicesCount : AbstractIndexCreationTask<LiveProject, StockDevicesCountPerProjectResult>
+public class LiveProjects_StockDevicesCount : AbstractIndexCreationTask<LiveProject, ItemsCountPerProjectResult>
 {
     public LiveProjects_StockDevicesCount()
     {
         Map = projects => from project in projects
                           from track in project.Tracks
                           from stockDevice in track.StockDevices
-                          select new StockDevicesCountPerProjectResult()
+                          select new ItemsCountPerProjectResult()
                           {
                               ProjectName = project.Name,
                               ProjectPath = project.Path,
-                              StockDevicesCount = 1
+                              ItemsCount = 1
                           };
 
         Reduce = results => from result in results
                             group result by new { result.ProjectPath, result.ProjectName } into g
-                            select new StockDevicesCountPerProjectResult()
+                            select new ItemsCountPerProjectResult()
                             {
                                 ProjectName = g.Key.ProjectName,
                                 ProjectPath = g.Key.ProjectPath,
-                                StockDevicesCount = g.Sum(x => x.StockDevicesCount)
+                                ItemsCount = g.Sum(x => x.ItemsCount)
                             };
     }
 }
