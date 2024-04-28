@@ -210,7 +210,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Debug - print all statistics (counting disabled)",
+            "name": "Debug - print all statistics",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",

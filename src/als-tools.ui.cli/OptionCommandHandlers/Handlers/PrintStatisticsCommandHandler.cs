@@ -24,11 +24,11 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         await ExecuteIfOptionWasSetAsync(options.CountProjects, () => PrintTotalOfProjects());
         await ExecuteIfOptionWasSetAsync(options.TracksPerProject, () => PrintNumberOfTracksPerProject());
         await ExecuteIfOptionWasSetAsync(options.PluginsPerProject, () => PrintNumberOfPluginsPerProject(options));
-        // await ExecuteIfOptionWasSetAsync(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(options));
-        // await ExecuteIfOptionWasSetAsync(options.MostUsedPlugins, () => PrintMostUsedPlugins(options));
-        // await ExecuteIfOptionWasSetAsync(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(options));
-        // await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTracksCount(options));
-        // await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(options));
+        await ExecuteIfOptionWasSetAsync(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(options));
+        await ExecuteIfOptionWasSetAsync(options.MostUsedPlugins, () => PrintMostUsedPlugins(options));
+        await ExecuteIfOptionWasSetAsync(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(options));
+        await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTracksCount(options));
+        await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(options));
     }
 
     private async Task PrintTotalOfProjects()
@@ -42,8 +42,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var tracksCountPerProject = await liveProjectService.GetTracksCountPerProject();
 
-        PrintHeader($"Number of tracks per project");
-        var table = CreateSimpleConsoleTable("Project", "Path", "Tracks count");
+        var table = CreateSimpleConsoleTable("Number of tracks per project", ["Project", "Path", "Tracks count"]);
 
         foreach (var trackCount in tracksCountPerProject)
         {
@@ -60,8 +59,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var projectsAndPluginCount = await liveProjectService.GetPluginsCountPerProject(options.IgnoreDisabledDevices);
 
-        PrintHeader($"Number of plugins per project");
-        var table = CreateSimpleConsoleTable("Project", "Path", "Plugins count");
+        var table = CreateSimpleConsoleTable("Number of plugins per project", ["Project", "Path", "Plugins count"]);
 
         foreach (var pluginCount in projectsAndPluginCount)
         {
@@ -78,8 +76,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var projectsAndStockDevicesCount = await liveProjectService.GetStockDevicesCountPerProject(options.IgnoreDisabledDevices);
 
-        PrintHeader($"Number of stock devices per project");
-        var table = CreateSimpleConsoleTable("Project", "Path", "Stock devices count");
+        var table = CreateSimpleConsoleTable("Number of stock devices per project", ["Project", "Path", "Stock devices count"]);
 
         foreach (var stockDevicesCount in projectsAndStockDevicesCount)
         {
@@ -96,8 +93,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var projectsAndPluginCount = await liveProjectService.GetProjectsWithHighestPluginsCount(options.Limit, options.IgnoreDisabledDevices);
 
-        PrintHeader($"Projects with highest plugin count");
-        var table = CreateSimpleConsoleTable("Project", "Path", "Plugins count");
+        var table = CreateSimpleConsoleTable("Projects with highest plugin count", ["Project", "Path", "Plugins count"]);
 
         foreach (var pluginUsage in projectsAndPluginCount)
         {
@@ -114,8 +110,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var projectsAndTrackCount = await liveProjectService.GetProjectsWithHighestTracksCount(options.Limit);
 
-        PrintHeader($"Projects with highest track count");
-        var table = CreateSimpleConsoleTable("Project", "Path", "Tracks count");
+        var table = CreateSimpleConsoleTable("Projects with highest track count", ["Project", "Path", "Tracks count"]);
 
         foreach (var p in projectsAndTrackCount)
         {
@@ -133,9 +128,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
 
         var stockDevicesUsageCount = await liveProjectService.GetMostUsedStockDevices(options.Limit, options.IgnoreDisabledDevices);
 
-        PrintHeader($"Most used stock devices");
-
-        var table = CreateSimpleConsoleTable("Stock device name", "Usage count");
+        var table = CreateSimpleConsoleTable("Most used stock devices", ["Stock device name", "Usage count"], expand: false);
 
         foreach (var p in stockDevicesUsageCount)
         {
@@ -151,9 +144,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var pluginsUsageCount = await liveProjectService.GetMostUsedPlugins(options.Limit, options.IgnoreDisabledDevices);
 
-        PrintHeader($"Most used plugins");
-
-        var table = CreateSimpleConsoleTable("Plugin name", "Usage count");
+        var table = CreateSimpleConsoleTable("Most used plugins", ["Plugin name", "Usage count"], expand: false);
 
         foreach (var p in pluginsUsageCount)
         {
@@ -163,13 +154,6 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         }
 
         await Task.Run(() => AnsiConsole.Write(table));
-    }
-
-
-    private void ExecuteIfOptionWasSet(bool optionValue, Action action)
-    {
-        if (optionValue)
-            action();
     }
 
     private async Task ExecuteIfOptionWasSetAsync(bool optionValue, Func<Task> asyncAction)
@@ -193,27 +177,21 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         }
     }
 
-    private Table CreateSimpleConsoleTable(string column1Name, string column2Name, bool wrap = true)
+    private Table CreateSimpleConsoleTable(string title, string[] columnNames, bool wrap = true, bool expand = true)
     {
-        return new Table()
-            .AddColumn(column1Name, c => c.NoWrap())
-            .AddColumn(column2Name, c => c.NoWrap());
+        var paddedTitle = $" {title} ";
+        var tableTitle = new TableTitle(paddedTitle, new Style(foreground: Color.Black, background: Color.SkyBlue1));
+        var table = new Table().Title(tableTitle).Border(TableBorder.Rounded).BorderColor(Color.SkyBlue1);
+
+        if (expand)
+            table.Expand();
+
+        foreach (var columnName in columnNames)
+        {
+            table.AddColumn(columnName, wrap ? null : c => c.NoWrap());
+        }
+
+        return table;
     }
 
-    private Table CreateSimpleConsoleTable(string column1Name, string column2Name, string column3Name, bool wrap = true)
-    {
-        return new Table()
-            .AddColumn(column1Name, wrap ? null : c => c.NoWrap())
-            .AddColumn(column2Name, wrap ? null : c => c.NoWrap())
-            .AddColumn(column3Name, wrap ? null : c => c.NoWrap());
-    }
-
-    private void PrintHeader(string text)
-    {
-        Console.WriteLine(" ");
-        Console.WriteLine("============================================================================================");
-        Console.WriteLine(text);
-        Console.WriteLine("============================================================================================");
-        Console.WriteLine(" ");
-    }
 }
