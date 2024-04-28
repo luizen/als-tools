@@ -1,15 +1,14 @@
-using AlsTools.Core;
 using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
+using AlsTools.Core.ValueObjects.ResultSets;
 using AlsTools.Infrastructure.Indexes;
 using Raven.Client.Documents;
-using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Operations;
 
 namespace AlsTools.Infrastructure.Repositories;
 
-public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
+public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
 {
     private readonly ILogger<LiveProjectRavenRepository> logger;
     private readonly IEmbeddedDatabaseContext dbContext;
@@ -88,14 +87,95 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
-    public async Task<IEnumerable<TracksCountPerProjectResult>> GetTracksCountPerProjectAsync(int limit)
+    public async Task<IEnumerable<TracksCountPerProjectResult>> GetTracksCountPerProject()
     {
         using (var session = store.OpenAsyncSession())
         {
-            return await session.Query<TracksCountPerProjectResult, LiveProjects_TrackCount>()
-                .OrderByDescending(result => result.TrackCount)
+            return await session.Query<TracksCountPerProjectResult, LiveProjects_TracksCount>()
+                .OrderBy(result => result.ProjectName)
+                .ToListAsync();
+        }
+    }
+
+    public async Task<IEnumerable<PluginsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            var query = GetPluginsCountDisabledQuery(ignoreDisabled);
+
+            return await query
+                .OrderByDescending(result => result.ProjectName)
+                .ToListAsync();
+        }
+    }
+
+    public async Task<IEnumerable<StockDevicesCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            var query = GetStockDevicesCountDisabledQuery(ignoreDisabled);
+
+            return await query
+                .OrderByDescending(result => result.ProjectName)
+                .ToListAsync();
+        }
+    }
+
+    public async Task<IEnumerable<TracksCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            return await session.Query<TracksCountPerProjectResult, LiveProjects_TracksCount>()
+                .OrderByDescending(result => result.TracksCount)
                 .Take(limit)
                 .ToListAsync();
+        }
+    }
+
+    public async Task<IEnumerable<PluginsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int limit, bool ignoreDisabled)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            var query = GetPluginsCountDisabledQuery(ignoreDisabled);
+
+            return await query
+                .OrderByDescending(result => result.PluginsCount)
+                .Take(limit)
+                .ToListAsync();
+        }
+    }
+
+    public async Task<IEnumerable<PluginsUsageCountResult>> GetMostUsedPlugins(int limit, bool ignoreDisabled)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            var query = ignoreDisabled
+                ? store.OpenAsyncSession().Query<PluginsUsageCountResult, Plugins_ByUsageCount_EnabledOnly>()
+                : store.OpenAsyncSession().Query<PluginsUsageCountResult, Plugins_ByUsageCount>();
+
+            var results = await query
+                .OrderByDescending(result => result.UsageCount)
+                .Take(limit)
+                .ToListAsync();
+
+            return results;
+        }
+    }
+
+    public async Task<IEnumerable<StockDevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            var query = ignoreDisabled
+                ? store.OpenAsyncSession().Query<StockDevicesUsageCountResult, Plugins_ByUsageCount_EnabledOnly>()
+                : store.OpenAsyncSession().Query<StockDevicesUsageCountResult, Plugins_ByUsageCount>();
+
+            var results = await query
+                .OrderByDescending(result => result.UsageCount)
+                .Take(limit)
+                .ToListAsync();
+
+            return results;
         }
     }
 }

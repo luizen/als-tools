@@ -19,228 +19,152 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         logger.LogDebug("Printing statistics...");
 
-        var projects = await liveProjectService.GetAllProjectsAsync();
-        var ignoreDisabledDevices = options.IgnoreDisabledDevices;
-
         SetAllOptionsIfAll(options);
 
-        ExecuteIfOptionWasSet(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
-
-        ExecuteIfOptionWasSet(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
-
-        await ExecuteIfOptionWasSetAsync(options.TracksPerProject, PrintNumberOfTracksPerProject);
-
-        ExecuteIfOptionWasSet(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(projects, options));
-
-        ExecuteIfOptionWasSet(options.PluginsPerProject, () => PrintNumberOfPluginsPerProject(projects, options));
-
-        ExecuteIfOptionWasSet(options.MostUsedPlugins, () => PrintMostUsedPlugins(projects, options));
-
-        ExecuteIfOptionWasSet(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(projects, options));
-
-        ExecuteIfOptionWasSet(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(projects, options));
-
-        ExecuteIfOptionWasSet(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTrackCount(projects, options));
+        await ExecuteIfOptionWasSetAsync(options.CountProjects, () => PrintTotalOfProjects());
+        await ExecuteIfOptionWasSetAsync(options.TracksPerProject, () => PrintNumberOfTracksPerProject());
+        await ExecuteIfOptionWasSetAsync(options.PluginsPerProject, () => PrintNumberOfPluginsPerProject(options));
+        await ExecuteIfOptionWasSetAsync(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(options));
+        await ExecuteIfOptionWasSetAsync(options.MostUsedPlugins, () => PrintMostUsedPlugins(options));
+        await ExecuteIfOptionWasSetAsync(options.MostUsedStockDevice, () => PrintMostUsedStockDevices(options));
+        await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestTrackCount, () => PrintProjectsWithHighestTracksCount(options));
+        await ExecuteIfOptionWasSetAsync(options.ProjectsWithHighestPluginCount, () => PrintProjectsWithHighestPluginCount(options));
     }
 
-    private void PrintProjectsWithHighestTrackCount(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
+    private async Task PrintTotalOfProjects()
     {
-        var trackCountPerProject = projects.Select(project => new
-        {
-            ProjectName = project.Name,
-            TrackCount = project.Tracks.Count()
-        })
-        .OrderByDescending(project => project.TrackCount)
-        .Take(options.Limit)
-        .ToList();
+        var total = await liveProjectService.GetProjectsCount();
 
-        PrintHeader($"Projects with highest track count");
-        var table = CreateSimpleConsoleTable("Project name", "Tracks count");
-
-        foreach (var trackCount in trackCountPerProject)
-        {
-            table.AddRow(
-                new Text(trackCount.ProjectName),
-                new Text(trackCount.TrackCount.ToString()));
-        }
-
-        AnsiConsole.Write(table);
-    }
-
-    private void PrintProjectsWithHighestPluginCount(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
-    {
-        var ignoreDisabledPredicate = GenerateIgnoreDisabledPredicate<PluginDevice>(options);
-
-        var pluginCountPerProject = projects.Select(project => new
-        {
-            ProjectName = project.Name,
-            PluginsCount = project.Tracks
-                .SelectMany(track => track.Plugins)
-                .Count(ignoreDisabledPredicate)
-        })
-        .OrderByDescending(project => project.PluginsCount)
-        .Take(options.Limit)
-        .ToList();
-
-        PrintHeader($"Projects with highest plugin count");
-        var table = CreateSimpleConsoleTable("Project name", "Plugins count");
-
-        foreach (var pluginUsage in pluginCountPerProject)
-        {
-            table.AddRow(
-                new Text(pluginUsage.ProjectName),
-                new Text(pluginUsage.PluginsCount.ToString()));
-        }
-
-        AnsiConsole.Write(table);
-    }
-
-    private void PrintNumberOfPluginsPerProject(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
-    {
-        var ignoreDisabledPredicate = GenerateIgnoreDisabledPredicate<PluginDevice>(options);
-
-        var projectsAndPluginsCount = projects.Select(project => new
-        {
-            ProjectName = project.Name,
-            PluginCount = project.Tracks
-                .Sum(track => track.Plugins.Where(ignoreDisabledPredicate).Count())
-
-        })
-        .OrderByDescending(x => x.PluginCount)
-        .ToList();
-
-        PrintHeader($"Number of plugins per project");
-        var table = CreateSimpleConsoleTable("Project", "Plugins count");
-
-        foreach (var p in projectsAndPluginsCount)
-        {
-            table.AddRow(
-                new Text(p.ProjectName),
-                new Text(p.PluginCount.ToString()));
-        }
-
-        AnsiConsole.Write(table);
-    }
-
-
-    private void PrintMostUsedStockDevices(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
-    {
-        var ignoreDisabledPredicate = GenerateIgnoreDisabledPredicate<StockDevice>(options);
-
-        var stockDevicesUsageList = projects
-           .SelectMany(project => project.Tracks
-               .SelectMany(track => track.StockDevices.Where(ignoreDisabledPredicate))
-               .GroupBy(device => device.Name)
-               .Select(group => new
-               {
-                   StockDeviceName = group.Key,
-                   UsageCount = group.Count()
-               })
-           )
-           .GroupBy(deviceUsage => deviceUsage.StockDeviceName)
-           .Select(group => new
-           {
-               StockDeviceName = group.Key,
-               TotalUsageCount = group.Sum(deviceUsage => deviceUsage.UsageCount)
-           })
-           .OrderByDescending(deviceUsage => deviceUsage.TotalUsageCount)
-           .Take(options.Limit)
-           .ToList();
-
-        PrintHeader($"Most used stock devices");
-        var table = CreateSimpleConsoleTable("Stock device name", "Usage count");
-
-        foreach (var usage in stockDevicesUsageList)
-        {
-            table.AddRow(
-                new Text(usage.StockDeviceName),
-                new Text(usage.TotalUsageCount.ToString()));
-        }
-
-        AnsiConsole.Write(table);
-    }
-
-    private void PrintMostUsedPlugins(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
-    {
-        var ignoreDisabledPredicate = GenerateIgnoreDisabledPredicate<PluginDevice>(options);
-
-        var pluginsUsageList = projects
-           .SelectMany(project => project.Tracks
-               .SelectMany(track => track.Plugins.Where(ignoreDisabledPredicate))
-               .GroupBy(plugin => plugin.Name)
-               .Select(group => new
-               {
-                   PluginName = group.Key,
-                   UsageCount = group.Count()
-               })
-           )
-           .GroupBy(pluginUsage => pluginUsage.PluginName)
-           .Select(group => new
-           {
-               PluginName = group.Key,
-               TotalUsageCount = group.Sum(pluginUsage => pluginUsage.UsageCount)
-           })
-           .OrderByDescending(pluginUsage => pluginUsage.TotalUsageCount)
-           .Take(options.Limit)
-           .ToList();
-
-        PrintHeader($"Most used plugins");
-        var table = CreateSimpleConsoleTable("Plugin name", "Usage count");
-
-        foreach (var pluginUsage in pluginsUsageList)
-        {
-            table.AddRow(
-                new Text(pluginUsage.PluginName),
-                new Text(pluginUsage.TotalUsageCount.ToString()));
-        }
-
-        AnsiConsole.Write(table);
-    }
-
-    private void PrintNumberOfStockDevicesPerProject(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
-    {
-        var ignoreDisabledPredicate = GenerateIgnoreDisabledPredicate<StockDevice>(options);
-
-        var projectsAndStockDevicesCount = projects.Select(project => new
-        {
-            ProjectName = project.Name,
-            StockDevicesCount = project.Tracks
-                .Sum(track => track.StockDevices.Where(ignoreDisabledPredicate).Count())
-
-        })
-        .OrderByDescending(x => x.StockDevicesCount)
-        .ToList();
-
-        PrintHeader($"Number of stock devices per project");
-        var table = CreateSimpleConsoleTable("Project", "Stock devices count");
-
-        foreach (var p in projectsAndStockDevicesCount)
-        {
-            table.AddRow(
-                new Text(p.ProjectName),
-                new Text(p.StockDevicesCount.ToString()));
-        }
-
-        AnsiConsole.Write(table);
+        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", total);
     }
 
     private async Task PrintNumberOfTracksPerProject()
     {
-        var projectsAndTrackCount = await liveProjectService.GetTracksCountPerProjectAsync();
+        var tracksCountPerProject = await liveProjectService.GetTracksCountPerProject();
 
         PrintHeader($"Number of tracks per project");
-        var table = CreateSimpleConsoleTable("Project", "Path", "Track count");
+        var table = CreateSimpleConsoleTable("Project", "Path", "Tracks count");
+
+        foreach (var trackCount in tracksCountPerProject)
+        {
+            await Task.Run(() => table.AddRow(
+                new Text(trackCount.ProjectName),
+                new Text(trackCount.ProjectPath),
+                new Text(trackCount.TracksCount.ToString())));
+        }
+
+        await Task.Run(() => AnsiConsole.Write(table));
+    }
+
+    private async Task PrintNumberOfPluginsPerProject(PrintStatisticsOptions options)
+    {
+        var projectsAndPluginCount = await liveProjectService.GetPluginsCountPerProject(options.IgnoreDisabledDevices);
+
+        PrintHeader($"Number of plugins per project");
+        var table = CreateSimpleConsoleTable("Project", "Path", "Plugins count");
+
+        foreach (var pluginCount in projectsAndPluginCount)
+        {
+            await Task.Run(() => table.AddRow(
+                new Text(pluginCount.ProjectName),
+                new Text(pluginCount.ProjectPath),
+                new Text(pluginCount.PluginsCount.ToString())));
+        }
+
+        await Task.Run(() => AnsiConsole.Write(table));
+    }
+
+    private async Task PrintNumberOfStockDevicesPerProject(PrintStatisticsOptions options)
+    {
+        var projectsAndStockDevicesCount = await liveProjectService.GetStockDevicesCountPerProject(options.IgnoreDisabledDevices);
+
+        PrintHeader($"Number of stock devices per project");
+        var table = CreateSimpleConsoleTable("Project", "Path", "Stock devices count");
+
+        foreach (var stockDevicesCount in projectsAndStockDevicesCount)
+        {
+            await Task.Run(() => table.AddRow(
+                new Text(stockDevicesCount.ProjectName),
+                new Text(stockDevicesCount.ProjectPath),
+                new Text(stockDevicesCount.StockDevicesCount.ToString())));
+        }
+
+        await Task.Run(() => AnsiConsole.Write(table));
+    }
+
+    private async Task PrintProjectsWithHighestPluginCount(PrintStatisticsOptions options)
+    {
+        var projectsAndPluginCount = await liveProjectService.GetProjectsWithHighestPluginsCount(options.Limit, options.IgnoreDisabledDevices);
+
+        PrintHeader($"Projects with highest plugin count");
+        var table = CreateSimpleConsoleTable("Project", "Path", "Plugins count");
+
+        foreach (var pluginUsage in projectsAndPluginCount)
+        {
+            await Task.Run(() => table.AddRow(
+                new Text(pluginUsage.ProjectName),
+                new Text(pluginUsage.ProjectPath),
+                new Text(pluginUsage.PluginsCount.ToString())));
+        }
+
+        await Task.Run(() => AnsiConsole.Write(table));
+    }
+
+    private async Task PrintProjectsWithHighestTracksCount(PrintStatisticsOptions options)
+    {
+        var projectsAndTrackCount = await liveProjectService.GetProjectsWithHighestTracksCount(options.Limit);
+
+        PrintHeader($"Projects with highest track count");
+        var table = CreateSimpleConsoleTable("Project", "Path", "Tracks count");
 
         foreach (var p in projectsAndTrackCount)
         {
             await Task.Run(() => table.AddRow(
                 new Text(p.ProjectName),
                 new Text(p.ProjectPath),
-                new Text(p.TrackCount.ToString())));
+                new Text(p.TracksCount.ToString())));
         }
 
         await Task.Run(() => AnsiConsole.Write(table));
     }
+
+    private async Task PrintMostUsedStockDevices(PrintStatisticsOptions options)
+    {
+
+        var stockDevicesUsageCount = await liveProjectService.GetMostUsedStockDevices(options.Limit, options.IgnoreDisabledDevices);
+
+        PrintHeader($"Most used stock devices");
+
+        var table = CreateSimpleConsoleTable("Stock device name", "Usage count");
+
+        foreach (var p in stockDevicesUsageCount)
+        {
+            await Task.Run(() => table.AddRow(
+                new Text(p.StockDeviceName),
+                new Text(p.UsageCount.ToString())));
+        }
+
+        await Task.Run(() => AnsiConsole.Write(table));
+    }
+
+    private async Task PrintMostUsedPlugins(PrintStatisticsOptions options)
+    {
+        var pluginsUsageCount = await liveProjectService.GetMostUsedPlugins(options.Limit, options.IgnoreDisabledDevices);
+
+        PrintHeader($"Most used plugins");
+
+        var table = CreateSimpleConsoleTable("Plugin name", "Usage count");
+
+        foreach (var p in pluginsUsageCount)
+        {
+            await Task.Run(() => table.AddRow(
+                new Text(p.PluginName),
+                new Text(p.UsageCount.ToString())));
+        }
+
+        await Task.Run(() => AnsiConsole.Write(table));
+    }
+
 
     private void ExecuteIfOptionWasSet(bool optionValue, Action action)
     {
@@ -248,10 +172,10 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
             action();
     }
 
-    private async Task ExecuteIfOptionWasSetAsync(bool optionValue, Func<Task> action)
+    private async Task ExecuteIfOptionWasSetAsync(bool optionValue, Func<Task> asyncAction)
     {
         if (optionValue)
-            await action();
+            await asyncAction();
     }
 
     private void SetAllOptionsIfAll(PrintStatisticsOptions options)
@@ -291,12 +215,5 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         Console.WriteLine(text);
         Console.WriteLine("============================================================================================");
         Console.WriteLine(" ");
-    }
-
-    private Func<TDeviceType, bool> GenerateIgnoreDisabledPredicate<TDeviceType>(PrintStatisticsOptions options) where TDeviceType : IDevice
-    {
-        Func<TDeviceType, bool> predicate = (TDeviceType device) => !options.IgnoreDisabledDevices || device.IsEnabled;
-
-        return predicate;
     }
 }

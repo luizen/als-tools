@@ -9,11 +9,11 @@ public class LiveProjects_ByPluginNames : AbstractIndexCreationTask<LiveProject>
     {
         Map = projects => 
             from project in projects
-                from track in project.Tracks
-                    from plugin in track.Plugins
-                        select new
-                        {
-                            plugin.Name
-                        };
+            from track in project.Tracks
+            from plugin in track.Plugins
+            select new
+            {
+                plugin.Name
+            };
     }
 }

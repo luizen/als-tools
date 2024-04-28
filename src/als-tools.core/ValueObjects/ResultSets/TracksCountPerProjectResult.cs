@@ -1,4 +1,4 @@
-﻿namespace AlsTools.Core;
+﻿namespace AlsTools.Core.ValueObjects.ResultSets;
 
 public class TracksCountPerProjectResult
 {
@@ -6,5 +6,5 @@ public class TracksCountPerProjectResult
 
     public string ProjectPath { get; set; } = string.Empty;
 
-    public int TrackCount { get; set; }
+    public int TracksCount { get; set; }
 }

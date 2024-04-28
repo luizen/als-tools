@@ -1,5 +1,3 @@
-using AlsTools.Core.ValueObjects.Devices;
-
 namespace AlsTools.Core.ValueObjects;
 
 public class PluginWithProject
