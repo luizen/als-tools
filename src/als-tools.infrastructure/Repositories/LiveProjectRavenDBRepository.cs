@@ -88,24 +88,14 @@ public class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
-    public async Task<IEnumerable<NameCountElement>> GetTracksCountPerProjectAsync()
+    public async Task<IEnumerable<TracksCountPerProjectResult>> GetTracksCountPerProjectAsync(int limit)
     {
-        using var session = store.OpenAsyncSession();
-
-        // return await session.Query<NameCountElement, LiveProjects_TrackCount>()
-        //     .OrderByDescending(x => x.Count)
-        //     .Take(10)
-        //     .ToListAsync();
-
-        var projectPluginCounts = await session.Query<LiveProject>()
-           .Select(p => new NameCountElement()
-           {
-               Name = p.Name,
-               Count = p.Tracks.Sum(t => t.Plugins.Count)
-           })
-           .OrderByDescending(p => p.Count)
-           .ToListAsync();
-
-        return projectPluginCounts;
+        using (var session = store.OpenAsyncSession())
+        {
+            return await session.Query<TracksCountPerProjectResult, LiveProjects_TrackCount>()
+                .OrderByDescending(result => result.TrackCount)
+                .Take(limit)
+                .ToListAsync();
+        }
     }
 }

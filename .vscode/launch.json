@@ -219,7 +219,7 @@
             "args": [
                 "stats",
                 "--log-level",
-                "verbose",
+                "information",
                 "--all",
                 "--limit",
                 "10"

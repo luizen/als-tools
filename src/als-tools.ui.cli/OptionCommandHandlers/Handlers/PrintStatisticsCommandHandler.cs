@@ -26,7 +26,9 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
 
         ExecuteIfOptionWasSet(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
 
-        ExecuteIfOptionWasSet(options.TracksPerProject, () => PrintNumberOfTracksPerProject(projects, options));
+        ExecuteIfOptionWasSet(options.CountProjects, () => logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count));
+
+        await ExecuteIfOptionWasSetAsync(options.TracksPerProject, PrintNumberOfTracksPerProject);
 
         ExecuteIfOptionWasSet(options.StockDevicesPerProject, () => PrintNumberOfStockDevicesPerProject(projects, options));
 
@@ -222,50 +224,34 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         AnsiConsole.Write(table);
     }
 
-    private async Task PrintNumberOfTracksPerProject_UsingDB(PrintStatisticsOptions options)
+    private async Task PrintNumberOfTracksPerProject()
     {
         var projectsAndTrackCount = await liveProjectService.GetTracksCountPerProjectAsync();
 
         PrintHeader($"Number of tracks per project");
-        var table = CreateSimpleConsoleTable("Project", "Track count");
+        var table = CreateSimpleConsoleTable("Project", "Path", "Track count");
 
         foreach (var p in projectsAndTrackCount)
         {
-            table.AddRow(
-                new Text(p.Name),
-                new Text(p.Count.ToString()));
-        }
-
-        AnsiConsole.Write(table);
-    }
-
-    private void PrintNumberOfTracksPerProject(IReadOnlyList<LiveProject> projects, PrintStatisticsOptions options)
-    {
-        var projectsAndTrackCount = projects.Select(project => new
-        {
-            ProjectName = project.Name,
-            TrackCount = project.Tracks.Count()
-        })
-        .OrderByDescending(x => x.TrackCount)
-        .ToList();
-
-        PrintHeader($"Number of tracks per project");
-        var table = CreateSimpleConsoleTable("Project", "Track count");
-
-        foreach (var p in projectsAndTrackCount)
-        {
-            table.AddRow(
+            await Task.Run(() => table.AddRow(
                 new Text(p.ProjectName),
-                new Text(p.TrackCount.ToString()));
+                new Text(p.ProjectPath),
+                new Text(p.TrackCount.ToString())));
         }
 
-        AnsiConsole.Write(table);
+        await Task.Run(() => AnsiConsole.Write(table));
     }
 
     private void ExecuteIfOptionWasSet(bool optionValue, Action action)
     {
         if (optionValue)
             action();
+    }
+
+    private async Task ExecuteIfOptionWasSetAsync(bool optionValue, Func<Task> action)
+    {
+        if (optionValue)
+            await action();
     }
 
     private void SetAllOptionsIfAll(PrintStatisticsOptions options)
@@ -288,6 +274,14 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         return new Table()
             .AddColumn(column1Name, c => c.NoWrap())
             .AddColumn(column2Name, c => c.NoWrap());
+    }
+
+    private Table CreateSimpleConsoleTable(string column1Name, string column2Name, string column3Name)
+    {
+        return new Table()
+            .AddColumn(column1Name, c => c.NoWrap())
+            .AddColumn(column2Name, c => c.NoWrap())
+            .AddColumn(column3Name, c => c.NoWrap());
     }
 
     private void PrintHeader(string text)

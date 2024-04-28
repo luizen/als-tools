@@ -16,5 +16,5 @@ public interface ILiveProjectAsyncRepository
     
     Task<int> CountProjectsAsync();
 
-    Task<IEnumerable<NameCountElement>> GetTracksCountPerProjectAsync();
+    Task<IEnumerable<TracksCountPerProjectResult>> GetTracksCountPerProjectAsync(int limit);
 }
