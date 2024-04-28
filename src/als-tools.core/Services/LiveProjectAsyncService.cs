@@ -2,6 +2,7 @@ using AlsTools.Core.Entities;
 using AlsTools.Core.Enums;
 using AlsTools.Core.Interfaces;
 using AlsTools.Core.ValueObjects.Devices;
+using AlsTools.Core.ValueObjects.ResultSets;
 
 namespace AlsTools.Core.Services;
 
@@ -137,8 +138,43 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return projects;
     }
 
-    public async Task<IEnumerable<NameCountElement>> GetTracksCountPerProjectAsync()
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetTracksCountPerProject()
     {
-        return await repository.GetTracksCountPerProjectAsync();
+        return await repository.GetTracksCountPerProject();
+    }
+
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled)
+    {
+        return await repository.GetPluginsCountPerProject(ignoreDisabled);
+    }
+
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled)
+    {
+        return await repository.GetStockDevicesCountPerProject(ignoreDisabled);
+    }
+
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit)
+    {
+        return await repository.GetProjectsWithHighestTracksCount(limit);
+    }
+
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int limit, bool ignoreDisabled)
+    {
+        return await repository.GetProjectsWithHighestPluginsCount(limit, ignoreDisabled);
+    }
+
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int limit, bool ignoreDisabled)
+    {
+        return await repository.GetMostUsedPlugins(limit, ignoreDisabled);
+    }
+
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled)
+    {
+        return await repository.GetMostUsedStockDevices(limit, ignoreDisabled);
+    }
+
+    public async Task<int> GetProjectsCount()
+    {
+        return await repository.CountProjectsAsync();
     }
 }
