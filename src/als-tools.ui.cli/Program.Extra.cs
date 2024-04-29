@@ -65,7 +65,7 @@ public partial class Program
         serviceCollection.AddSingleton<UserFolderHandler>(svcProvider =>
             new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
 
-        serviceCollection.AddSingleton<ConsolePrinter>();
+        serviceCollection.AddSingleton<ConsoleTablePrinter>();
 
         serviceCollection.AddSingleton<XpathExtractorHelper>();
 

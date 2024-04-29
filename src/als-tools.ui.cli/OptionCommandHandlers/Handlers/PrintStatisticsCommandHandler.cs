@@ -4,13 +4,13 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
 {
     private readonly ILogger<PrintStatisticsCommandHandler> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
-    private readonly ConsolePrinter consolePrinter;
+    private readonly ConsoleTablePrinter consolePrinter;
 
     public PrintStatisticsCommandHandler(
         ILogger<PrintStatisticsCommandHandler> logger,
         ILiveProjectAsyncService liveProjectService,
         IOptions<ParameterValuesOptions> parameterValuesOptions,
-        ConsolePrinter consolePrinter) : base(parameterValuesOptions)
+        ConsoleTablePrinter consolePrinter) : base(parameterValuesOptions)
     {
         this.logger = logger;
         this.liveProjectService = liveProjectService;

@@ -2,7 +2,7 @@ using Spectre.Console;
 
 namespace AlsTools.Ui.Cli
 {
-    public class ConsolePrinter
+    public class ConsoleTablePrinter
     {
         public async Task PrintResults<T>(IEnumerable<T> items, string title, string[] columnNames, Func<T, string[]> getColumnValues, bool wrap = true, bool expand = true)
         {
