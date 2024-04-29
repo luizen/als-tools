@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using AlsTools.Core.ValueObjects.ResultSets;
+using Spectre.Console;
 
 namespace AlsTools.Ui.Cli.OptionCommandHandlers.Handlers;
 
@@ -35,7 +36,13 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var total = await liveProjectService.GetProjectsCount();
 
-        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", total);
+        var table = CreateSimpleConsoleTable("Total of projects", ["Projects", "Total"], expand: false);
+
+        await Task.Run(() => table.AddRow(
+                new Text(""),
+                new Text(total.ToString())));
+
+        await Task.Run(() => AnsiConsole.Write(table));
     }
 
     private async Task PrintNumberOfTracksPerProject()
@@ -110,18 +117,48 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
     {
         var projectsAndTrackCount = await liveProjectService.GetProjectsWithHighestTracksCount(options.Limit);
 
-        var table = CreateSimpleConsoleTable("Projects with highest track count", ["Project", "Path", "Tracks count"]);
-
-        foreach (var p in projectsAndTrackCount)
+        await PrintResults(projectsAndTrackCount, "Projects with highest track count", ["Project", "Path", "Tracks count"], (p) =>
         {
-            await Task.Run(() => table.AddRow(
-                new Text(p.ProjectName),
-                new Text(p.ProjectPath),
-                new Text(p.ItemsCount.ToString())));
-        }
+            return [p.ProjectName, p.ProjectPath, p.ItemsCount.ToString()];
+        });
+
+        // var table = CreateSimpleConsoleTable("Projects with highest track count", ["Project", "Path", "Tracks count"]);
+
+        // await AddRowsToTable(table, projectsAndTrackCount, (p) =>
+        // {
+        //     return [p.ProjectName, p.ProjectPath, p.ItemsCount.ToString()];
+
+        // });
+
+        // foreach (var p in projectsAndTrackCount)
+        // {
+        //     await Task.Run(() => table.AddRow(
+        //         new Text(p.ProjectName),
+        //         new Text(p.ProjectPath),
+        //         new Text(p.ItemsCount.ToString())));
+        // }
+
+        // await Task.Run(() => AnsiConsole.Write(table));
+    }
+
+    private async Task PrintResults<T>(IEnumerable<T> items, string title, string[] columnNames, Func<T, string[]> getColumnValues)
+    {
+        var table = CreateSimpleConsoleTable(title, columnNames);
+
+        await AddRowsToTable(table, items, getColumnValues);
 
         await Task.Run(() => AnsiConsole.Write(table));
     }
+
+    // {
+    //     var table = CreateSimpleConsoleTable("Projects with highest track count", ["Project", "Path", "Tracks count"]);
+
+    //     await AddRowsToTable(table, projectsAndTrackCount, (p) =>
+    //     {
+    //         return [p.ProjectName, p.ProjectPath, p.ItemsCount.ToString()];
+
+    //     });
+    // }
 
     private async Task PrintMostUsedStockDevices(PrintStatisticsOptions options)
     {
@@ -186,6 +223,8 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         if (expand)
             table.Expand();
 
+        table.AddColumn("#");
+
         foreach (var columnName in columnNames)
         {
             table.AddColumn(columnName, wrap ? null : c => c.NoWrap());
@@ -194,4 +233,21 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
         return table;
     }
 
+    private async Task AddRowsToTable<T>(Table table, IEnumerable<T> items, Func<T, string[]> getColumnValues)
+    {
+        int rowNumber = 1;
+
+        foreach (var item in items)
+        {
+            var columnValues = getColumnValues(item);
+
+            List<string> rowColumns = [rowNumber.ToString(), .. columnValues];
+
+            var texts = rowColumns.Select(v => new Text(v)).ToArray();
+
+            await Task.Run(() => table.AddRow(texts));
+
+            rowNumber++;
+        }
+    }
 }
