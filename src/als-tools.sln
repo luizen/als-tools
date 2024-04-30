@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.cli", "als-too
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.web", "als-tools.ui.web\als-tools.ui.web.csproj", "{8AFDB8BB-81FB-4F84-84FE-A2C94FEFD708}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.web2", "als-tools.ui.web2\als-tools.ui.web2.csproj", "{15050987-87B2-4631-B2FE-69803834D538}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{8AFDB8BB-81FB-4F84-84FE-A2C94FEFD708}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AFDB8BB-81FB-4F84-84FE-A2C94FEFD708}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AFDB8BB-81FB-4F84-84FE-A2C94FEFD708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15050987-87B2-4631-B2FE-69803834D538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15050987-87B2-4631-B2FE-69803834D538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15050987-87B2-4631-B2FE-69803834D538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15050987-87B2-4631-B2FE-69803834D538}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
