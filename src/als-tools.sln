@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.cli", "als-tools.ui.cli\als-tools.ui.cli.csproj", "{D6C84EF5-E779-4DEF-AF3E-495B6565B890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.web2", "als-tools.ui.web2\als-tools.ui.web2.csproj", "{15050987-87B2-4631-B2FE-69803834D538}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.web", "als-tools.ui.web\als-tools.ui.web.csproj", "{15050987-87B2-4631-B2FE-69803834D538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

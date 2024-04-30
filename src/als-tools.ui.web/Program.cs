@@ -1,5 +1,5 @@
-using als_tools.ui.web2.Components;
-using als_tools.ui.web2.Extensions;
+using als_tools.ui.web.Components;
+using als_tools.ui.web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

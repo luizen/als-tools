@@ -7,7 +7,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "${workspaceFolder}/src/als-tools.ui.web2/als-tools.ui.web2.csproj",
+                "${workspaceFolder}/src/als-tools.ui.web/als-tools.ui.web.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
