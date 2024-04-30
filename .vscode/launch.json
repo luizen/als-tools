@@ -2,6 +2,27 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug - Blazor Server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/als-tools.ui.web/bin/Debug/net8.0/als-tools.ui.web.dll",
+            "cwd": "${workspaceFolder}/src/als-tools.ui.web",
+            "args": [],
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+http://\\S+:([0-9]+)",
+                "uriFormat": "http://localhost:%s"
+            }
+        },
+        {
             "name": "Debug - initdb files <path>",
             "type": "coreclr",
             "request": "launch",

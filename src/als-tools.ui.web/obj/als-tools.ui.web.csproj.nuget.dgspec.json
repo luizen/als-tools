@@ -4,28 +4,28 @@
     "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/als-tools.ui.web.csproj": {}
   },
   "projects": {
-    "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/als-tools.ui.web.csproj": {
+    "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/als-tools.core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/als-tools.ui.web.csproj",
-        "projectName": "als-tools.ui.web",
-        "projectPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/als-tools.ui.web.csproj",
+        "projectUniqueName": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/als-tools.core.csproj",
+        "projectName": "als-tools.core",
+        "projectPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/als-tools.core.csproj",
         "packagesPath": "/Users/zenluiz/.nuget/packages/",
-        "outputPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/obj/",
+        "outputPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/zenluiz/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net8.0"
         ],
         "sources": {
           "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -41,8 +41,62 @@
         }
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FuzzySharp": {
+              "target": "Package",
+              "version": "[2.0.2, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "RavenDB.Embedded": {
+              "target": "Package",
+              "version": "[6.0.102, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.Formatting.Compact": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -54,20 +108,199 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[7.0.18, 7.0.18]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.osx-arm64",
-              "version": "[7.0.18, 7.0.18]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[7.0.18, 7.0.18]"
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
             }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.infrastructure/als-tools.infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.infrastructure/als-tools.infrastructure.csproj",
+        "projectName": "als-tools.infrastructure",
+        "projectPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.infrastructure/als-tools.infrastructure.csproj",
+        "packagesPath": "/Users/zenluiz/.nuget/packages/",
+        "outputPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/zenluiz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/als-tools.core.csproj": {
+                "projectPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/als-tools.core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Humanizer.Core": {
+              "target": "Package",
+              "version": "[2.14.1, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "RavenDB.Embedded": {
+              "target": "Package",
+              "version": "[6.0.102, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.Formatting.Compact": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
           ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/als-tools.ui.web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/als-tools.ui.web.csproj",
+        "projectName": "als-tools.ui.web",
+        "projectPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/als-tools.ui.web.csproj",
+        "packagesPath": "/Users/zenluiz/.nuget/packages/",
+        "outputPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.ui.web/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/zenluiz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/als-tools.core.csproj": {
+                "projectPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.core/als-tools.core.csproj"
+              },
+              "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.infrastructure/als-tools.infrastructure.csproj": {
+                "projectPath": "/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/src/als-tools.infrastructure/als-tools.infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Components.QuickGrid": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Radzen.Blazor": {
+              "target": "Package",
+              "version": "[4.30.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -76,7 +309,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

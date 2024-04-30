@@ -1,0 +1,67 @@
+﻿@page "/live-projects"
+@using AlsTools.Core.Entities
+@using als_tools.ui.web.Data
+@using System.Linq
+@inject ILiveProjectAsyncService liveProjectService
+
+<PageTitle>Live Projects</PageTitle>
+
+<h1>Live Projects</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+<button class="btn btn-primary" @onclick="InitDb">Init DB</button>
+
+@if (projects == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in projects)
+            {
+                <tr>
+                    <td>@project.Id</td>
+                    <td>@project.Name</td>
+                    <td>@project.Path</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private LiveProject[]? projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAllProjects();
+    }
+
+    private async Task LoadAllProjects()
+    {
+        projects = (await liveProjectService.GetAllProjectsAsync()).ToArray();
+    }
+
+    private async Task InitDb()
+    {
+        string[] folders = [ "~/Splice",
+"~/Documents/Producao/Criacoes",
+"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
+"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens"
+        ];
+
+        await liveProjectService.InitializeDbFromFoldersAsync(folders, false);
+
+        await LoadAllProjects();
+    }
+}
