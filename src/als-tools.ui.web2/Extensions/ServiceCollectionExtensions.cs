@@ -1,3 +1,4 @@
+namespace als_tools.ui.web2.Extensions;
 
 public static class ServiceCollectionExtensions
 {

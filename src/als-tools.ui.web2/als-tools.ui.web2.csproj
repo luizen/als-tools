@@ -8,4 +8,12 @@
     <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\als-tools.core\als-tools.core.csproj" />
+    <ProjectReference Include="..\als-tools.infrastructure\als-tools.infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.4" /> -->
+    <PackageReference Include="Radzen.Blazor" Version="4.30.3" />
+  </ItemGroup>
 </Project>
