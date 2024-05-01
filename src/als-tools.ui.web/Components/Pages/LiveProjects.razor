@@ -7,60 +7,75 @@
 
 <h1>Live Projects</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
-
-<button class="btn btn-primary" @onclick="InitDb">Init DB</button>
-
-@if (projects == null)
+@if (totalProjects == 0)
 {
-    <p><em>Loading...</em></p>
+    <p><button class="btn btn-primary" @onclick="InitDb">Init DB</button></p>
 }
-else
-{
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Path</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var project in projects)
-            {
-                <tr>
-                    <td>@project.Id</td>
-                    <td>@project.Name</td>
-                    <td>@project.Path</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+
+<p><button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects</button></p>
+
+<p>Total Projects: @totalProjects</p>
+
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true"
+    PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" Data="@projects" ColumnWidth="300px"
+    LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedProjects>
+    <Columns>
+        <RadzenDataGridColumn Width="15px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+            <Template Context="data">
+                @(projects.IndexOf(data) + 1)
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn Property="Name" Title="Project">
+            <Template Context="project">
+                <RadzenText TextStyle="TextStyle.Subtitle2" class="mb-0">@project.Name</RadzenText>
+                <RadzenText TextStyle="TextStyle.Caption">@project.Path</RadzenText>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
 
 @code {
-    private LiveProject[]? projects;
+    private IList<LiveProject> projects;
+    IList<LiveProject> selectedProjects;
+    private int? totalProjects;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAllProjects();
-    }
+        await base.OnInitializedAsync();
 
+        await LoadAllProjects();
+
+        selectedProjects = new List<LiveProject>() { projects.FirstOrDefault() };
+    }
     private async Task LoadAllProjects()
     {
-        projects = (await liveProjectService.GetAllProjectsAsync()).ToArray();
+        LogDebug("LoadAllProjects init");
+        projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
+        totalProjects = projects.Count();
+        LogDebug("LoadAllProjects end");
     }
 
     private async Task InitDb()
     {
-        string[] folders = [ "~/Splice",
+        LogDebug("InitDb init");
+        @* string[] folders = [ "~/Splice",
 "~/Documents/Producao/Criacoes",
 "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
 "/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens"
+]; *@
+
+
+        string[] folders = [ "~/Splice",
+"~/Documents/Producao/Criacoes"
         ];
 
         await liveProjectService.InitializeDbFromFoldersAsync(folders, false);
 
-        await LoadAllProjects();
+        LogDebug("InitDb end");
+    }
+
+    private void LogDebug(string message)
+    {
+        Log.Information(message);
     }
 }

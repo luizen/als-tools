@@ -1,3 +1,5 @@
+using Radzen;
+
 namespace als_tools.ui.web.Extensions;
 
 public static class ServiceCollectionExtensions
@@ -109,6 +111,9 @@ public static class ServiceCollectionExtensions
         //     .AddSingleton<IOptionCommandHandler<PrintStatisticsOptions>, PrintStatisticsCommandHandler>()
         //     .AddSingleton<ProjectsAndPluginsPrinter>();
 
+        // Add Radzen UI components
+        serviceCollection.AddRadzenComponents();
+
         // DB options
         serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
 
@@ -117,6 +122,7 @@ public static class ServiceCollectionExtensions
 
         // PlugScanning options
         serviceCollection.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
+
 
         // ParameterValues options
         // serviceCollection.Configure<ParameterValuesOptions>(configuration.GetSection(nameof(ParameterValuesOptions)));

@@ -66,7 +66,7 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
     {
         using (var session = store.OpenAsyncSession())
         {
-            return await session.Query<LiveProject>().ToListAsync();
+            return await session.Query<LiveProject>().OrderBy(p => p.Name).ToListAsync();
         }
     }
 
