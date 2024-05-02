@@ -16,28 +16,45 @@
 
 <p>Total Projects: @totalProjects</p>
 
+<div style="display: flex; align-items: center; margin-bottom: 16px">
+    <RadzenButton Click="@ClearSelection" Text="Clear Selection" />
+    @if (selectedProjects?.Any() == true)
+    {
+        <div style="margin-left: 16px">
+            Selected project: @selectedProjects[0].Name
+        </div>
+    }
+</div>
+
 <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true"
-    PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" Data="@projects" ColumnWidth="300px"
-    LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedProjects>
+    PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" Data="@projects" AllowColumnPicking="true"
+    LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value="@selectedProjects" ColumnWidth="140px"
+    PageSizeOptions="@pageSizeOptions" AllowGrouping="true">
     <Columns>
-        <RadzenDataGridColumn Width="15px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+        <RadzenDataGridColumn Width="60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
             <Template Context="data">
-                @(projects.IndexOf(data) + 1)
+                @(projects?.IndexOf(data) + 1)
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn Property="Name" Title="Project">
-            <Template Context="project">
-                <RadzenText TextStyle="TextStyle.Subtitle2" class="mb-0">@project.Name</RadzenText>
-                <RadzenText TextStyle="TextStyle.Caption">@project.Path</RadzenText>
-            </Template>
-        </RadzenDataGridColumn>
+        <RadzenDataGridColumn Property="Name" Title="Project name" Frozen="true" Width="400px" />
+        <RadzenDataGridColumn Property="Path" Title="Path" Width="450px" />
+        <RadzenDataGridColumn Property="Creator" Title="Live version" Width="180px" />
+        <RadzenDataGridColumn Property="Tempo" Title="Tempo" Width="130px" />
+        <RadzenDataGridColumn Title="Details" Width="140px" />
     </Columns>
 </RadzenDataGrid>
 
 @code {
-    private IList<LiveProject> projects;
-    IList<LiveProject> selectedProjects;
+    private IList<LiveProject>? projects;
+    IList<LiveProject>? selectedProjects;
     private int? totalProjects;
+    int[] pageSizeOptions = [5, 10, 20, 30, 50];
+
+    void ClearSelection()
+    {
+        selectedProjects?.Clear();
+        selectedProjects = null;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -45,13 +62,14 @@
 
         await LoadAllProjects();
 
-        selectedProjects = new List<LiveProject>() { projects.FirstOrDefault() };
+        @* selectedProjects = new List<LiveProject>() { projects?.FirstOrDefault() }; *@
     }
     private async Task LoadAllProjects()
     {
         LogDebug("LoadAllProjects init");
         projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
         totalProjects = projects.Count();
+        selectedProjects = projects.Take(1).ToList();
         LogDebug("LoadAllProjects end");
     }
 
