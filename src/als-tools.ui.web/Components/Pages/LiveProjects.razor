@@ -24,6 +24,7 @@
             Selected project: @selectedProjects[0].Name
         </div>
     }
+
 </div>
 
 <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true"
@@ -31,16 +32,17 @@
     LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value="@selectedProjects" ColumnWidth="140px"
     PageSizeOptions="@pageSizeOptions" AllowGrouping="true">
     <Columns>
-        <RadzenDataGridColumn Width="60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+        <RadzenDataGridColumn Width=" 60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+            Groupable="false">
             <Template Context="data">
                 @(projects?.IndexOf(data) + 1)
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn Property="Name" Title="Project name" Frozen="true" Width="400px" />
+        <RadzenDataGridColumn Property="Name" Title="Project name" Frozen="true" Width="400px" Groupable="false" />
         <RadzenDataGridColumn Property="Path" Title="Path" Width="450px" />
         <RadzenDataGridColumn Property="Creator" Title="Live version" Width="180px" />
         <RadzenDataGridColumn Property="Tempo" Title="Tempo" Width="130px" />
-        <RadzenDataGridColumn Title="Details" Width="140px" />
+        <RadzenDataGridColumn Title="Details" Width="140px" Groupable="false" />
     </Columns>
 </RadzenDataGrid>
 
@@ -50,12 +52,12 @@
     private int? totalProjects;
     int[] pageSizeOptions = [5, 10, 20, 30, 50];
 
+
     void ClearSelection()
     {
         selectedProjects?.Clear();
         selectedProjects = null;
     }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
