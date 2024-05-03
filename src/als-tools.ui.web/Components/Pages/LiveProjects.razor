@@ -27,13 +27,28 @@
 
 </div>
 
+<RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+    <div style="white-space:nowrap; margin-right: 5px">Density:</div>
+    <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
+                        Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
+    
+    <div style="white-space:nowrap; margin-right: 5px; margin-left: 30px;">GridLines:</div>
+    <RadzenSelectBar @bind-Value="@gridLines" TextProperty="Text" ValueProperty="Value"
+                     Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
+</RadzenCard>
+
 <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true"
     PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" Data="@projects" AllowColumnPicking="true"
     LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value="@selectedProjects" ColumnWidth="140px"
-    PageSizeOptions="@pageSizeOptions" AllowGrouping="true">
+    PageSizeOptions="@pageSizeOptions" AllowGrouping="true" Density="@density" GridLines="@gridLines">
+    <EmptyTemplate>
+        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+    </EmptyTemplate>
+    <GroupHeaderTemplate>
+        @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+    </GroupHeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn Width=" 60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
-            Groupable="false">
+        <RadzenDataGridColumn Width="60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
             <Template Context="data">
                 @(projects?.IndexOf(data) + 1)
             </Template>
@@ -47,17 +62,19 @@
 </RadzenDataGrid>
 
 @code {
-    private IList<LiveProject>? projects;
+    private IList<LiveProject>? projects = new List<LiveProject>();
     IList<LiveProject>? selectedProjects;
     private int? totalProjects;
     int[] pageSizeOptions = [5, 10, 20, 30, 50];
-
+    Density density = Density.Default;
+    Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
 
     void ClearSelection()
     {
         selectedProjects?.Clear();
         selectedProjects = null;
     }
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
