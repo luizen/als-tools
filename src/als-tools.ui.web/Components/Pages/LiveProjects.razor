@@ -4,6 +4,7 @@
 @using System.Net
 @inject ILiveProjectAsyncService liveProjectService
 @inject NavigationManager navigationManager
+@inject DialogService dialogService
 
 <PageTitle>Ableton Live Projects</PageTitle>
 
@@ -69,10 +70,18 @@
     private bool progressBarVisible = false;
 
 
-    void NavigateToDetails(LiveProject data)
+    @* void NavigateToDetails(LiveProject data)
     {
         var encodedId = WebUtility.UrlEncode(data.Id);
         navigationManager.NavigateTo($"/project-details/{encodedId}");
+} *@
+
+    protected async Task NavigateToDetails(LiveProject data)
+    {
+        var encodedId = WebUtility.UrlEncode(data.Id);
+        await dialogService.OpenAsync<ProjectDetails>("Project Details",
+        new Dictionary<string, object>() { { "Id", encodedId } },
+        new DialogOptions() { Width = "90%", Height = "90%", Resizable = true, Draggable = true });
     }
 
     protected override async Task OnInitializedAsync()
