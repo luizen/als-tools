@@ -1,6 +1,7 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Enums;
 using AlsTools.Core.Interfaces;
+using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Core.ValueObjects.ResultSets;
 
@@ -36,19 +37,19 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetProjectsContainingPluginsAsync(pluginsToLocate);
     }
 
-    public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths)
+    public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths, IProgress<double>? progress = null)
     {
         await repository.DeleteAllAsync();
-        var projects = LoadProjectsFromSetFiles(filePaths);
+        var projects = LoadProjectsFromSetFiles(filePaths, progress);
         await repository.InsertAsync(projects);
 
         return projects.Count;
     }
 
-    public async Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder)
+    public async Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress = null)
     {
         await repository.DeleteAllAsync();
-        var projects = LoadProjectsFromDirectories(folderPaths, includeBackupFolder);
+        var projects = LoadProjectsFromDirectories(folderPaths, includeBackupFolder, progress);
         await repository.InsertAsync(projects);
         return projects.Count;
     }
@@ -103,36 +104,42 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     }
 
 
-// VST2 = LittlePlate, lots of details in the project file
-// VST3 = Little Plate, very few details in the project file
-// In both plugin Info.plist files there is only LittlePlate.
-// Where the hell does Ableton get the plugin name from?
+    // VST2 = LittlePlate, lots of details in the project file
+    // VST3 = Little Plate, very few details in the project file
+    // In both plugin Info.plist files there is only LittlePlate.
+    // Where the hell does Ableton get the plugin name from?
 
-// USE FUZZY SEARCH!
+    // USE FUZZY SEARCH!
 
 
-    private IReadOnlyList<LiveProject> LoadProjectsFromSetFiles(IEnumerable<string> filePaths)
+    private IReadOnlyList<LiveProject> LoadProjectsFromSetFiles(IEnumerable<string> filePaths, IProgress<double>? progress = null)
     {
         var files = fs.GetProjectFilesFullPathFromSetFiles(filePaths);
 
-        return ExtractProjectsFromFiles(files);
+        return ExtractProjectsFromFiles(files, progress);
     }
 
-    private IReadOnlyList<LiveProject> LoadProjectsFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder)
+    private IReadOnlyList<LiveProject> LoadProjectsFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress = null)
     {
         var files = fs.GetProjectFilesFullPathFromDirectories(folderPaths, includeBackupFolder);
 
-        return ExtractProjectsFromFiles(files);
+        return ExtractProjectsFromFiles(files, progress);
     }
 
-    private IReadOnlyList<LiveProject> ExtractProjectsFromFiles(IEnumerable<string> filePaths)
+    private IReadOnlyList<LiveProject> ExtractProjectsFromFiles(IEnumerable<string> filePaths, IProgress<double>? progress = null)
     {
         var projects = new List<LiveProject>();
+        int count = 0;
+        int total = filePaths.Count();
+        double percent = 0;
 
         foreach (var filePath in filePaths)
         {
             var project = extractor.ExtractProjectFromFile(filePath);
             projects.Add(project);
+
+            percent = ++count * 100 / total;
+            progress?.Report(percent);
         }
 
         return projects;
@@ -176,5 +183,10 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     public async Task<int> GetProjectsCount()
     {
         return await repository.CountProjectsAsync();
+    }
+
+    public async Task DeleteAllProjectsAsync()
+    {
+        await repository.DeleteAllAsync();
     }
 }

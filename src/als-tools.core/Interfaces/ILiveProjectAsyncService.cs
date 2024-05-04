@@ -1,5 +1,6 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Enums;
+using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Core.ValueObjects.ResultSets;
 
@@ -7,9 +8,9 @@ namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectAsyncService
 {
-    Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths);
+    Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths, IProgress<double>? progress);
 
-    Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder);
+    Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress);
 
     Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
 
@@ -34,4 +35,6 @@ public interface ILiveProjectAsyncService
     Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled);
 
     Task<int> GetProjectsCount();
+
+    Task DeleteAllProjectsAsync();
 }

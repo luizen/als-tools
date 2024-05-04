@@ -3,29 +3,23 @@
 @using System.Linq
 @inject ILiveProjectAsyncService liveProjectService
 
-<PageTitle>Live Projects</PageTitle>
+<PageTitle>Ableton Live Projects</PageTitle>
 
-<h1>Live Projects</h1>
+<h1>Ableton Live Projects</h1>
 
-@if (totalProjects == 0)
-{
-    <p><button class="btn btn-primary" @onclick="InitDb">Init DB</button></p>
-}
-
-<p><button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects</button></p>
-
-<p>Total Projects: @totalProjects</p>
-
-<div style="display: flex; align-items: center; margin-bottom: 16px">
-    <RadzenButton Click="@ClearSelection" Text="Clear Selection" />
-    @if (selectedProjects?.Any() == true)
+<RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+    @if (totalProjects == 0)
     {
-        <div style="margin-left: 16px">
-            Selected project: @selectedProjects[0].Name
-        </div>
+        <button class="btn btn-primary" @onclick="InitDb">Init DB</button>
     }
+    <button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects</button>
+    <button class="btn btn-secondary" @onclick="DeleteAllProjects">Delete all projects</button>
 
+</RadzenCard>
+<div class="rz-m-12">
+    <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
 </div>
+<p>Total Projects: @totalProjects</p>
 
 <RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
     <div style="white-space:nowrap; margin-right: 5px">Density:</div>
@@ -37,9 +31,9 @@
                      Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
 </RadzenCard>
 
-<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true"
-    PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" Data="@projects" AllowColumnPicking="true"
-    LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value="@selectedProjects" ColumnWidth="140px"
+<RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
+    FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+    ShowPagingSummary="true" AllowColumnPicking="true" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
     PageSizeOptions="@pageSizeOptions" AllowGrouping="true" Density="@density" GridLines="@gridLines">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
@@ -63,51 +57,63 @@
 
 @code {
     private IList<LiveProject>? projects = new List<LiveProject>();
-    IList<LiveProject>? selectedProjects;
-    private int? totalProjects;
+    private double? totalProjects;
     int[] pageSizeOptions = [5, 10, 20, 30, 50];
     Density density = Density.Default;
     Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
+    private double progressPercent;
+    private bool progressBarVisible = false;
 
-    void ClearSelection()
-    {
-        selectedProjects?.Clear();
-        selectedProjects = null;
-    }
-    
+    @* private double progressPercent = 0; *@
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         await LoadAllProjects();
-
-        @* selectedProjects = new List<LiveProject>() { projects?.FirstOrDefault() }; *@
     }
     private async Task LoadAllProjects()
     {
         LogDebug("LoadAllProjects init");
         projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
         totalProjects = projects.Count();
-        selectedProjects = projects.Take(1).ToList();
         LogDebug("LoadAllProjects end");
+    }
+
+    private async Task DeleteAllProjects()
+    {
+        LogDebug("DeleteAllProjects init");
+
+        await liveProjectService.DeleteAllProjectsAsync();
+
+        totalProjects = 0;
+
+        StateHasChanged();
+
+        LogDebug("DeleteAllProjects end");
     }
 
     private async Task InitDb()
     {
         LogDebug("InitDb init");
-        @* string[] folders = [ "~/Splice",
-"~/Documents/Producao/Criacoes",
-"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
-"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens"
-]; *@
-
 
         string[] folders = [ "~/Splice",
 "~/Documents/Producao/Criacoes"
         ];
 
-        await liveProjectService.InitializeDbFromFoldersAsync(folders, false);
+        var progress = new Progress<double>(progressValue =>
+        {
+            progressPercent = progressValue;
 
+            InvokeAsync(StateHasChanged); // Notify Blazor the state has changed
+        });
+
+        progressBarVisible = true;
+        await Task.Run(() => liveProjectService.InitializeDbFromFoldersAsync(folders, false, progress));
+        progressBarVisible = false;
+
+        totalProjects = projects?.Count();
+        StateHasChanged();
         LogDebug("InitDb end");
     }
 
