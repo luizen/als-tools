@@ -70,6 +70,14 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
+    public async Task<LiveProject?> GetProjectByIdAsync(string id)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            return await session.LoadAsync<LiveProject>(id);
+        }
+    }
+
     public async Task DeleteAllAsync()
     {
         var operation = await store
@@ -178,4 +186,5 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             return results;
         }
     }
+
 }

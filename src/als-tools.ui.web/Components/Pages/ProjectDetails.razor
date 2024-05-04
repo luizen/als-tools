@@ -1,0 +1,48 @@
+@page "/project-details/{Id}"
+@using AlsTools.Core.Entities
+@using System.Linq
+@using System.Net
+@inject NavigationManager navigationManager
+@inject ILiveProjectAsyncService liveProjectService
+
+<PageTitle>Project details</PageTitle>
+
+<h1>Project details</h1>
+
+@if (project == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+    <p><strong>Name:</strong> @project.Name</p>
+    <p><strong>Path:</strong> @project.Path</p>
+    <p><strong>Creator:</strong> @project.Creator</p>
+    <p><strong>Tempo:</strong> @project.Tempo</p>
+</div>
+
+    <h2>Tracks</h2>
+
+    @foreach (var track in project.Tracks)
+    {
+        <div>
+    <p><strong>Name:</strong> @track.EffectiveName</p>
+    <p><strong>Plugins:</strong> @string.Join(", ", track.Plugins.Select(p => p.Name))</p>
+    <p><strong>Devices:</strong> @string.Join(", ", track.StockDevices.Select(d => d.Name))</p>
+</div>
+    }
+}
+
+@code {
+    private LiveProject? project;
+
+    [Parameter]
+    public required string Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var decodedId = WebUtility.UrlDecode(Id);
+        project = await liveProjectService.GetProjectByIdAsync(decodedId);
+    }
+}

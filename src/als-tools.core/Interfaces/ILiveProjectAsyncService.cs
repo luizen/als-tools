@@ -14,6 +14,8 @@ public interface ILiveProjectAsyncService
 
     Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
 
+    Task<LiveProject?> GetProjectByIdAsync(string id);
+
     Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
 
     Task<int> CountProjectsAsync();

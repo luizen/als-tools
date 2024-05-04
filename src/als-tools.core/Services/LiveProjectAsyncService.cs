@@ -189,4 +189,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     {
         await repository.DeleteAllAsync();
     }
+
+    public async Task<LiveProject?> GetProjectByIdAsync(string id)
+    {
+        return await repository.GetProjectByIdAsync(id);
+    }
 }

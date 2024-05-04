@@ -1,7 +1,9 @@
 ﻿@page "/live-projects"
 @using AlsTools.Core.Entities
 @using System.Linq
+@using System.Net
 @inject ILiveProjectAsyncService liveProjectService
+@inject NavigationManager navigationManager
 
 <PageTitle>Ableton Live Projects</PageTitle>
 
@@ -14,12 +16,10 @@
     }
     <button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects</button>
     <button class="btn btn-secondary" @onclick="DeleteAllProjects">Delete all projects</button>
-
+    <p>Total Projects: @totalProjects</p>
 </RadzenCard>
-<div class="rz-m-12">
-    <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
-</div>
-<p>Total Projects: @totalProjects</p>
+
+<RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
 
 <RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
     <div style="white-space:nowrap; margin-right: 5px">Density:</div>
@@ -51,7 +51,11 @@
         <RadzenDataGridColumn Property="Path" Title="Path" Width="450px" />
         <RadzenDataGridColumn Property="Creator" Title="Live version" Width="180px" />
         <RadzenDataGridColumn Property="Tempo" Title="Tempo" Width="130px" />
-        <RadzenDataGridColumn Title="Details" Width="140px" Groupable="false" />
+        <RadzenDataGridColumn Title="Details" Width="140px" Groupable="false">
+            <Template Context="data">
+                <RadzenButton Icon="info" Size="ButtonSize.Small" Click="@(args => NavigateToDetails(data))" />
+            </Template>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
@@ -64,7 +68,12 @@
     private double progressPercent;
     private bool progressBarVisible = false;
 
-    @* private double progressPercent = 0; *@
+
+    void NavigateToDetails(LiveProject data)
+    {
+        var encodedId = WebUtility.UrlEncode(data.Id);
+        navigationManager.NavigateTo($"/project-details/{encodedId}");
+    }
 
     protected override async Task OnInitializedAsync()
     {

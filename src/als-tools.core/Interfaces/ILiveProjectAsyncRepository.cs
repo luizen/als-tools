@@ -12,7 +12,9 @@ public interface ILiveProjectAsyncRepository
     Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
 
     Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
-    
+
+    Task<LiveProject?> GetProjectByIdAsync(string id);
+
     Task DeleteAllAsync();
     
     Task<int> CountProjectsAsync();
@@ -30,4 +32,6 @@ public interface ILiveProjectAsyncRepository
     Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int limit, bool ignoreDisabled);
 
     Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled);
+
+
 }
