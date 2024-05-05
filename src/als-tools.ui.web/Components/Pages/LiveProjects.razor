@@ -1,4 +1,4 @@
-﻿@page "/live-projects"
+﻿@page "/"
 @using AlsTools.Core.Entities
 @using System.Linq
 @using System.Net
@@ -69,18 +69,10 @@
     private double progressPercent;
     private bool progressBarVisible = false;
 
-
-    @* void NavigateToDetails(LiveProject data)
-    {
-        var encodedId = WebUtility.UrlEncode(data.Id);
-        navigationManager.NavigateTo($"/project-details/{encodedId}");
-} *@
-
     protected async Task NavigateToDetails(LiveProject data)
     {
-        var encodedId = WebUtility.UrlEncode(data.Id);
         await dialogService.OpenAsync<ProjectDetails>("Project Details",
-        new Dictionary<string, object>() { { "Id", encodedId } },
+        new Dictionary<string, object>() { { "project", data } },
         new DialogOptions() { Width = "90%", Height = "90%", Resizable = true, Draggable = true });
     }
 

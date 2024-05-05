@@ -71,6 +71,8 @@ public abstract class BaseTrack : ITrack
 
     public bool IsMasterTrack => Type == TrackType.Master;
 
+    public int Color { get; set; }
+
     public void AddDevice(IDevice device)
     {
         if (device == null)

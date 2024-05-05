@@ -92,6 +92,11 @@ public interface ITrack
     void AddDevices(IEnumerable<IDevice> devices);
 
     /// <summary>
+    /// Track color
+    /// </summary>
+    int Color { get; set; }
+
+    /// <summary>
     /// Whether the track is muted or not
     /// </summary>
     bool? IsMuted { get; set; }

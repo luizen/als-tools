@@ -1,7 +1,8 @@
-@page "/project-details/{Id}"
+@page "/project-details/{project}"
 @using AlsTools.Core.Entities
 @using System.Linq
 @using System.Net
+@using AlsTools.Core.ValueObjects.Tracks
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager navigationManager
 @inject ILiveProjectAsyncService liveProjectService
@@ -10,40 +11,69 @@
 
 <h1>Project details</h1>
 
-@if (project == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <div>
-    <p><strong>Name:</strong> @project.Name</p>
-    <p><strong>Path:</strong> @project.Path</p>
-    <p><strong>Creator:</strong> @project.Creator</p>
-    <p><strong>Tempo:</strong> @project.Tempo</p>
-</div>
-
-    <h2>Tracks</h2>
-
-    @foreach (var track in project.Tracks)
+<RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+    @if (project != null)
     {
         <div>
-    <p><strong>Name:</strong> @track.EffectiveName</p>
-    <p><strong>Plugins:</strong> @string.Join(", ", track.Plugins.Select(p => p.Name))</p>
-    <p><strong>Devices:</strong> @string.Join(", ", track.StockDevices.Select(d => d.Name))</p>
-</div>
+            <p><strong>Name:</strong> @project.Name</p>
+            <p><strong>Path:</strong> @project.Path</p>
+            <p><strong>Creator:</strong> @project.Creator</p>
+            <p><strong>Tempo:</strong> @project.Tempo</p>
+        </div>
     }
-}
+    </RadzenCard>
 
-@code {
-    private LiveProject? project;
 
+    <RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+        <div style="white-space:nowrap; margin-right: 5px">Density:</div>
+        <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
+            Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
+
+        <div style="white-space:nowrap; margin-right: 5px; margin-left: 30px;">GridLines:</div>
+        <RadzenSelectBar @bind-Value="@gridLines" TextProperty="Text" ValueProperty="Value"
+            Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))"
+            Size="ButtonSize.Small" />
+    </RadzenCard>
+
+    <RadzenDataGrid Data="@tracks" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
+        FilterMode="FilterMode.Advanced" AllowSorting="true" AllowPaging="false" AllowColumnPicking="true"
+        LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px" AllowGrouping="true" Density="@density" GridLines="@gridLines">
+        <EmptyTemplate>
+            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+        </EmptyTemplate>
+        <GroupHeaderTemplate>
+            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+        </GroupHeaderTemplate>
+        <Columns>
+            <RadzenDataGridColumn Width="60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
+                <Template Context="data">
+                    @(tracks?.IndexOf(data) + 1)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="EffectiveName" Title="Track name" Frozen="true" Groupable="false" />
+            <RadzenDataGridColumn Property="Type" Title="Type" />
+            <RadzenDataGridColumn Property="TrackDelay.Description" Title="Track delay" />
+            <RadzenDataGridColumn Property="IsMuted" Title="IsMuted" />
+            <RadzenDataGridColumn Property="IsSoloed" Title="IsSoloed" />
+            <RadzenDataGridColumn Property="IsGroupTrack" Title="IsGroupTrack" />
+            <RadzenDataGridColumn Property="IsPartOfGroup" Title="IsPartOfGroup" />
+            <RadzenDataGridColumn Property="Color" Title="Color" />
+        </Columns>
+    </RadzenDataGrid>
+
+    @code {
     [Parameter]
-    public required string Id { get; set; }
+    public required LiveProject project { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    private IList<ITrack> tracks;
+    Density density = Density.Default;
+    Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
+
+    protected override Task OnInitializedAsync()
     {
-        var decodedId = WebUtility.UrlDecode(Id);
-        project = await liveProjectService.GetProjectByIdAsync(decodedId);
+        tracks = project.Tracks.ToList();
+
+        return base.OnInitializedAsync();
     }
+
 }
