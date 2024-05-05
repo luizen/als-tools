@@ -7,7 +7,6 @@
 @inject DialogService dialogService
 
 <PageTitle>Ableton Live Projects</PageTitle>
-
 <h1>Ableton Live Projects</h1>
 
 <RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
@@ -75,13 +74,13 @@
         new Dictionary<string, object>() { { "project", data } },
         new DialogOptions() { Width = "90%", Height = "90%", Resizable = true, Draggable = true });
     }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         await LoadAllProjects();
     }
+
     private async Task LoadAllProjects()
     {
         LogDebug("LoadAllProjects init");
