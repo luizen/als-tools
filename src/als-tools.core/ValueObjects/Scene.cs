@@ -36,4 +36,9 @@ public class Scene
     /// Whether a time signature is set
     /// </summary>
     public bool IsTimeSignatureEnabled { get; set; }
+
+    /// <summary>
+    /// Scene color
+    /// </summary>
+    int Color { get; set; }
 }
