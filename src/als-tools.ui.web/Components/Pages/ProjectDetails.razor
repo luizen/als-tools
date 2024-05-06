@@ -44,12 +44,12 @@
             @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
         </GroupHeaderTemplate>
         <Columns>
-            <RadzenDataGridColumn Width="60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
+            <RadzenDataGridColumn Width="60px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
                 <Template Context="data">
                     @(tracks?.IndexOf(data) + 1)
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn Property="EffectiveName" Title="Track name" Frozen="true" Groupable="false" />
+            <RadzenDataGridColumn Property="EffectiveName" Title="Track name" Groupable="false" />
             <RadzenDataGridColumn Property="Type" Title="Type" />
             <RadzenDataGridColumn Property="TrackDelay.Description" Title="Track delay" />
             <RadzenDataGridColumn Property="IsMuted" Title="IsMuted" />
