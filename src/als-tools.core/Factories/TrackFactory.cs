@@ -5,7 +5,7 @@ namespace AlsTools.Core.Factories;
 
 public static class TrackFactory
 {
-    public static ITrack CreateTrack(TrackType type, int? id, string? effectiveName, string userName, string annotation, bool? isFrozen, bool? isMuted, bool? isSoloed, TrackDelay trackDelay, int parentGroupId)
+    public static ITrack CreateTrack(TrackType type, int? id, string? effectiveName, string userName, string annotation, bool? isFrozen, bool? isMuted, bool? isSoloed, TrackDelay trackDelay, int parentGroupId, int? color)
     {
         ITrack track = type switch
         {
@@ -16,10 +16,10 @@ public static class TrackFactory
             _ => new MasterTrack()
         };
 
-        return SetDefaultProperties(track, id, effectiveName, userName, annotation, isFrozen, isMuted, isSoloed, trackDelay, parentGroupId);
+        return SetDefaultProperties(track, id, effectiveName, userName, annotation, isFrozen, isMuted, isSoloed, trackDelay, parentGroupId, color);
     }
 
-    private static ITrack SetDefaultProperties(ITrack track, int? id, string? effectiveName, string userName, string annotation, bool? isFrozen, bool? isMuted, bool? isSoloed, TrackDelay trackDelay, int parentGroupId)
+    private static ITrack SetDefaultProperties(ITrack track, int? id, string? effectiveName, string userName, string annotation, bool? isFrozen, bool? isMuted, bool? isSoloed, TrackDelay trackDelay, int parentGroupId, int? color)
     {
         track.Id = id;
         track.EffectiveName = effectiveName;
@@ -30,7 +30,7 @@ public static class TrackFactory
         track.IsSoloed = isSoloed;
         track.TrackDelay = trackDelay;
         track.TrackGroupId = parentGroupId;
-
+        track.Color = LiveColor.FromValue(color);
         return track;
     }
 }

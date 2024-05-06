@@ -35,7 +35,8 @@
 
     <RadzenDataGrid Data="@tracks" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
         FilterMode="FilterMode.Advanced" AllowSorting="true" AllowPaging="false" AllowColumnPicking="true"
-        LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px" AllowGrouping="true" Density="@density" GridLines="@gridLines">
+        LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px" AllowGrouping="true" Density="@density" GridLines="@gridLines"
+        RowRender="@OnRowRender">
         <EmptyTemplate>
             <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
         </EmptyTemplate>
@@ -74,4 +75,15 @@
         return base.OnInitializedAsync();
     }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        tracks = project.Tracks.ToList();
+
+        await base.OnParametersSetAsync();
+    }
+
+    void OnRowRender(RowRenderEventArgs<ITrack> args)
+    {
+        args.Attributes.Add("style", $"background-color: {args.Data.Color.HexColor};");
+    }
 }

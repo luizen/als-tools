@@ -94,7 +94,7 @@ public interface ITrack
     /// <summary>
     /// Track color
     /// </summary>
-    int Color { get; set; }
+    LiveColor Color { get; set; }
 
     /// <summary>
     /// Whether the track is muted or not

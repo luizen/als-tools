@@ -69,6 +69,7 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             var annotation = trackNode.SelectSingleNode(@"Name/Annotation/@Value")!.Value;
             var groupId = trackNode.SelectSingleNode(@"TrackGroupId/@Value")!.ValueAsInt;
             var isFrozen = trackNode.SelectSingleNode(@"Freeze/@Value")?.ValueAsBoolean;
+            var color = trackNode.SelectSingleNode(@"Color/@Value")?.ValueAsInt;
             bool? isMuted = default;
             bool? isSoloed = default;
 
@@ -84,7 +85,7 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
             };
 
             // Create the track
-            var track = TrackFactory.CreateTrack(trackType, id, effectiveName, userName, annotation, isFrozen, isMuted, isSoloed, trackDelay, groupId);
+            var track = TrackFactory.CreateTrack(trackType, id, effectiveName, userName, annotation, isFrozen, isMuted, isSoloed, trackDelay, groupId, color);
 
             logger.LogDebug(@"Extracted Track name: {@TrackName}", track.EffectiveName);
 

@@ -40,5 +40,5 @@ public class Scene
     /// <summary>
     /// Scene color
     /// </summary>
-    int Color { get; set; }
+    public LiveColor Color { get; set; }
 }

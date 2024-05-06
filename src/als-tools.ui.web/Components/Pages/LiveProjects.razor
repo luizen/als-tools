@@ -5,6 +5,7 @@
 @inject ILiveProjectAsyncService liveProjectService
 @inject NavigationManager navigationManager
 @inject DialogService dialogService
+@attribute [StreamRendering]
 
 <PageTitle>Ableton Live Projects</PageTitle>
 <h1>Ableton Live Projects</h1>
@@ -86,6 +87,7 @@
         LogDebug("LoadAllProjects init");
         projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
         totalProjects = projects.Count();
+        await InvokeAsync(StateHasChanged);
         LogDebug("LoadAllProjects end");
     }
 
@@ -97,7 +99,8 @@
 
         totalProjects = 0;
 
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
+        @* StateHasChanged(); *@
 
         LogDebug("DeleteAllProjects end");
     }
@@ -106,9 +109,12 @@
     {
         LogDebug("InitDb init");
 
-        string[] folders = [ "~/Splice",
-"~/Documents/Producao/Criacoes"
-        ];
+        @* string[] folders = [ "~/Splice",
+"~/Documents/Producao/Criacoes",
+"~/Desktop"
+]; *@
+
+        string[] folders = ["~/Desktop"];
 
         var progress = new Progress<double>(progressValue =>
         {
@@ -122,8 +128,11 @@
         progressBarVisible = false;
 
         totalProjects = projects?.Count();
-        StateHasChanged();
+        @* StateHasChanged(); *@
+        await InvokeAsync(StateHasChanged);
         LogDebug("InitDb end");
+
+        await LoadAllProjects();
     }
 
     private void LogDebug(string message)
