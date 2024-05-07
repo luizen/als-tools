@@ -23,14 +23,19 @@
     </RadzenCard>
 
     <RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
-        <div style="white-space:nowrap; margin-right: 5px">Density:</div>
-        <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
-            Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.2rem">
+            <RadzenLabel Text="Density" Component="True" />
+            <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
+                Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
 
-        <div style="white-space:nowrap; margin-right: 5px; margin-left: 30px;">GridLines:</div>
-        <RadzenSelectBar @bind-Value="@gridLines" TextProperty="Text" ValueProperty="Value"
-            Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))"
-            Size="ButtonSize.Small" />
+            <RadzenLabel Text="Grid lines" Component="True" />
+            <RadzenSelectBar @bind-Value="@gridLines" TextProperty="Text" ValueProperty="Value"
+                Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))"
+                Size="ButtonSize.Small" />
+
+            <RadzenLabel Text="Use track colors" Component="True" />
+            <RadzenSwitch @bind-Value=@useTrackColors />
+        </RadzenStack>
     </RadzenCard>
 
     <RadzenDataGrid Data="@tracks" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
@@ -66,6 +71,7 @@
 
     private IList<ITrack> tracks;
     Density density = Density.Default;
+    bool useTrackColors = true;
     Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
 
     protected override Task OnInitializedAsync()
@@ -84,6 +90,7 @@
 
     void OnRowRender(RowRenderEventArgs<ITrack> args)
     {
-        args.Attributes.Add("style", $"background-color: {args.Data.Color.HexColor};");
+        if (useTrackColors)
+            args.Attributes.Add("style", $"background-color: {args.Data.Color.HexColor};");
     }
 }
