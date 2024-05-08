@@ -32,3 +32,8 @@
 ## Xpath
 
 <http://xpather.com>
+
+## Blazor
+
+<https://blazor.radzen.com>
+<https://blazor.radzen.com/icon>

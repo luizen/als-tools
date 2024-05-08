@@ -3,19 +3,7 @@ using als_tools.ui.web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
-builder.Services.ConfigureServices();
-
-// Configure logging
-var levelSwitch = new LoggingLevelSwitch();
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.ControlledBy(levelSwitch)
-    .WriteTo.Console()
-    .CreateLogger();
-builder.Host.UseSerilog(Log.Logger);
+builder.ConfigureServices();
 
 var app = builder.Build();
 

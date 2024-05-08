@@ -1,0 +1,37 @@
+@page "/project-details-by-id/{projectId}"
+@using AlsTools.Core.Entities
+@using System.Linq
+@using System.Net
+@using AlsTools.Core.ValueObjects.Tracks
+@using Microsoft.AspNetCore.Components.Web
+@inject ILogger<ProjectDetailsByProjectId> logger
+@inject NavigationManager navigationManager
+@inject ILiveProjectAsyncService liveProjectService
+
+<PageTitle>Project details</PageTitle>
+
+@if (project == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ProjectDetails project="project" />
+}
+
+@code {
+    [Parameter]
+    public required string projectId { get; set; }
+
+    private LiveProject? project;
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        var decodedId = System.Net.WebUtility.UrlDecode(projectId);
+
+        logger.LogDebug("Decoded project id: {decodedId}", decodedId);
+
+        project = await liveProjectService.GetProjectByIdAsync(decodedId);
+    }
+}

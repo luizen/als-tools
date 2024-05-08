@@ -2,36 +2,48 @@ using Radzen;
 
 namespace als_tools.ui.web.Extensions;
 
-public static class ServiceCollectionExtensions
+public static class BuilderExtensions
 {
-    public static void ConfigureServices(this IServiceCollection serviceCollection)
+    public static void ConfigureServices(this WebApplicationBuilder builder)
     {
-        Log.Debug("Configuring services...");
+        Log.Debug("Configuring builder.Services...");
 
-        serviceCollection.AddLogging();
+        builder.Logging.ClearProviders();
 
         // Build configuration
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)!.FullName)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true)
             .Build();
 
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
+
+        //Add support to logging with SERILOG
+        builder.Host.UseSerilog(Log.Logger);
+
+
+        builder.Services.AddRazorComponents()
+            .AddInteractiveServerComponents();
+
         // Add access to generic IConfigurationRoot
-        serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
+        builder.Services.AddSingleton<IConfigurationRoot>(configuration);
 
         // Add DbContext
-        serviceCollection.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
+        builder.Services.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
 
         // Add some helpers
-        serviceCollection.AddSingleton<UserFolderHandler>(svcProvider =>
+        builder.Services.AddSingleton<UserFolderHandler>(svcProvider =>
             new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
 
         // serviceCollection.AddSingleton<ConsoleTablePrinter>();
 
-        serviceCollection.AddSingleton<XpathExtractorHelper>();
+        builder.Services.AddSingleton<XpathExtractorHelper>();
 
         // MaxForLive Sort Extractors
-        serviceCollection.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
+        builder.Services.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
                      new Dictionary<string, IMaxForLiveDeviceSortExtractor>()
                      {
                          [DeviceTypeNodeName.MaxForLiveAudioEffect] = new MaxForLiveAudioEffectDeviceSortExtractor(svcProvider.GetRequiredService<ILogger<MaxForLiveAudioEffectDeviceSortExtractor>>()),
@@ -41,7 +53,7 @@ public static class ServiceCollectionExtensions
                 );
 
         // Plugin Format Extractors
-        serviceCollection.AddSingleton<IDictionary<PluginFormat, IPluginFormatExtractor>>(svcProvider =>
+        builder.Services.AddSingleton<IDictionary<PluginFormat, IPluginFormatExtractor>>(svcProvider =>
                      new Dictionary<PluginFormat, IPluginFormatExtractor>()
                      {
                          [PluginFormat.VST2] = new Vst2PluginFormatExtractor(svcProvider.GetRequiredService<ILogger<Vst2PluginFormatExtractor>>()),
@@ -52,7 +64,7 @@ public static class ServiceCollectionExtensions
                 );
 
         // Device Types by Node desc
-        serviceCollection.AddSingleton<IDictionary<string, DeviceType>>(svcProvider =>
+        builder.Services.AddSingleton<IDictionary<string, DeviceType>>(svcProvider =>
                      new Dictionary<string, DeviceType>()
                      {
                          [DeviceTypeNodeName.Plugin] = DeviceType.Plugin,
@@ -64,21 +76,21 @@ public static class ServiceCollectionExtensions
                 );
 
         // Common Live stock devices extractors
-        serviceCollection.AddSingleton<ICommonStockAudioEffectDeviceExtractor, CommonStockAudioEffectDeviceExtractor>();
-        serviceCollection.AddSingleton<ICommonStockMidiEffectDeviceExtractor, CommonStockMidiEffectDeviceExtractor>();
-        serviceCollection.AddSingleton<ICommonStockInstrumentDeviceExtractor, CommonStockInstrumentDeviceExtractor>();
+        builder.Services.AddSingleton<ICommonStockAudioEffectDeviceExtractor, CommonStockAudioEffectDeviceExtractor>();
+        builder.Services.AddSingleton<ICommonStockMidiEffectDeviceExtractor, CommonStockMidiEffectDeviceExtractor>();
+        builder.Services.AddSingleton<ICommonStockInstrumentDeviceExtractor, CommonStockInstrumentDeviceExtractor>();
 
         // Live Stock Racks extractors
-        serviceCollection.AddSingleton<AudioEffectRackDeviceExtractor>();
-        serviceCollection.AddSingleton<MidiEffectRackDeviceExtractor>();
-        serviceCollection.AddSingleton<MidiInstrumentRackDeviceExtractor>();
-        serviceCollection.AddSingleton<DrumRackDeviceExtractor>();
+        builder.Services.AddSingleton<AudioEffectRackDeviceExtractor>();
+        builder.Services.AddSingleton<MidiEffectRackDeviceExtractor>();
+        builder.Services.AddSingleton<MidiInstrumentRackDeviceExtractor>();
+        builder.Services.AddSingleton<DrumRackDeviceExtractor>();
 
         // All Live Stock device extractors by their XML node names
-        serviceCollection.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
+        builder.Services.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
 
         // Device type extractors
-        serviceCollection.AddSingleton<Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>>(svcProvider =>
+        builder.Services.AddSingleton<Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>>(svcProvider =>
                      new Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>(() =>
                         new Dictionary<DeviceType, IDeviceTypeExtractor>()
                         {
@@ -90,7 +102,7 @@ public static class ServiceCollectionExtensions
                 );
 
         // Add services
-        serviceCollection
+        builder.Services
             .AddSingleton<ILiveProjectAsyncService, LiveProjectAsyncService>()
             .AddSingleton<ILiveProjectAsyncRepository, LiveProjectRavenRepository>()
             .AddSingleton<ILiveProjectFileExtractionHandler, LiveProjectFileExtractionHandler>()
@@ -101,34 +113,18 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IScenesCollectionExtractor, ScenesCollectionExtractor>()
             .AddSingleton<ITracksCollectionExtractor, TracksCollectionExtractor>();
 
-        // Add CLI command handlers
-        // serviceCollection
-        //     .AddSingleton<IOptionCommandHandler<InitDbOptions>, InitDbCommandHandler>()
-        //     .AddSingleton<IOptionCommandHandler<ListOptions>, ListCommandHandler>()
-        //     .AddSingleton<IOptionCommandHandler<CountOptions>, CountCommandHandler>()
-        //     .AddSingleton<IOptionCommandHandler<LocateOptions>, LocateCommandHandler>()
-        //     .AddSingleton<IOptionCommandHandler<PluginUsageOptions>, PluginUsageCommandHandler>()
-        //     .AddSingleton<IOptionCommandHandler<PrintStatisticsOptions>, PrintStatisticsCommandHandler>()
-        //     .AddSingleton<ProjectsAndPluginsPrinter>();
 
         // Add Radzen UI components
-        serviceCollection.AddRadzenComponents();
+        builder.Services.AddRadzenComponents(); ;
 
         // DB options
-        serviceCollection.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
+        builder.Services.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
 
         // PlugInfo options
-        serviceCollection.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
+        builder.Services.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
 
         // PlugScanning options
-        serviceCollection.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
-
-
-        // ParameterValues options
-        // serviceCollection.Configure<ParameterValuesOptions>(configuration.GetSection(nameof(ParameterValuesOptions)));
-
-        // Add app
-        // serviceCollection.AddTransient<App>();
+        builder.Services.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
     }
 
     private static IDictionary<string, IStockDeviceExtractor> BuildStockDeviceExtractors(IServiceProvider svcProvider)

@@ -8,9 +8,8 @@
 @inject ILiveProjectAsyncService liveProjectService
 
 <PageTitle>Project details</PageTitle>
-<h1>Project details</h1>
 
-<RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+<RadzenCard>
     @if (project != null)
     {
         <div>
@@ -22,7 +21,7 @@
     }
     </RadzenCard>
 
-    <RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+    <RadzenCard class="my-3">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.2rem">
             <RadzenLabel Text="Density" Component="True" />
             <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
@@ -37,7 +36,7 @@
             <RadzenSwitch @bind-Value=@useTrackColors />
         </RadzenStack>
     </RadzenCard>
-
+    <h4>Tracks</h4>
     <RadzenDataGrid Data="@tracks" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
         FilterMode="FilterMode.Advanced" AllowSorting="true" AllowPaging="false" AllowColumnPicking="true"
         LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px" AllowGrouping="true" Density="@density" GridLines="@gridLines"

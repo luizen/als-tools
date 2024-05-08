@@ -10,7 +10,7 @@
 <PageTitle>Ableton Live Projects</PageTitle>
 <h1>Ableton Live Projects</h1>
 
-<RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+<RadzenCard class="my-2" style="display: flex; align-items: center; gap: 0.5rem">
     @if (totalProjects == 0)
     {
         <button class="btn btn-primary" @onclick="InitDb">Init DB</button>
@@ -22,7 +22,7 @@
 
 <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
 
-<RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+<RadzenCard class="my-3" style="display: flex; align-items: center; gap: 0.5rem">
     <div style="white-space:nowrap; margin-right: 5px">Density:</div>
     <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
                         Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
