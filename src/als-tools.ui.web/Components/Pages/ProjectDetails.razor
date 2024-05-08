@@ -9,69 +9,50 @@
 
 <PageTitle>Project details</PageTitle>
 
-<RadzenCard>
-    @if (project != null)
-    {
-        <div>
-            <p><strong>Name:</strong> @project.Name</p>
-            <p><strong>Path:</strong> @project.Path</p>
-            <p><strong>Creator:</strong> @project.Creator</p>
-            <p><strong>Tempo:</strong> @project.Tempo</p>
-        </div>
-    }
-    </RadzenCard>
+<ErrorBoundary>
+    <ProjectInfoHeader project="@project" />
+</ErrorBoundary>
 
-    <RadzenCard class="my-3">
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.2rem">
-            <RadzenLabel Text="Density" Component="True" />
-            <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
-                Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
+<ErrorBoundary>
+    <GridSettings @bind-Density="density" @bind-UseTrackColors="useTrackColors" @bind-GridLines="gridLines" />
+</ErrorBoundary>
 
-            <RadzenLabel Text="Grid lines" Component="True" />
-            <RadzenSelectBar @bind-Value="@gridLines" TextProperty="Text" ValueProperty="Value"
-                Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))"
-                Size="ButtonSize.Small" />
 
-            <RadzenLabel Text="Use track colors" Component="True" />
-            <RadzenSwitch @bind-Value=@useTrackColors />
-        </RadzenStack>
-    </RadzenCard>
-    <h4>Tracks</h4>
-    <RadzenDataGrid Data="@tracks" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
-        FilterMode="FilterMode.Advanced" AllowSorting="true" AllowPaging="false" AllowColumnPicking="true"
-        LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px" AllowGrouping="true" Density="@density" GridLines="@gridLines"
-        RowRender="@OnRowRender">
-        <EmptyTemplate>
-            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
-        </EmptyTemplate>
-        <GroupHeaderTemplate>
-            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
-        </GroupHeaderTemplate>
-        <Columns>
-            <RadzenDataGridColumn Width="60px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
-                <Template Context="data">
-                    @(tracks?.IndexOf(data) + 1)
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn Property="EffectiveName" Title="Track name" Groupable="false" />
-            <RadzenDataGridColumn Property="Type" Title="Type" />
-            <RadzenDataGridColumn Property="TrackDelay.Description" Title="Track delay" />
-            <RadzenDataGridColumn Property="IsMuted" Title="IsMuted" />
-            <RadzenDataGridColumn Property="IsSoloed" Title="IsSoloed" />
-            <RadzenDataGridColumn Property="IsGroupTrack" Title="IsGroupTrack" />
-            <RadzenDataGridColumn Property="IsPartOfGroup" Title="IsPartOfGroup" />
-            <RadzenDataGridColumn Property="Color" Title="Color" />
-        </Columns>
-    </RadzenDataGrid>
+<h4>Tracks</h4>
+<RadzenDataGrid Data="@tracks" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
+    FilterMode="FilterMode.Advanced" AllowSorting="true" AllowPaging="false" AllowColumnPicking="true"
+    LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px" AllowGrouping="true" Density="@density" GridLines="@gridLines"
+    RowRender="@OnRowRender">
+    <EmptyTemplate>
+        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+    </EmptyTemplate>
+    <GroupHeaderTemplate>
+        @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+    </GroupHeaderTemplate>
+    <Columns>
+        <RadzenDataGridColumn Width="60px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
+            <Template Context="data">
+                @(tracks?.IndexOf(data) + 1)
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn Property="EffectiveName" Title="Track name" Groupable="false" />
+        <RadzenDataGridColumn Property="Type" Title="Type" />
+        <RadzenDataGridColumn Property="TrackDelay.Description" Title="Track delay" />
+        <RadzenDataGridColumn Property="IsMuted" Title="IsMuted" />
+        <RadzenDataGridColumn Property="IsSoloed" Title="IsSoloed" />
+        <RadzenDataGridColumn Property="IsGroupTrack" Title="IsGroupTrack" />
+        <RadzenDataGridColumn Property="IsPartOfGroup" Title="IsPartOfGroup" />
+        <RadzenDataGridColumn Property="Color" Title="Color" />
+    </Columns>
+</RadzenDataGrid>
 
-    @code {
+@code {
     [Parameter]
     public required LiveProject project { get; set; }
-
     private IList<ITrack> tracks;
-    Density density = Density.Default;
-    bool useTrackColors = true;
-    Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
+    private Density density = Density.Default;
+    private bool useTrackColors = true;
+    private Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
 
     protected override Task OnInitializedAsync()
     {
