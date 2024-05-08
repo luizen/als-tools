@@ -4,7 +4,6 @@
 @using System.Net
 @using AlsTools.Core.ValueObjects.Tracks
 @using Microsoft.AspNetCore.Components.Web
-@inject ILogger<ProjectDetailsByProjectId> logger
 @inject NavigationManager navigationManager
 @inject ILiveProjectAsyncService liveProjectService
 
@@ -12,7 +11,7 @@
 
 @if (project == null)
 {
-    <p>Loading...</p>
+    <p>@message</p>
 }
 else
 {
@@ -23,6 +22,8 @@ else
     [Parameter]
     public required string projectId { get; set; }
 
+    private string message = "Loading...";
+
     private LiveProject? project;
     protected override async Task OnParametersSetAsync()
     {
@@ -30,8 +31,17 @@ else
 
         var decodedId = System.Net.WebUtility.UrlDecode(projectId);
 
-        logger.LogDebug("Decoded project id: {decodedId}", decodedId);
+        Log.Information("Decoded project id: {decodedId}", decodedId);
 
+        Log.Debug("Before liveProjectService.GetProjectByIdAsync()");
         project = await liveProjectService.GetProjectByIdAsync(decodedId);
+        Log.Debug("After liveProjectService.GetProjectByIdAsync()");
+
+        if (project == null)
+        {
+            message = "Project not found";
+            Log.Debug(message);
+        }
+
     }
 }

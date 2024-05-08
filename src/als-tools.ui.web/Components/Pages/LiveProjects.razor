@@ -84,16 +84,18 @@
 
     private async Task LoadAllProjects()
     {
-        LogDebug("LoadAllProjects init");
+        Log.Debug("LoadAllProjects init");
+
         projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
         totalProjects = projects.Count();
         await InvokeAsync(StateHasChanged);
-        LogDebug("LoadAllProjects end");
+        
+        Log.Debug("LoadAllProjects end");
     }
 
     private async Task DeleteAllProjects()
     {
-        LogDebug("DeleteAllProjects init");
+        Log.Debug("DeleteAllProjects init");
 
         await liveProjectService.DeleteAllProjectsAsync();
 
@@ -102,12 +104,12 @@
         await InvokeAsync(StateHasChanged);
         @* StateHasChanged(); *@
 
-        LogDebug("DeleteAllProjects end");
+        Log.Debug("DeleteAllProjects end");
     }
 
     private async Task InitDb()
     {
-        LogDebug("InitDb init");
+        Log.Debug("InitDb init");
 
         @* string[] folders = [ "~/Splice",
 "~/Documents/Producao/Criacoes",
@@ -130,13 +132,9 @@
         totalProjects = projects?.Count();
         @* StateHasChanged(); *@
         await InvokeAsync(StateHasChanged);
-        LogDebug("InitDb end");
+
+        Log.Debug("InitDb end");
 
         await LoadAllProjects();
-    }
-
-    private void LogDebug(string message)
-    {
-        Log.Information(message);
     }
 }
