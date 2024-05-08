@@ -8,8 +8,6 @@ public static class BuilderExtensions
     {
         Log.Debug("Configuring builder.Services...");
 
-        builder.Logging.ClearProviders();
-
         // Build configuration
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)!.FullName)
@@ -17,14 +15,14 @@ public static class BuilderExtensions
             .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true)
             .Build();
 
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(configuration)
-            .CreateLogger();
+        // Add support to logging with Serilog, while removing all other logging providers
+        builder.Logging.ClearProviders();
+        builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+        {
+            loggerConfiguration.ReadFrom.Configuration(configuration);
+        });
 
-        //Add support to logging with SERILOG
-        builder.Host.UseSerilog(Log.Logger);
-
-
+        // Add Razor components
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
@@ -37,8 +35,6 @@ public static class BuilderExtensions
         // Add some helpers
         builder.Services.AddSingleton<UserFolderHandler>(svcProvider =>
             new UserFolderHandler(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.None)));
-
-        // serviceCollection.AddSingleton<ConsoleTablePrinter>();
 
         builder.Services.AddSingleton<XpathExtractorHelper>();
 
