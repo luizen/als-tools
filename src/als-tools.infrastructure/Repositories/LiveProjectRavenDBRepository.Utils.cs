@@ -1,6 +1,4 @@
 using AlsTools.Core.Interfaces;
-using AlsTools.Core.ValueObjects.ResultSets;
-using AlsTools.Infrastructure.Indexes;
 using Raven.Client.Documents.Linq;
 
 namespace AlsTools.Infrastructure.Repositories;
