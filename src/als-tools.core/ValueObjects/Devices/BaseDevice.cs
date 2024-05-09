@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using AlsTools.Core.ValueObjects.Tracks;
+
 namespace AlsTools.Core.ValueObjects.Devices;
 
 public abstract record BaseDevice : IDevice
@@ -14,7 +17,11 @@ public abstract record BaseDevice : IDevice
         Family = family;
     }
 
+    [Key]
     public int Id { get; set; }
+    public int TrackId { get; set; }
+    public ITrack Track { get; set; }
+
 
     public string Name { get; set; } = string.Empty;
 

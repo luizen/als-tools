@@ -1,52 +1,26 @@
-﻿namespace AlsTools.Ui.Cli;
+﻿using AlsTools.Core.Interfaces;
+using AlsTools.Core.Services;
+using Microsoft.Extensions.Hosting;
+
+namespace AlsTools.Ui.Cli;
 
 public partial class Program
 {
-    private static readonly LoggingLevelSwitch levelSwitch = new LoggingLevelSwitch();
 
-    public static async Task<int> Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        var parserResult = new Parser(config =>
-        {
-            config.CaseInsensitiveEnumValues = true;
-            config.HelpWriter = Console.Error;
-        }).ParseArguments<InitDbOptions, CountOptions, ListOptions, PrintStatisticsOptions, PluginUsageOptions, LocateOptions>(args);
-
-        if (parserResult.Tag == ParserResultType.NotParsed)
-        {
-            await Console.Out.WriteLineAsync($"Command parsing error");
-            Log.Debug("Returning {ReturnCode}", ProgramReturnCodes.Ok);
-            return ProgramReturnCodes.CommandParseError;
-        }
-
-        SetupLogging(parserResult);
-
-        var host = BuildHost(args);
-
-        using (var serviceScope = host.Services.CreateScope())
-        {
-            var services = serviceScope.ServiceProvider;
-
-            try
+        var builder = new HostBuilder()
+            .ConfigureServices((hostContext, services) =>
             {
-                var embeddedDbContext = services.GetRequiredService<IEmbeddedDatabaseContext>();
-                embeddedDbContext.Initialize();
+                services.AddLogging(configure => configure.AddConsole())
+                    .AddTransient<App>()
+                    .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
+                    .AddTransient<ILiveProjectAsyncRepository, LiveProjectAsyncRepository>();
+            });
 
-                var app = services.GetRequiredService<App>();
-                await app.Run(parserResult);
+        var host = builder.Build();
+        var app = host.Services.GetRequiredService<App>();
 
-                Log.Debug("Returning {ReturnCode}", ProgramReturnCodes.Ok);
-                return ProgramReturnCodes.Ok;
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "An error occurred. Returning code {ErrorCode}", ProgramReturnCodes.UnhandledError);
-                return ProgramReturnCodes.UnhandledError;
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
-        }
+        await app.Run();
     }
 }

@@ -6,7 +6,7 @@ public interface ILiveProjectAsyncRepository
 {
     Task InsertAsync(LiveProject project);
 
-    Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
+    Task<List<LiveProject>> GetAllProjectsAsync();
 
     Task DeleteAllAsync();
 }
