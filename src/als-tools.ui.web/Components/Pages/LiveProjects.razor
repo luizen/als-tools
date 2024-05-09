@@ -22,17 +22,40 @@
 
 <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
 
-<RadzenCard class="my-3" style="display: flex; align-items: center; gap: 0.5rem">
-    <div style="white-space:nowrap; margin-right: 5px">Density:</div>
-    <RadzenSelectBar @bind-Value="@density" TextProperty="Text" ValueProperty="Value"
-                        Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
-    
-    <div style="white-space:nowrap; margin-right: 5px; margin-left: 30px;">GridLines:</div>
-    <RadzenSelectBar @bind-Value="@gridLines" TextProperty="Text" ValueProperty="Value"
-                     Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
-</RadzenCard>
+<ErrorBoundary>
+    <GridSettings @bind-Density="density" @bind-GridLines="gridLines" ShowUseTrackColors="false" />
+</ErrorBoundary>
 
-<RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
+<RadzenStack Gap="2rem">
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" Class="rz-p-4 rz-border-radius-1"
+        Style="border: var(--rz-grid-cell-border);">
+        <RadzenCheckBox @bind-Value="@autoFilter" Name="auto" />
+        <RadzenLabel Text="Auto filter" Component="auto" Class="rz-me-6" />
+        <RadzenButton Text="Apply Filter" Click="@ApplyFilter" Disabled="@autoFilter" Size="ButtonSize.Small" />
+    </RadzenStack>
+
+    <RadzenDataFilter @ref="dataFilter" Auto=autoFilter Data="@projects2" TItem="LiveProject" ViewChanged=@(view => filteredProjects = view)>
+        <Properties>
+            <RadzenDataFilterProperty Property="OrderID" Title="Order ID" FilterValue="@finalSelectedIds" Type="typeof(IEnumerable<int>)"
+                FilterOperator="FilterOperator.Contains">
+                <FilterTemplate>
+                    <RadzenDropDown @bind-Value=@selectedIds Style="width:100%;" Change=@OnSelectedIdsChange Data="@(orderIds)" AllowClear="true"
+                        Multiple="true" />
+                </FilterTemplate>
+            </RadzenDataFilterProperty>
+            <RadzenDataFilterProperty Property="ProductIds" Title="ProductIds" FilterValue="@finalSelectedProductIds" Type="typeof(IEnumerable<int>)"
+                FilterOperator="FilterOperator.In">
+                <FilterTemplate>
+                    <RadzenDropDown @bind-Value=@selectedProductIds Style="width:100%;" Change=@OnSelectedProductIdsChange Data="@(productIds)"
+                        AllowClear="true" Multiple="true" />
+                </FilterTemplate>
+            </RadzenDataFilterProperty>
+            <RadzenDataFilterProperty Property="Employee.LastName" Title="Employee Last Name" />
+            <RadzenDataFilterProperty Property="Freight" Title="Freight" />
+        </Properties>
+    </RadzenDataFilter>
+
+    <RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
     FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
     ShowPagingSummary="true" AllowColumnPicking="true" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
     PageSizeOptions="@pageSizeOptions" AllowGrouping="true" Density="@density" GridLines="@gridLines">
@@ -59,6 +82,9 @@
         </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
+</RadzenStack>
+
+
 
 @code {
     private IList<LiveProject>? projects = new List<LiveProject>();
@@ -68,6 +94,21 @@
     Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
     private double progressPercent;
     private bool progressBarVisible = false;
+    bool autoFilter = true;
+    RadzenDataFilter<LiveProject> dataFilter;
+
+    IQueryable<LiveProject> filteredProjects;
+    IQueryable<LiveProject> projects2;
+    RadzenDataGrid<LiveProject> ordersGrid;
+
+    IEnumerable<int> finalSelectedIds;
+    IEnumerable<int> selectedIds;
+    IEnumerable<int> orderIds;
+
+    IEnumerable<int> finalSelectedProductIds;
+    IEnumerable<int> selectedProductIds;
+    IEnumerable<int> productIds;
+
 
     protected async Task NavigateToDetails(LiveProject data)
     {
@@ -79,7 +120,17 @@
     {
         await base.OnInitializedAsync();
 
-        await LoadAllProjects();
+        @* await LoadAllProjects(); *@
+        @* projects2 = dbContext.Orders.Include("OrderDetails.Product").Include("Customer").Include("Employee").ToList()
+.Select(o =>
+{
+o.ProductIds = o.OrderDetails.Select(od => od.ProductID);
+return o;
+}).AsQueryable();
+
+orderIds = projects2.Select(o => o.OrderID).Distinct();
+
+productIds = projects2.SelectMany(o => o.OrderDetails).Select(od => od.ProductID).Distinct(); *@
     }
 
     private async Task LoadAllProjects()
@@ -111,12 +162,11 @@
     {
         Log.Debug("InitDb init");
 
-        @* string[] folders = [ "~/Splice",
-"~/Documents/Producao/Criacoes",
-"~/Desktop"
-]; *@
-
-        string[] folders = ["~/Desktop"];
+        string[] folders = [@"~/Splice",
+@"~/Documents/Producao/Criacoes",
+@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
+@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
+@"~/Desktop"];
 
         var progress = new Progress<double>(progressValue =>
         {
@@ -136,5 +186,82 @@
         Log.Debug("InitDb end");
 
         await LoadAllProjects();
+    }
+
+
+    void OnSelectedIdsChange(object value)
+    {
+        projects2 = projects2.ToList().AsQueryable();
+
+        if (selectedIds != null && !selectedIds.Any())
+        {
+            selectedIds = null;
+        }
+
+        if (autoFilter)
+        {
+            finalSelectedIds = selectedIds;
+        }
+    }
+
+    void OnSelectedProductIdsChange(object value)
+    {
+        projects2 = projects2.ToList().AsQueryable();
+
+        if (selectedProductIds != null && !selectedProductIds.Any())
+        {
+            selectedProductIds = null;
+        }
+
+        if (autoFilter)
+        {
+            finalSelectedProductIds = selectedProductIds;
+        }
+    }
+
+    async Task ApplyFilter()
+    {
+        finalSelectedIds = selectedIds;
+        finalSelectedProductIds = selectedProductIds;
+        await dataFilter.Filter();
+    }
+
+    async Task ApplyOrderDateFilter()
+    {
+        if (autoFilter)
+        {
+            await dataFilter.Filter();
+        }
+    }
+
+    @* protected override async Task OnInitializedAsync()
+{
+await base.OnInitializedAsync();
+
+projects2 = dbContext.Orders.Include("OrderDetails.Product").Include("Customer").Include("Employee").ToList()
+.Select(o =>
+{
+o.ProductIds = o.OrderDetails.Select(od => od.ProductID);
+return o;
+}).AsQueryable();
+
+orderIds = projects2.Select(o => o.OrderID).Distinct();
+
+productIds = projects2.SelectMany(o => o.OrderDetails).Select(od => od.ProductID).Distinct();
+} *@
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await dataFilter.AddFilter(new CompositeFilterDescriptor()
+                {
+                    Property = "Employee.LastName",
+                    FilterValue = "Buchanan",
+                    FilterOperator = FilterOperator.Contains
+                });
+        }
     }
 }

@@ -1,7 +1,6 @@
 using AlsTools.Core.Entities;
 using AlsTools.Core.Enums;
 using AlsTools.Core.Interfaces;
-using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Core.ValueObjects.ResultSets;
 
@@ -193,5 +192,20 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     public async Task<LiveProject?> GetProjectByIdAsync(string id)
     {
         return await repository.GetProjectByIdAsync(id);
+    }
+
+    public async Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects()
+    {
+        return await repository.GetAllPluginsFromProjects();
+    }
+
+    public async Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects()
+    {
+        return await repository.GetAllStockDevicesFromProjects();
+    }
+
+    public async Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects()
+    {
+        return await repository.GetAllMaxForLiveDevicesFromProjects();
     }
 }

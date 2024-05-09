@@ -1,0 +1,50 @@
+@page "/tests"
+@inject ILiveProjectAsyncService liveProjectService
+
+@if (plugins != null && stockDevices != null && maxForLiveDevices != null)
+{
+    <h3>Plugins</h3>
+    <ul>
+    @foreach (var plugin in plugins)
+        {
+            <li>@plugin.Name (@plugin.Format)</li>
+        }
+    </ul>
+
+    <h3>Stock Devices</h3>
+    <ul>
+    @foreach (var stockDevice in stockDevices)
+        {
+            <li>@stockDevice.Name (@stockDevice.Family.Sort)</li>
+        }
+    </ul>
+
+    <h3>Max For Live Devices</h3>
+    <ul>
+    @foreach (var maxForLiveDevice in maxForLiveDevices)
+        {
+            <li>@maxForLiveDevice.Name (@maxForLiveDevice.Family.Sort)</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+
+    IList<PluginDevice> plugins;
+    IList<StockDevice> stockDevices;
+    IList<MaxForLiveDevice> maxForLiveDevices;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        plugins = (await liveProjectService.GetAllPluginsFromProjects()).ToList();
+        stockDevices = (await liveProjectService.GetAllStockDevicesFromProjects()).ToList();
+        maxForLiveDevices = (await liveProjectService.GetAllMaxForLiveDevicesFromProjects()).ToList();
+    }
+
+}

@@ -1,4 +1,5 @@
 using AlsTools.Core.Entities;
+using AlsTools.Core.ValueObjects.Devices;
 using AlsTools.Core.ValueObjects.ResultSets;
 
 namespace AlsTools.Core.Interfaces;
@@ -33,5 +34,9 @@ public interface ILiveProjectAsyncRepository
 
     Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled);
 
+    Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects();
 
+    Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects();
+
+    Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects();
 }

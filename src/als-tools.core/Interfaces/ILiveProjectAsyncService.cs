@@ -39,4 +39,10 @@ public interface ILiveProjectAsyncService
     Task<int> GetProjectsCount();
 
     Task DeleteAllProjectsAsync();
+
+    Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects();
+
+    Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects();
+
+    Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects();
 }
