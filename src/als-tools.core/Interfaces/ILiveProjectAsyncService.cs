@@ -8,9 +8,9 @@ namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectAsyncService
 {
-    Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths, IProgress<double>? progress);
+    Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths, IProgress<double>? progress = null);
 
-    Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress);
+    Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress = null);
 
     Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
 
