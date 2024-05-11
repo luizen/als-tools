@@ -38,4 +38,10 @@ public class LiveProjectAsyncRepository : ILiveProjectAsyncRepository
                 .ThenInclude(t => t.MaxForLiveDevices)
             .ToListAsync();
     }
+
+    public async Task InsertAsync(Project project)
+    {
+        context.Projects.Add(project);
+        await context.SaveChangesAsync();
+    }
 }

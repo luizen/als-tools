@@ -19,6 +19,11 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetAllProjectsAsync();
     }
 
+    public async Task InsertAsync(Project project)
+    {
+        await repository.InsertAsync(project);
+    }
+
 
     // public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync()
     // {

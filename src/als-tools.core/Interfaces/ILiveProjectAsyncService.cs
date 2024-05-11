@@ -8,7 +8,7 @@ public interface ILiveProjectAsyncService
 
     // Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
 
-    // Task InsertAsync(LiveProject project);
+    Task InsertAsync(Project project);
 
     // Task DeleteAllAsync();
 }

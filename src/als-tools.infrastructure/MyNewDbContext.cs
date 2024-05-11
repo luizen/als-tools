@@ -30,83 +30,121 @@ public partial class MyNewDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Base Device mapping
         modelBuilder.Entity<MyBaseDevice>(entity =>
-     {
-         entity.ToTable("Devices");
+        {
+            entity.ToTable("Devices");
 
-         entity.HasKey(e => e.Id);
+            // Id
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id)
+                .HasColumnType("INTEGER")
+                .IsRequired()
+                .ValueGeneratedOnAdd();
 
-         entity.HasDiscriminator<DeviceType>("Type")
-             .HasValue<MyPluginDevice>(DeviceType.Plugin)
-             .HasValue<MyStockDevice>(DeviceType.Stock)
-             .HasValue<MyMaxForLiveDevice>(DeviceType.MaxForLive);
+            // Name
+            entity.Property(e => e.Name)
+                .HasColumnType("TEXT")
+                .IsRequired();
 
-         entity.Property(e => e.FkTrackId).HasColumnName("fk_TrackId");
-     });
+            // Sort
+            entity.Property(e => e.Sort)
+                .HasColumnType("INTEGER")
+                .IsRequired();
 
+            // Type
+            entity.Property(e => e.Type)
+                .HasColumnType("INTEGER")
+                .IsRequired();
+
+            // fk_TrackId
+            entity.Property(e => e.FkTrackId)
+                .HasColumnName("fk_TrackId")
+                .IsRequired();
+
+            // Device types discriminator
+            entity.HasDiscriminator<DeviceType>("Type")
+                .HasValue<MyPluginDevice>(DeviceType.Plugin)
+                .HasValue<MyStockDevice>(DeviceType.Stock)
+                .HasValue<MyMaxForLiveDevice>(DeviceType.MaxForLive);
+        });
+
+        // PluginDevice
         modelBuilder.Entity<MyPluginDevice>(entity =>
         {
             entity.HasOne(d => d.FkTrack).WithMany(p => p.PluginDevices)
                 .HasForeignKey(d => d.FkTrackId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
+        // StockDevice
         modelBuilder.Entity<MyStockDevice>(entity =>
         {
             entity.HasOne(d => d.FkTrack).WithMany(p => p.StockDevices)
                 .HasForeignKey(d => d.FkTrackId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
+        // MaxForLiveDevice
         modelBuilder.Entity<MyMaxForLiveDevice>(entity =>
         {
             entity.HasOne(d => d.FkTrack).WithMany(p => p.MaxForLiveDevices)
                 .HasForeignKey(d => d.FkTrackId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // modelBuilder.Entity<PluginDevice>().ToTable("Device");
-        // modelBuilder.Entity<StockDevice>().ToTable("Device");
-        // modelBuilder.Entity<MaxForLiveDevice>().ToTable("Device");
-
-        // modelBuilder.Entity<PluginDevice>(entity =>
-        // {
-        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.PluginDevices)
-        //         .HasForeignKey(d => d.FkTrackId)
-        //         .OnDelete(DeleteBehavior.ClientSetNull);
-        // });
-
-        // modelBuilder.Entity<StockDevice>(entity =>
-        // {
-        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.StockDevices)
-        //         .HasForeignKey(d => d.FkTrackId)
-        //         .OnDelete(DeleteBehavior.ClientSetNull);
-        // });
-
-        // modelBuilder.Entity<MaxForLiveDevice>(entity =>
-        // {
-        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.MaxForLiveDevices)
-        //         .HasForeignKey(d => d.FkTrackId)
-        //         .OnDelete(DeleteBehavior.ClientSetNull);
-        // });
-
-        // modelBuilder.Entity<Device>(entity =>
-        // {
-        //     entity.Property(e => e.FkTrackId).HasColumnName("fk_TrackId");
-
-        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.Devices)
-        //         .HasForeignKey(d => d.FkTrackId)
-        //         .OnDelete(DeleteBehavior.ClientSetNull);
-        // });
-
+        // Tracls mapping
         modelBuilder.Entity<Track>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.FkProjectId).HasColumnName("fk_ProjectId");
+            // Id
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id)
+                .HasColumnType("INTEGER")
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+
+            // Name
+            entity.Property(e => e.Name)
+                .HasColumnType("TEXT")
+                .IsRequired();
+
+            // Type
+            entity.Property(e => e.Type)
+                .HasColumnType("INTEGER")
+                .IsRequired();
+
+            // fk_ProjectId
+            entity.Property(e => e.FkProjectId)
+                .HasColumnName("fk_ProjectId")
+                .IsRequired();
 
             entity.HasOne(d => d.FkProject).WithMany(p => p.Tracks)
                 .HasForeignKey(d => d.FkProjectId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Projects mapping
+        modelBuilder.Entity<Project>(entity =>
+        {
+            // Id
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id)
+                .HasColumnType("INTEGER")
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+
+            // Name
+            entity.Property(e => e.Name)
+                .HasColumnType("TEXT")
+                .IsRequired();
+
+            // Path
+            entity.Property(e => e.Path)
+                .HasColumnType("TEXT");
+
+            // Tempo
+            entity.Property(e => e.Tempo)
+                .HasColumnType("INTEGER");
         });
 
         OnModelCreatingPartial(modelBuilder);

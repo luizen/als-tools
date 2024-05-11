@@ -1,7 +1,5 @@
-﻿using AlsTools.Core.Interfaces;
-using AlsTools.Core.Services;
+﻿using AlsTools.Core.Services;
 using AlsTools.Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace AlsTools.Ui.Cli;

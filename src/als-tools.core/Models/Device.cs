@@ -7,6 +7,8 @@ public abstract class MyBaseDevice
 {
     public int Id { get; set; }
     public string Name { get; set; }
+
+    // Make it get only
     public DeviceType Type { get; set; }
     public DeviceSort Sort { get; set; }
     public int FkTrackId { get; set; }

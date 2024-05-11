@@ -5,6 +5,7 @@ namespace AlsTools.Core.Interfaces;
 public interface ILiveProjectAsyncRepository
 {
     Task<List<Project>> GetAllProjectsAsync();
+    Task InsertAsync(Project project);
 
     // Task InsertAsync(LiveProject project);
 
