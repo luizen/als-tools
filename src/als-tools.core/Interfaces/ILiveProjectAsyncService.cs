@@ -1,13 +1,14 @@
-using AlsTools.Core.Entities;
-using AlsTools.Core.ValueObjects.Devices;
+using AlsTools.Core.Models;
 
 namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectAsyncService
 {
-    Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
+    Task<List<Project>> GetAllProjectsAsync();
 
-    Task InsertAsync(LiveProject project);
+    // Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
 
-    Task DeleteAllAsync();
+    // Task InsertAsync(LiveProject project);
+
+    // Task DeleteAllAsync();
 }

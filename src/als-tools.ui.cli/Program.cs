@@ -1,5 +1,7 @@
 ﻿using AlsTools.Core.Interfaces;
 using AlsTools.Core.Services;
+using AlsTools.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace AlsTools.Ui.Cli;
@@ -16,6 +18,8 @@ public partial class Program
                     .AddTransient<App>()
                     .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
                     .AddTransient<ILiveProjectAsyncRepository, LiveProjectAsyncRepository>();
+
+                services.AddDbContext<MyNewDbContext>();
             });
 
         var host = builder.Build();

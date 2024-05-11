@@ -1,28 +1,34 @@
-using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
+using AlsTools.Core.Models;
+using AlsTools.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class LiveProjectAsyncRepository : ILiveProjectAsyncRepository
 {
-    private readonly AlsToolsContext context;
+    private readonly MyNewDbContext context;
 
-    public LiveProjectAsyncRepository(AlsToolsContext context)
+    public LiveProjectAsyncRepository(MyNewDbContext context)
     {
         this.context = context;
     }
 
-    public Task DeleteAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+    // public Task DeleteAllAsync()
+    // {
+    //     throw new NotImplementedException();
+    // }
 
-    public Task<List<LiveProject>> GetAllProjectsAsync()
-    {
-        return context.LiveProjects.ToListAsync();
-    }
+    // public Task<List<LiveProject>> GetAllProjectsAsync()
+    // {
+    //     return context.LiveProjects.ToListAsync();
+    // }
 
-    public Task InsertAsync(LiveProject project)
+    // public Task InsertAsync(LiveProject project)
+    // {
+    //     throw new NotImplementedException();
+    // }
+
+    public async Task<List<Project>> GetAllProjectsAsync()
     {
-        throw new NotImplementedException();
+        return await context.Projects.Include(p => p.Tracks).ToListAsync();
     }
 }

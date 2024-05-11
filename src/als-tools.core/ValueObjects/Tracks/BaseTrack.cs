@@ -14,8 +14,8 @@ public abstract class BaseTrack : ITrack
 
     [Key]
     public int Id { get; set; }
-    public int LiveProjectId { get; set; }
-    public LiveProject LiveProject { get; set; }
+    // public int LiveProjectId { get; set; }
+    // public LiveProject LiveProject { get; set; }
 
     public string UserName { get; set; } = string.Empty;
 

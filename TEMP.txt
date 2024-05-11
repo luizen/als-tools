@@ -1,3 +1,6 @@
+dotnet ef dbcontext scaffold "Data Source=/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/als-tools-db.db" Microsoft.EntityFrameworkCore.Sqlite --output-dir Models --context "MyNewDbContext" --force
+
+
 "Format": 2,
 .*
 .*

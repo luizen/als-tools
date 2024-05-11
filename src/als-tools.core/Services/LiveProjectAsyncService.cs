@@ -1,6 +1,5 @@
-using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
-using AlsTools.Core.ValueObjects.Devices;
+using AlsTools.Core.Models;
 
 namespace AlsTools.Core.Services;
 
@@ -15,19 +14,24 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         this.repository = repository;
     }
 
-
-    public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync()
+    public async Task<List<Project>> GetAllProjectsAsync()
     {
         return await repository.GetAllProjectsAsync();
     }
 
-    public async Task InsertAsync(LiveProject project)
-    {
-        await repository.InsertAsync(project);
-    }
 
-    public async Task DeleteAllAsync()
-    {
-        await repository.DeleteAllAsync();
-    }
+    // public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync()
+    // {
+    //     return await repository.GetAllProjectsAsync();
+    // }
+
+    // public async Task InsertAsync(LiveProject project)
+    // {
+    //     await repository.InsertAsync(project);
+    // }
+
+    // public async Task DeleteAllAsync()
+    // {
+    //     await repository.DeleteAllAsync();
+    // }
 }

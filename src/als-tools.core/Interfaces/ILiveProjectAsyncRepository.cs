@@ -1,13 +1,15 @@
-using AlsTools.Core.Entities;
+using AlsTools.Core.Models;
 
 namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectAsyncRepository
 {
-    Task InsertAsync(LiveProject project);
+    Task<List<Project>> GetAllProjectsAsync();
 
-    Task<List<LiveProject>> GetAllProjectsAsync();
+    // Task InsertAsync(LiveProject project);
 
-    Task DeleteAllAsync();
+    // Task<List<LiveProject>> GetAllProjectsAsync();
+
+    // Task DeleteAllAsync();
 }
 
