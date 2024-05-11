@@ -1,4 +1,5 @@
 ﻿using AlsTools.Core.Models;
+using AlsTools.Core.ValueObjects.Devices;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlsTools.Infrastructure.Models;
@@ -14,10 +15,12 @@ public partial class MyNewDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Device> Devices { get; set; }
+    // public virtual DbSet<Device> Devices { get; set; }
 
+    public DbSet<MyPluginDevice> PluginDevices { get; set; }
+    public DbSet<MyStockDevice> StockDevices { get; set; }
+    public DbSet<MyMaxForLiveDevice> MaxForLiveDevices { get; set; }
     public virtual DbSet<Project> Projects { get; set; }
-
     public virtual DbSet<Track> Tracks { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,14 +30,74 @@ public partial class MyNewDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Device>(entity =>
-        {
-            entity.Property(e => e.FkTrackId).HasColumnName("fk_TrackId");
+        modelBuilder.Entity<MyBaseDevice>(entity =>
+     {
+         entity.ToTable("Devices");
 
-            entity.HasOne(d => d.FkTrack).WithMany(p => p.Devices)
+         entity.HasKey(e => e.Id);
+
+         entity.HasDiscriminator<DeviceType>("Type")
+             .HasValue<MyPluginDevice>(DeviceType.Plugin)
+             .HasValue<MyStockDevice>(DeviceType.Stock)
+             .HasValue<MyMaxForLiveDevice>(DeviceType.MaxForLive);
+
+         entity.Property(e => e.FkTrackId).HasColumnName("fk_TrackId");
+     });
+
+        modelBuilder.Entity<MyPluginDevice>(entity =>
+        {
+            entity.HasOne(d => d.FkTrack).WithMany(p => p.PluginDevices)
                 .HasForeignKey(d => d.FkTrackId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
+
+        modelBuilder.Entity<MyStockDevice>(entity =>
+        {
+            entity.HasOne(d => d.FkTrack).WithMany(p => p.StockDevices)
+                .HasForeignKey(d => d.FkTrackId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<MyMaxForLiveDevice>(entity =>
+        {
+            entity.HasOne(d => d.FkTrack).WithMany(p => p.MaxForLiveDevices)
+                .HasForeignKey(d => d.FkTrackId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        // modelBuilder.Entity<PluginDevice>().ToTable("Device");
+        // modelBuilder.Entity<StockDevice>().ToTable("Device");
+        // modelBuilder.Entity<MaxForLiveDevice>().ToTable("Device");
+
+        // modelBuilder.Entity<PluginDevice>(entity =>
+        // {
+        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.PluginDevices)
+        //         .HasForeignKey(d => d.FkTrackId)
+        //         .OnDelete(DeleteBehavior.ClientSetNull);
+        // });
+
+        // modelBuilder.Entity<StockDevice>(entity =>
+        // {
+        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.StockDevices)
+        //         .HasForeignKey(d => d.FkTrackId)
+        //         .OnDelete(DeleteBehavior.ClientSetNull);
+        // });
+
+        // modelBuilder.Entity<MaxForLiveDevice>(entity =>
+        // {
+        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.MaxForLiveDevices)
+        //         .HasForeignKey(d => d.FkTrackId)
+        //         .OnDelete(DeleteBehavior.ClientSetNull);
+        // });
+
+        // modelBuilder.Entity<Device>(entity =>
+        // {
+        //     entity.Property(e => e.FkTrackId).HasColumnName("fk_TrackId");
+
+        //     entity.HasOne(d => d.FkTrack).WithMany(p => p.Devices)
+        //         .HasForeignKey(d => d.FkTrackId)
+        //         .OnDelete(DeleteBehavior.ClientSetNull);
+        // });
 
         modelBuilder.Entity<Track>(entity =>
         {

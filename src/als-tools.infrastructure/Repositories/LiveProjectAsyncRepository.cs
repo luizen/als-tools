@@ -29,6 +29,13 @@ public class LiveProjectAsyncRepository : ILiveProjectAsyncRepository
 
     public async Task<List<Project>> GetAllProjectsAsync()
     {
-        return await context.Projects.Include(p => p.Tracks).ToListAsync();
+        return await context.Projects
+            .Include(p => p.Tracks)
+                .ThenInclude(t => t.PluginDevices)
+            .Include(p => p.Tracks)
+                .ThenInclude(t => t.StockDevices)
+            .Include(p => p.Tracks)
+                .ThenInclude(t => t.MaxForLiveDevices)
+            .ToListAsync();
     }
 }

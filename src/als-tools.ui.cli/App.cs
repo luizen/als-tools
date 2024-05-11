@@ -16,6 +16,6 @@ public class App
 
         var projects = await liveProjectService.GetAllProjectsAsync();
 
-        Console.Read();
+        await Task.Delay(1);
     }
 }
