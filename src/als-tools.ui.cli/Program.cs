@@ -12,7 +12,7 @@ public partial class Program
         var builder = new HostBuilder()
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddLogging(configure => configure.AddConsole())
+                services.AddLogging(configure => configure.AddConsole().SetMinimumLevel(LogLevel.Information))
                     .AddTransient<App>()
                     .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
                     .AddTransient<ILiveProjectAsyncRepository, LiveProjectAsyncRepository>();

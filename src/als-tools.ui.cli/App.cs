@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AlsTools.Core.Models;
 
 namespace AlsTools.Ui.Cli;
@@ -16,8 +19,17 @@ public class App
     {
         logger.LogDebug("Starting application...");
 
-        var projects = await liveProjectService.GetAllProjectsAsync();
 
+        logger.LogDebug("Deleting DB...");
+        await liveProjectService.DeleteAllAsync();
+
+
+        logger.LogDebug("Getting all projects...");
+        var projects = await liveProjectService.GetAllProjectsAsync();
+        Debug.Assert(projects.Count == 0, "Projects should be empty");
+
+
+        logger.LogDebug("Inserting a project...");
         var project = new Project
         {
             Name = "Test Project",
@@ -73,9 +85,30 @@ public class App
             Path = "~/Desktop",
             Tempo = 138
         };
+        var countInserted = await liveProjectService.InsertAsync(project);
+        Debug.Assert(countInserted == 7, "Inserted count should be 1");
 
-        await liveProjectService.InsertAsync(project);
+        logger.LogDebug("Getting all projects again...");
+        var projects2 = await liveProjectService.GetAllProjectsAsync();
+        Debug.Assert(projects2.Count == 1, "Projects count should be 1 again...");
 
+        logger.LogDebug("Comparing inserted and retrieved projcts...");
+        var loadedProject = projects2.Single();
+
+        logger.LogDebug("Original project: ");
+
+        JsonSerializerOptions options = new()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            WriteIndented = true
+        };
+
+        var fullJsonData = JsonSerializer.Serialize(project, options);
+        await Console.Out.WriteLineAsync(fullJsonData);
+
+        logger.LogDebug("Loaded project:");
+        var fullJsonData2 = JsonSerializer.Serialize(loadedProject, options);
+        await Console.Out.WriteLineAsync(fullJsonData2);
 
 
         await Task.Delay(1);

@@ -39,9 +39,16 @@ public class LiveProjectAsyncRepository : ILiveProjectAsyncRepository
             .ToListAsync();
     }
 
-    public async Task InsertAsync(Project project)
+    public async Task<int> InsertAsync(Project project)
     {
         context.Projects.Add(project);
-        await context.SaveChangesAsync();
+        return await context.SaveChangesAsync();
     }
+
+    public async Task<int> DeleteAllAsync()
+    {
+        context.Projects.RemoveRange(context.Projects);
+        return await context.SaveChangesAsync();
+    }
+
 }

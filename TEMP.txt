@@ -1,3 +1,13 @@
+[ ] EF Core SQLite tasks
+  [x] Create
+  [x] Read
+  [ ] Update
+  [ ] Delete all (cascade)
+  [ ] Delete 1 (cascade)
+
+[ ] Create DB from code (add migrations)
+
+
 dotnet ef dbcontext scaffold "Data Source=/Users/zenluiz/Documents/Desenvolvimento/repos/als-tools/als-tools-db.db" Microsoft.EntityFrameworkCore.Sqlite --output-dir Models --context "MyNewDbContext" --force
 
 
