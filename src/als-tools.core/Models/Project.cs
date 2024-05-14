@@ -3,7 +3,7 @@
 public partial class Project
 {
     /// <summary>
-    /// Internal (persistency related) project ID.
+    /// Internal (persistency related) ID.
     /// </summary>
     public int Id { get; set; }
 
