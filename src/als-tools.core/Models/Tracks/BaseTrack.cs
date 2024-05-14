@@ -70,24 +70,14 @@ public abstract class BaseTrack
     public TrackDelay TrackDelay { get; set; } = new TrackDelay();
 
     /// <summary>
-    /// The Ableton Live stock devices this track contains
+    /// The devices this track contains
     /// </summary>
-    public virtual ICollection<StockDevice> StockDevices { get; set; } = new List<StockDevice>();
-
-    /// <summary>
-    /// The third party plugins this track contains
-    /// </summary>
-    public virtual ICollection<PluginDevice> Plugins { get; set; } = new List<PluginDevice>();
-
-    /// <summary>
-    /// The MaxForLive devices this track contains
-    /// </summary>
-    public virtual ICollection<MaxForLiveDevice> MaxForLiveDevices { get; set; } = new List<MaxForLiveDevice>();
+    public virtual ICollection<BaseDevice> Devices { get; set; } = new List<BaseDevice>();
 
     /// <summary>
     /// Track color
     /// </summary>
-    public LiveColor Color { get; set; }
+    public LiveColor Color { get; set; } = LiveColors.Unset; // TODO: should I use a nullable LiveColor?
 
     /// <summary>
     /// Whether the track is muted or not
@@ -144,16 +134,7 @@ public abstract class BaseTrack
         if (device == null)
             throw new ArgumentNullException(nameof(device));
 
-        //TODO: should I get rid of the specific collections (stock, plugins, max4live) and put all devices in a single collection?
-        if (device.Family.Type == DeviceType.Plugin)
-            // plugins.Value.Add((PluginDevice)device);
-            Plugins.Add((PluginDevice)device);
-        else if (device.Family.Type == DeviceType.Stock)
-            // stockDevices.Value.Add((StockDevice)device);
-            StockDevices.Add((StockDevice)device);
-        else
-            // maxForLiveDevices.Value.Add((MaxForLiveDevice)device);
-            MaxForLiveDevices.Add((MaxForLiveDevice)device);
+        Devices.Add(device);
     }
 
     /// <summary>
@@ -161,7 +142,7 @@ public abstract class BaseTrack
     /// list. Duplicated entries are allowed.
     /// </summary>
     /// <param name="devices">The list of device objects</param>
-    public void AddDevices(IEnumerable<IDevice> devices)
+    public void AddDevices(IEnumerable<BaseDevice> devices)
     {
         foreach (var device in devices)
             AddDevice(device);

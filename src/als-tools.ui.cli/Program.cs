@@ -17,7 +17,7 @@ public partial class Program
                     .AddTransient<ILiveProjectAsyncService, LiveProjectAsyncService>()
                     .AddTransient<ILiveProjectAsyncRepository, LiveProjectAsyncRepository>();
 
-                services.AddDbContext<MyNewDbContext>();
+                services.AddDbContext<AlsToolsDbContext>();
             });
 
         var host = builder.Build();

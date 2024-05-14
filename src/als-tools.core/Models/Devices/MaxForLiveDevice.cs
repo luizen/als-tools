@@ -1,6 +1,6 @@
-namespace AlsTools.Core.ValueObjects.Devices;
+namespace AlsTools.Core.Models.Devices;
 
-public record MaxForLiveDevice : BaseDevice
+public class MaxForLiveDevice : BaseDevice
 {
     public MaxForLiveDevice(DeviceSort sort) : base(sort, DeviceType.MaxForLive)
     {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AlsTools.Infrastructure.Migrations
 {
-    [DbContext(typeof(MyNewDbContext))]
+    [DbContext(typeof(AlsToolsDbContext))]
     partial class MyNewDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

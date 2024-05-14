@@ -1,4 +1,4 @@
-namespace AlsTools.Core.ValueObjects.Devices;
+namespace AlsTools.Core.Models.Devices;
 
 /// <summary>
 /// The device family, composed of a <see cref="DeviceSort" /> and <see cref="DeviceType" />

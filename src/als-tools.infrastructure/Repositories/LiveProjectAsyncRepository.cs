@@ -5,37 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 public class LiveProjectAsyncRepository : ILiveProjectAsyncRepository
 {
-    private readonly MyNewDbContext context;
+    private readonly AlsToolsDbContext context;
 
-    public LiveProjectAsyncRepository(MyNewDbContext context)
+    public LiveProjectAsyncRepository(AlsToolsDbContext context)
     {
         this.context = context;
     }
 
-    // public Task DeleteAllAsync()
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    // public Task<List<LiveProject>> GetAllProjectsAsync()
-    // {
-    //     return context.LiveProjects.ToListAsync();
-    // }
-
-    // public Task InsertAsync(LiveProject project)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    public async Task<List<Project>> GetAllProjectsAsync()
+    public async Task<List<Project>> GetAllProjectsAsync(bool includeDependencies)
     {
+        if (!includeDependencies)
+        {
+            return await context.Projects.ToListAsync();
+        }
+
         return await context.Projects
             .Include(p => p.Tracks)
-                .ThenInclude(t => t.PluginDevices)
-            .Include(p => p.Tracks)
-                .ThenInclude(t => t.StockDevices)
-            .Include(p => p.Tracks)
-                .ThenInclude(t => t.MaxForLiveDevices)
+            .ThenInclude(t => t.Devices)
             .ToListAsync();
     }
 

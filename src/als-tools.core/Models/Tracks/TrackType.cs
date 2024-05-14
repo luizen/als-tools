@@ -1,4 +1,4 @@
-namespace AlsTools.Core.Models;
+namespace AlsTools.Core.Models.Tracks;
 
 public enum TrackType
 {

@@ -10,7 +10,7 @@ public interface ILiveProjectAsyncRepository
 
     Task<int> DeleteAsync(Project project);
 
-    Task<List<Project>> GetAllProjectsAsync();
+    Task<List<Project>> GetAllProjectsAsync(bool includeDependencies = true);
 
     Task<Project?> GetProjectByIdAsync(int id);
 

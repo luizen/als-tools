@@ -1,4 +1,6 @@
-﻿namespace AlsTools.Core.Models;
+﻿using AlsTools.Core.Models.Tracks;
+
+namespace AlsTools.Core.Models;
 
 public partial class Project
 {
@@ -16,7 +18,6 @@ public partial class Project
     /// The full path of this project
     /// </summary>
     public string Path { get; set; } = string.Empty;
-
 
     /// <summary>
     /// Creator ("Live version")
@@ -56,15 +57,15 @@ public partial class Project
     /// <summary>
     /// The tracks this project contains
     /// </summary>
-    public virtual ICollection<Track> Tracks { get; set; } = [];
+    public virtual ICollection<BaseTrack> Tracks { get; set; } = [];
 
     /// <summary>
     /// The scenes this project contains
     /// </summary>
-    public virtual ICollection<Scene> Scenes { get; set; }
+    public virtual ICollection<Scene> Scenes { get; set; } = [];
 
     /// <summary>
     /// The locators this project contains
     /// </summary>
-    public virtual ICollection<Locator> Locators { get; set; }
+    public virtual ICollection<Locator> Locators { get; set; } = [];
 }

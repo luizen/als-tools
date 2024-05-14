@@ -1,6 +1,6 @@
-namespace AlsTools.Core.ValueObjects.Devices;
+namespace AlsTools.Core.Models.Devices;
 
-public record StockDevice : BaseDevice
+public class StockDevice : BaseDevice
 {
     public StockDevice(DeviceSort sort) : base(sort, DeviceType.Stock)
     {

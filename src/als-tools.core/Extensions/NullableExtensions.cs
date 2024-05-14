@@ -6,5 +6,4 @@ public static class NullableExtensions
     {
         return instance.HasValue && instance.Value;
     }
-
 }
