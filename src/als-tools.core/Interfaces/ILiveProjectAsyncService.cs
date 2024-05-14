@@ -7,11 +7,15 @@ public interface ILiveProjectAsyncService
 
     Task<List<Project>> GetAllProjectsAsync();
 
-    // Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
+    Task<Project?> GetProjectByIdAsync(int id);
 
     Task<int> InsertAsync(Project project);
 
     Task<int> DeleteAllAsync();
+
+    Task<int> DeleteAsync(int id);
+
+    Task<int> DeleteAsync(Project project);
 
     // Task DeleteAllAsync();
 }

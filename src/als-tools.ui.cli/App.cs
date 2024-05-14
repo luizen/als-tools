@@ -23,11 +23,9 @@ public class App
         logger.LogDebug("Deleting DB...");
         await liveProjectService.DeleteAllAsync();
 
-
         logger.LogDebug("Getting all projects...");
         var projects = await liveProjectService.GetAllProjectsAsync();
         Debug.Assert(projects.Count == 0, "Projects should be empty");
-
 
         logger.LogDebug("Inserting a project...");
         var project = new Project
@@ -110,6 +108,13 @@ public class App
         var fullJsonData2 = JsonSerializer.Serialize(loadedProject, options);
         await Console.Out.WriteLineAsync(fullJsonData2);
 
+        logger.LogDebug("Deleting project by ID...");
+        var countDeleted = await liveProjectService.DeleteAsync(loadedProject.Id);
+
+        logger.LogDebug("Trying to load deleted project...");
+        var deletedProject = await liveProjectService.GetProjectByIdAsync(loadedProject.Id);
+
+        Debug.Assert(deletedProject == null, "Deleted project should be null");
 
         await Task.Delay(1);
     }

@@ -14,6 +14,16 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         this.repository = repository;
     }
 
+    public async Task<int> DeleteAsync(int id)
+    {
+        return await repository.DeleteAsync(id);
+    }
+
+    public async Task<int> DeleteAsync(Project project)
+    {
+        return await repository.DeleteAsync(project);
+    }
+
     public async Task<int> DeleteAllAsync()
     {
         return await repository.DeleteAllAsync();
@@ -27,6 +37,11 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     public async Task<int> InsertAsync(Project project)
     {
         return await repository.InsertAsync(project);
+    }
+
+    public async Task<Project?> GetProjectByIdAsync(int id)
+    {
+        return await repository.GetProjectByIdAsync(id);
     }
 
 
