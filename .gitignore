@@ -13,3 +13,4 @@ src/als-tools.ui.cli/bin/*
 src/als-tools.ui.cli/obj/*
 src/als-tools.ui.cli/output/*
 ravendb-license.json
+**/Icon*
