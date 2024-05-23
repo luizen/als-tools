@@ -10,7 +10,7 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
     private IRavenQueryable<ItemsCountPerProjectResult> GetPluginsCountDisabledQuery(bool ignoreDisabled)
     {
         return ignoreDisabled
-            ? store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_PluginsCount_EnabledOnly>()
+            ? store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_PluginsCount>().Where(result => result.IsEnabled)
             : store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_PluginsCount>();
     }
 

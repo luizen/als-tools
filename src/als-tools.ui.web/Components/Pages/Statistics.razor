@@ -4,12 +4,11 @@
 @* @using Microsoft.AspNetCore.Components.QuickGrid *@
 @using System.Linq
 @inject ILiveProjectAsyncService liveProjectService
+@inject ILogger<Statistics> logger;
 
 <PageTitle>Statistics</PageTitle>
 
 <h1>Statistics</h1>
-
-
 
 <div>
     <label for="ignoreDisabledDevices">Ignore disabled devices:</label>
@@ -21,39 +20,36 @@
     <button class="btn btn-primary" @onclick="LoadStatistics">Load statistics</button>
 </div>
 
-@* <QuickGrid Items="@tracksCountPerProject">
-<PropertyColumn Property="@(p => p.ProjectName)" Sortable="true" />
-<PropertyColumn Property="@(p => p.ProjectPath)" Sortable="true" />
-<PropertyColumn Property="@(p => p.ItemsCount)" Sortable="true" />
-</QuickGrid> *@
+<h2>All Plugins</h2>
+<RadzenDataGrid TItem="PluginDevice" Data="@allPlugins" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="PluginDevice" Property="Name" Title="Name" Width="350px" />
+        <RadzenDataGridColumn TItem="PluginDevice" Property="Family.Sort" Title="Sort" Width="250px" />
+        <RadzenDataGridColumn TItem="PluginDevice" Property="Format" Title="Format" Width="180px" />
+        <RadzenDataGridColumn TItem="PluginDevice" Property="Path" Title="Path" />
 
+    </Columns>
+</RadzenDataGrid>
 
-@* @if (projects == null)
-{
-<p><em>Loading...</em></p>
-}
-else
-{
-<table class="table">
-<thead>
-<tr>
-<th>Id</th>
-<th>Name</th>
-<th>Path</th>
-</tr>
-</thead>
-<tbody>
-@foreach (var project in projects)
-{
-<tr>
-<td>@project.Id</td>
-<td>@project.Name</td>
-<td>@project.Path</td>
-</tr>
-}
-</tbody>
-</table>
-} *@
+<h2>All Stock Devices</h2>
+<RadzenDataGrid TItem="StockDevice" Data="@allStockDevices" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" FilterMode="FilterMode.CheckBoxList">
+    <Columns>
+        <RadzenDataGridColumn TItem="StockDevice" Property="Name" Title="Name" Width="350px" />
+        <RadzenDataGridColumn TItem="StockDevice" Property="Family.Sort" Title="Sort" Width="250px" />
+        <RadzenDataGridColumn TItem="StockDevice" Property="IsGroupDevice" Title="Is Rack?" Filterable="false" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>All MaxForLive Devices</h2>
+<RadzenDataGrid TItem="MaxForLiveDevice" Data="@allMaxForLiveDevices" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="MaxForLiveDevice" Property="Name" Title="Name" Width="350px" />
+        <RadzenDataGridColumn TItem="MaxForLiveDevice" Property="Family.Sort" Title="Sort" />
+    </Columns>
+</RadzenDataGrid>
 
 @code
 {
@@ -69,8 +65,14 @@ else
     private IQueryable<DevicesUsageCountResult>? mostUsedStockDevices;
     private IQueryable<DevicesUsageCountResult>? mostUsedPlugins;
 
+    private IQueryable<PluginDevice> allPlugins;
+    private IQueryable<StockDevice> allStockDevices;
+    private IQueryable<MaxForLiveDevice> allMaxForLiveDevices;
+
     private async Task LoadStatistics()
     {
+        logger.LogInformation("Statistics loading...");
+
         total = await liveProjectService.GetProjectsCount();
         tracksCountPerProject = (await liveProjectService.GetTracksCountPerProject()).AsQueryable();
         pluginsCountPerProject = (await liveProjectService.GetPluginsCountPerProject(ignoreDisabledDevices)).AsQueryable();
@@ -81,5 +83,11 @@ else
         projectsWithHighestTracksCount = (await liveProjectService.GetProjectsWithHighestTracksCount(limit)).AsQueryable();
         mostUsedStockDevices = (await liveProjectService.GetMostUsedStockDevices(limit, ignoreDisabledDevices)).AsQueryable();
         mostUsedPlugins = (await liveProjectService.GetMostUsedPlugins(limit, ignoreDisabledDevices)).AsQueryable();
+
+
+        allPlugins = (await liveProjectService.GetAllPluginsFromProjects()).AsQueryable();
+        allStockDevices = (await liveProjectService.GetAllStockDevicesFromProjects()).AsQueryable();
+        allMaxForLiveDevices = (await liveProjectService.GetAllMaxForLiveDevicesFromProjects()).AsQueryable();
+        logger.LogInformation("Statistics loaded");
     }
 }

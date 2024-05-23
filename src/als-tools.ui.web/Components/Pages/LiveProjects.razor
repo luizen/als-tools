@@ -14,6 +14,7 @@
     @if (totalProjects == 0)
     {
         <button class="btn btn-primary" @onclick="InitDb">Init DB</button>
+        <textarea id="paths" class="form-control" rows="3" placeholder="Enter paths here, each on a new line"></textarea>
     }
     <button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects</button>
     <button class="btn btn-secondary" @onclick="DeleteAllProjects">Delete all projects</button>
@@ -56,9 +57,9 @@
     </RadzenDataFilter>
 
     <RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
-    FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-    ShowPagingSummary="true" AllowColumnPicking="true" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
-    PageSizeOptions="@pageSizeOptions" AllowGrouping="true" Density="@density" GridLines="@gridLines">
+        FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+        ShowPagingSummary="true" AllowColumnPicking="true" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
+        PageSizeOptions="@pageSizeOptions" AllowGrouping="true" Density="@density" GridLines="@gridLines">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
     </EmptyTemplate>
@@ -165,8 +166,9 @@ productIds = projects2.SelectMany(o => o.OrderDetails).Select(od => od.ProductID
         string[] folders = [@"~/Splice",
 @"~/Documents/Producao/Criacoes",
 @"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
-@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
-@"~/Desktop"];
+@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens"];
+
+
 
         var progress = new Progress<double>(progressValue =>
         {

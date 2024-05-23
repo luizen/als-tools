@@ -167,27 +167,32 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
     public async Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects()
     {
         using var session = store.OpenAsyncSession();
-        return await session.Query<AllPlugins.Result, AllPlugins>()
-            .OrderByDescending(result => result.PluginName)
-            .Select(result => result.Plugin)
+        var res = await session.Query<AllDevices.Result, AllDevices>()
+            .Where(result => result.Type == DeviceType.Plugin)
+            .OrderByDescending(result => result.DeviceName)
+            .Select(result => (PluginDevice)result.Device)
             .ToListAsync();
+
+        return res;
     }
 
     public async Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects()
     {
         using var session = store.OpenAsyncSession();
-        return await session.Query<AllStockDevices.Result, AllStockDevices>()
-            .OrderByDescending(result => result.StockDeviceName)
-            .Select(result => result.StockDevice)
+        return await session.Query<AllDevices.Result, AllDevices>()
+            .Where(result => result.Type == DeviceType.Stock)
+            .OrderByDescending(result => result.DeviceName)
+            .Select(result => (StockDevice)result.Device)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects()
     {
         using var session = store.OpenAsyncSession();
-        return await session.Query<AllMaxForLiveDevices.Result, AllMaxForLiveDevices>()
-            .OrderByDescending(result => result.MaxForLiveDeviceName)
-            .Select(result => result.MaxForLiveDevice)
+        return await session.Query<AllDevices.Result, AllDevices>()
+            .Where(result => result.Type == DeviceType.MaxForLive)
+            .OrderByDescending(result => result.DeviceName)
+            .Select(result => (MaxForLiveDevice)result.Device)
             .ToListAsync();
     }
 }
