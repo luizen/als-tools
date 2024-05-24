@@ -7,8 +7,8 @@
 @inject DialogService dialogService
 @attribute [StreamRendering]
 
-<PageTitle>Ableton Live Projects</PageTitle>
-<h1>Ableton Live Projects</h1>
+<PageTitle>Ableton Live Projects and Clips</PageTitle>
+<h1>Ableton Live Projects and Clips (*.als, *.alc)</h1>
 
 <RadzenCard class="my-2" style="display: flex; align-items: center; gap: 0.5rem">
     @if (totalProjects == 0)
@@ -16,8 +16,8 @@
         <button class="btn btn-primary" @onclick="InitDb">Init DB</button>
         <textarea id="paths" class="form-control" rows="3" placeholder="Enter paths here, each on a new line"></textarea>
     }
-    <button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects</button>
-    <button class="btn btn-secondary" @onclick="DeleteAllProjects">Delete all projects</button>
+    <button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects/clips</button>
+    <button class="btn btn-secondary" @onclick="DeleteAllProjects">Delete all projects/clips</button>
     <p>Total Projects: @totalProjects</p>
 </RadzenCard>
 
@@ -72,7 +72,7 @@
                 @(projects?.IndexOf(data) + 1)
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn Property="Name" Title="Project name" Frozen="true" Width="400px" Groupable="false" />
+            <RadzenDataGridColumn Property="Name" Title="Project/clip name" Frozen="true" Width="400px" Groupable="false" />
         <RadzenDataGridColumn Property="Path" Title="Path" Width="450px" />
         <RadzenDataGridColumn Property="Creator" Title="Live version" Width="180px" />
         <RadzenDataGridColumn Property="Tempo" Title="Tempo" Width="130px" />
@@ -166,7 +166,8 @@ productIds = projects2.SelectMany(o => o.OrderDetails).Select(od => od.ProductID
         string[] folders = [@"~/Splice",
 @"~/Documents/Producao/Criacoes",
 @"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
-@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens"];
+@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
+@"~/Music/Ableton/User Library"];
 
 
 

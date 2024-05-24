@@ -1,7 +1,6 @@
 ﻿@page "/stats"
 @using AlsTools.Core.Entities
 @using AlsTools.Core.ValueObjects.ResultSets
-@* @using Microsoft.AspNetCore.Components.QuickGrid *@
 @using System.Linq
 @inject ILiveProjectAsyncService liveProjectService
 @inject ILogger<Statistics> logger;
@@ -19,6 +18,8 @@
 
     <button class="btn btn-primary" @onclick="LoadStatistics">Load statistics</button>
 </div>
+
+<h2>Total projects: @total</h2>
 
 <h2>All Plugins</h2>
 <RadzenDataGrid TItem="PluginDevice" Data="@allPlugins" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
@@ -51,6 +52,82 @@
     </Columns>
 </RadzenDataGrid>
 
+<h2>Tracks count per project</h2>
+<RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@tracksCountPerProject" AllowFiltering="true" AllowSorting="true" PageSize="5"
+    AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Tracks Count" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>Plugins count per project</h2>
+<RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@pluginsCountPerProject" AllowFiltering="true" AllowSorting="true" PageSize="5"
+    AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Plugins Count" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>Stock devices count per project</h2>
+<RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@stockDevicesCountPerProject" AllowFiltering="true" AllowSorting="true" PageSize="5"
+    AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Stock Devices Count" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>MaxForLive devices count per project</h2>
+<RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@maxForLiveCountPerProject" AllowFiltering="true" AllowSorting="true" PageSize="5"
+    AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="MaxForLive Devices Count" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>Projects with highest plugins count</h2>
+<RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@projectsWithHighestPluginsCount" AllowFiltering="true" AllowSorting="true" PageSize="5"
+    AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Plugins Count" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>Projects with highest tracks count</h2>
+<RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@projectsWithHighestTracksCount" AllowFiltering="true" AllowSorting="true" PageSize="5"
+    AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+        <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Tracks Count" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>Most used stock devices</h2>
+<RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedStockDevices" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
+        <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
+    </Columns>
+</RadzenDataGrid>
+
+<h2>Most used plugins</h2>
+<RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedPlugins" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
+        <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
+    </Columns>
+</RadzenDataGrid>
+
+
+
+
+
 @code
 {
     private bool ignoreDisabledDevices = false;
@@ -60,6 +137,7 @@
     private IQueryable<ItemsCountPerProjectResult>? tracksCountPerProject;
     private IQueryable<ItemsCountPerProjectResult>? pluginsCountPerProject;
     private IQueryable<ItemsCountPerProjectResult>? stockDevicesCountPerProject;
+    private IQueryable<ItemsCountPerProjectResult>? maxForLiveCountPerProject;
     private IQueryable<ItemsCountPerProjectResult>? projectsWithHighestPluginsCount;
     private IQueryable<ItemsCountPerProjectResult>? projectsWithHighestTracksCount;
     private IQueryable<DevicesUsageCountResult>? mostUsedStockDevices;
@@ -76,10 +154,10 @@
         total = await liveProjectService.GetProjectsCount();
         tracksCountPerProject = (await liveProjectService.GetTracksCountPerProject()).AsQueryable();
         pluginsCountPerProject = (await liveProjectService.GetPluginsCountPerProject(ignoreDisabledDevices)).AsQueryable();
-        stockDevicesCountPerProject = (await
-        liveProjectService.GetStockDevicesCountPerProject(ignoreDisabledDevices)).AsQueryable();
-        projectsWithHighestPluginsCount = (await liveProjectService.GetProjectsWithHighestPluginsCount(limit,
-        ignoreDisabledDevices)).AsQueryable();
+        stockDevicesCountPerProject = (await liveProjectService.GetStockDevicesCountPerProject(ignoreDisabledDevices)).AsQueryable();
+        maxForLiveCountPerProject = (await liveProjectService.GetMaxForLiveDevicesCountPerProject(ignoreDisabledDevices)).AsQueryable();
+
+        projectsWithHighestPluginsCount = (await liveProjectService.GetProjectsWithHighestPluginsCount(limit, ignoreDisabledDevices)).AsQueryable();
         projectsWithHighestTracksCount = (await liveProjectService.GetProjectsWithHighestTracksCount(limit)).AsQueryable();
         mostUsedStockDevices = (await liveProjectService.GetMostUsedStockDevices(limit, ignoreDisabledDevices)).AsQueryable();
         mostUsedPlugins = (await liveProjectService.GetMostUsedPlugins(limit, ignoreDisabledDevices)).AsQueryable();

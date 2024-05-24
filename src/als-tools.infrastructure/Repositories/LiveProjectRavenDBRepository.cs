@@ -114,6 +114,16 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled)
+    {
+        using var session = store.OpenAsyncSession();
+        var query = GetMaxForLiveDevicesCountDisabledQuery(ignoreDisabled);
+
+        return await query
+            .OrderByDescending(result => result.ItemsCount)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit)
     {
         using var session = store.OpenAsyncSession();
@@ -195,4 +205,6 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             .Select(result => (MaxForLiveDevice)result.Device)
             .ToListAsync();
     }
+
+
 }

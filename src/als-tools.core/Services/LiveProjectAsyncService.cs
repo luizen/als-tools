@@ -159,6 +159,11 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetStockDevicesCountPerProject(ignoreDisabled);
     }
 
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled)
+    {
+        return await repository.GetMaxForLiveDevicesCountPerProject(ignoreDisabled);
+    }
+
     public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit)
     {
         return await repository.GetProjectsWithHighestTracksCount(limit);
@@ -208,4 +213,6 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     {
         return await repository.GetAllMaxForLiveDevicesFromProjects();
     }
+
+
 }

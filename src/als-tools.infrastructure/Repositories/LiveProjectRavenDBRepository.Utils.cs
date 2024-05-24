@@ -20,4 +20,11 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             ? store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_StockDevicesCount_EnabledOnly>()
             : store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_StockDevicesCount>();
     }
+
+    private IRavenQueryable<ItemsCountPerProjectResult> GetMaxForLiveDevicesCountDisabledQuery(bool ignoreDisabled)
+    {
+        return ignoreDisabled
+            ? store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_MaxForLiveDevicesCount>().Where(result => result.IsEnabled)
+            : store.OpenAsyncSession().Query<ItemsCountPerProjectResult, LiveProjects_MaxForLiveDevicesCount>();
+    }
 }

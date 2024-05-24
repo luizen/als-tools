@@ -26,6 +26,8 @@ public interface ILiveProjectAsyncRepository
 
     Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled);
 
+    Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled);
+
     Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit);
 
     Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int limit, bool ignoreDisabled);
@@ -39,4 +41,6 @@ public interface ILiveProjectAsyncRepository
     Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects();
 
     Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects();
+
+
 }

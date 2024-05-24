@@ -4,20 +4,19 @@ using Raven.Client.Documents.Indexes;
 
 namespace AlsTools.Infrastructure.Indexes;
 
-
-public class LiveProjects_PluginsCount : AbstractIndexCreationTask<LiveProject, ItemsCountPerProjectResult>
+public class LiveProjects_MaxForLiveDevicesCount : AbstractIndexCreationTask<LiveProject, ItemsCountPerProjectResult>
 {
-    public LiveProjects_PluginsCount()
+    public LiveProjects_MaxForLiveDevicesCount()
     {
         Map = projects => from project in projects
                           from track in project.Tracks
-                          from plugin in track.Plugins
+                          from maxDevice in track.MaxForLiveDevices
                           select new ItemsCountPerProjectResult
                           {
                               ProjectId = project.Id,
                               ProjectName = project.Name,
                               ItemsCount = 1,
-                              IsEnabled = plugin.IsEnabled
+                              IsEnabled = maxDevice.IsEnabled
                           };
 
         Reduce = results => from result in results
