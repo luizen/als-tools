@@ -7,34 +7,49 @@
 
 <PageTitle>Statistics</PageTitle>
 
-<h1>Statistics</h1>
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+    <RadzenIcon Icon="assessment" />
+    <h1>Statistics</h1>
+</RadzenStack>
 
-<RadzenCard class="my-3">
-    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.2rem">
-        <RadzenLabel Text="Show only enabled devices" Component="True" />
-        <RadzenSwitch @bind-Value=@ignoreDisabledDevices />
+<RadzenFieldset>
+    <HeaderTemplate>
+        <RadzenLabel Text="Settings" Component="True" />
+    </HeaderTemplate>
+    <ChildContent>
+        <RadzenCard>
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem">
+                <RadzenLabel Text="Show only enabled devices" Component="True" />
+                <RadzenSwitch @bind-Value=@ignoreDisabledDevices />
 
-        <RadzenLabel Text="Limit" Component="True" />
-        <RadzenNumeric @bind-Value=@limit Min="1" />
+                <RadzenLabel Text="Limit" Component="True" />
+                <RadzenNumeric @bind-Value=@limit Min="1" />
 
-        <RadzenLabel Text="Enable limit" Component="True" />
-        <RadzenSwitch @bind-Value=@limitEnabled />
+                <RadzenLabel Text="Enable limit" Component="True" />
+                <RadzenSwitch @bind-Value=@limitEnabled />
 
-        <RadzenButton Text="Load statistics" Click="@LoadStatistics" />
-    </RadzenStack>
-</RadzenCard>
+                <RadzenButton Text="Load statistics" Click="@LoadStatistics" />
+            </RadzenStack>
+        </RadzenCard>
+        
+    </ChildContent>
+</RadzenFieldset>
+
 
 
 <RadzenContent Container="main">
     <ChildContent>
         <RadzenStack Orientation="Orientation.Vertical" Gap="1.2rem">
-            <RadzenIcon Icon="assessment">
-            </RadzenIcon>
-            @* <RadzenCard>
-            <RadzenHeading Size="H3" Text="Total projects">
-            </RadzenHeading>
-            <RadzenLabel Text="@total" />
-            </RadzenCard> *@
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Total of projects">
+                    </RadzenHeading>
+                    <RadzenLabel Text="@total.ToString()" />
+                </ChildContent>
+            </RadzenCard>
+
+            
             <RadzenCard>
                 <ChildContent>
                     <RadzenHeading Size="H3" Text="All Plugins">
