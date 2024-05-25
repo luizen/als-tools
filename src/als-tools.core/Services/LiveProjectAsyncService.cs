@@ -149,37 +149,37 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetTracksCountPerProject();
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled = false)
     {
         return await repository.GetPluginsCountPerProject(ignoreDisabled);
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled = false)
     {
         return await repository.GetStockDevicesCountPerProject(ignoreDisabled);
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled = false)
     {
         return await repository.GetMaxForLiveDevicesCountPerProject(ignoreDisabled);
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int? limit = null)
     {
         return await repository.GetProjectsWithHighestTracksCount(limit);
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int limit, bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int? limit = null, bool ignoreDisabled = false)
     {
         return await repository.GetProjectsWithHighestPluginsCount(limit, ignoreDisabled);
     }
 
-    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int limit, bool ignoreDisabled)
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int? limit = null, bool ignoreDisabled = false)
     {
         return await repository.GetMostUsedPlugins(limit, ignoreDisabled);
     }
 
-    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled)
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int? limit = null, bool ignoreDisabled = false)
     {
         return await repository.GetMostUsedStockDevices(limit, ignoreDisabled);
     }
@@ -199,19 +199,19 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetProjectByIdAsync(id);
     }
 
-    public async Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects()
+    public async Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects(int? limit = null, bool ignoreDisabled = false)
     {
-        return await repository.GetAllPluginsFromProjects();
+        return await repository.GetAllPluginsFromProjects(limit, ignoreDisabled);
     }
 
-    public async Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects()
+    public async Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects(int? limit = null, bool ignoreDisabled = false)
     {
-        return await repository.GetAllStockDevicesFromProjects();
+        return await repository.GetAllStockDevicesFromProjects(limit, ignoreDisabled);
     }
 
-    public async Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects()
+    public async Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects(int? limit = null, bool ignoreDisabled = false)
     {
-        return await repository.GetAllMaxForLiveDevicesFromProjects();
+        return await repository.GetAllMaxForLiveDevicesFromProjects(limit, ignoreDisabled);
     }
 
 

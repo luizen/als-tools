@@ -15,16 +15,18 @@ public class LiveProjects_StockDevicesCount : AbstractIndexCreationTask<LiveProj
                           {
                               ProjectName = project.Name,
                               ProjectPath = project.Path,
-                              ItemsCount = 1
+                              ItemsCount = 1,
+                              IsEnabled = stockDevice.IsEnabled
                           };
 
         Reduce = results => from result in results
-                            group result by new { result.ProjectPath, result.ProjectName } into g
+                            group result by new { result.ProjectPath, result.ProjectName, result.IsEnabled } into g
                             select new ItemsCountPerProjectResult()
                             {
                                 ProjectName = g.Key.ProjectName,
                                 ProjectPath = g.Key.ProjectPath,
-                                ItemsCount = g.Sum(x => x.ItemsCount)
+                                ItemsCount = g.Sum(x => x.ItemsCount),
+                                IsEnabled = g.Key.IsEnabled
                             };
     }
 }

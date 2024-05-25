@@ -117,22 +117,6 @@
         new Dictionary<string, object>() { { "project", data } },
         new DialogOptions() { Width = "90%", Height = "90%", Resizable = true, Draggable = true });
     }
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        @* await LoadAllProjects(); *@
-        @* projects2 = dbContext.Orders.Include("OrderDetails.Product").Include("Customer").Include("Employee").ToList()
-.Select(o =>
-{
-o.ProductIds = o.OrderDetails.Select(od => od.ProductID);
-return o;
-}).AsQueryable();
-
-orderIds = projects2.Select(o => o.OrderID).Distinct();
-
-productIds = projects2.SelectMany(o => o.OrderDetails).Select(od => od.ProductID).Distinct(); *@
-    }
 
     private async Task LoadAllProjects()
     {
@@ -236,22 +220,6 @@ productIds = projects2.SelectMany(o => o.OrderDetails).Select(od => od.ProductID
             await dataFilter.Filter();
         }
     }
-
-    @* protected override async Task OnInitializedAsync()
-{
-await base.OnInitializedAsync();
-
-projects2 = dbContext.Orders.Include("OrderDetails.Product").Include("Customer").Include("Employee").ToList()
-.Select(o =>
-{
-o.ProductIds = o.OrderDetails.Select(od => od.ProductID);
-return o;
-}).AsQueryable();
-
-orderIds = projects2.Select(o => o.OrderID).Distinct();
-
-productIds = projects2.SelectMany(o => o.OrderDetails).Select(od => od.ProductID).Distinct();
-} *@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

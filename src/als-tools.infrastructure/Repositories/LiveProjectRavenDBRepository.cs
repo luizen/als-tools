@@ -59,10 +59,13 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         return results;
     }
 
-    public async Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync()
+    public async Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync(int? limit = null)
     {
         using var session = store.OpenAsyncSession();
-        return await session.Query<LiveProject>().OrderBy(p => p.Name).ToListAsync();
+        return await session.Query<LiveProject>()
+            .OrderBy(p => p.Name)
+            .Limit(limit)
+            .ToListAsync();
     }
 
     public async Task<LiveProject?> GetProjectByIdAsync(string id)
@@ -94,57 +97,56 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        var query = GetPluginsCountDisabledQuery(ignoreDisabled);
+        var query = session.GetIgnoreDisabledQuery<ItemsCountPerProjectResult, LiveProjects_PluginsCount>(ignoreDisabled);
 
         return await query
             .OrderByDescending(result => result.ItemsCount)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        var query = GetStockDevicesCountDisabledQuery(ignoreDisabled);
+        var query = session.GetIgnoreDisabledQuery<ItemsCountPerProjectResult, LiveProjects_StockDevicesCount>(ignoreDisabled);
 
         return await query
             .OrderByDescending(result => result.ItemsCount)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        var query = GetMaxForLiveDevicesCountDisabledQuery(ignoreDisabled);
-
+        var query = session.GetIgnoreDisabledQuery<ItemsCountPerProjectResult, LiveProjects_MaxForLiveDevicesCount>(ignoreDisabled);
         return await query
             .OrderByDescending(result => result.ItemsCount)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int? limit = null)
     {
         using var session = store.OpenAsyncSession();
         return await session.Query<ItemsCountPerProjectResult, LiveProjects_TracksCount>()
             .OrderByDescending(result => result.ItemsCount)
-            .Take(limit)
+            .Limit(limit)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int limit, bool ignoreDisabled)
+    public async Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        var query = GetPluginsCountDisabledQuery(ignoreDisabled);
+        var query = session.GetIgnoreDisabledQuery<ItemsCountPerProjectResult, LiveProjects_PluginsCount>(ignoreDisabled);
 
         return await query
             .OrderByDescending(result => result.ItemsCount)
-            .Take(limit)
+            .Limit(limit)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int limit, bool ignoreDisabled)
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
         var query = ignoreDisabled
@@ -153,13 +155,13 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
 
         var results = await query
             .OrderByDescending(result => result.UsageCount)
-            .Take(limit)
+            .Limit(limit)
             .ToListAsync();
 
         return results;
     }
 
-    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled)
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
         var query = ignoreDisabled
@@ -168,43 +170,48 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
 
         var results = await query
             .OrderByDescending(result => result.UsageCount)
-            .Take(limit)
+            .Limit(limit)
             .ToListAsync();
 
         return results;
     }
 
-    public async Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects()
+    public async Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        var res = await session.Query<AllDevices.Result, AllDevices>()
+        var query = session.GetIgnoreDisabledQuery<AllDevices.Result, AllDevices>(ignoreDisabled);
+
+        return await query
             .Where(result => result.Type == DeviceType.Plugin)
             .OrderByDescending(result => result.DeviceName)
             .Select(result => (PluginDevice)result.Device)
+            .Limit(limit)
             .ToListAsync();
-
-        return res;
     }
 
-    public async Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects()
+    public async Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        return await session.Query<AllDevices.Result, AllDevices>()
+        var query = session.GetIgnoreDisabledQuery<AllDevices.Result, AllDevices>(ignoreDisabled);
+
+        return await query
             .Where(result => result.Type == DeviceType.Stock)
             .OrderByDescending(result => result.DeviceName)
             .Select(result => (StockDevice)result.Device)
+            .Limit(limit)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects()
+    public async Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        return await session.Query<AllDevices.Result, AllDevices>()
+        var query = session.GetIgnoreDisabledQuery<AllDevices.Result, AllDevices>(ignoreDisabled);
+
+        return await query
             .Where(result => result.Type == DeviceType.MaxForLive)
             .OrderByDescending(result => result.DeviceName)
             .Select(result => (MaxForLiveDevice)result.Device)
+            .Limit(limit)
             .ToListAsync();
     }
-
-
 }
