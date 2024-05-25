@@ -183,6 +183,10 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     {
         return await repository.GetMostUsedStockDevices(limit, ignoreDisabled);
     }
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedMaxForLiveDevices(int? limit = null, bool ignoreDisabled = false)
+    {
+        return await repository.GetMostUsedMaxForLiveDevices(limit, ignoreDisabled);
+    }
 
     public async Task<int> GetProjectsCount()
     {
@@ -213,6 +217,4 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
     {
         return await repository.GetAllMaxForLiveDevicesFromProjects(limit, ignoreDisabled);
     }
-
-
 }

@@ -36,9 +36,13 @@ public interface ILiveProjectAsyncRepository
 
     Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int? limit, bool ignoreDisabled = false);
 
+    Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedMaxForLiveDevices(int? limit, bool ignoreDisabled);
+
     Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects(int? limit = null, bool ignoreDisabled = false);
 
     Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects(int? limit = null, bool ignoreDisabled = false);
 
     Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects(int? limit = null, bool ignoreDisabled = false);
+
+
 }

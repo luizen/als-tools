@@ -14,7 +14,8 @@ public class StockDevices_ByUsageCount : AbstractIndexCreationTask<LiveProject, 
                           select new DevicesUsageCountResult()
                           {
                               DeviceName = stockDevice.Name,
-                              UsageCount = 1
+                              UsageCount = 1,
+                              IsEnabled = stockDevice.IsEnabled
                           };
 
         Reduce = results => from result in results
@@ -22,7 +23,8 @@ public class StockDevices_ByUsageCount : AbstractIndexCreationTask<LiveProject, 
                             select new DevicesUsageCountResult()
                             {
                                 DeviceName = g.Key,
-                                UsageCount = g.Sum(x => x.UsageCount)
+                                UsageCount = g.Sum(x => x.UsageCount),
+                                IsEnabled = g.First().IsEnabled
                             };
     }
 }

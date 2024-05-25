@@ -38,6 +38,8 @@ public interface ILiveProjectAsyncService
 
     Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int? limit = null, bool ignoreDisabled = false);
 
+    Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedMaxForLiveDevices(int? limit = null, bool ignoreDisabled = false);
+
     Task<int> GetProjectsCount();
 
     Task DeleteAllProjectsAsync();

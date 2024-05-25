@@ -183,7 +183,7 @@
             </RadzenCard>
             <RadzenCard>
                 <ChildContent>
-                    <RadzenHeading Size="H3" Text="Most used stock devices">
+                    <RadzenHeading Size="H3" Text="Most used Stock Devices">
                     </RadzenHeading>
                     <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedStockDevices" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
                         PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
@@ -196,9 +196,22 @@
             </RadzenCard>
             <RadzenCard>
                 <ChildContent>
-                    <RadzenHeading Size="H3" Text="Most used plugins">
+                    <RadzenHeading Size="H3" Text="Most used Plugins">
                     </RadzenHeading>
                     <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedPlugins" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
+                        PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Most used MaxForLive devices">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedMaxForLiveDevices" AllowFiltering="true" AllowSorting="true" PageSize="5" AllowPaging="true"
                         PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
                         <Columns>
                             <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
@@ -228,6 +241,7 @@
     private IQueryable<ItemsCountPerProjectResult>? projectsWithHighestTracksCount;
     private IQueryable<DevicesUsageCountResult>? mostUsedStockDevices;
     private IQueryable<DevicesUsageCountResult>? mostUsedPlugins;
+    private IQueryable<DevicesUsageCountResult>? mostUsedMaxForLiveDevices;
 
     private IQueryable<PluginDevice> allPlugins;
     private IQueryable<StockDevice> allStockDevices;
@@ -249,7 +263,7 @@
         projectsWithHighestTracksCount = (await liveProjectService.GetProjectsWithHighestTracksCount(realLimit)).AsQueryable();
         mostUsedStockDevices = (await liveProjectService.GetMostUsedStockDevices(realLimit, ignoreDisabledDevices)).AsQueryable();
         mostUsedPlugins = (await liveProjectService.GetMostUsedPlugins(realLimit, ignoreDisabledDevices)).AsQueryable();
-
+        mostUsedMaxForLiveDevices = (await liveProjectService.GetMostUsedMaxForLiveDevices(realLimit, ignoreDisabledDevices)).AsQueryable();
 
         allPlugins = (await liveProjectService.GetAllPluginsFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
         allStockDevices = (await liveProjectService.GetAllStockDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();

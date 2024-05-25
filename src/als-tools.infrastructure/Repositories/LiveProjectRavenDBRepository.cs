@@ -149,31 +149,33 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
     public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        var query = ignoreDisabled
-            ? store.OpenAsyncSession().Query<DevicesUsageCountResult, Plugins_ByUsageCount_EnabledOnly>()
-            : store.OpenAsyncSession().Query<DevicesUsageCountResult, Plugins_ByUsageCount>();
+        var query = session.GetIgnoreDisabledQuery<DevicesUsageCountResult, Plugins_ByUsageCount>(ignoreDisabled);
 
-        var results = await query
+        return await query
             .OrderByDescending(result => result.UsageCount)
             .Limit(limit)
             .ToListAsync();
-
-        return results;
     }
 
     public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int? limit = null, bool ignoreDisabled = false)
     {
         using var session = store.OpenAsyncSession();
-        var query = ignoreDisabled
-            ? store.OpenAsyncSession().Query<DevicesUsageCountResult, StockDevices_ByUsageCount_EnabledOnly>()
-            : store.OpenAsyncSession().Query<DevicesUsageCountResult, StockDevices_ByUsageCount>();
+        var query = session.GetIgnoreDisabledQuery<DevicesUsageCountResult, StockDevices_ByUsageCount>(ignoreDisabled);
 
-        var results = await query
+        return await query
             .OrderByDescending(result => result.UsageCount)
             .Limit(limit)
             .ToListAsync();
+    }
 
-        return results;
+    public async Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedMaxForLiveDevices(int? limit, bool ignoreDisabled)
+    {
+        using var session = store.OpenAsyncSession();
+        var query = session.GetIgnoreDisabledQuery<DevicesUsageCountResult, MaxForLiveDevices_ByUsageCount>(ignoreDisabled);
+        return await query
+            .OrderByDescending(result => result.UsageCount)
+            .Limit(limit)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects(int? limit = null, bool ignoreDisabled = false)
@@ -214,4 +216,6 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             .Limit(limit)
             .ToListAsync();
     }
+
+
 }

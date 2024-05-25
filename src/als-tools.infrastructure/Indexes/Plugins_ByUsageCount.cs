@@ -14,7 +14,8 @@ public class Plugins_ByUsageCount : AbstractIndexCreationTask<LiveProject, Devic
                           select new DevicesUsageCountResult()
                           {
                               DeviceName = plugin.Name,
-                              UsageCount = 1
+                              UsageCount = 1,
+                              IsEnabled = plugin.IsEnabled
                           };
 
         Reduce = results => from result in results
@@ -22,7 +23,8 @@ public class Plugins_ByUsageCount : AbstractIndexCreationTask<LiveProject, Devic
                             select new DevicesUsageCountResult()
                             {
                                 DeviceName = g.Key,
-                                UsageCount = g.Sum(x => x.UsageCount)
+                                UsageCount = g.Sum(x => x.UsageCount),
+                                IsEnabled = g.First().IsEnabled
                             };
     }
 }
