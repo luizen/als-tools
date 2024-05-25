@@ -11,14 +11,15 @@
 <h1>Ableton Live Projects and Clips (*.als, *.alc)</h1>
 
 <RadzenCard class="my-2" style="display: flex; align-items: center; gap: 0.5rem">
-    @if (totalProjects == 0)
-    {
-        <button class="btn btn-primary" @onclick="InitDb">Init DB</button>
-        <textarea id="paths" class="form-control" rows="3" placeholder="Enter paths here, each on a new line"></textarea>
-    }
-    <button class="btn btn-secondary" @onclick="LoadAllProjects">Reload projects/clips</button>
-    <button class="btn btn-secondary" @onclick="DeleteAllProjects">Delete all projects/clips</button>
-    <p>Total Projects: @totalProjects</p>
+    <RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal" Style="width: 100%">
+            <RadzenButton Text="Init DB" ButtonStyle="ButtonStyle.Primary" Click="@InitDb" />
+            <RadzenButton Text="Reload projects/clips" ButtonStyle="ButtonStyle.Secondary" Click="@LoadAllProjects" />
+            <RadzenButton Text="Delete all projects/clips" ButtonStyle="ButtonStyle.Secondary" Click="@DeleteAllProjects" />
+            <p>Total Projects: @totalProjects</p>
+        </RadzenStack>
+        <RadzenTextArea @bind-Value="@paths" Rows="5" Placeholder="Enter paths here, each on a new line" Style="width: 100%" />
+    </RadzenStack>
 </RadzenCard>
 
 <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
@@ -60,29 +61,30 @@
         FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
         ShowPagingSummary="true" AllowColumnPicking="true" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
         PageSizeOptions="@pageSizeOptions" AllowGrouping="true" Density="@density" GridLines="@gridLines">
-    <EmptyTemplate>
-        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
-    </EmptyTemplate>
-    <GroupHeaderTemplate>
-        @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
-    </GroupHeaderTemplate>
-    <Columns>
-        <RadzenDataGridColumn Width="60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
-            <Template Context="data">
-                @(projects?.IndexOf(data) + 1)
-            </Template>
-        </RadzenDataGridColumn>
+        <EmptyTemplate>
+            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+        </EmptyTemplate>
+        <GroupHeaderTemplate>
+            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+        </GroupHeaderTemplate>
+        <Columns>
+            <RadzenDataGridColumn Width="60px" Title="#" Frozen="true" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+                Groupable="false">
+                <Template Context="data">
+                    @(projects?.IndexOf(data) + 1)
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn Property="Name" Title="Project/clip name" Frozen="true" Width="400px" Groupable="false" />
-        <RadzenDataGridColumn Property="Path" Title="Path" Width="450px" />
-        <RadzenDataGridColumn Property="Creator" Title="Live version" Width="180px" />
-        <RadzenDataGridColumn Property="Tempo" Title="Tempo" Width="130px" />
-        <RadzenDataGridColumn Title="Details" Width="140px" Groupable="false">
-            <Template Context="data">
-                <RadzenButton Icon="info" Size="ButtonSize.Small" Click="@(args => NavigateToDetails(data))" />
-            </Template>
-        </RadzenDataGridColumn>
-    </Columns>
-</RadzenDataGrid>
+            <RadzenDataGridColumn Property="Path" Title="Path" Width="450px" />
+            <RadzenDataGridColumn Property="Creator" Title="Live version" Width="180px" />
+            <RadzenDataGridColumn Property="Tempo" Title="Tempo" Width="130px" />
+            <RadzenDataGridColumn Title="Details" Width="140px" Groupable="false">
+                <Template Context="data">
+                    <RadzenButton Icon="info" Size="ButtonSize.Small" Click="@(args => NavigateToDetails(data))" />
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
 </RadzenStack>
 
 
@@ -91,6 +93,15 @@
     private IList<LiveProject>? projects = new List<LiveProject>();
     private double? totalProjects;
     int[] pageSizeOptions = [5, 10, 20, 30, 50];
+    private static string[] tempPaths = [@"~/Splice",
+@"~/Documents/Producao/Criacoes",
+@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
+@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
+@"~/Music/Ableton/User Library"];
+
+    // join the array of strings into a single string with new line characters
+    string paths = string.Join(Environment.NewLine, tempPaths);
+
     Density density = Density.Default;
     Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
     private double progressPercent;
@@ -147,20 +158,14 @@
     {
         Log.Debug("InitDb init");
 
-        string[] folders = [@"~/Splice",
-@"~/Documents/Producao/Criacoes",
-@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes",
-@"/Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens",
-@"~/Music/Ableton/User Library"];
-
-
-
         var progress = new Progress<double>(progressValue =>
         {
             progressPercent = progressValue;
 
             InvokeAsync(StateHasChanged); // Notify Blazor the state has changed
         });
+
+        string[] folders = paths.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
         progressBarVisible = true;
         await Task.Run(() => liveProjectService.InitializeDbFromFoldersAsync(folders, false, progress));
@@ -234,5 +239,7 @@
                     FilterOperator = FilterOperator.Contains
                 });
         }
+
+        await LoadAllProjects();
     }
 }

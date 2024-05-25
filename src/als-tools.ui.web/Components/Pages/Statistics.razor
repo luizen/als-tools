@@ -20,15 +20,15 @@
         <RadzenCard>
             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem">
                 <RadzenLabel Text="Show only enabled devices" Component="True" />
-                <RadzenSwitch @bind-Value=@ignoreDisabledDevices />
+                <RadzenSwitch @bind-Value=@ignoreDisabledDevices Change=@(() => { @settingsChanged = true; }) />
 
                 <RadzenLabel Text="Limit" Component="True" />
-                <RadzenNumeric @bind-Value=@limit Min="1" />
+                <RadzenNumeric @bind-Value=@limit Min="1" Change=@((int _) => { @settingsChanged = true; }) />
 
                 <RadzenLabel Text="Enable limit" Component="True" />
-                <RadzenSwitch @bind-Value=@limitEnabled />
+                <RadzenSwitch @bind-Value=@limitEnabled Change=@(() => { @settingsChanged = true; }) />
 
-                <RadzenButton Text="Load statistics" Click="@LoadStatistics" />
+                <RadzenButton Text="Apply settings" Click="@LoadStatistics" Disabled="!settingsChanged" />
             </RadzenStack>
         </RadzenCard>
         
@@ -232,6 +232,7 @@
     private int limit = 10;
     private int total;
     private bool limitEnabled = false;
+    private bool settingsChanged = false;
 
     private IQueryable<ItemsCountPerProjectResult>? tracksCountPerProject;
     private IQueryable<ItemsCountPerProjectResult>? pluginsCountPerProject;
@@ -269,5 +270,26 @@
         allStockDevices = (await liveProjectService.GetAllStockDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
         allMaxForLiveDevices = (await liveProjectService.GetAllMaxForLiveDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
         logger.LogInformation("Statistics loaded");
+
+        settingsChanged = false;
+    }
+
+    private void OnValueChanged()
+    {
+        logger.LogInformation("ValueChanged");
+        settingsChanged = true;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        
+        if (firstRender)
+        {
+            await LoadStatistics();
+
+            StateHasChanged();
+        }        
     }
 }
