@@ -32,6 +32,8 @@ public record PluginDevice : BaseDevice
     public PluginFormat Format { get; }
 
     public string Path { get; set; }
+
+    public string PluginNameAndFormat => $"{Name}_{Format}";
 }
 
 public partial class PluginDeviceEqualityComparer : IEqualityComparer<PluginDevice>

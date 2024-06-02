@@ -48,18 +48,16 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         logger.LogDebug("Inserted {InsertedProjects} projects", count);
     }
 
-    public async Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
+    public async Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
     {
         using var session = store.OpenAsyncSession();
-        var results = await session
+        return await session
             .Query<LiveProject, LiveProjects_ByPluginNames>()
             .Where(plugin => plugin.Name.In(pluginsToLocate))
             .ToListAsync();
-
-        return results;
     }
 
-    public async Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync(int? limit = null)
+    public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync(int? limit = null)
     {
         using var session = store.OpenAsyncSession();
         return await session.Query<LiveProject>()

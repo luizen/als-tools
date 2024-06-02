@@ -12,15 +12,15 @@ public interface ILiveProjectAsyncService
 
     Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress = null);
 
-    Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
+    Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
 
     Task<LiveProject?> GetProjectByIdAsync(string id);
 
-    Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
+    Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
 
     Task<int> CountProjectsAsync();
 
-    Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection);
+    Task<IEnumerable<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection);
 
     Task<IEnumerable<ItemsCountPerProjectResult>> GetTracksCountPerProject();
 

@@ -1,3 +1,4 @@
+using AlsTools.Core.Enums;
 using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Tracks;
 
@@ -44,6 +45,11 @@ public class LiveProject
     /// Major version
     /// </summary>
     public string MajorVersion { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The project type (Set or Clip)
+    /// </summary>
+    public ProjectType ProjectType { get; set; }
 
     /// <summary>
     /// Schema change count

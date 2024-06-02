@@ -9,10 +9,10 @@ public interface ILiveProjectAsyncRepository
     Task InsertAsync(LiveProject project);
 
     Task InsertAsync(IEnumerable<LiveProject> projects);
-    
-    Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
 
-    Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync(int? limit = null);
+    Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
+
+    Task<IEnumerable<LiveProject>> GetAllProjectsAsync(int? limit = null);
 
     Task<LiveProject?> GetProjectByIdAsync(string id);
 
