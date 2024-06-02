@@ -116,6 +116,9 @@ public static class BuilderExtensions
         // DB options
         builder.Services.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
 
+        // InitDB options
+        builder.Services.Configure<InitDbOptions>(configuration.GetSection(nameof(InitDbOptions)));
+
         // PlugInfo options
         builder.Services.Configure<PlugInfoOptions>(configuration.GetSection(nameof(PlugInfoOptions)));
 

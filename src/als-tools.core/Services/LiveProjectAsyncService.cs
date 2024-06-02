@@ -36,23 +36,15 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return await repository.GetProjectsContainingPluginsAsync(pluginsToLocate);
     }
 
-    public async Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths, IProgress<double>? progress = null)
+    public async Task<int> InitializeDbFromPathsAsync(IEnumerable<string> paths, bool includeBackupFolder, IProgress<double>? progress = null)
     {
-        await repository.DeleteAllAsync();
-        var projects = LoadProjectsFromSetFiles(filePaths, progress);
-        await repository.InsertAsync(projects);
+        logger.LogInformation("Initializing database from paths: {@Paths}", paths);
 
-        return projects.Count;
-    }
-
-    public async Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress = null)
-    {
         await repository.DeleteAllAsync();
-        var projects = LoadProjectsFromDirectories(folderPaths, includeBackupFolder, progress);
+        var projects = LoadProjectsFromPaths(paths, includeBackupFolder, progress);
         await repository.InsertAsync(projects);
         return projects.Count;
     }
-
 
     public async Task<IEnumerable<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availableInstalledPlugins, PluginUsageSelection selection)
     {
@@ -110,17 +102,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
 
     // USE FUZZY SEARCH!
 
-
-    private IList<LiveProject> LoadProjectsFromSetFiles(IEnumerable<string> filePaths, IProgress<double>? progress = null)
+    private IList<LiveProject> LoadProjectsFromPaths(IEnumerable<string> paths, bool includeBackupFolder = false, IProgress<double>? progress = null)
     {
-        var files = fs.GetProjectFilesFullPathFromSetFiles(filePaths);
-
-        return ExtractProjectsFromFiles(files, progress);
-    }
-
-    private IList<LiveProject> LoadProjectsFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder, IProgress<double>? progress = null)
-    {
-        var files = fs.GetProjectFilesFullPathFromDirectories(folderPaths, includeBackupFolder);
+        var files = fs.GetProjectFilesFullPathFromPaths(paths, includeBackupFolder);
 
         return ExtractProjectsFromFiles(files, progress);
     }
