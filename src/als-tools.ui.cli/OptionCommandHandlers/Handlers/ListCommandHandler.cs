@@ -18,9 +18,10 @@ public class ListCommandHandler : BaseCommandHandler, IOptionCommandHandler<List
         logger.LogDebug("Listing projects...");
 
         var projects = await liveProjectService.GetAllProjectsAsync();
+        var count = projects.Count();
         await projectsAndPluginsPrinter.Print(projects);
 
-        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
+        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", count);
 
     }
 }
