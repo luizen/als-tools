@@ -5,7 +5,7 @@ public class App
     private readonly ILogger<App> logger;
     private readonly ILiveProjectAsyncService liveProjectService;
     private readonly IOptions<PlugInfoOptions> plugInfoOptions;
-    private readonly IOptionCommandHandler<InitDbOptions> initDbCommandHandler;
+    private readonly IOptionCommandHandler<CliOptions.InitDbOptions> initDbCommandHandler;
     private readonly IOptionCommandHandler<ListOptions> listCommandHandler;
     private readonly IOptionCommandHandler<CountOptions> countCommandHandler;
     private readonly IOptionCommandHandler<LocateOptions> locateCommandHandler;
@@ -18,7 +18,7 @@ public class App
         ILogger<App> logger,
         ILiveProjectAsyncService liveProjectService,
         IOptions<PlugInfoOptions> plugInfoOptions,
-        IOptionCommandHandler<InitDbOptions> initDbCommandHandler,
+        IOptionCommandHandler<CliOptions.InitDbOptions> initDbCommandHandler,
         IOptionCommandHandler<ListOptions> listCommandHandler,
         IOptionCommandHandler<CountOptions> countCommandHandler,
         IOptionCommandHandler<LocateOptions> locateCommandHandler,
@@ -41,7 +41,7 @@ public class App
     {
         logger.LogDebug("Starting application...");
 
-        await parserResult.WithParsedAsync<InitDbOptions>(options => initDbCommandHandler.Execute(options));
+        await parserResult.WithParsedAsync<CliOptions.InitDbOptions>(options => initDbCommandHandler.Execute(options));
         await parserResult.WithParsedAsync<CountOptions>(options => countCommandHandler.Execute(options));
         await parserResult.WithParsedAsync<ListOptions>(options => listCommandHandler.Execute(options));
         await parserResult.WithParsedAsync<PrintStatisticsOptions>(options => printStatisticsCommandHandler.Execute(options));
