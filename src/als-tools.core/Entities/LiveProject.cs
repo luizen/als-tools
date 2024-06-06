@@ -49,7 +49,7 @@ public class LiveProject
     /// <summary>
     /// The project type (Set or Clip)
     /// </summary>
-    public ProjectType ProjectType { get; init; }
+    public ProjectType ProjectType { get; set; }
 
     /// <summary>
     /// Schema change count

@@ -24,10 +24,12 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
 
             if (PathHelper.IsFile(fullPath))
             {
+                logger.LogDebug("Path {@Path} is a file", fullPath);
                 resultFiles.Add(fullPath);
             }
             else if (PathHelper.IsDirectory(fullPath))
             {
+                logger.LogDebug("Path {@Path} is a directory", fullPath);
                 var fileFullPaths = GetAllProjectFilesFromDirectory(fullPath, includeBackupFolder);
                 resultFiles.AddRange(fileFullPaths);
             }
@@ -64,6 +66,10 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
     {
         foreach (var pattern in patterns.Split('|'))
             foreach (var fileName in Directory.EnumerateFiles(path, pattern, SearchOption.AllDirectories))
+            {
+                logger.LogDebug("Found file {@File} in folder {@Folder}", fileName, path);
                 yield return fileName;
+            }
+
     }
 }

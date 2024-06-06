@@ -67,6 +67,7 @@ public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandle
         var project = liveProjectExtractionHandler.ExtractFromXml(nav).Single();
         project.Name = fileName;
         project.Path = fullPath;
+        project.ProjectType = Path.GetExtension(fullPath).ToLower() == ".als" ? ProjectType.Set : ProjectType.Clip;
 
         // Extract the scenes
         project.Scenes = sceneExtractionHandler.ExtractFromXml(nav);
