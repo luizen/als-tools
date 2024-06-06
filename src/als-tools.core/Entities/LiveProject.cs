@@ -49,7 +49,7 @@ public class LiveProject
     /// <summary>
     /// The project type (Set or Clip)
     /// </summary>
-    public ProjectType ProjectType { get; set; }
+    public ProjectType ProjectType { get; init; }
 
     /// <summary>
     /// Schema change count
@@ -85,4 +85,28 @@ public class LiveProject
     /// The locators this project contains
     /// </summary>
     public IReadOnlyList<Locator> Locators { get; set; }
+
+    /// <summary>
+    /// The creation time of the project file
+    /// </summary>
+    public DateTime CreationTime { get; set; }
+
+    /// <summary>
+    /// The last modification time of the project file
+    /// </summary>
+    public DateTime LastModified { get; set; }
+
+    /// <summary>
+    /// The last access time of the project file
+    /// </summary>
+    public DateTime LastAccessed { get; set; }
+
+    /// <summary>
+    public void SetFileDates()
+    {
+        var fileInfo = new FileInfo(Path);
+        CreationTime = fileInfo.CreationTime;
+        LastModified = fileInfo.LastWriteTime;
+        LastAccessed = fileInfo.LastAccessTime;
+    }
 }
