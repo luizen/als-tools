@@ -68,8 +68,6 @@ public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandle
         project.Name = fileName;
         project.Path = fullPath;
 
-        project.SetFileDates();
-
         // Extract the scenes
         project.Scenes = sceneExtractionHandler.ExtractFromXml(nav);
 

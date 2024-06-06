@@ -31,7 +31,7 @@ else
 
         var decodedId = System.Net.WebUtility.UrlDecode(projectId);
 
-        Log.Information("Decoded project id: {decodedId}", decodedId);
+        Log.Information("Decoded project id: {@DecodedId}", decodedId);
 
         Log.Debug("Before liveProjectService.GetProjectByIdAsync()");
         project = await liveProjectService.GetProjectByIdAsync(decodedId);

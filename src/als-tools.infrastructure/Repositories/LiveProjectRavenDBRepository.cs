@@ -32,7 +32,18 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             await session.SaveChangesAsync();
         }
 
-        logger.LogDebug("Inserted project {ProjectName}", project.Name);
+        logger.LogDebug("Inserted project {@ProjectName}", project.Name);
+    }
+
+    public async Task UpdateAsync(LiveProject project)
+    {
+        using (var session = store.OpenAsyncSession())
+        {
+            await session.StoreAsync(project);
+            await session.SaveChangesAsync();
+        }
+
+        logger.LogDebug("Updated project {@ProjectName}", project.Name);
     }
 
     public async Task InsertAsync(IEnumerable<LiveProject> projects)
@@ -45,7 +56,7 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             count++;
         }
 
-        logger.LogDebug("Inserted {InsertedProjects} projects", count);
+        logger.LogDebug("Inserted {@InsertedProjects} projects", count);
     }
 
     public async Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate)
@@ -214,6 +225,4 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             .Limit(limit)
             .ToListAsync();
     }
-
-
 }

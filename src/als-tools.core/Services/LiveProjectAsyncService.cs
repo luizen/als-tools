@@ -46,6 +46,32 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         return projects.Count;
     }
 
+    public async Task ReloadAllFileDatesAsync(IProgress<double>? progress = null)
+    {
+        logger.LogDebug("Loading latest dates for all project files...");
+
+        var projects = await repository.GetAllProjectsAsync();
+        int total = projects.Count();
+        int count = 0;
+        double percent = 0;
+
+        foreach (var project in projects)
+        {
+            fs.SetFileDates(project);
+
+            logger.LogDebug("Loaded and set dates for project {@ProjectName}. CreationTime: {@CreationTime}. LastModified: {@LastModified}",
+                project.Name, project.CreationTime, project.LastModified);
+
+            await repository.UpdateAsync(project);
+
+            percent = ++count * 100 / total;
+            progress?.Report(percent);
+        }
+
+        logger.LogDebug("Finished loading latest dates for all project files.");
+    }
+
+
     public async Task<IEnumerable<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availableInstalledPlugins, PluginUsageSelection selection)
     {
         // var pluginDevicePathEqualityComparer = new PluginDevicePathEqualityComparer();
@@ -119,6 +145,9 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         foreach (var filePath in filePaths)
         {
             var project = extractor.ExtractProjectFromFile(filePath);
+
+            fs.SetFileDates(project);
+
             projects.Add(project);
 
             percent = ++count * 100 / total;

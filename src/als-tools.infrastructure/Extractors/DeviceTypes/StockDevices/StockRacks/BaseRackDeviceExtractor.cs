@@ -71,7 +71,7 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
 
     protected DeviceType GetDeviceTypeByDeviceNodeName(string deviceNodeName)
     {
-        logger.LogDebug("Getting device type by device node name ({DeviceNodeName})...", deviceNodeName);
+        logger.LogDebug("Getting device type by device node name ({@DeviceNodeName})...", deviceNodeName);
 
         var deviceNodeNameUpper = deviceNodeName.ToUpperInvariant();
         DeviceType type;

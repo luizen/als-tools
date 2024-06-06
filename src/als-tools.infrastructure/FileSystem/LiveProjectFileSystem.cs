@@ -1,3 +1,4 @@
+using AlsTools.Core.Entities;
 using AlsTools.Core.Interfaces;
 
 namespace AlsTools.Infrastructure.FileSystem;
@@ -37,6 +38,16 @@ public class LiveProjectFileSystem : ILiveProjectFileSystem
         }
 
         return resultFiles;
+    }
+
+    /// <summary>
+    /// Loads and sets the file dates for the project.
+    /// </summary>
+    public void SetFileDates(LiveProject project)
+    {
+        var fileInfo = new FileInfo(project.Path);
+        project.CreationTime = fileInfo.CreationTime;
+        project.LastModified = fileInfo.LastWriteTime;
     }
 
     private IEnumerable<string> GetAllProjectFilesFromDirectory(string folderPath, bool includeBackupFolder)

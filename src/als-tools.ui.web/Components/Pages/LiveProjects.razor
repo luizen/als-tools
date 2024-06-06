@@ -45,6 +45,8 @@
             <RadzenDataGridColumn Property="ProjectType" Title="Type" MinWidth="6%" Width="6%" />
             <RadzenDataGridColumn Property="Tempo" Title="Tempo" MinWidth="7%" Width="7%" />
             <RadzenDataGridColumn Property="Path" Title="Path" Width="35%" />
+            <RadzenDataGridColumn Property="CreationTime" Title="Creation time" Width="10%" />
+            <RadzenDataGridColumn Property="LastModified" Title="Last modified" Width="10%" />
             <RadzenDataGridColumn Groupable="false" Filterable="false" Sortable="false" Width="50px" MinWidth="50px">
                 <Template Context="data">
                     <RadzenButton Icon="info" Size="ButtonSize.Small" Click="@(args => NavigateToDetails(data))" />

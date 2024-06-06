@@ -15,7 +15,7 @@ public partial class Program
         if (parserResult.Tag == ParserResultType.NotParsed)
         {
             await Console.Out.WriteLineAsync($"Command parsing error");
-            Log.Debug("Returning {ReturnCode}", ProgramReturnCodes.Ok);
+            Log.Debug("Returning {@ReturnCode}", ProgramReturnCodes.Ok);
             return ProgramReturnCodes.CommandParseError;
         }
 
@@ -35,7 +35,7 @@ public partial class Program
                 var app = services.GetRequiredService<App>();
                 await app.Run(parserResult);
 
-                Log.Debug("Returning {ReturnCode}", ProgramReturnCodes.Ok);
+                Log.Debug("Returning {@ReturnCode}", ProgramReturnCodes.Ok);
                 return ProgramReturnCodes.Ok;
             }
             catch (Exception ex)

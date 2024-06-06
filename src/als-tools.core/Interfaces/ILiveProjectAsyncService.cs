@@ -9,6 +9,8 @@ public interface ILiveProjectAsyncService
 {
     Task<int> InitializeDbFromPathsAsync(IEnumerable<string> paths, bool includeBackupFolder = false, IProgress<double>? progress = null);
 
+    Task ReloadAllFileDatesAsync(IProgress<double>? progress = null);
+
     Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
 
     Task<LiveProject?> GetProjectByIdAsync(string id);

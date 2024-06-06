@@ -8,6 +8,8 @@ public interface ILiveProjectAsyncRepository
 {
     Task InsertAsync(LiveProject project);
 
+    Task UpdateAsync(LiveProject project);
+
     Task InsertAsync(IEnumerable<LiveProject> projects);
 
     Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);

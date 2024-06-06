@@ -14,6 +14,7 @@
         <RadzenStack Orientation="Orientation.Horizontal" Style="width: 100%">
             <RadzenButton Text="Init DB" ButtonStyle="ButtonStyle.Primary" Click="@InitDb" />
             <RadzenButton Text="Delete all projects/clips" ButtonStyle="ButtonStyle.Secondary" Click="@DeleteAllProjects" />
+            <RadzenButton Text="Reload project file dates" ButtonStyle="ButtonStyle.Secondary" Click="@ReloadFileDates" />
             <p>Total Projects: @totalProjects</p>
         </RadzenStack>
         <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
@@ -38,6 +39,7 @@
     private async Task DeleteAllProjects()
     {
         logger.LogDebug("DeleteAllProjects init");
+        progressPercent = 0;
 
         await liveProjectService.DeleteAllProjectsAsync();
         await InvokeAsync(StateHasChanged);
@@ -47,9 +49,31 @@
         await UpdateProjectsCount();
     }
 
+    private async Task ReloadFileDates()
+    {
+        logger.LogDebug("ReloadFileDates init");
+        progressPercent = 0;
+
+        var progress = new Progress<double>(progressValue =>
+        {
+            progressPercent = progressValue;
+
+            InvokeAsync(StateHasChanged); // Notify Blazor the state has changed
+        });
+
+        progressBarVisible = true;
+        await liveProjectService.ReloadAllFileDatesAsync(progress);
+        progressBarVisible = false;
+
+        await InvokeAsync(StateHasChanged);
+
+        logger.LogDebug("ReloadFileDates end");
+    }
+
     private async Task InitDb()
     {
         logger.LogDebug("InitDb init");
+        progressPercent = 0;
 
         var progress = new Progress<double>(progressValue =>
         {

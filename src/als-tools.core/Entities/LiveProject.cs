@@ -95,18 +95,4 @@ public class LiveProject
     /// The last modification time of the project file
     /// </summary>
     public DateTime LastModified { get; set; }
-
-    /// <summary>
-    /// The last access time of the project file
-    /// </summary>
-    public DateTime LastAccessed { get; set; }
-
-    /// <summary>
-    public void SetFileDates()
-    {
-        var fileInfo = new FileInfo(Path);
-        CreationTime = fileInfo.CreationTime;
-        LastModified = fileInfo.LastWriteTime;
-        LastAccessed = fileInfo.LastAccessTime;
-    }
 }

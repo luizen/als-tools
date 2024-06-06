@@ -19,13 +19,13 @@ public abstract class BaseStockDeviceExtractor : IStockDeviceExtractor
         var device = CreateDevice();
 
         logger.LogDebug("----");
-        logger.LogDebug("Extracting Live Stock {DeviceSort} device from XML...", device.Family.Sort);
+        logger.LogDebug("Extracting Live Stock {@DeviceSort} device from XML...", device.Family.Sort);
 
         var readableName = LiveStockDeviceNodeNames.GetDeviceNameByNodeName(deviceNode.Name);
 
         device.Name = readableName;
 
-        logger.LogDebug("Device name: {DeviceName}", device.Name);
+        logger.LogDebug("Device name: {@DeviceName}", device.Name);
 
         device.UserName = deviceNode.SelectSingleNode(@"UserName/@Value")!.Value;
         device.Annotation = deviceNode.SelectSingleNode(@"Annotation/@Value")!.Value;
