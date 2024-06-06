@@ -16,8 +16,8 @@
             <RadzenButton Text="Delete all projects/clips" ButtonStyle="ButtonStyle.Secondary" Click="@DeleteAllProjects" />
             <p>Total Projects: @totalProjects</p>
         </RadzenStack>
+        <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
     </RadzenStack>
-    <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
 </RadzenCard>
 
 @code {
