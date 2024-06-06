@@ -39,8 +39,6 @@ public interface ILiveProjectAsyncService
 
     Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedMaxForLiveDevices(int? limit = null, bool ignoreDisabled = false);
 
-    Task<int> GetProjectsCount();
-
     Task DeleteAllProjectsAsync();
 
     Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects(int? limit = null, bool ignoreDisabled = false);

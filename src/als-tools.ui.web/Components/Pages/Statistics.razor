@@ -267,7 +267,7 @@
 
         int? realLimit = limitEnabled ? limit : null;
 
-        total = await liveProjectService.GetProjectsCount();
+        total = await liveProjectService.CountProjectsAsync();
         tracksCountPerProject = (await liveProjectService.GetTracksCountPerProject()).AsQueryable();
         pluginsCountPerProject = (await liveProjectService.GetPluginsCountPerProject(ignoreDisabledDevices)).AsQueryable();
         stockDevicesCountPerProject = (await liveProjectService.GetStockDevicesCountPerProject(ignoreDisabledDevices)).AsQueryable();
@@ -282,9 +282,10 @@
         allPlugins = (await liveProjectService.GetAllPluginsFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
         allStockDevices = (await liveProjectService.GetAllStockDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
         allMaxForLiveDevices = (await liveProjectService.GetAllMaxForLiveDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
-        logger.LogInformation("Statistics loaded");
-
+        
         settingsChanged = false;
+
+        logger.LogInformation("Statistics loading... DONE");
     }
 
     private void OnValueChanged()
