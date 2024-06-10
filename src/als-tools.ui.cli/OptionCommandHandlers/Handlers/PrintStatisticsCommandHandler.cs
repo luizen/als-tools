@@ -35,7 +35,7 @@ public partial class PrintStatisticsCommandHandler : BaseCommandHandler, IOption
 
     private async Task PrintTotalOfProjects()
     {
-        var total = await liveProjectService.GetProjectsCount();
+        var total = await liveProjectService.CountProjectsAsync();
 
         await consolePrinter.PrintResults(total, "Total of projects", ["Projects", "Total"], (p) =>
         {
