@@ -16,6 +16,8 @@ public interface ILiveProjectAsyncRepository
 
     Task<IEnumerable<LiveProject>> GetAllProjectsAsync(int? limit = null);
 
+    Task<IEnumerable<LiveProjectWithChildrenCountsResult>> GetAllProjectsWithChildrenCountsAsync(int? limit = null);
+
     Task<LiveProject?> GetProjectByIdAsync(string id);
 
     Task DeleteAllAsync();

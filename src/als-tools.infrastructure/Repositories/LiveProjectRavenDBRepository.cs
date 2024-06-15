@@ -102,6 +102,23 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
+    public async Task<IEnumerable<LiveProjectWithChildrenCountsResult>> GetAllProjectsWithChildrenCountsAsync(int? limit = null)
+    {
+        logger.LogTrace("Start: GetAllProjectsWithChildrenCountsAsync");
+
+        try
+        {
+            using var session = store.OpenAsyncSession();
+            return await session.Query<LiveProjectWithChildrenCountsResult, LiveProject_WithChildrenCounts>()
+                .Limit(limit)
+                .ToListAsync();
+        }
+        finally
+        {
+            logger.LogTrace("End: GetAllProjectsWithChildrenCountsAsync");
+        }
+    }
+
     public async Task<LiveProject?> GetProjectByIdAsync(string id)
     {
         logger.LogTrace("Start: GetProjectByIdAsync for {@ProjectId}", id);
@@ -382,4 +399,6 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             logger.LogTrace("End: GetAllMaxForLiveDevicesFromProjects");
         }
     }
+
+
 }

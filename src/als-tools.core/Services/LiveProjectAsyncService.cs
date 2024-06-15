@@ -34,16 +34,29 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         }
     }
 
-    public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync()
+    public async Task<IEnumerable<LiveProject>> GetAllProjectsAsync(int? limit = null)
     {
         try
         {
             logger.LogInformation("Getting all projects...");
-            return await repository.GetAllProjectsAsync();
+            return await repository.GetAllProjectsAsync(limit);
         }
         finally
         {
             logger.LogInformation("Getting all projects... DONE");
+        }
+    }
+
+    public async Task<IEnumerable<LiveProjectWithChildrenCountsResult>> GetAllProjectsWithChildrenCountsAsync(int? limit = null)
+    {
+        try
+        {
+            logger.LogInformation("Getting all projects, including the children counts...");
+            return await repository.GetAllProjectsWithChildrenCountsAsync(limit);
+        }
+        finally
+        {
+            logger.LogInformation("Getting all projects, including the children counts... DONE");
         }
     }
 

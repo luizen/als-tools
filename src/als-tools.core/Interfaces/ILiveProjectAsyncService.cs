@@ -11,7 +11,9 @@ public interface ILiveProjectAsyncService
 
     Task ReloadAllFileDatesAsync(IProgress<double>? progress = null);
 
-    Task<IEnumerable<LiveProject>> GetAllProjectsAsync();
+    Task<IEnumerable<LiveProject>> GetAllProjectsAsync(int? limit = null);
+
+    Task<IEnumerable<LiveProjectWithChildrenCountsResult>> GetAllProjectsWithChildrenCountsAsync(int? limit = null);
 
     Task<LiveProject?> GetProjectByIdAsync(string id);
 
