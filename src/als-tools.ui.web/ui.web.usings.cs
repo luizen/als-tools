@@ -1,7 +1,3 @@
-
-global using Serilog;
-global using Serilog.Core;
-global using System.Reflection;
 global using AlsTools.Core.Config;
 global using AlsTools.Core.Interfaces;
 global using AlsTools.Core.Services;
@@ -23,3 +19,5 @@ global using AlsTools.Infrastructure.FileSystem;
 global using AlsTools.Infrastructure.Handlers;
 global using AlsTools.Infrastructure.Repositories;
 global using AlsTools.Infrastructure.XmlNodeNames;
+global using Serilog;
+global using System.Reflection;

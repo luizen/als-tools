@@ -2,10 +2,12 @@
 @using AlsTools.Core.Entities
 @using System.Linq
 @using System.Net
+@using AlsTools.Core.Interfaces
 @using AlsTools.Core.ValueObjects.Tracks
 @using Microsoft.AspNetCore.Components.Web
 @inject NavigationManager navigationManager
 @inject ILiveProjectAsyncService liveProjectService
+@inject ILogger<ProjectDetailsByProjectId> logger
 
 <PageTitle>Project details</PageTitle>
 
@@ -31,16 +33,16 @@ else
 
         var decodedId = System.Net.WebUtility.UrlDecode(projectId);
 
-        Log.Information("Decoded project id: {@DecodedId}", decodedId);
+        logger.LogInformation("Decoded project id: {@DecodedId}", decodedId);
 
-        Log.Debug("Before liveProjectService.GetProjectByIdAsync()");
+        logger.LogDebug("Before liveProjectService.GetProjectByIdAsync()");
         project = await liveProjectService.GetProjectByIdAsync(decodedId);
-        Log.Debug("After liveProjectService.GetProjectByIdAsync()");
+        logger.LogDebug("After liveProjectService.GetProjectByIdAsync()");
 
         if (project == null)
         {
             message = "Project not found";
-            Log.Debug(message);
+            logger.LogDebug(message);
         }
 
     }

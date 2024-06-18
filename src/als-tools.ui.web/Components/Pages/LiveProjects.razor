@@ -2,9 +2,13 @@
 @using AlsTools.Core.Entities
 @using System.Linq
 @using System.Net
+@using AlsTools.Core.Interfaces
+@using Serilog
+@using als_tools.ui.web.Common
 @inject ILiveProjectAsyncService liveProjectService
 @inject NavigationManager navigationManager
 @inject DialogService dialogService
+@inject ILogger<LiveProjects> logger
 @attribute [StreamRendering]
 
 <PageTitle>Ableton Live Projects and Clips</PageTitle>
@@ -23,10 +27,17 @@
     <ErrorBoundary>
         <GridSettings @bind-Density="density" @bind-GridLines="gridLines" ShowUseTrackColors="false" />
     </ErrorBoundary>
+
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="1.1rem" Style="width: 100%">
+        <RadzenTextBox Placeholder="Plugin names to search..." Style="width: 100%" @bind-Value="@pluginNamesToSearch" />
+        <RadzenButton Text="Search" ButtonStyle="ButtonStyle.Secondary" Click="@FilterProjects" />
+    </RadzenStack>
+
     <RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
-        FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-        ShowPagingSummary="true" AllowColumnPicking="true" LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@pageSizeOptions"
-        AllowGrouping="true" Density="@density" GridLines="@gridLines">
+        FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true"
+        PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" AllowColumnPicking="true"
+        LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@GridOptions.PageSizeOptions" AllowGrouping="true" Density="@density"
+        GridLines="@gridLines">
         <EmptyTemplate>
             <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
         </EmptyTemplate>
@@ -56,12 +67,10 @@
     </RadzenDataGrid>
 </RadzenStack>
 
-
-
 @code {
     private IList<LiveProject>? projects = new List<LiveProject>();
     private double? totalProjects;
-    int[] pageSizeOptions = [5, 10, 20, 30, 50];
+    private string pluginNamesToSearch = "";
 
     Density density = Density.Compact;
     Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
@@ -73,15 +82,28 @@
         new DialogOptions() { Width = "90%", Height = "90%", Resizable = true, Draggable = true });
     }
 
+    private async Task FilterProjects()
+    {
+        logger.LogDebug("FilterProjects init");
+
+        var pluginsToSearch = pluginNamesToSearch.Split([','], StringSplitOptions.RemoveEmptyEntries);
+
+        projects = (await liveProjectService.GetProjectsContainingPluginsAsync(pluginsToSearch)).ToList();
+        totalProjects = projects.Count();
+        await InvokeAsync(StateHasChanged);
+
+        logger.LogDebug("FilterProjects end");
+    }
+
     private async Task LoadAllProjects()
     {
-        Log.Debug("LoadAllProjects init");
+        logger.LogDebug("LoadAllProjects init");
 
         projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
         totalProjects = projects.Count();
         await InvokeAsync(StateHasChanged);
-        
-        Log.Debug("LoadAllProjects end");
+
+        logger.LogDebug("LoadAllProjects end");
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

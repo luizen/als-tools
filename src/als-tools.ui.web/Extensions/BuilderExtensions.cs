@@ -86,7 +86,7 @@ public static class BuilderExtensions
         builder.Services.AddSingleton<IDictionary<string, IStockDeviceExtractor>>(svcProvider => BuildStockDeviceExtractors(svcProvider));
 
         // Device type extractors
-        builder.Services.AddSingleton<Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>>(svcProvider =>
+        builder.Services.AddSingleton(svcProvider =>
                      new Lazy<IDictionary<DeviceType, IDeviceTypeExtractor>>(() =>
                         new Dictionary<DeviceType, IDeviceTypeExtractor>()
                         {
@@ -126,7 +126,7 @@ public static class BuilderExtensions
         builder.Services.Configure<PlugScanningOptions>(configuration.GetSection(nameof(PlugScanningOptions)));
     }
 
-    private static IDictionary<string, IStockDeviceExtractor> BuildStockDeviceExtractors(IServiceProvider svcProvider)
+    private static Dictionary<string, IStockDeviceExtractor> BuildStockDeviceExtractors(IServiceProvider svcProvider)
     {
         Log.Debug("Starting BuildStockDeviceExtractors()...");
 
