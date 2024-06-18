@@ -28,10 +28,11 @@
         <GridSettings @bind-Density="density" @bind-GridLines="gridLines" ShowUseTrackColors="false" />
     </ErrorBoundary>
 
-    <RadzenStack Orientation="Orientation.Horizontal" Gap="1.1rem" Style="width: 100%">
+    @* <RadzenStack Orientation="Orientation.Horizontal" Gap="1.1rem" Style="width: 100%">
         <RadzenTextBox Placeholder="Plugin names to search..." Style="width: 100%" @bind-Value="@pluginNamesToSearch" />
         <RadzenButton Text="Search" ButtonStyle="ButtonStyle.Secondary" Click="@FilterProjects" />
-    </RadzenStack>
+    </RadzenStack> *@
+    <ProjectFilters />
 
     <RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
         FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true"

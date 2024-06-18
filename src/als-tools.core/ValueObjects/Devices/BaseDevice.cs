@@ -1,3 +1,5 @@
+
+
 namespace AlsTools.Core.ValueObjects.Devices;
 
 public abstract record BaseDevice : IDevice
