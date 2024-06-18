@@ -39,7 +39,7 @@ This means that commands are required to be run in a command-line interpreter / 
 
   Click [here](https://en.wikipedia.org/wiki/List_of_terminal_emulators) for a list of terminal emulators/consoles.
 
-  ![cli](docs/img/cli.png)
+![cli](docs/img/cli.png)
 
 ### Web front-end
 
@@ -93,7 +93,7 @@ A more user friendly option that runs on a browser.
     dotnet run list
     ```
 
-    To locate all projects containing at least one of the plugins (_contains plugin name_):
+    To locate all projects containing at least one of the plugins (*contains plugin name*):
 
     ```shell
     dotnet run locate --plugin-names plugin1 "plugin 2" [...]
