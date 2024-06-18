@@ -1,0 +1,73 @@
+@using AlsTools.Core.Entities
+@using AlsTools.Core.Enums
+@using AlsTools.Core.Extensions
+
+<RadzenStack Orientation="Orientation.Horizontal" Gap="1.1rem" Style="width: 100%">
+    <RadzenStack Orientation="Orientation.Vertical">
+        @foreach (var filter in Filters)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenDropDown Placeholder="Field" @bind-Value="@filter.Field" Style="width: 100%" Data="@Enum.GetValues(typeof(ProjectFilterableProperties))" />
+                <RadzenDropDown Placeholder="Operator" @bind-Value="@filter.Operator" Style="width: 100%" Data="@Operators" />
+
+                @if (ControlForProperty.TryGetValue(filter.Field, out var control))
+                {
+                    @control(filter)
+                }
+
+                <RadzenButton Text="-" Click="@(() => RemoveFilter(filter))" />
+            </RadzenStack>
+        }
+        <RadzenButton Text="+" Click="@AddFilter" />
+        <RadzenButton Text="Apply filters" ButtonStyle="ButtonStyle.Secondary" Click="@ApplyFiltersClicked" />
+    </RadzenStack>
+
+    
+</RadzenStack>
+
+
+@code {
+    [Parameter]
+    public EventCallback ApplyFiltersClicked { get; set; }
+
+    private List<Filter> Filters = new List<Filter>();
+
+    private List<string> Operators = ["is", "is not", "contains", "does not contain", "starts with", "does not start with", "ends with", "does not end with"];
+
+    private string[] LiveProjectProperties = EnumHelper.GetCamelCaseNames(typeof(ProjectFilterableProperties));
+
+    private Dictionary<ProjectFilterableProperties, Func<Filter, RenderFragment>> ControlForProperty;
+
+    private void AddFilter()
+    {
+        Filters.Add(new Filter());
+    }
+
+    private void RemoveFilter(Filter filter)
+    {
+        Filters.Remove(filter);
+    }
+
+    public class Filter
+    {
+        public ProjectFilterableProperties Field { get; set; }
+        public string Operator { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+    }
+
+    protected override void OnInitialized()
+    {
+        ControlForProperty = new Dictionary<ProjectFilterableProperties, Func<Filter, RenderFragment>>
+        {
+            { ProjectFilterableProperties.PluginName, filter => builder => { builder.OpenComponent<RadzenTextBox>(0); builder.AddAttribute(1, "Value", filter.Value); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.PluginFormat, filter => builder => { builder.OpenComponent<RadzenDropDown<PluginFormat>>(0); builder.AddAttribute(1, "Value", filter.Value); builder.AddAttribute(2, "Data", Enum.GetValues(typeof(PluginFormat))); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.PluginSort, filter => builder => { builder.OpenComponent<RadzenDropDown<DeviceSort>>(0); builder.AddAttribute(1, "Value", filter.Value); builder.AddAttribute(2, "Data", Enum.GetValues(typeof(DeviceSort))); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.StockDeviceName, filter => builder => { builder.OpenComponent<RadzenTextBox>(0); builder.AddAttribute(1, "Value", filter.Value); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.StockDeviceUserName, filter => builder => { builder.OpenComponent<RadzenTextBox>(0); builder.AddAttribute(1, "Value", filter.Value); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.StockDeviceSort, filter => builder => { builder.OpenComponent<RadzenDropDown<DeviceSort>>(0); builder.AddAttribute(1, "Value", filter.Value); builder.AddAttribute(2, "Data", Enum.GetValues(typeof(DeviceSort))); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.MaxForLiveDeviceName, filter => builder => { builder.OpenComponent<RadzenTextBox>(0); builder.AddAttribute(1, "Value", filter.Value); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.MaxForLiveDeviceUserName, filter => builder => { builder.OpenComponent<RadzenTextBox>(0); builder.AddAttribute(1, "Value", filter.Value); builder.CloseComponent(); } },
+            { ProjectFilterableProperties.MaxForLiveDeviceSort, filter => builder => { builder.OpenComponent<RadzenDropDown<DeviceSort>>(0); builder.AddAttribute(1, "Value", filter.Value); builder.AddAttribute(2, "Data", Enum.GetValues(typeof(DeviceSort))); builder.CloseComponent(); } },
+        };
+    }
+}

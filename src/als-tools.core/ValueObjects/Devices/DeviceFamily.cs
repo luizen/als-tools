@@ -26,4 +26,9 @@ public class DeviceFamily
         Type = type;
         Sort = sort;
     }
+
+    public override string ToString()
+    {
+        return $"{Type}::{Sort}";
+    }
 }

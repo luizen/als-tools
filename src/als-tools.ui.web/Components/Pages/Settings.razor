@@ -1,0 +1,111 @@
+@page "/settings"
+@using AlsTools.Core.Config
+@using AlsTools.Core.Interfaces
+@using Microsoft.Extensions.Options
+@inject ILiveProjectAsyncService liveProjectService
+@inject IOptionsMonitor<InitDbOptions> initDbOptionsMonitor
+@inject ILogger<Settings> logger
+@attribute [StreamRendering]
+
+<PageTitle>Settings</PageTitle>
+<h1>Settings</h1>
+
+<RadzenCard class="my-2" style="display: flex; align-items: center; gap: 0.5rem">
+    <RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal" Style="width: 100%">
+            <RadzenButton Text="Init DB" ButtonStyle="ButtonStyle.Primary" Click="@InitDb" />
+            <RadzenButton Text="Delete all projects/clips" ButtonStyle="ButtonStyle.Secondary" Click="@DeleteAllProjects" />
+            <RadzenButton Text="Reload project file dates" ButtonStyle="ButtonStyle.Secondary" Click="@ReloadFileDates" />
+            <p>Total Projects: @totalProjects</p>
+        </RadzenStack>
+        <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
+    </RadzenStack>
+</RadzenCard>
+
+@code {
+    private double? totalProjects;
+    private double progressPercent;
+    private bool progressBarVisible = false;
+
+    private async Task UpdateProjectsCount()
+    {
+        logger.LogDebug("UpdateProjectsCount init");
+
+        totalProjects = await liveProjectService.CountProjectsAsync();
+        await InvokeAsync(StateHasChanged);
+
+        logger.LogDebug("UpdateProjectsCount end");
+    }
+
+    private async Task DeleteAllProjects()
+    {
+        logger.LogDebug("DeleteAllProjects init");
+        progressPercent = 0;
+
+        await liveProjectService.DeleteAllProjectsAsync();
+        await InvokeAsync(StateHasChanged);
+
+        logger.LogDebug("DeleteAllProjects end");
+
+        await UpdateProjectsCount();
+    }
+
+    private async Task ReloadFileDates()
+    {
+        logger.LogDebug("ReloadFileDates init");
+        progressPercent = 0;
+
+        var progress = new Progress<double>(progressValue =>
+        {
+            progressPercent = progressValue;
+
+            InvokeAsync(StateHasChanged); // Notify Blazor the state has changed
+        });
+
+        progressBarVisible = true;
+        await liveProjectService.ReloadAllFileDatesAsync(progress);
+        progressBarVisible = false;
+
+        await InvokeAsync(StateHasChanged);
+
+        logger.LogDebug("ReloadFileDates end");
+    }
+
+    private async Task InitDb()
+    {
+        logger.LogDebug("InitDb init");
+        progressPercent = 0;
+
+        var progress = new Progress<double>(progressValue =>
+        {
+            progressPercent = progressValue;
+
+            InvokeAsync(StateHasChanged); // Notify Blazor the state has changed
+        });
+
+        var initDbOptions = initDbOptionsMonitor.CurrentValue;
+
+        // Combine folders with files
+        string[] paths = initDbOptions.Folders.Concat(initDbOptions.Files).ToArray();
+
+        progressBarVisible = true;
+        await Task.Run(() => liveProjectService.InitializeDbFromPathsAsync(paths, progress: progress));
+        progressBarVisible = false;
+
+        await InvokeAsync(StateHasChanged);
+
+        logger.LogDebug("InitDb end");
+
+        await UpdateProjectsCount();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await UpdateProjectsCount();
+        }
+    }
+}

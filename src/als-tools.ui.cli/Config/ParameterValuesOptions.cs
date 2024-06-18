@@ -8,7 +8,7 @@ public class ParameterValuesOptions
 
     public CountOptions? Count { get; set; }
 
-    public InitDbOptions? InitDb { get; set; }
+    public CliOptions.InitDbOptions? InitDb { get; set; }
 
     public ListOptions? ListOptions { get; set; }
 

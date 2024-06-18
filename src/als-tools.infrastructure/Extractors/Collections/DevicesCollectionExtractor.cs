@@ -103,7 +103,7 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
 
     private DeviceType GetDeviceTypeByDeviceNodeName(string deviceNodeName)
     {
-        logger.LogDebug("Getting device type by device node name ({DeviceNodeName})...", deviceNodeName);
+        logger.LogDebug("Getting device type by device node name ({@DeviceNodeName})...", deviceNodeName);
 
         var deviceNodeNameUpper = deviceNodeName.ToUpperInvariant();
 

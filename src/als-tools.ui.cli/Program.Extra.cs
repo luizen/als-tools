@@ -142,7 +142,7 @@ public partial class Program
 
         // Add CLI command handlers
         serviceCollection
-            .AddSingleton<IOptionCommandHandler<InitDbOptions>, InitDbCommandHandler>()
+            .AddSingleton<IOptionCommandHandler<CliOptions.InitDbOptions>, InitDbCommandHandler>()
             .AddSingleton<IOptionCommandHandler<ListOptions>, ListCommandHandler>()
             .AddSingleton<IOptionCommandHandler<CountOptions>, CountCommandHandler>()
             .AddSingleton<IOptionCommandHandler<LocateOptions>, LocateCommandHandler>()

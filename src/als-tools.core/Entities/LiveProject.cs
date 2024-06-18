@@ -1,3 +1,4 @@
+using AlsTools.Core.Enums;
 using AlsTools.Core.ValueObjects;
 using AlsTools.Core.ValueObjects.Tracks;
 
@@ -46,6 +47,11 @@ public class LiveProject
     public string MajorVersion { get; set; } = string.Empty;
 
     /// <summary>
+    /// The project type (Set or Clip)
+    /// </summary>
+    public ProjectType ProjectType { get; set; }
+
+    /// <summary>
     /// Schema change count
     /// </summary>
     public int? SchemaChangeCount { get; set; }
@@ -79,4 +85,14 @@ public class LiveProject
     /// The locators this project contains
     /// </summary>
     public IReadOnlyList<Locator> Locators { get; set; }
+
+    /// <summary>
+    /// The creation time of the project file
+    /// </summary>
+    public DateTime CreationTime { get; set; }
+
+    /// <summary>
+    /// The last modification time of the project file
+    /// </summary>
+    public DateTime LastModified { get; set; }
 }

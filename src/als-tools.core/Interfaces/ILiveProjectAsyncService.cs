@@ -7,31 +7,45 @@ namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectAsyncService
 {
-    Task<int> InitializeDbFromFilesAsync(IEnumerable<string> filePaths);
+    Task<int> InitializeDbFromPathsAsync(IEnumerable<string> paths, bool includeBackupFolder = false, IProgress<double>? progress = null);
 
-    Task<int> InitializeDbFromFoldersAsync(IEnumerable<string> folderPaths, bool includeBackupFolder);
+    Task ReloadAllFileDatesAsync(IProgress<double>? progress = null);
 
-    Task<IReadOnlyList<LiveProject>> GetAllProjectsAsync();
+    Task<IEnumerable<LiveProject>> GetAllProjectsAsync(int? limit = null);
 
-    Task<IReadOnlyList<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
+    Task<IEnumerable<LiveProjectWithChildrenCountsResult>> GetAllProjectsWithChildrenCountsAsync(int? limit = null);
+
+    Task<LiveProject?> GetProjectByIdAsync(string id);
+
+    Task<IEnumerable<LiveProject>> GetProjectsContainingPluginsAsync(IEnumerable<string> pluginsToLocate);
 
     Task<int> CountProjectsAsync();
 
-    Task<IReadOnlyList<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection);
+    Task<IEnumerable<PluginDevice>> GetPluginUsageResults(IList<PluginDevice> availablePlugins, PluginUsageSelection selection);
 
     Task<IEnumerable<ItemsCountPerProjectResult>> GetTracksCountPerProject();
 
-    Task<IEnumerable<ItemsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled);
+    Task<IEnumerable<ItemsCountPerProjectResult>> GetPluginsCountPerProject(bool ignoreDisabled = false);
 
-    Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled);
+    Task<IEnumerable<ItemsCountPerProjectResult>> GetStockDevicesCountPerProject(bool ignoreDisabled = false);
 
-    Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int limit);
+    Task<IEnumerable<ItemsCountPerProjectResult>> GetMaxForLiveDevicesCountPerProject(bool ignoreDisabled = false);
 
-    Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int limit, bool ignoreDisabled);
+    Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestTracksCount(int? limit = null);
 
-    Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int limit, bool ignoreDisabled);
+    Task<IEnumerable<ItemsCountPerProjectResult>> GetProjectsWithHighestPluginsCount(int? limit = null, bool ignoreDisabled = false);
 
-    Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int limit, bool ignoreDisabled);
+    Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedPlugins(int? limit = null, bool ignoreDisabled = false);
 
-    Task<int> GetProjectsCount();
+    Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedStockDevices(int? limit = null, bool ignoreDisabled = false);
+
+    Task<IEnumerable<DevicesUsageCountResult>> GetMostUsedMaxForLiveDevices(int? limit = null, bool ignoreDisabled = false);
+
+    Task DeleteAllProjectsAsync();
+
+    Task<IEnumerable<PluginDevice>> GetAllPluginsFromProjects(int? limit = null, bool ignoreDisabled = false);
+
+    Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects(int? limit = null, bool ignoreDisabled = false);
+
+    Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects(int? limit = null, bool ignoreDisabled = false);
 }

@@ -18,7 +18,7 @@ public class PluginUsageCommandHandler : BaseCommandHandler, IOptionCommandHandl
         logger.LogDebug("Listing {@UsedOrUnusedPluginsOnly} plugins only...", options.Select == PluginUsageSelection.UsedOnly ? "used" : "unused");
 
         var availablePlugins = GetAvailablePluginsFromPlugInfo();
-        IReadOnlyList<PluginDevice> plugins = await liveProjectService.GetPluginUsageResults(availablePlugins, options.Select);
+        var plugins = await liveProjectService.GetPluginUsageResults(availablePlugins, options.Select);
 
         var pluginNamesAndFormats = plugins.Select(plugin => new
         {

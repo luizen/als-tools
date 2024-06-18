@@ -12,4 +12,8 @@ src/als-tools.infrastructure/bin/*
 src/als-tools.ui.cli/bin/*
 src/als-tools.ui.cli/obj/*
 src/als-tools.ui.cli/output/*
+src/als-tools.ui.web/bin/*
+src/als-tools.ui.web/obj/*
+src/als-tools.ui.web/bin/*
+src/als-tools.ui.web/obj/*
 ravendb-license.json

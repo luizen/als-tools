@@ -40,7 +40,8 @@ public class ScenesCollectionExtractor : IScenesCollectionExtractor
                 Tempo = sceneNode.SelectSingleNode(@"Tempo/@Value")!.ValueAsInt,
                 IsTempoEnabled = sceneNode.SelectSingleNode(@"IsTempoEnabled/@Value")!.ValueAsBoolean,
                 TimeSignatureId = sceneNode.SelectSingleNode(@"TimeSignatureId/@Value")!.ValueAsInt,
-                IsTimeSignatureEnabled = sceneNode.SelectSingleNode(@"IsTimeSignatureEnabled/@Value")!.ValueAsBoolean
+                IsTimeSignatureEnabled = sceneNode.SelectSingleNode(@"IsTimeSignatureEnabled/@Value")!.ValueAsBoolean,
+                Color = LiveColor.FromValue(sceneNode.SelectSingleNode(@"Color/@Value")?.ValueAsInt)
             };
 
             scenes.Add(scene);

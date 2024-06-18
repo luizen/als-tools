@@ -1,8 +1,10 @@
+using AlsTools.Core.Entities;
+
 namespace AlsTools.Core.Interfaces;
 
 public interface ILiveProjectFileSystem
 {
-    IReadOnlyList<string> GetProjectFilesFullPathFromDirectories(IEnumerable<string> folderPaths, bool includeBackupFolder);
+    IEnumerable<string> GetProjectFilesFullPathFromPaths(IEnumerable<string> paths, bool includeBackupFolder = false);
 
-    IReadOnlyList<string> GetProjectFilesFullPathFromSetFiles(IEnumerable<string> setFilePaths);
+    void SetFileDates(LiveProject project);
 }

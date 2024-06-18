@@ -4,18 +4,18 @@ using Raven.Client.Documents.Indexes;
 
 namespace AlsTools.Infrastructure.Indexes;
 
-public class Plugins_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<LiveProject, DevicesUsageCountResult>
+public class MaxForLiveDevices_ByUsageCount : AbstractIndexCreationTask<LiveProject, DevicesUsageCountResult>
 {
-    public Plugins_ByUsageCount_EnabledOnly()
+    public MaxForLiveDevices_ByUsageCount()
     {
         Map = projects => from project in projects
                           from track in project.Tracks
-                          from plugin in track.Plugins
-                          where plugin.IsEnabled
+                          from maxForLiveDevice in track.MaxForLiveDevices
                           select new DevicesUsageCountResult()
                           {
-                              DeviceName = plugin.Name,
-                              UsageCount = 1
+                              DeviceName = maxForLiveDevice.Name,
+                              UsageCount = 1,
+                              IsEnabled = maxForLiveDevice.IsEnabled
                           };
 
         Reduce = results => from result in results
@@ -23,7 +23,8 @@ public class Plugins_ByUsageCount_EnabledOnly : AbstractIndexCreationTask<LivePr
                             select new DevicesUsageCountResult()
                             {
                                 DeviceName = g.Key,
-                                UsageCount = g.Sum(x => x.UsageCount)
+                                UsageCount = g.Sum(x => x.UsageCount),
+                                IsEnabled = g.First().IsEnabled
                             };
     }
 }

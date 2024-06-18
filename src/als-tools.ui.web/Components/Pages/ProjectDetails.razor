@@ -1,0 +1,191 @@
+@page "/project-details/{project}"
+@using AlsTools.Core.Entities
+@using System.Linq
+@using System.Net
+@using AlsTools.Core.Interfaces
+@using AlsTools.Core.ValueObjects.Devices
+@using AlsTools.Core.ValueObjects.Tracks
+@using als_tools.ui.web.Common
+@using Microsoft.AspNetCore.Components.Web
+@inject NavigationManager navigationManager
+@inject ILiveProjectAsyncService liveProjectService
+
+<PageTitle>Project details</PageTitle>
+
+<ErrorBoundary>
+    <ProjectInfoHeader project="@project" />
+</ErrorBoundary>
+
+<ErrorBoundary>
+    <GridSettings @bind-Density="density" @bind-UseTrackColors="useTrackColors" @bind-GridLines="gridLines" ShowUseTrackColors="true" />
+</ErrorBoundary>
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenStack Orientation="Orientation.Vertical" Gap="1.2rem">
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Tracks" />
+                    <RadzenDataGrid Data="@tracks" AllowColumnReorder="true" AllowColumnResize="true" AllowSorting="true" AllowFiltering="true"
+                        AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
+                        PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                        PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced" RowRender="@OnRowRender">
+                        <EmptyTemplate>
+                            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+                        </EmptyTemplate>
+                        <GroupHeaderTemplate>
+                            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+                        </GroupHeaderTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn Width="60px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+                                Groupable="false">
+                                <Template Context="data">
+                                    @(tracks?.IndexOf(data) + 1)
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn Property="EffectiveName" Title="Track name"/>
+                            <RadzenDataGridColumn Property="Type" Title="Type" />
+                            <RadzenDataGridColumn Property="TrackDelay.Description" Title="Track delay" />
+                            <RadzenDataGridColumn Property="IsMuted" Title="Is Muted" />
+                            <RadzenDataGridColumn Property="IsSoloed" Title="Is Soloed" />
+                            <RadzenDataGridColumn Property="IsGroupTrack" Title="Is Group Track" />
+                            <RadzenDataGridColumn Property="IsPartOfGroup" Title="Is Part of Group" />
+                            <RadzenDataGridColumn Property="Annotation" Title="Annotation" Width="10%" Visible="false"/>
+                            <RadzenDataGridColumn Property="Color" Title="Color" Visible="false" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Plugins" />
+                    <RadzenDataGrid Data="@plugins" AllowColumnReorder="true" AllowColumnResize="true" AllowSorting="true" AllowFiltering="true"
+                        AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
+                        PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                        PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced">
+                        <EmptyTemplate>
+                            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+                        </EmptyTemplate>
+                        <GroupHeaderTemplate>
+                            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+                        </GroupHeaderTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn Width="25px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+                                Groupable="false">
+                                <Template Context="data">
+                                    @(plugins?.IndexOf(data) + 1)
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn Property="Name" Title="Name" />
+                            <RadzenDataGridColumn Property="Format" Title="Format" Width="8%" />
+                            <RadzenDataGridColumn Property="Family.Sort" Title="Sort" Width="8%" />
+                            <RadzenDataGridColumn Property="IsEnabled" Title="Is enabled?" Width="8%" />
+                            <RadzenDataGridColumn Property="HasParentRack" Title="Has Parent Rack?" Width="14%" />
+                            <RadzenDataGridColumn Property="Annotation" Title="Annotation" Width="10%" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Stock Devices" />
+                    <RadzenDataGrid Data="@stockDevices" AllowColumnReorder="true" AllowColumnResize="true" AllowSorting="true" AllowFiltering="true"
+                        AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
+                        PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                        PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced">
+                        <EmptyTemplate>
+                            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+                        </EmptyTemplate>
+                        <GroupHeaderTemplate>
+                            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+                        </GroupHeaderTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn Width="60px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+                                Groupable="false">
+                                <Template Context="data">
+                                    @(stockDevices?.IndexOf(data) + 1)
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn Property="Name" Title="Name" />
+                            <RadzenDataGridColumn Property="UserName" Title="User Name" />
+                            <RadzenDataGridColumn Property="Family.Sort" Title="Sort" Width="8%" />
+                            <RadzenDataGridColumn Property="IsEnabled" Title="Is enabled?" Width="8%" />
+                            <RadzenDataGridColumn Property="IsGroupDevice" Title="Is group device?" Width="8%" />
+                            <RadzenDataGridColumn Property="HasParentRack" Title="Has Parent Rack?" Width="14%" />
+                            <RadzenDataGridColumn Property="Annotation" Title="Annotation" Width="10%" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Max For Live Devices" />
+                    <RadzenDataGrid Data="@maxForLiveDevices" AllowColumnReorder="true" AllowColumnResize="true" AllowSorting="true" AllowFiltering="true"
+                        AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
+                        PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                        PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced">
+                        <EmptyTemplate>
+                            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+                        </EmptyTemplate>
+                        <GroupHeaderTemplate>
+                            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+                        </GroupHeaderTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn Width="60px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+                                Groupable="false">
+                                <Template Context="data">
+                                    @(maxForLiveDevices?.IndexOf(data) + 1)
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn Property="Name" Title="Name" />
+                            <RadzenDataGridColumn Property="UserName" Title="User Name" />
+                            <RadzenDataGridColumn Property="Family.Sort" Title="Sort" Width="8%" />
+                            <RadzenDataGridColumn Property="IsEnabled" Title="Is enabled?" Width="8%" />
+                            <RadzenDataGridColumn Property="IsGroupDevice" Title="Is group device?" Width="8%" />
+                            <RadzenDataGridColumn Property="HasParentRack" Title="Has Parent Rack?" Width="14%" />
+                            <RadzenDataGridColumn Property="Annotation" Title="Annotation" Width="10%" />                            
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+
+        </RadzenStack>
+    </ChildContent>
+</RadzenContent>
+
+@code {
+    [Parameter]
+    public required LiveProject project { get; set; }
+    private List<ITrack> tracks;
+    private List<PluginDevice> plugins;
+    private List<StockDevice> stockDevices;
+    private List<MaxForLiveDevice> maxForLiveDevices;
+
+    private Density density = Density.Compact;
+    private bool useTrackColors = true;
+    private Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
+    protected override async Task OnParametersSetAsync()
+    {
+        tracks = project.Tracks.ToList();
+        plugins = tracks.SelectMany(t => t.Plugins).ToList();
+        stockDevices = tracks.SelectMany(t => t.StockDevices).ToList();
+        maxForLiveDevices = tracks.SelectMany(t => t.MaxForLiveDevices).ToList();
+
+        await base.OnParametersSetAsync();
+    }
+
+    void OnRowRender(RowRenderEventArgs<ITrack> args)
+    {
+        if (useTrackColors)
+            args.Attributes.Add("style", $"background-color: {args.Data.Color.HexColor};");
+    }
+}

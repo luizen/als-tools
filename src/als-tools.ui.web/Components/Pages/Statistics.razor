@@ -1,0 +1,315 @@
+﻿@page "/stats"
+@using AlsTools.Core.Entities
+@using AlsTools.Core.Interfaces
+@using AlsTools.Core.ValueObjects.Devices
+@using AlsTools.Core.ValueObjects.ResultSets
+@using System.Linq
+@using als_tools.ui.web.Common
+@inject ILiveProjectAsyncService liveProjectService
+@inject ILogger<Statistics> logger;
+
+<PageTitle>Statistics</PageTitle>
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+    <RadzenIcon Icon="assessment" />
+    <h1>Statistics</h1>
+</RadzenStack>
+
+<RadzenFieldset AllowCollapse="true">
+    <HeaderTemplate>
+        <RadzenLabel Text="Settings" Component="True" />
+    </HeaderTemplate>
+    <ChildContent>
+        <RadzenStack Orientation="Orientation.Vertical">
+            <RadzenCard>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem">
+                    <RadzenLabel Text="Show only enabled devices" Component="True" />
+                    <RadzenSwitch @bind-Value=@ignoreDisabledDevices Change=@(() => { @settingsChanged = true; }) />
+
+                    <RadzenLabel Text="Limit" Component="True" />
+                    <RadzenNumeric @bind-Value=@limit Min="1" Change=@((int _) => { @settingsChanged = true; }) />
+
+                    <RadzenLabel Text="Enable limit" Component="True" />
+                    <RadzenSwitch @bind-Value=@limitEnabled Change=@(() => { @settingsChanged = true; }) />
+
+                    <RadzenButton Text="Apply settings" Click="@LoadStatistics" Disabled="!settingsChanged" />
+                </RadzenStack>
+            </RadzenCard>
+            <ErrorBoundary>
+                <GridSettings @bind-Density="density" @bind-GridLines="gridLines" ShowUseTrackColors="false" />
+            </ErrorBoundary>
+        </RadzenStack>
+    </ChildContent>
+</RadzenFieldset>
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <RadzenStack Orientation="Orientation.Vertical" Gap="1.2rem">
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Total of projects">
+                    </RadzenHeading>
+                    <RadzenLabel Text="@total.ToString()" />
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="All Plugins">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="PluginDevice" Data="@allPlugins" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="PluginDevice" Property="Name" Title="Name" Width="350px" />
+                            <RadzenDataGridColumn TItem="PluginDevice" Property="Family.Sort" Title="Sort" Width="250px" />
+                            <RadzenDataGridColumn TItem="PluginDevice" Property="IsEnabled" Title="Enabled?" Width="150px" />
+                            <RadzenDataGridColumn TItem="PluginDevice" Property="Format" Title="Format" Width="180px" />
+                            <RadzenDataGridColumn TItem="PluginDevice" Property="Path" Title="Path" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="All Stock Devices">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="StockDevice" Data="@allStockDevices" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" FilterMode="FilterMode.CheckBoxList" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn Property="Name" Title="Name" Width="350px" />
+                            <RadzenDataGridColumn Property="Family.Sort" Title="Sort" Width="250px" />
+                            <RadzenDataGridColumn Property="IsEnabled" Title="Enabled?" Width="150px" />
+                            <RadzenDataGridColumn Property="IsGroupDevice" Title="Is Rack?" Filterable="false" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="All MaxForLive Devices">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="MaxForLiveDevice" Data="@allMaxForLiveDevices" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn Property="Name" Title="Name" Width="350px" />
+                            <RadzenDataGridColumn Property="Family.Sort" Title="Sort" Width="150px" />
+                            <RadzenDataGridColumn Property="IsEnabled" Title="Enabled?" />
+                        </Columns>
+                    </RadzenDataGrid>
+
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Tracks count per project">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@tracksCountPerProject" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Tracks Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Plugins count per project">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@pluginsCountPerProject" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Plugins Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Stock devices count per project">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@stockDevicesCountPerProject" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Stock Devices Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="MaxForLive devices count per project">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@maxForLiveCountPerProject" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="MaxForLive Devices Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Projects with highest plugins count">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@projectsWithHighestPluginsCount" AllowFiltering="true"
+                        AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Plugins Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Projects with highest tracks count">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@projectsWithHighestTracksCount" AllowFiltering="true"
+                        AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
+                            <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Tracks Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Most used Stock Devices">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedStockDevices" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Most used Plugins">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedPlugins" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Most used MaxForLive devices">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedMaxForLiveDevices" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
+                            <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+        </RadzenStack>
+    </ChildContent>
+</RadzenContent>
+
+
+@code
+{
+    Density density = Density.Compact;
+    Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
+
+    private bool ignoreDisabledDevices = false;
+    private int limit = 10;
+    private int total;
+    private bool limitEnabled = false;
+    private bool settingsChanged = false;
+
+    private IQueryable<ItemsCountPerProjectResult>? tracksCountPerProject;
+    private IQueryable<ItemsCountPerProjectResult>? pluginsCountPerProject;
+    private IQueryable<ItemsCountPerProjectResult>? stockDevicesCountPerProject;
+    private IQueryable<ItemsCountPerProjectResult>? maxForLiveCountPerProject;
+    private IQueryable<ItemsCountPerProjectResult>? projectsWithHighestPluginsCount;
+    private IQueryable<ItemsCountPerProjectResult>? projectsWithHighestTracksCount;
+    private IQueryable<DevicesUsageCountResult>? mostUsedStockDevices;
+    private IQueryable<DevicesUsageCountResult>? mostUsedPlugins;
+    private IQueryable<DevicesUsageCountResult>? mostUsedMaxForLiveDevices;
+
+    private IQueryable<PluginDevice> allPlugins;
+    private IQueryable<StockDevice> allStockDevices;
+    private IQueryable<MaxForLiveDevice> allMaxForLiveDevices;
+
+    private async Task LoadStatistics()
+    {
+        logger.LogInformation("Statistics loading...");
+
+        int? realLimit = limitEnabled ? limit : null;
+
+        total = await liveProjectService.CountProjectsAsync();
+        tracksCountPerProject = (await liveProjectService.GetTracksCountPerProject()).AsQueryable();
+        pluginsCountPerProject = (await liveProjectService.GetPluginsCountPerProject(ignoreDisabledDevices)).AsQueryable();
+        stockDevicesCountPerProject = (await liveProjectService.GetStockDevicesCountPerProject(ignoreDisabledDevices)).AsQueryable();
+        maxForLiveCountPerProject = (await liveProjectService.GetMaxForLiveDevicesCountPerProject(ignoreDisabledDevices)).AsQueryable();
+
+        projectsWithHighestPluginsCount = (await liveProjectService.GetProjectsWithHighestPluginsCount(realLimit, ignoreDisabledDevices)).AsQueryable();
+        projectsWithHighestTracksCount = (await liveProjectService.GetProjectsWithHighestTracksCount(realLimit)).AsQueryable();
+        mostUsedStockDevices = (await liveProjectService.GetMostUsedStockDevices(realLimit, ignoreDisabledDevices)).AsQueryable();
+        mostUsedPlugins = (await liveProjectService.GetMostUsedPlugins(realLimit, ignoreDisabledDevices)).AsQueryable();
+        mostUsedMaxForLiveDevices = (await liveProjectService.GetMostUsedMaxForLiveDevices(realLimit, ignoreDisabledDevices)).AsQueryable();
+
+        allPlugins = (await liveProjectService.GetAllPluginsFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
+        allStockDevices = (await liveProjectService.GetAllStockDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
+        allMaxForLiveDevices = (await liveProjectService.GetAllMaxForLiveDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
+
+        settingsChanged = false;
+
+        logger.LogInformation("Statistics loading... DONE");
+    }
+
+    private void OnValueChanged()
+    {
+        logger.LogInformation("ValueChanged");
+        settingsChanged = true;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await LoadStatistics();
+
+            StateHasChanged();
+        }
+    }
+}

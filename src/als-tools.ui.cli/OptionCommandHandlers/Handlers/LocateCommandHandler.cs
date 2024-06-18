@@ -18,8 +18,9 @@ public class LocateCommandHandler : BaseCommandHandler, IOptionCommandHandler<Lo
         logger.LogDebug("Locating projects...");
 
         var projects = await liveProjectService.GetProjectsContainingPluginsAsync(options.PluginNamesToLocate);
+        var count = projects.Count();
         await projectsAndPluginsPrinter.Print(projects);
 
-        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", projects.Count);
+        logger.LogDebug(@"Total of projects: {@TotalOfProjects}", count);
     }
 }

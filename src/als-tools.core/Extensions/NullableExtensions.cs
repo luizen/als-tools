@@ -1,4 +1,4 @@
-﻿namespace AlsTools.Core;
+﻿namespace AlsTools.Core.Extensions;
 
 public static class NullableExtensions
 {

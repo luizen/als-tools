@@ -1,0 +1,118 @@
+﻿@page "/"
+@using AlsTools.Core.Entities
+@using System.Linq
+@using System.Net
+@using AlsTools.Core.Interfaces
+@using Serilog
+@using als_tools.ui.web.Common
+@inject ILiveProjectAsyncService liveProjectService
+@inject NavigationManager navigationManager
+@inject DialogService dialogService
+@inject ILogger<LiveProjects> logger
+@attribute [StreamRendering]
+
+<PageTitle>Ableton Live Projects and Clips</PageTitle>
+<h1>Ableton Live Projects and Clips (*.als, *.alc)</h1>
+
+<RadzenCard class="my-2" style="display: flex; align-items: center; gap: 0.5rem">
+    <RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal" Style="width: 100%">
+            <RadzenButton Text="Reload projects/clips" ButtonStyle="ButtonStyle.Secondary" Click="@LoadAllProjects" />
+            <p>Total Projects: @totalProjects</p>
+        </RadzenStack>
+    </RadzenStack>
+</RadzenCard>
+
+<RadzenStack Gap="1.1rem">
+    <ErrorBoundary>
+        <GridSettings @bind-Density="density" @bind-GridLines="gridLines" ShowUseTrackColors="false" />
+    </ErrorBoundary>
+
+    @* <RadzenStack Orientation="Orientation.Horizontal" Gap="1.1rem" Style="width: 100%">
+    <RadzenTextBox Placeholder="Plugin names to search..." Style="width: 100%" @bind-Value="@pluginNamesToSearch" />
+    <RadzenButton Text="Search" ButtonStyle="ButtonStyle.Secondary" Click="@FilterProjects" />
+    </RadzenStack> *@
+    @* <ProjectFilters /> *@
+
+    <RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
+        FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true"
+        PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" AllowColumnPicking="true"
+        LogicalFilterOperator="LogicalFilterOperator.Or" PageSizeOptions="@GridOptions.PageSizeOptions" AllowGrouping="true" Density="@density"
+        GridLines="@gridLines">
+        <EmptyTemplate>
+            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+        </EmptyTemplate>
+        <GroupHeaderTemplate>
+            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+        </GroupHeaderTemplate>
+        <Columns>
+            <RadzenDataGridColumn Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false" MinWidth="50px"
+                Width="50px">
+                <Template Context="data">
+                    @(projects?.IndexOf(data) + 1)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="Name" Title="Project/clip name" Groupable="false" MinWidth="15%" Width="15%" />
+            <RadzenDataGridColumn Property="Creator" Title="Live version" Width="9%" />
+            <RadzenDataGridColumn Property="ProjectType" Title="Type" MinWidth="6%" Width="6%" />
+            <RadzenDataGridColumn Property="Tempo" Title="Tempo" MinWidth="7%" Width="7%" />
+            <RadzenDataGridColumn Property="Path" Title="Path" Width="35%" />
+            <RadzenDataGridColumn Property="CreationTime" Title="Creation time" Width="10%" />
+            <RadzenDataGridColumn Property="LastModified" Title="Last modified" Width="10%" />
+            <RadzenDataGridColumn Groupable="false" Filterable="false" Sortable="false" Width="50px" MinWidth="50px">
+                <Template Context="data">
+                    <RadzenButton Icon="info" Size="ButtonSize.Small" Click="@(args => NavigateToDetails(data))" />
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</RadzenStack>
+
+@code {
+    private IList<LiveProject>? projects = new List<LiveProject>();
+    private double? totalProjects;
+    @* private string pluginNamesToSearch = ""; *@
+
+    Density density = Density.Compact;
+    Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
+
+    protected async Task NavigateToDetails(LiveProject data)
+    {
+        await dialogService.OpenAsync<ProjectDetails>("Project Details",
+        new Dictionary<string, object>() { { "project", data } },
+        new DialogOptions() { Width = "90%", Height = "90%", Resizable = true, Draggable = true });
+    }
+
+    @* private async Task FilterProjects()
+{
+logger.LogDebug("FilterProjects init");
+
+var pluginsToSearch = pluginNamesToSearch.Split([','], StringSplitOptions.RemoveEmptyEntries);
+
+projects = (await liveProjectService.GetProjectsContainingPluginsAsync(pluginsToSearch)).ToList();
+totalProjects = projects.Count();
+await InvokeAsync(StateHasChanged);
+
+logger.LogDebug("FilterProjects end");
+} *@
+
+    private async Task LoadAllProjects()
+    {
+        logger.LogDebug("LoadAllProjects init");
+
+        projects = (await liveProjectService.GetAllProjectsAsync()).ToList();
+        totalProjects = projects.Count();
+        await InvokeAsync(StateHasChanged);
+
+        logger.LogDebug("LoadAllProjects end");
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await LoadAllProjects();
+        }
+    }
+}

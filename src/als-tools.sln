@@ -9,13 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.cli", "als-tools.ui.cli\als-tools.ui.cli.csproj", "{D6C84EF5-E779-4DEF-AF3E-495B6565B890}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "als-tools.ui.web", "als-tools.ui.web\als-tools.ui.web.csproj", "{AFFFDA3B-F6E8-4F05-A1C0-82FBB91ED8FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9443FBA4-0D39-4D31-B031-A7417167EC39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +29,12 @@ Global
 		{D6C84EF5-E779-4DEF-AF3E-495B6565B890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6C84EF5-E779-4DEF-AF3E-495B6565B890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C84EF5-E779-4DEF-AF3E-495B6565B890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFFFDA3B-F6E8-4F05-A1C0-82FBB91ED8FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFFFDA3B-F6E8-4F05-A1C0-82FBB91ED8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFFFDA3B-F6E8-4F05-A1C0-82FBB91ED8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFFFDA3B-F6E8-4F05-A1C0-82FBB91ED8FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

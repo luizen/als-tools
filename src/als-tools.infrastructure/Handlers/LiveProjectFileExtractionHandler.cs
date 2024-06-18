@@ -1,4 +1,5 @@
 using AlsTools.Core.Entities;
+using AlsTools.Core.Enums;
 using AlsTools.Core.Interfaces;
 using AlsTools.Infrastructure.Extractors.Collections;
 
@@ -31,29 +32,38 @@ public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandle
     public LiveProject ExtractProjectFromFile(string projectFileFullPath)
     {
         logger.LogDebug("=========================================================================");
-        logger.LogTrace("Start: ExtractProjectFromFile. File: {@File}", projectFileFullPath);
+        logger.LogDebug("Start: ExtractProjectFromFile. File: {@File}", projectFileFullPath);
 
-        logger.LogTrace("Opening project file as read-only...");
-
-        using (FileStream originalFileStream = File.OpenRead(projectFileFullPath))
+        try
         {
-            logger.LogTrace("Unzipping file into memory...");
-            using (GZipStream decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
+            logger.LogTrace("Opening project file as read-only...");
+
+            using (FileStream originalFileStream = File.OpenRead(projectFileFullPath))
             {
-                logger.LogTrace("Creating stream reader...");
-                using (StreamReader unzip = new StreamReader(decompressionStream))
+                logger.LogTrace("Unzipping file into memory...");
+                using (GZipStream decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
                 {
-                    logger.LogTrace("Creating XPathDocument...");
-                    var xPathDoc = new XPathDocument(unzip);
-                    var nav = xPathDoc.CreateNavigator();
+                    logger.LogTrace("Creating stream reader...");
+                    using (StreamReader unzip = new StreamReader(decompressionStream))
+                    {
+                        logger.LogTrace("Creating XPathDocument...");
+                        var xPathDoc = new XPathDocument(unzip);
+                        var nav = xPathDoc.CreateNavigator();
 
-                    logger.LogTrace("Calling the entry point: ExtractProject()...");
+                        logger.LogTrace("Calling the entry point: ExtractProject()...");
 
-                    var project = ExtractProject(Path.GetFileName(projectFileFullPath), projectFileFullPath, nav);
-                    return project;
+                        var project = ExtractProject(Path.GetFileName(projectFileFullPath), projectFileFullPath, nav);
+                        return project;
+                    }
                 }
             }
         }
+        finally
+        {
+            logger.LogDebug("End: ExtractProjectFromFile. File: {@File}", projectFileFullPath);
+        }
+
+
     }
 
     private LiveProject ExtractProject(string fileName, string fullPath, XPathNavigator nav)
@@ -66,6 +76,7 @@ public class LiveProjectFileExtractionHandler : ILiveProjectFileExtractionHandle
         var project = liveProjectExtractionHandler.ExtractFromXml(nav).Single();
         project.Name = fileName;
         project.Path = fullPath;
+        project.ProjectType = Path.GetExtension(fullPath).ToLower() == ".als" ? ProjectType.Set : ProjectType.Clip;
 
         // Extract the scenes
         project.Scenes = sceneExtractionHandler.ExtractFromXml(nav);

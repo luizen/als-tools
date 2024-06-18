@@ -1,0 +1,40 @@
+@inject ILogger<GridSettings> logger
+
+<RadzenCard class="my-2">
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+        <RadzenLabel Text="Density" Component="True" />
+        <RadzenSelectBar @bind-Value="@Density" TextProperty="Text" ValueProperty="Value" Change="@DensityChanged"
+            Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
+
+        <RadzenLabel Text="Grid lines" Component="True" />
+        <RadzenSelectBar @bind-Value="@GridLines" TextProperty="Text" ValueProperty="Value" Change="@GridLinesChanged"
+            Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))"
+            Size="ButtonSize.Small" />
+
+        <RadzenLabel Text="Use track colors" Component="True" Visible="@ShowUseTrackColors" />
+        <RadzenSwitch @bind-Value=@UseTrackColors Change="@UseTrackColorsChanged" Visible="@ShowUseTrackColors" />
+    </RadzenStack>
+</RadzenCard>
+
+@code {
+    [Parameter]
+    public Density Density { get; set; }
+
+    [Parameter]
+    public EventCallback<Density> DensityChanged { get; set; }
+
+    [Parameter]
+    public bool UseTrackColors { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<bool> UseTrackColorsChanged { get; set; }
+
+    [Parameter]
+    public Radzen.DataGridGridLines GridLines { get; set; } = Radzen.DataGridGridLines.Default;
+
+    [Parameter]
+    public EventCallback<Radzen.DataGridGridLines> GridLinesChanged { get; set; }
+
+    [Parameter]
+    public bool ShowUseTrackColors { get; set; } = false;
+}

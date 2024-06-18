@@ -1,6 +1,6 @@
 namespace AlsTools.Core.ValueObjects;
 
-public class TrackDelay
+public record TrackDelay
 {
     /// <summary>
     /// The delay value/amount, either in ms or samples, depending on the
@@ -12,4 +12,11 @@ public class TrackDelay
     /// Whether the delay is sample based of not (in this case, milliseconds)
     /// </summary>
     public bool? IsValueSampleBased { get; set; }
+
+    public string Description => ToString();
+
+    override public string ToString()
+    {
+        return IsValueSampleBased == true ? $"{Value} samples" : $"{Value} ms";
+    }
 }
