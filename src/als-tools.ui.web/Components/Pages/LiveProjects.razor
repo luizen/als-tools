@@ -29,10 +29,10 @@
     </ErrorBoundary>
 
     @* <RadzenStack Orientation="Orientation.Horizontal" Gap="1.1rem" Style="width: 100%">
-        <RadzenTextBox Placeholder="Plugin names to search..." Style="width: 100%" @bind-Value="@pluginNamesToSearch" />
-        <RadzenButton Text="Search" ButtonStyle="ButtonStyle.Secondary" Click="@FilterProjects" />
+    <RadzenTextBox Placeholder="Plugin names to search..." Style="width: 100%" @bind-Value="@pluginNamesToSearch" />
+    <RadzenButton Text="Search" ButtonStyle="ButtonStyle.Secondary" Click="@FilterProjects" />
     </RadzenStack> *@
-    <ProjectFilters />
+    @* <ProjectFilters /> *@
 
     <RadzenDataGrid Data="@projects" AllowColumnReorder="true" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
         FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true"
@@ -71,7 +71,7 @@
 @code {
     private IList<LiveProject>? projects = new List<LiveProject>();
     private double? totalProjects;
-    private string pluginNamesToSearch = "";
+    @* private string pluginNamesToSearch = ""; *@
 
     Density density = Density.Compact;
     Radzen.DataGridGridLines gridLines = Radzen.DataGridGridLines.Default;
@@ -83,18 +83,18 @@
         new DialogOptions() { Width = "90%", Height = "90%", Resizable = true, Draggable = true });
     }
 
-    private async Task FilterProjects()
-    {
-        logger.LogDebug("FilterProjects init");
+    @* private async Task FilterProjects()
+{
+logger.LogDebug("FilterProjects init");
 
-        var pluginsToSearch = pluginNamesToSearch.Split([','], StringSplitOptions.RemoveEmptyEntries);
+var pluginsToSearch = pluginNamesToSearch.Split([','], StringSplitOptions.RemoveEmptyEntries);
 
-        projects = (await liveProjectService.GetProjectsContainingPluginsAsync(pluginsToSearch)).ToList();
-        totalProjects = projects.Count();
-        await InvokeAsync(StateHasChanged);
+projects = (await liveProjectService.GetProjectsContainingPluginsAsync(pluginsToSearch)).ToList();
+totalProjects = projects.Count();
+await InvokeAsync(StateHasChanged);
 
-        logger.LogDebug("FilterProjects end");
-    }
+logger.LogDebug("FilterProjects end");
+} *@
 
     private async Task LoadAllProjects()
     {
