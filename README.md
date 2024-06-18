@@ -152,7 +152,6 @@ Copyright (C) 2024 als-tools.ui.cli
     Open the file `appsettings.json`, look for the `InitDbOptions` section and set the folders and files where your Live projects (\*.alc) or clips (\*.alc) are located:
 
     ```json
-    ...
     "InitDbOptions": {
         "folders": [
             "~/Splice",
