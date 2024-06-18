@@ -2,16 +2,16 @@
 
 ## Introduction
 
-Ableton Live Set tools, or simply als-tools, brings easy-to-use search, listing, counting and many other capabilities over your Ableton Live Set files (*.als).
+Ableton Live Set tools, or simply als-tools, brings easy-to-use search, listing, counting and many other capabilities over your Ableton Live Set (\*.als) and Live Clip (\*.alc) files.
 
 > Notice: from now on, the term **project** will be used in place of **Ableton Live Set**, just for simplicity.
 
 ## Current features
 
-- Scan multiple folders for *.als files, extract data from these files and save them in a database.
+- Scan multiple folders for *.als and*.alc files, extract data from these files and save them in a database.
 - List all projects stored in the database.
 - Count the number of projects stored in the database.
-- Locate projects containing one or more plugins, by plugin name (CLI only).
+- Locate projects containing one or more plugins, by plugin name (CLI only yet).
 - CLI and [Web front-end](https://github.com/luizen/als-tools/issues/14).
 - [Statistics](https://github.com/luizen/als-tools/issues/11)
 
@@ -25,13 +25,179 @@ Some of the most exciting future enhancements are:
 
 For the complete (and ever growing) list of planned, future enhancements, please visit the [Issues](https://github.com/luizen/als-tools/issues) page.
 
-## Building
+## Front-end options
 
-DOCUMENTATION IS BEING REVIEWED AND UPDATED. WILL BE PUBLISHED VERY SOON ;)
+This application  has two front-ends to interact with. You can choose how to interact with whatver your preference is:
 
-## Running
+### Console (CLI)
 
-DOCUMENTATION IS BEING REVIEWED AND UPDATED. WILL BE PUBLISHED VERY SOON ;)
+This means that commands are required to be run in a command-line interpreter / terminal emulator. Some examples:
+
+- Windows: [Command Prompt (cmd.exe)](https://en.wikipedia.org/wiki/Cmd.exe), [PowerShell](https://en.wikipedia.org/wiki/PowerShell) or [Windows Terminal](https://en.wikipedia.org/wiki/Windows_Terminal);
+- macOS: [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) or other alternatives, like the great [iTerm2](https://iterm2.com);
+- Linux: [GNOME Terminal](https://en.wikipedia.org/wiki/GNOME_Terminal), [Konsole](https://en.wikipedia.org/wiki/Konsole);
+
+  Click [here](https://en.wikipedia.org/wiki/List_of_terminal_emulators) for a list of terminal emulators/consoles.
+
+  ![cli](docs/img/cli.png)
+
+### Web front-end
+
+A more user friendly option that runs on a browser.
+
+  ![web-projects](docs/img/web-projects.png)
+  ![web-project-details1](docs/img/web-project-details1.png)
+  ![web-project-details2](docs/img/web-project-details2.png)
+  ![web-stats1](docs/img/web-stats1.png)
+  ![web-stats2](docs/img/web-stats2.png)
+  
+## Building and running
+
+> Right now there aren't any platform-specific full package, binary releases (Windows, macOS, Linux). So the way to run the tool is to download its source-code, build it and run it yourself. Check the [Development dependencies section](#development-dependencies) for more details. A [github issue (#21)](https://github.com/luizen/als-tools/issues/21) has already been created to handle this as a future enhancement.
+
+### CLI
+
+1. In the terminal, `cd` to the place where the `src/als-tools.ui.cli` folder is, under the place where the repository has been cloned/downloaded. Example:
+
+    ```shell
+    cd ~/Downloads/als-tools/src/als-tools.ui.cli
+    ```
+
+2. Build the project by executing:
+
+    ```shell
+    dotnet build
+    ```
+
+3. Initialize the database with data extracted from Live sets (\*.als) and clips (\*.alc) files.
+
+    Suppose your projects are under `/Users/myuser/Music/My Live Projects` and `/Users/myuser/Splice`, the following command ❗must be executed first❗ so that it:
+    a) scans all projects, extracting project information plus their details (project details, its tracks, plugins, devices, etc) and
+    b) loads them into the application database for further analysis.
+
+    ```shell
+    dotnet run initdb --folders "/Users/myuser/Music/My Live Projects" "/Users/myuser/Splice"
+    ```
+
+4. After the database is initialized, further commands can be executed.
+
+    To count how many projects the database is loaded with:
+
+    ```shell
+    dotnet run count
+    ```
+
+    To list all projects (in JSON format), its plugins, devices and tracks:
+
+    ```shell
+    dotnet run list
+    ```
+
+    To locate all projects containing at least one of the plugins (_contains plugin name_):
+
+    ```shell
+    dotnet run locate --plugin-names plugin1 "plugin 2" [...]
+    ```
+
+    > Where **plugin1** and **"plugin 2"**, etc, should be the names of the plugins to locate projects using them.
+
+    Example:
+
+    ```shell
+    dotnet run --plugin-names "Abbey Road Vinyl" HG-2 bx_solo
+    ```
+
+#### Help and commands (verbs)
+
+To display all available command line verbs and options, just execute the following command:
+
+```shell
+dotnet run help
+```
+
+Example of output:
+
+```
+$ dotnet run help
+als-tools.ui.cli 1.0.0+206d64c961afec7eacdd8fc3a818a5a5fdab42ec
+Copyright (C) 2024 als-tools.ui.cli
+
+  initdb     Initialize the als-tools database with information extracted from Live sets, either from files or folders.
+
+  count      Returns the total of projects stored in the als-tools database.
+
+  list       List all projects stored in the als-tools database.
+
+  stats      Print statistics.
+
+  usage      List only used or unused plugins. This uses as input the plugin list extracted from PlugInfo app.
+
+  locate     Locates projects containing given plugins by their names.
+
+  help       Display more information on a specific command.
+
+  version    Display version information.
+```
+
+## WEB
+
+1. In the terminal, `cd` to the place where the `src/als-tools.ui.web` folder is, under the place where the repository has been cloned/downloaded. Example:
+
+    ```shell
+    cd ~/Downloads/als-tools/src/als-tools.ui.web
+    ```
+
+2. Configure project paths before running.
+
+    Open the file `appsettings.json`, look for the `InitDbOptions` section and set the folders and files where your Live projects (\*.alc) or clips (\*.alc) are located:
+
+    ```json
+    ...
+    "InitDbOptions": {
+        "folders": [
+            "~/Splice",
+            "~/Documents/Production",
+            "~/Desktop",
+            "~/Music/Ableton/User Library",
+            "/Volumes/MyExternalDrive/Audio/Master",
+            "/Volumes/MyExternalDrive/Audio/Mix"
+        ],
+        "include-backups": false,
+        "files": [
+            "~/Desktop/MySuperLiveSet.als",
+            "~/Desktop/PluginTests.als"
+        ]
+    }
+    ```
+
+3. Build and run the project by executing the command below. This will start up both web and database servers and start serving the Blazor Web front-end.
+
+    ```programming
+    dotnet run
+    ```
+
+4. Open your browser of choice at [http://localhost:9500](http://localhost:9500) and open the Settings page (last icon on the left menu). Or go directly to the [Settings](http://localhost:9500/settings) page. Once there, click the `INIT DB` button to initialize the database with data extracted from Live sets (\*.als) and clips (\*.alc) files.
+
+5. After the database is initialized, navigate to the [Projects](http://localhost:9500) page (first menu item in the left) and start your project analysis.
+
+6. At the very end of each project line, in the Projects grid, an ℹ️ info icon can be clicked for more details like:
+    - All tracks (including their color)
+    - All plugins, stock devices and max for live devices used in the chosen project.
+
+7. A [Statistics](http://localhost:9500/stats) page is also available so you can have knowledge like:
+    - Total of projects loaded
+    - All plugins used
+    - All stock devices used
+    - All max for live devices used
+    - Track count per project
+    - Plugin count per project
+    - Stock devices count per project
+    - Max for live devices count per project
+    - Projects with highest plugins count
+    - Projects with highest tracks count
+    - Most used Plugins
+    - Most used Stock Devices
+    - Most used MaxForLive devices
 
 ## System requirements
 
