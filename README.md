@@ -4,24 +4,24 @@
 
 Ableton Live Set tools, or simply als-tools, brings easy-to-use search, listing, counting and many other capabilities over your Ableton Live Set (\*.als) and Live Clip (\*.alc) files.
 
-> Notice: from now on, the term **project** will be used in place of **Ableton Live Set**, just for simplicity.
+> Notice: from now on, for simplicity reasons, the term **project** will be used in place of **Ableton Live set / clip**.
 
 ## Current features
 
-- Scan multiple folders for *.als and*.alc files, extract data from these files and save them in a database.
+- Scan multiple folders for \*.als and \*.alc files, extract data from these files and save them in a local database.
 - List all projects stored in the database.
 - Count the number of projects stored in the database.
 - Locate projects containing one or more plugins, by plugin name (CLI only yet).
-- CLI and [Web front-end](https://github.com/luizen/als-tools/issues/14).
-- [Statistics](https://github.com/luizen/als-tools/issues/11)
+- [CLI](#console-cli) and [Web front-end](#web-front-end).
+- [Statistics](#statistics)
 
 ## Future enhancements
 
-Some of the most exciting future enhancements are:
+Some of the future enhancements are:
 
-- 💥 **[Interactive command line](https://github.com/luizen/als-tools/issues/7)**: navigate the options using a textual menu directly in your terminal! Take a look at [this project](https://github.com/shibayan/Sharprompt) for examples.
-- 💥 ****: statistics like the number of tracks per project, most used devices/plugins, projects with most number of tracks, etc. Not only text/tables, but also nice charts.
-- 💥 **[Powerful search/filtering](https://github.com/luizen/als-tools/issues/10)**: it will be possible to locate and filter projects by several properties, like plugin names, plugin types, device names, track names, track types, track count, etc.
+- **[Interactive command line](https://github.com/luizen/als-tools/issues/7)**: navigate the options using a textual menu directly in your terminal. Take a look at [this project](https://github.com/shibayan/Sharprompt) for examples.
+- Statistics 2.0: not only text/tables, but also charts.
+- **[Powerful search/filtering](https://github.com/luizen/als-tools/issues/10)**: it will be possible to locate and filter projects by several properties, like plugin names, plugin types, device names, track names, track types, track count, etc.
 
 For the complete (and ever growing) list of planned, future enhancements, please visit the [Issues](https://github.com/luizen/als-tools/issues) page.
 
@@ -45,9 +45,17 @@ This means that commands are required to be run in a command-line interpreter / 
 
 A more user friendly option that runs on a browser.
 
+#### Projects list
+
   ![web-projects](docs/img/web-projects.png)
+
+#### Project details
+
   ![web-project-details1](docs/img/web-project-details1.png)
   ![web-project-details2](docs/img/web-project-details2.png)
+  
+#### Statistics
+
   ![web-stats1](docs/img/web-stats1.png)
   ![web-stats2](docs/img/web-stats2.png)
   
@@ -156,6 +164,7 @@ Copyright (C) 2024 als-tools.ui.cli
         "folders": [
             "~/Splice",
             "~/Documents/Production",
+            "~/Documents/MyLiveClips",
             "~/Desktop",
             "~/Music/Ableton/User Library",
             "/Volumes/MyExternalDrive/Audio/Master",
@@ -164,7 +173,8 @@ Copyright (C) 2024 als-tools.ui.cli
         "include-backups": false,
         "files": [
             "~/Desktop/MySuperLiveSet.als",
-            "~/Desktop/PluginTests.als"
+            "~/Desktop/PluginTests.als",
+            "~/Desktop/MyOwnClip.alc"
         ]
     }
     ```
