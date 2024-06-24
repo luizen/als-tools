@@ -18,3 +18,5 @@ src/als-tools.ui.web/obj/*
 src/als-tools.ui.web/bin/*
 src/als-tools.ui.web/obj/*
 ravendb-license.json
+publish-cli.sh
+publish-web.sh
