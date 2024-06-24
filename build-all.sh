@@ -2,5 +2,6 @@
 
 echo "Building all..."
 
-dotnet build
+dotnet build src/als-tools.sln
+
 echo "DONE"
