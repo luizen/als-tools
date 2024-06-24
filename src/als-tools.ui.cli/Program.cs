@@ -29,7 +29,7 @@ public partial class Program
 
             try
             {
-                var embeddedDbContext = services.GetRequiredService<IEmbeddedDatabaseContext>();
+                var embeddedDbContext = services.GetRequiredService<EmbeddedDatabaseContext>();
                 embeddedDbContext.Initialize();
 
                 var app = services.GetRequiredService<App>();

@@ -12,11 +12,11 @@ namespace AlsTools.Infrastructure.Repositories;
 public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
 {
     private readonly ILogger<LiveProjectRavenRepository> logger;
-    private readonly IEmbeddedDatabaseContext dbContext;
+    private readonly EmbeddedDatabaseContext dbContext;
     private readonly IDocumentStore store;
     private readonly string collectionName;
 
-    public LiveProjectRavenRepository(ILogger<LiveProjectRavenRepository> logger, IEmbeddedDatabaseContext dbContext)
+    public LiveProjectRavenRepository(ILogger<LiveProjectRavenRepository> logger, EmbeddedDatabaseContext dbContext)
     {
         this.logger = logger;
         this.dbContext = dbContext;

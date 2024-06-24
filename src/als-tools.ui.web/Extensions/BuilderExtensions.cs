@@ -30,7 +30,7 @@ public static class BuilderExtensions
         builder.Services.AddSingleton<IConfigurationRoot>(configuration);
 
         // Add DbContext
-        builder.Services.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
+        builder.Services.AddSingleton<EmbeddedDatabaseContext>();
 
         // Add some helpers
         builder.Services.AddSingleton<UserFolderHandler>(svcProvider =>

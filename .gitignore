@@ -5,6 +5,7 @@
 *.pdb
 *.cache
 output/*
+publish/*
 src/als-tools.core/bin/*
 src/als-tools.core/obj/*
 src/als-tools.infrastructure/obj/*

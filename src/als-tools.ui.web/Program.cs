@@ -27,7 +27,7 @@ app.MapRazorComponents<App>()
 
 try
 {
-    var embeddedDbContext = app.Services.GetRequiredService<IEmbeddedDatabaseContext>();
+    var embeddedDbContext = app.Services.GetRequiredService<EmbeddedDatabaseContext>();
     embeddedDbContext.Initialize();
 
     app.Run();

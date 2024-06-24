@@ -59,7 +59,7 @@ public partial class Program
         serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
 
         // Add DbContext
-        serviceCollection.AddSingleton<IEmbeddedDatabaseContext, EmbeddedDatabaseContext>();
+        serviceCollection.AddSingleton<EmbeddedDatabaseContext>();
 
         // Add some helpers
         serviceCollection.AddSingleton<UserFolderHandler>(svcProvider =>
