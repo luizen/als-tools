@@ -19,6 +19,7 @@ Ableton Live Set tools, or simply als-tools, brings easy-to-use search, listing,
 
 Some of the future enhancements are:
 
+- **[Same DB data for both CLI and WEB front-ends](https://github.com/luizen/als-tools/issues/58)**: no matter what front-end you choose, the same data will be available for both, so that one can use different front-ends interchangeably.
 - **[Interactive command line](https://github.com/luizen/als-tools/issues/7)**: navigate the options using a textual menu directly in your terminal. Take a look at [this project](https://github.com/shibayan/Sharprompt) for examples.
 - Statistics 2.0: not only text/tables, but also charts.
 - **[Powerful search/filtering](https://github.com/luizen/als-tools/issues/10)**: it will be possible to locate and filter projects by several properties, like plugin names, plugin types, device names, track names, track types, track count, etc.
@@ -113,6 +114,12 @@ A more user friendly option that runs on a browser.
 
     ```shell
     dotnet run --plugin-names "Abbey Road Vinyl" HG-2 bx_solo
+    ```
+
+    To export the contents of all projects into a JSON file:
+
+    ```shell
+    dotnet run list > projects.json
     ```
 
 #### Help and commands (verbs)
