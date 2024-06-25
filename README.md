@@ -210,19 +210,21 @@ Copyright (C) 2024 als-tools.ui.cli
 
 ## System requirements
 
-### Operating System
+### Operating Systems
 
 Since not all music producers (Ableton Live users) work in/with the same platform / operating system, `als-tools` is being developed to be **cross-platform**, meaning it can be run on
 
-- **Windows**
-- **macOS**
-- **Linux** (even though Ableton Live does not run on Linux)
+- Windows (x86/x64)
+- macOS (x86/x64 and ARM/M1-like)
+- Linux (x86/x64)
+
+> Currently, only the x86/x64 processor architecture is supported for Windows and Linux. RavenDB is not supported *yet* on Windows and Linux running on ARM/M1-like processors.
 
 ### Development dependencies
 
 The `als-tools` project is currently developed using [.NET 8](https://dotnet.microsoft.com). To build and run the tool from its source-code, the **.NET 8 SDK** must be installed on your computer. This includes the SDK itself and Runtime packages as well.
 
-> **In a near future, ready-to-run binaries will be available in the releases page.**
+> In the future, ready-to-run binaries could be available in the releases page.
 
 Click [here](https://dotnet.microsoft.com/en-us/download) to visit the .NET download page.
 
