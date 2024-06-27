@@ -225,7 +225,7 @@ Since not all music producers (Ableton Live users) work in/with the same platfor
 - macOS (x86/x64 and ARM/M1-like)
 - Linux (x86/x64)
 
-> Currently, only the x86/x64 processor architecture is supported for Windows and Linux. RavenDB is not supported *yet* on Windows and Linux running on ARM/M1-like processors.
+> Currently, only the x86/x64 processor architecture is supported for Windows and Linux. [RavenDB is not supported yet on Windows ARM64](https://issues.hibernatingrhinos.com/issue/RavenDB-21913/Support-Windows-ARM64) and Linux running on ARM/M1-like processors.
 
 ### Development dependencies
 
