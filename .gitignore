@@ -20,3 +20,4 @@ src/als-tools.ui.web/obj/*
 ravendb-license.json
 publish-cli.sh
 publish-web.sh
+src/DbData/*
