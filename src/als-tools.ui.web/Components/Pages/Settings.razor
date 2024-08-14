@@ -8,15 +8,17 @@
 @attribute [StreamRendering]
 
 <PageTitle>Settings</PageTitle>
-<h1>Settings</h1>
+<RadzenHeading Size="H1" Text="Settings" />
 
-<RadzenCard class="my-2" style="display: flex; align-items: center; gap: 0.5rem">
+<RadzenCard class="rz-my-2" style="display: flex; align-items: center; gap: 0.5rem">
     <RadzenStack>
         <RadzenStack Orientation="Orientation.Horizontal" Style="width: 100%">
             <RadzenButton Text="Init DB" ButtonStyle="ButtonStyle.Primary" Click="@InitDb" />
             <RadzenButton Text="Delete all projects/clips" ButtonStyle="ButtonStyle.Secondary" Click="@DeleteAllProjects" />
             <RadzenButton Text="Reload project file dates" ButtonStyle="ButtonStyle.Secondary" Click="@ReloadFileDates" />
-            <p>Total Projects: @totalProjects</p>
+            <RadzenLabel class="rz-mt-2">
+                Total Projects: @(totalProjects?.ToString() ?? "")
+            </RadzenLabel>
         </RadzenStack>
         <RadzenProgressBar Value="@progressPercent" Visible="@progressBarVisible" />
     </RadzenStack>

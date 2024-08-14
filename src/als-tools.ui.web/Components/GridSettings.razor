@@ -1,17 +1,17 @@
 @inject ILogger<GridSettings> logger
 
-<RadzenCard class="my-2">
+<RadzenCard>
     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
         <RadzenLabel Text="Density" Component="True" />
         <RadzenSelectBar @bind-Value="@Density" TextProperty="Text" ValueProperty="Value" Change="@DensityChanged"
             Data="@(Enum.GetValues(typeof(Density)).Cast<Density>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" />
 
-        <RadzenLabel Text="Grid lines" Component="True" />
+        <RadzenLabel Text="Grid lines" Component="True" class="rz-ml-6" />
         <RadzenSelectBar @bind-Value="@GridLines" TextProperty="Text" ValueProperty="Value" Change="@GridLinesChanged"
             Data="@(Enum.GetValues(typeof(Radzen.DataGridGridLines)).Cast<Radzen.DataGridGridLines>().Select(t => new { Text = $"{t}", Value = t }))"
             Size="ButtonSize.Small" />
 
-        <RadzenLabel Text="Use track colors" Component="True" Visible="@ShowUseTrackColors" />
+        <RadzenLabel Text="Use track colors" Component="True" Visible="@ShowUseTrackColors" class="rz-ml-6" />
         <RadzenSwitch @bind-Value=@UseTrackColors Change="@UseTrackColorsChanged" Visible="@ShowUseTrackColors" />
     </RadzenStack>
 </RadzenCard>

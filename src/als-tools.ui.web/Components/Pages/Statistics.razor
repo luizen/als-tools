@@ -9,11 +9,7 @@
 @inject ILogger<Statistics> logger;
 
 <PageTitle>Statistics</PageTitle>
-
-<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
-    <RadzenIcon Icon="assessment" />
-    <h1>Statistics</h1>
-</RadzenStack>
+<RadzenHeading Size="H1" Text="Statistics" />
 
 <RadzenFieldset AllowCollapse="true">
     <HeaderTemplate>
@@ -22,17 +18,17 @@
     <ChildContent>
         <RadzenStack Orientation="Orientation.Vertical">
             <RadzenCard>
-                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem">
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
                     <RadzenLabel Text="Show only enabled devices" Component="True" />
                     <RadzenSwitch @bind-Value=@ignoreDisabledDevices Change=@(() => { @settingsChanged = true; }) />
 
-                    <RadzenLabel Text="Limit" Component="True" />
+                    <RadzenLabel Text="Limit" Component="True" class="rz-ml-6" />
                     <RadzenNumeric @bind-Value=@limit Min="1" Change=@((int _) => { @settingsChanged = true; }) />
 
                     <RadzenLabel Text="Enable limit" Component="True" />
                     <RadzenSwitch @bind-Value=@limitEnabled Change=@(() => { @settingsChanged = true; }) />
 
-                    <RadzenButton Text="Apply settings" Click="@LoadStatistics" Disabled="!settingsChanged" />
+                    <RadzenButton Text="Apply settings" Click="@LoadStatistics" Disabled="!settingsChanged" class="rz-ml-6" />
                 </RadzenStack>
             </RadzenCard>
             <ErrorBoundary>
@@ -44,7 +40,7 @@
 
 <RadzenContent Container="main">
     <ChildContent>
-        <RadzenStack Orientation="Orientation.Vertical" Gap="1.2rem">
+        <RadzenStack Orientation="Orientation.Vertical">
 
             <RadzenCard>
                 <ChildContent>
@@ -60,7 +56,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="PluginDevice" Data="@allPlugins" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="PluginDevice" Property="Name" Title="Name" Width="350px" />
                             <RadzenDataGridColumn TItem="PluginDevice" Property="Family.Sort" Title="Sort" Width="250px" />
@@ -78,7 +74,8 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="StockDevice" Data="@allStockDevices" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" FilterMode="FilterMode.CheckBoxList" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" FilterMode="FilterMode.CheckBoxList" Density="@density" GridLines="@gridLines"
+                        class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn Property="Name" Title="Name" Width="350px" />
                             <RadzenDataGridColumn Property="Family.Sort" Title="Sort" Width="250px" />
@@ -95,7 +92,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="MaxForLiveDevice" Data="@allMaxForLiveDevices" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn Property="Name" Title="Name" Width="350px" />
                             <RadzenDataGridColumn Property="Family.Sort" Title="Sort" Width="150px" />
@@ -112,7 +109,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@tracksCountPerProject" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Tracks Count" />
@@ -127,7 +124,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@pluginsCountPerProject" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Plugins Count" />
@@ -142,7 +139,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@stockDevicesCountPerProject" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Stock Devices Count" />
@@ -157,7 +154,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@maxForLiveCountPerProject" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="MaxForLive Devices Count" />
@@ -172,7 +169,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@projectsWithHighestPluginsCount" AllowFiltering="true"
                         AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Plugins Count" />
@@ -186,7 +183,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@projectsWithHighestTracksCount" AllowFiltering="true"
                         AllowSorting="true" PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ProjectName" Title="Project Name" />
                             <RadzenDataGridColumn TItem="ItemsCountPerProjectResult" Property="ItemsCount" Title="Tracks Count" />
@@ -200,7 +197,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedStockDevices" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
                             <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
@@ -214,7 +211,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedPlugins" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
                             <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />
@@ -228,7 +225,7 @@
                     </RadzenHeading>
                     <RadzenDataGrid TItem="DevicesUsageCountResult" Data="@mostUsedMaxForLiveDevices" AllowFiltering="true" AllowSorting="true"
                         PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines">
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
                         <Columns>
                             <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="DeviceName" Title="Device Name" />
                             <RadzenDataGridColumn TItem="DevicesUsageCountResult" Property="UsageCount" Title="Usage Count" />

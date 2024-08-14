@@ -22,7 +22,7 @@
 
 <RadzenContent Container="main">
     <ChildContent>
-        <RadzenStack Orientation="Orientation.Vertical" Gap="1.2rem">
+        <RadzenStack Orientation="Orientation.Vertical" >
 
             <RadzenCard>
                 <ChildContent>
@@ -31,7 +31,8 @@
                         AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
                         PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
                         PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
-                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced" RowRender="@OnRowRender">
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced" RowRender="@OnRowRender"
+                        class="rz-border-radius">
                         <EmptyTemplate>
                             <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
                         </EmptyTemplate>
@@ -66,7 +67,7 @@
                         AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
                         PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
                         PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
-                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced">
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced" class="rz-border-radius">
                         <EmptyTemplate>
                             <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
                         </EmptyTemplate>
@@ -98,7 +99,7 @@
                         AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
                         PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
                         PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
-                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced">
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced" class="rz-border-radius">
                         <EmptyTemplate>
                             <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
                         </EmptyTemplate>
@@ -131,7 +132,7 @@
                         AllowGrouping="true" AllowAlternatingRows="false" AllowColumnPicking="true" AllowPaging="true"
                         PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
                         PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
-                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced">
+                        Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced" class="rz-border-radius">
                         <EmptyTemplate>
                             <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
                         </EmptyTemplate>

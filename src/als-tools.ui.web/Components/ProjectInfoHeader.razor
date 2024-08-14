@@ -1,18 +1,15 @@
 @using AlsTools.Core.Entities
-
-<RadzenCard>
-    @if (project != null)
-    {
-        <div>
-            <p><strong>Name:</strong> @project.Name</p>
-            <p><strong>Path:</strong> @project.Path</p>
-            <p><strong>Live version:</strong> @project.Creator</p>
-            <p><strong>Tempo:</strong> @project.Tempo</p>
-        </div>
-    }
-    </RadzenCard>
-
-    @code {
+@if (project != null)
+{
+    <RadzenCard class="rz-mb-4">
+    <p><strong>Id:</strong> @project.Id</p>
+    <p><strong>Name:</strong> @project.Name</p>
+    <p><strong>Path:</strong> @project.Path</p>
+    <p><strong>Live version:</strong> @project.Creator</p>
+    <p><strong>Tempo:</strong> @project.Tempo</p>
+</RadzenCard>
+}
+@code {
     [Parameter]
     public required LiveProject project { get; set; }
 }
