@@ -11,16 +11,17 @@
         <NavMenu SidebarExpanded="@sidebarExpanded" />
     </RadzenSidebar>
     <RadzenBody>
-        <div class="rz-p-4">
+        <div class="rz-p-2">
             @Body
         </div>
     </RadzenBody>
-    <RadzenFooter>
+    <RadzenFooter class="rz-p-1 rz-pl-4">
         <RadzenLabel Text="ALS TOOLS - 2024" />
     </RadzenFooter>
 </RadzenLayout>
 
-<RadzenComponents />
+@* <RadzenComponents /> *@
+<RadzenComponents @rendermode="InteractiveServer" />
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.

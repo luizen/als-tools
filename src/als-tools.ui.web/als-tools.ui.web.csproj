@@ -14,8 +14,8 @@
     <ProjectReference Include="..\als-tools.infrastructure\als-tools.infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Radzen.Blazor" Version="4.33.2" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.1" />
+    <PackageReference Include="Radzen.Blazor" Version="5.0.9" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
     <PackageReference Include="Serilog.Sinks.Async" Version="2.0.0" />
   </ItemGroup>
 
