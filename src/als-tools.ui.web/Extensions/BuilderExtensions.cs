@@ -38,6 +38,9 @@ public static class BuilderExtensions
 
         builder.Services.AddSingleton<XpathExtractorHelper>();
 
+        // Samples extractor
+        builder.Services.AddSingleton<ISamplesCollectionExtractor, SamplesCollectionExtractor>();
+        
         // MaxForLive Sort Extractors
         builder.Services.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>
                      new Dictionary<string, IMaxForLiveDeviceSortExtractor>()
@@ -159,7 +162,7 @@ public static class BuilderExtensions
                     continue;
                 }
 
-                // Let's check if this field has an specific extractor attribute. Otherwise we use the one from the class...
+                // Let's check if this field has a specific extractor attribute. Otherwise, we use the one from the class...
                 var fieldExtractorAttr = field.GetCustomAttribute<ExtractingStockDeviceAttribute>();
 
                 // Now select which one to use...

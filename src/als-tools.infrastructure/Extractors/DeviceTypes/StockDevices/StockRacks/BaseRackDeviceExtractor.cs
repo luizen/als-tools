@@ -29,7 +29,7 @@ public abstract class BaseRackDeviceExtractor : BaseStockDeviceExtractor, IStock
     protected IList<IDevice> GetDevicesFromCommonBranches(XPathNavigator nav)
     {
         logger.LogDebug("----");
-        logger.LogDebug("Exctracting Rack device chains from XML...");
+        logger.LogDebug("Extracting Rack device chains from XML...");
 
         var devices = new List<IDevice>();
         var devicesInBranchIterator = nav.Select(XPathDevicesSelector);

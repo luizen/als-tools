@@ -78,6 +78,11 @@ public interface ITrack
     IList<MaxForLiveDevice> MaxForLiveDevices { get; set; }
 
     /// <summary>
+    /// The samples contained in this track
+    /// </summary>
+    IList<SampleRef> Samples { get; set; }
+
+    /// <summary>
     /// Adds a device to either the <see cref="StockDevices" />, <see cref="Plugins" /> or <see cref="MaxForLiveDevices" />
     /// list. Duplicated entries are allowed.
     /// </summary>
@@ -90,6 +95,20 @@ public interface ITrack
     /// </summary>
     /// <param name="devices">The list of device objects</param>
     void AddDevices(IEnumerable<IDevice> devices);
+    
+
+    /// <summary>
+    /// Adds a sample to the samples collection
+    /// </summary>
+    /// <param name="sample">The sample to be added</param>
+    void AddSample(SampleRef sample); 
+    
+    /// <summary>
+    /// Adds a list of samples to the track.
+    /// </summary>
+    /// <param name="samples">The samples to be added</param>
+    void AddSamples(IEnumerable<SampleRef> samples);
+    
 
     /// <summary>
     /// Track color
@@ -130,4 +149,6 @@ public interface ITrack
     /// Helper property that tells whether this track is a Master track
     /// </summary>
     bool IsMasterTrack { get; }
+
+
 }

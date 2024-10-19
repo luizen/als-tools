@@ -68,6 +68,9 @@ public partial class Program
         serviceCollection.AddSingleton<ConsoleTablePrinter>();
 
         serviceCollection.AddSingleton<XpathExtractorHelper>();
+        
+        // Samples extractor
+        serviceCollection.AddSingleton<ISamplesCollectionExtractor, SamplesCollectionExtractor>();
 
         // MaxForLive Sort Extractors
         serviceCollection.AddSingleton<IDictionary<string, IMaxForLiveDeviceSortExtractor>>(svcProvider =>

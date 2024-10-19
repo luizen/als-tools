@@ -20,12 +20,14 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
     private readonly ILogger<TracksCollectionExtractor> logger;
 
     private readonly IDevicesCollectionExtractor devicesCollectionExtractor;
+    private readonly ISamplesCollectionExtractor samplesCollectionExtractor;
     private readonly XpathExtractorHelper xpathExtractorHelper;
 
-    public TracksCollectionExtractor(ILogger<TracksCollectionExtractor> logger, IDevicesCollectionExtractor devicesCollectionExtractor, XpathExtractorHelper xpathExtractorHelper)
+    public TracksCollectionExtractor(ILogger<TracksCollectionExtractor> logger, IDevicesCollectionExtractor devicesCollectionExtractor, ISamplesCollectionExtractor samplesCollectionExtractor, XpathExtractorHelper xpathExtractorHelper)
     {
         this.logger = logger;
         this.devicesCollectionExtractor = devicesCollectionExtractor;
+        this.samplesCollectionExtractor = samplesCollectionExtractor;
         this.xpathExtractorHelper = xpathExtractorHelper;
     }
 
@@ -91,8 +93,11 @@ public class TracksCollectionExtractor : ITracksCollectionExtractor
 
             // Now let's get all devices in this track
             var devices = devicesCollectionExtractor.ExtractFromXml(trackNode);
-
             track.AddDevices(devices);
+
+            // Now let's get all samples in this track
+            var samples = samplesCollectionExtractor.ExtractFromXml(trackNode);
+            track.AddSamples(samples);
 
             tracks.Add(track);
         }

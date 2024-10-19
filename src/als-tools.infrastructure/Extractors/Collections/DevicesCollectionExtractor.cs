@@ -43,7 +43,7 @@ public class DevicesCollectionExtractor : IDevicesCollectionExtractor
     public IReadOnlyList<IDevice> ExtractFromXml(XPathNavigator nav)
     {
         logger.LogDebug("----");
-        logger.LogDebug("Exctracting devices from XML...");
+        logger.LogDebug("Extracting devices from XML...");
 
         string[] devicesNodeExpressions =
             {

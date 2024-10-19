@@ -21,3 +21,5 @@ ravendb-license.json
 publish-cli.sh
 publish-web.sh
 src/DbData/*
+src/als-tools.sln.DotSettings.user
+src/.idea/*
