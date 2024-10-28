@@ -158,6 +158,35 @@
                 </ChildContent>
             </RadzenCard>
 
+            <RadzenCard>
+                <ChildContent>
+                    <RadzenHeading Size="H3" Text="Samples" />
+                    <RadzenDataGrid Data="@samples" AllowSorting="true" AllowFiltering="true"
+                                    AllowAlternatingRows="false" AllowPaging="true"
+                                    PageSize="@GridOptions.DefaultPageSize" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                                    PageSizeOptions="@GridOptions.PageSizeOptions" LogicalFilterOperator="LogicalFilterOperator.Or" ColumnWidth="140px"
+                                    Density="@density" GridLines="@gridLines" FilterMode="FilterMode.Advanced" class="rz-border-radius">
+                        <EmptyTemplate>
+                            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to display.</p>
+                        </EmptyTemplate>
+                        <GroupHeaderTemplate>
+                            @context.GroupDescriptor.GetTitle(): @(context.Data.Key ?? "") (Items: @context.Data.Count)
+                        </GroupHeaderTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn Width="5px" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Groupable="false">
+                                <Template Context="data">
+                                    @(samples?.IndexOf(data) + 1)
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn Title="Location">
+                                <Template Context="data">
+                                    <text>@data</text>
+                                </Template>
+                            </RadzenDataGridColumn>
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
 
         </RadzenStack>
     </ChildContent>
@@ -170,6 +199,7 @@
     private List<PluginDevice> plugins;
     private List<StockDevice> stockDevices;
     private List<MaxForLiveDevice> maxForLiveDevices;
+    private List<string> samples;
 
     private Density density = Density.Compact;
     private bool useTrackColors = true;
@@ -180,6 +210,7 @@
         plugins = tracks.SelectMany(t => t.Plugins).ToList();
         stockDevices = tracks.SelectMany(t => t.StockDevices).ToList();
         maxForLiveDevices = tracks.SelectMany(t => t.MaxForLiveDevices).ToList();
+        samples = tracks.SelectMany(t => t.Samples).Distinct().ToList();
 
         await base.OnParametersSetAsync();
     }

@@ -1,12 +1,9 @@
-using System;
-using AlsTools.Core.ValueObjects;
-
 namespace AlsTools.Infrastructure.Extractors.Collections;
 
 /// <summary>
 /// Interface defining a collection extractor specific for Samples
 /// </summary>
-public interface ISamplesCollectionExtractor : ICollectionExtractor<SampleRef>
+public interface ISamplesCollectionExtractor : ICollectionExtractor<string>
 {
 }
 
@@ -19,23 +16,18 @@ public class SamplesCollectionExtractor : ISamplesCollectionExtractor
         this.logger = logger;
     }
 
-    public IReadOnlyList<SampleRef> ExtractFromXml(XPathNavigator nav)
+    public IReadOnlyList<string> ExtractFromXml(XPathNavigator nav)
     {
         logger.LogDebug("----");
         logger.LogDebug("Extracting Samples from XML...");
-        
+
         var expression = $".//SampleRef/FileRef/Path/@Value";
         var sampleRefsIterator = nav.Select(expression);
-        var sampleRefs = new List<SampleRef>();
+        var sampleRefs = new List<string>();
 
         foreach (XPathNavigator sampleRefNode in sampleRefsIterator)
         {
-            var sampleRef = new SampleRef()
-            {
-                FileRefPath = sampleRefNode.Value
-            };
-            
-            sampleRefs.Add(sampleRef);
+            sampleRefs.Add(sampleRefNode.Value);
         }
 
         return sampleRefs;

@@ -22,7 +22,7 @@ public abstract class BaseTrack(TrackType type) : ITrack
 
     public IList<MaxForLiveDevice> MaxForLiveDevices { get; set; } = [];
 
-    public IList<SampleRef> Samples { get; set; } = [];
+    public IList<string> Samples { get; set; } = [];
 
     public string Annotation { get; set; } = string.Empty;
 
@@ -73,13 +73,13 @@ public abstract class BaseTrack(TrackType type) : ITrack
             AddDevice(device);
     }
 
-    public void AddSamples(IEnumerable<SampleRef> samples)
+    public void AddSamples(IEnumerable<string> samples)
     {
         foreach (var sample in samples)
             AddSample(sample);
     }
 
-    public void AddSample(SampleRef sample)
+    public void AddSample(string sample)
     {
         ArgumentNullException.ThrowIfNull(sample);
 
