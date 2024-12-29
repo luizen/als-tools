@@ -47,6 +47,6 @@ public interface ILiveProjectAsyncRepository
     Task<IEnumerable<StockDevice>> GetAllStockDevicesFromProjects(int? limit = null, bool ignoreDisabled = false);
 
     Task<IEnumerable<MaxForLiveDevice>> GetAllMaxForLiveDevicesFromProjects(int? limit = null, bool ignoreDisabled = false);
-
-
+    
+    Task<IEnumerable<StringItemResult>> GetAllSamplesFromProjects(int? limit = null);
 }

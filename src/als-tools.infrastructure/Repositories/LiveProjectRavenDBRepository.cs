@@ -400,5 +400,25 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
         }
     }
 
+    public async Task<IEnumerable<StringItemResult>> GetAllSamplesFromProjects(int? limit = null)
+    {
+        logger.LogTrace("Start: GetAllSamplesFromProjects");
 
+        try
+        {
+            using var session = store.OpenAsyncSession();
+            // return await session.Query<StringItemResult, AllSamples>()
+            //     .OrderBy(sample => sample.Value)
+            //     .Distinct()
+            //     .Take(limit ?? int.MaxValue) // Take all if limit is null
+            //     .ToListAsync();
+            
+            return await session.Query<StringItemResult, AllSamples>()
+                .ToListAsync();
+        }
+        finally
+        {
+            logger.LogTrace("End: GetAllSamplesFromProjects");
+        }
+    }
 }

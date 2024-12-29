@@ -417,6 +417,21 @@ public class LiveProjectAsyncService : ILiveProjectAsyncService
         {
             logger.LogInformation("Getting all Max for Live devices from all projects... DONE");
         }
+    }
 
+    public async Task<IEnumerable<StringItemResult>> GetAllSamplesFromProjects(int? limit = null)
+    {
+        try
+        {
+            logger.LogInformation("Getting all samples from all projects...");
+            var samples = await repository.GetAllSamplesFromProjects(limit);
+            return samples;
+            // var ret = samples.Select(x => x.Value);
+            // return ret;
+        }
+        finally
+        {
+            logger.LogInformation("Getting all samples from all projects... DONE");
+        }
     }
 }

@@ -105,6 +105,20 @@
 
             <RadzenCard>
                 <ChildContent>
+                    <RadzenHeading Size="H3" Text="All Samples (from all projects)">
+                    </RadzenHeading>
+                    <RadzenDataGrid TItem="StringItemResult" Data="@allSamples" AllowFiltering="true" AllowSorting="true"
+                        PageSize="@GridOptions.DefaultPageSize" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true" Density="@density" GridLines="@gridLines" class="rz-border-radius">
+                        <Columns>
+                            <RadzenDataGridColumn Property="Value" Title="Sample name" />
+                        </Columns>
+                    </RadzenDataGrid>
+                </ChildContent>
+            </RadzenCard>
+
+            <RadzenCard>
+                <ChildContent>
                     <RadzenHeading Size="H3" Text="Tracks count per project">
                     </RadzenHeading>
                     <RadzenDataGrid TItem="ItemsCountPerProjectResult" Data="@tracksCountPerProject" AllowFiltering="true" AllowSorting="true"
@@ -263,6 +277,7 @@
     private IQueryable<PluginDevice> allPlugins;
     private IQueryable<StockDevice> allStockDevices;
     private IQueryable<MaxForLiveDevice> allMaxForLiveDevices;
+    private IQueryable<StringItemResult> allSamples;
 
     private async Task LoadStatistics()
     {
@@ -285,6 +300,7 @@
         allPlugins = (await liveProjectService.GetAllPluginsFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
         allStockDevices = (await liveProjectService.GetAllStockDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
         allMaxForLiveDevices = (await liveProjectService.GetAllMaxForLiveDevicesFromProjects(realLimit, ignoreDisabledDevices)).AsQueryable();
+        allSamples = (await liveProjectService.GetAllSamplesFromProjects(realLimit)).AsQueryable();
 
         settingsChanged = false;
 
