@@ -1,0 +1,181 @@
+{
+    "$schema": "http://json.schemastore.org/launchsettings.json",
+    "profiles": {
+        "Debug - initdb folders FULL MEGA BLASTER ALL": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --folders ~/Splice ~/Documents/Producao/Criacoes ~/Documents/Producao/Ableton Racks ~/Documents/Producao/Exercicios ~/Documents/Producao/Presets ~/Desktop ~/Music/Ableton/User Library /Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes /Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens --log-level information",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb files <path>": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --files /Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes/Techno C Master Project/Techno C Master.als ~/Desktop/Testes ALS/Master with Devices Project/Master with Devices.als --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb folder ALS": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --folders ~/Desktop/Testes ALS/ --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb folder <path>": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --folders ~/Desktop/Testes ALS/Projects folder 1 ~/Desktop/Testes ALS/Projects folder 2 --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb file AllRacks": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --files ~/Desktop/Testes ALS/Projects folder 1/LiveRacks Project/LiveRacks.als --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb file AllStock": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --files ~/Desktop/Testes ALS/Projects folder 1/AllLiveStockDevices Project/AllLiveStockDevices.als --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb folders extras/sample-ls": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --folders ~/Documents/Desenvolvimento/repos/als-tools/extras/sample-live-sets --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb folders Splice": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --folders ~/Splice --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb folders User Library": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --folders ~/Music/Ableton/User Library --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - initdb folders Splice + Criacoes + Mix + Masters": {
+            "commandName": "Project",
+            "commandLineArgs": "initdb --folders ~/Splice ~/Documents/Producao/Criacoes /Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Masterizacoes /Volumes/SamsungT5Zen/Users/zenluiz/Documentos/Producao/Mixagens --log-level information",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - list": {
+            "commandName": "Project",
+            "commandLineArgs": "list --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - count": {
+            "commandName": "Project",
+            "commandLineArgs": "count --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - show unused plugins only": {
+            "commandName": "Project",
+            "commandLineArgs": "usage --select UnusedOnly --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - show used plugins only": {
+            "commandName": "Project",
+            "commandLineArgs": "usage --select UsedOnly --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - locate <plugin formats>": {
+            "commandName": "Project",
+            "commandLineArgs": "locate --plugin-formats AU --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - locate <plugin names>": {
+            "commandName": "Project",
+            "commandLineArgs": "locate --plugin-names TDR Nova --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - locate Ozone 10": {
+            "commandName": "Project",
+            "commandLineArgs": "locate --plugin-names Ozone 10 Vintage Tape Ozone 10 Vintage Limiter Ozone 10 Vintage EQ Ozone 10 Vintage Compressor Ozone 10 Stabilizer Ozone 10 Spectral Shaper Ozone 10 Maximizer Ozone 10 Match EQ Ozone 10 Master Rebalance Ozone 10 Low End Focus Ozone 10 Impact Ozone 10 Imager Ozone 10 Exciter Ozone 10 Equalizer Ozone 10 Dynamics Ozone 10 Dynamic EQ Ozone 10 --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - print some statistics (ignore disabled and limit 5)": {
+            "commandName": "Project",
+            "commandLineArgs": "stats --ignore-disabled --projets-with-more-plugins --most-used-plugins --limit 5",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - print all statistics": {
+            "commandName": "Project",
+            "commandLineArgs": "stats --log-level information",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - locate HG2/bx_tunner": {
+            "commandName": "Project",
+            "commandLineArgs": "locate --plugin-names HG2 bx_tunner --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - locate kickbox/replika": {
+            "commandName": "Project",
+            "commandLineArgs": "locate --plugin-names kickbox replika --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "Debug - locate A1StereoControl": {
+            "commandName": "Project",
+            "commandLineArgs": "locate --plugin-names A1StereoControl --log-level verbose",
+            "workingDirectory": "${workspaceFolder}/src/als-tools.ui.cli",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
+    }
+}
