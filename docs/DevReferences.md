@@ -37,3 +37,7 @@
 
 <https://blazor.radzen.com>
 <https://blazor.radzen.com/icon>
+
+## VS Code vs Rider config
+
+<https://code.visualstudio.com/docs/csharp/debugger-settings>
