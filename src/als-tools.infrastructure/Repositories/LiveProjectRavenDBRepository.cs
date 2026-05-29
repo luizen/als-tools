@@ -412,7 +412,7 @@ public partial class LiveProjectRavenRepository : ILiveProjectAsyncRepository
             //     .Distinct()
             //     .Take(limit ?? int.MaxValue) // Take all if limit is null
             //     .ToListAsync();
-            
+
             return await session.Query<StringItemResult, AllSamples>()
                 .ToListAsync();
         }

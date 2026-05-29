@@ -4,6 +4,8 @@
 .*
 .*Name": "bla
 
+Zed Regex
+"Format": 2,[\r\n\s\S]+?"Path": .*[\r\n\s\S]+?"PluginNameAndFormat": (.*),[\r\n\s\S]+?"Id":.*,[\r\n\s\S]+?"Name": "(.*)"
 
 
 ("Path": "[a-zA-Z0-9/ .-_]+")([\s\S\n]*?)("Name": "Maschine 2",)([\s\S\n]*?)("Locators": \[)([\s\S\n]*?)(\])
@@ -234,7 +236,7 @@ Branches - Branches/MidiEffectBranch
 
 /Ableton/LiveSet/Tracks/MidiTrack[7]/DeviceChain/DeviceChain/Devices/MidiEffectGroupDevice/Branches/MidiEffectBranch[1]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiVelocity
 
-Midi Effect rack inside another Midi Effect rack -> 
+Midi Effect rack inside another Midi Effect rack ->
 /Ableton/LiveSet/Tracks/MidiTrack[7]/DeviceChain/DeviceChain/Devices/MidiEffectGroupDevice/Branches/MidiEffectBranch[2]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiEffectGroupDevice/
 	Branches/MidiEffectBranch[1]/DeviceChain/MidiToMidiDeviceChain/Devices/MidiPitcher
 
@@ -336,7 +338,7 @@ Midi Effect rack inside another Midi Effect rack ->
 			<IsOnLomId Value="0" />
 			<ParametersListWrapperLomId Value="0" />
 			<Buffer>
-				
+
 			</Buffer>
 			<PresetRef>
 				<FilePresetRef Id="0">
@@ -2343,7 +2345,7 @@ var pluginsNotBeingUsed = [
 
 
 
-======================= 
+=======================
 
 FOR CHAT GPT
 
@@ -2362,7 +2364,7 @@ public class Track
 public class PluginDevice
 {
     public string Name { get; set; }
-    public PluginFormat Format { get; }   
+    public PluginFormat Format { get; }
 }
 
 public enum PluginFormat
