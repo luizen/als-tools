@@ -115,6 +115,8 @@ public static class LiveStockDeviceNodeNames
 
         public const string AutoFilter = "AutoFilter";
 
+        public const string AutoFilter2 = "AutoFilter2";
+
         public const string AutoPan = "AutoPan";
 
         public const string BeatRepeat = "BeatRepeat";
