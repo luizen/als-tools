@@ -119,6 +119,8 @@ public static class LiveStockDeviceNodeNames
 
         public const string AutoPan = "AutoPan";
 
+        public const string AutoPan2 = "AutoPan2";
+
         public const string BeatRepeat = "BeatRepeat";
 
         public const string Cabinet = "Cabinet";
@@ -138,6 +140,8 @@ public static class LiveStockDeviceNodeNames
         public const string Delay = "Delay";
 
         public const string DrumBuss = "DrumBuss";
+
+        public const string DrumCell = "DrumCell";
 
         public const string DynamicTube = "Tube";
 
